@@ -10,6 +10,8 @@ gem 'turbolinks'
 gem 'jbuilder', '~> 2.0'
 gem 'unicorn'
 
+gem 'pg'
+
 group :development, :test do
   gem 'byebug'
 end
