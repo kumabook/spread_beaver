@@ -1,11 +1,12 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy]
   skip_before_action :require_login, only: [:new, :create]
+  before_action :require_admin, only: [:index]
 
   # GET /users
   # GET /users.json
   def index
-    @users = User.all
+    @users = User.all.map {|u| u.becomes(User) }
   end
 
   # GET /users/1
@@ -15,7 +16,7 @@ class UsersController < ApplicationController
 
   # GET /users/new
   def new
-    @user = User.new
+    @user = User.new.becomes(User)
   end
 
   # GET /users/1/edit
@@ -26,6 +27,8 @@ class UsersController < ApplicationController
   # POST /users.json
   def create
     @user = User.new(user_params)
+    @user.type = User.types[:member]
+    @user.becomes(User)
     respond_to do |format|
       if @user.save
         format.html { redirect_to @user, notice: 'User was successfully created.' }
@@ -64,7 +67,7 @@ class UsersController < ApplicationController
   private
 
   def set_user
-    @user = User.find(params[:id])
+    @user = User.find(params[:id]).becomes(User)
   end
 
   def user_params

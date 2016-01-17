@@ -1,4 +1,8 @@
 class User < ActiveRecord::Base
+  enum type: {
+    member: 'Member',
+    admin: 'Admin'
+  }
   authenticates_with_sorcery!
 
   validates :password, length: { minimum: 3 }, if: -> { new_record? || changes["password"] }
