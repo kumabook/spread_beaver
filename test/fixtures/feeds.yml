@@ -1,13 +1,13 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  id: MyString
+  id: 1
   title: MyString
   description: MyText
   website: MyString
 
 two:
-  id: MyString
+  id: 2
   title: MyString
   description: MyText
   website: MyString
