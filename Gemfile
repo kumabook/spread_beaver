@@ -11,6 +11,7 @@ gem 'jbuilder', '~> 2.0'
 gem 'unicorn'
 
 gem 'pg'
+gem 'sorcery'
 
 group :development, :test do
   gem 'byebug'
