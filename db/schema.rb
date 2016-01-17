@@ -15,27 +15,41 @@ ActiveRecord::Schema.define(version: 20160117154118) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+  enable_extension "uuid-ossp"
 
-  create_table "entries", id: false, force: :cascade do |t|
-    t.string   "id"
-    t.string   "title"
-    t.text     "content"
-    t.text     "summary"
+  create_table "entries", id: :uuid, default: "uuid_generate_v4()", force: :cascade do |t|
+    t.string   "title",         null: false
+    t.text     "content",       null: false
+    t.text     "summary",       null: false
+    t.string   "url",           null: false
+    t.string   "thumbnail_url", null: false
     t.datetime "published"
-    t.string   "url"
-    t.string   "thumbnail_url"
     t.datetime "created_at",    null: false
     t.datetime "updated_at",    null: false
   end
 
+  add_index "entries", ["id"], name: "index_entries_on_id", unique: true, using: :btree
+
   create_table "feeds", id: false, force: :cascade do |t|
-    t.string   "id"
+    t.string   "id",          null: false
     t.string   "title"
     t.text     "description"
     t.string   "website"
+    t.string   "visualUrl"
+    t.string   "coverUrl"
+    t.string   "iconUrl"
+    t.string   "language"
+    t.string   "partial"
+    t.string   "coverColor"
+    t.string   "contentType"
+    t.integer  "subscribers"
+    t.float    "velocity"
+    t.string   "topics"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
   end
+
+  add_index "feeds", ["id"], name: "index_feeds_on_id", unique: true, using: :btree
 
   create_table "users", force: :cascade do |t|
     t.string   "email",            null: false
