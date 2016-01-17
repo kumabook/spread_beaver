@@ -18,14 +18,29 @@ ActiveRecord::Schema.define(version: 20160117154118) do
   enable_extension "uuid-ossp"
 
   create_table "entries", id: :uuid, default: "uuid_generate_v4()", force: :cascade do |t|
-    t.string   "title",         null: false
-    t.text     "content",       null: false
-    t.text     "summary",       null: false
-    t.string   "url",           null: false
-    t.string   "thumbnail_url", null: false
+    t.string   "title"
+    t.text     "content"
+    t.text     "summary"
+    t.text     "author"
+    t.text     "alternate"
+    t.text     "origin"
+    t.text     "keywords"
+    t.text     "visual"
+    t.text     "tags"
+    t.text     "categories"
+    t.boolean  "unread",          null: false
+    t.integer  "engagement"
+    t.integer  "actionTimestamp"
+    t.text     "enclosure"
+    t.text     "fingerprint",     null: false
+    t.string   "originId",        null: false
+    t.string   "sid"
+    t.datetime "crawled"
+    t.datetime "recrawled"
     t.datetime "published"
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
+    t.datetime "updated"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
   end
 
   add_index "entries", ["id"], name: "index_entries_on_id", unique: true, using: :btree
