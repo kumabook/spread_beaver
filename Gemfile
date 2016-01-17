@@ -12,6 +12,7 @@ gem 'unicorn'
 
 gem 'pg'
 gem 'sorcery'
+gem 'slim-rails'
 
 group :development, :test do
   gem 'byebug'
