@@ -1,0 +1,26 @@
+h1 Listing feeds
+
+table
+  thead
+    tr
+      th id
+      th title
+      th description
+      th website
+      th
+      th
+      th
+
+  tbody
+    - @feeds.each do |feed|
+      tr
+        td = feed.id
+        td = feed.title
+        td = feed.description
+        td = feed.website
+        td = link_to 'Edit', edit_feed_path(id: feed.id)
+        td = link_to 'Destroy', feed, data: {:confirm => 'Are you sure?'}, :method => :delete
+
+br
+
+= link_to 'New Feed', new_feed_path
