@@ -28,5 +28,6 @@ config/secrets.yml
 # Gemfile.lock, .ruby-version, .ruby-gemset
 
 *~
+*#
 
 /config/database.yml
