@@ -1,0 +1,26 @@
+- model_class = Entry
+
+.page-header
+  h1=t '.title', :default => model_class.model_name.human.pluralize.titleize
+table.table.table-striped
+  thead
+    tr
+      th= model_class.human_attribute_name(:id)
+      th= model_class.human_attribute_name(:title)
+      th= model_class.human_attribute_name(:crawled)
+      th
+      th
+
+  tbody
+    - @entries.each do |entry|
+      tr
+        td = entry.id.truncate(10)
+        td = entry.title.truncate(50)
+        td = entry.crawled
+        td = link_to 'Show', entry_path(id: entry.id)
+        td = link_to 'Edit', edit_entry_path(entry)
+        td = link_to 'Destroy', entry, data: {:confirm => 'Are you sure?'}, :method => :delete
+
+br
+
+= link_to 'New Entry', new_entry_path

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+html
+  head
+    title Spread Beaver
+    = stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true
+    = javascript_include_tag 'application', 'data-turbolinks-track' => true
+    = csrf_meta_tags
+  body
+    .navbar.navbar-default.navbar-static-top
+      .navbar-collapse.collapse.navbar-responsive-collapse
+        ul.nav.navbar-nav
+          - if current_user
+            - if current_user.admin?
+              li = link_to "Application", oauth_applications_path
+            li = link_to "Edit Profile", edit_user_path(current_user.id)
+            li = link_to "Logout", :logout, method: :post
+          - else
+            li = link_to "Register", new_user_path
+            li = link_to "Login", :login
+    div
+      p#notice = flash[:notice]
+      p#alert = flash[:alert]
+    = yield

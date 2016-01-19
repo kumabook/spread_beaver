@@ -1,5 +1,4 @@
-- model_class = Feed
+- model_class = Entry
 .page-header
   h1=t '.title', :default => [:'helpers.titles.edit', 'Edit %{model}'], :model => model_class.model_name.human.titleize
-= 'id: ' + @feed.id
 = render :partial => "form"

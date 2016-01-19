@@ -1,4 +1,5 @@
 class Feed < ActiveRecord::Base
+  has_many :entries
   self.primary_key = :id
   def self.first_or_create_by_feedlr(feed)
     Feed.find_or_create_by(id: feed.id) do |f|
@@ -24,5 +25,15 @@ class Feed < ActiveRecord::Base
       f.twitterScreenName = feed.twitterScreenName,
 =end
     end
+  end
+
+  def escape
+    self.id = CGI.escape self.id
+    self
+  end
+
+  def unescape
+    self.id = CGI.unescape self.id
+    self
   end
 end

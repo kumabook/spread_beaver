@@ -1,0 +1,77 @@
+- model_class = Feed
+.page-header
+  h1=t '.title', :default => model_class.model_name.human.titleize
+
+p
+  strong= model_class.human_attribute_name(:title) + ':'
+  br
+  = @feed.title
+p
+  strong= model_class.human_attribute_name(:description) + ':'
+  br
+  = @feed.description
+p
+  strong= model_class.human_attribute_name(:website) + ':'
+  br
+  = @feed.website
+p
+  strong= model_class.human_attribute_name(:visualUrl) + ':'
+  br
+  = @feed.visualUrl
+p
+  strong= model_class.human_attribute_name(:coverUrl) + ':'
+  br
+  = @feed.coverUrl
+p
+  strong= model_class.human_attribute_name(:iconUrl) + ':'
+  br
+  = @feed.iconUrl
+p
+  strong= model_class.human_attribute_name(:language) + ':'
+  br
+  = @feed.language
+p
+  strong= model_class.human_attribute_name(:partial) + ':'
+  br
+  = @feed.partial
+p
+  strong= model_class.human_attribute_name(:coverColor) + ':'
+  br
+  = @feed.coverColor
+p
+  strong= model_class.human_attribute_name(:contentType) + ':'
+  br
+  = @feed.contentType
+p
+  strong= model_class.human_attribute_name(:subscribers) + ':'
+  br
+  = @feed.subscribers
+p
+  strong= model_class.human_attribute_name(:velocity) + ':'
+  br
+  = @feed.velocity
+p
+  strong= model_class.human_attribute_name(:topics) + ':'
+  br
+  = @feed.topics
+
+= link_to t('.back', :default => t("helpers.links.back")),
+          feeds_path,
+          :class => 'btn btn-default'
+'
+= link_to t('.edit', :default => t("helpers.links.edit")),
+          edit_feed_path(@feed.escape),
+          :class => 'btn btn-default'
+'
+= link_to t('.destroy', :default => t("helpers.links.destroy")),
+          feed_path(@feed),
+          :method => "delete",
+          :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
+          :class => 'btn btn-danger'
+
+
+= link_to t('.show',
+          :default => t("helpers.links.entries")),
+          feed_entries_path(@feed),
+          :class => 'btn btn-default'
+

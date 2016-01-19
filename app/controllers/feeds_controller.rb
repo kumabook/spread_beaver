@@ -6,6 +6,9 @@ class FeedsController < ApplicationController
     @feeds = Feed.all
   end
 
+  def show
+  end
+
   def new
     @feed = Feed.new
   end
@@ -38,7 +41,7 @@ class FeedsController < ApplicationController
         format.json { render :show, status: :ok, location: @feed }
       else
         format.html { render :edit }
-        format.json { render json: @user.errors, status: :unprocessable_entity }
+        format.json { render json: @feed.errors, status: :unprocessable_entity }
       end
     end
   end

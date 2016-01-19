@@ -28,6 +28,7 @@ class CreateEntries < ActiveRecord::Migration
 
 
       t.timestamps null: false
+      t.string :feed_id, :null => false
     end
     add_index :entries, :id, unique: true
   end

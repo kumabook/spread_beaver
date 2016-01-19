@@ -1,8 +1,9 @@
 # coding: utf-8
 class Entry < ActiveRecord::Base
+  belongs_to :feed
   self.primary_key = :id
-  def self.first_or_create_by_feedlr(entry)
-    Entry.find_or_create_by(id: entry.id) do |e|
+  def self.first_or_create_by_feedlr(entry, feed)
+    e = Entry.find_or_create_by(id: entry.id) do |e|
       e.title       = entry.title
       e.content     = entry.content.to_json
       e.summary     = entry.summary.to_json
@@ -27,6 +28,9 @@ class Entry < ActiveRecord::Base
       e.recrawled   = entry.recrawled
       e.published   = entry.published
       e.updated     = entry.updated
+      e.feed        = feed
     end
+    e.save
+    e
   end
 end

@@ -1,0 +1,102 @@
+- model_class = Entry
+.page-header
+  h1=t '.title', :default => model_class.model_name.human.titleize
+
+p
+  strong= model_class.human_attribute_name(:title) + ':'
+  br
+  = @entry.title
+p
+  strong= model_class.human_attribute_name(:content) + ':'
+  br
+  = @entry.content
+p
+  strong= model_class.human_attribute_name(:summary) + ':'
+  br
+  = @entry.summary
+p
+  strong= model_class.human_attribute_name(:author) + ':'
+  br
+  = @entry.author
+p
+  strong= model_class.human_attribute_name(:alternate) + ':'
+  br
+  = @entry.alternate
+p
+  strong= model_class.human_attribute_name(:origin) + ':'
+  br
+  = @entry.origin
+p
+  strong= model_class.human_attribute_name(:keywords) + ':'
+  br
+  = @entry.keywords
+p
+  strong= model_class.human_attribute_name(:visual) + ':'
+  br
+  = @entry.visual
+p
+  strong= model_class.human_attribute_name(:tags) + ':'
+  br
+  = @entry.tags
+p
+  strong= model_class.human_attribute_name(:categories) + ':'
+  br
+  = @entry.categories
+p
+  strong= model_class.human_attribute_name(:unread) + ':'
+  br
+  = @entry.unread
+p
+  strong= model_class.human_attribute_name(:engagement) + ':'
+  br
+  = @entry.engagement
+p
+  strong= model_class.human_attribute_name(:actionTimestamp) + ':'
+  br
+  = @entry.actionTimestamp
+p
+  strong= model_class.human_attribute_name(:enclosure) + ':'
+  br
+  = @entry.enclosure
+p
+  strong= model_class.human_attribute_name(:fingerprint) + ':'
+  br
+  = @entry.fingerprint
+p
+  strong= model_class.human_attribute_name(:originId) + ':'
+  br
+  = @entry.originId
+p
+  strong= model_class.human_attribute_name(:sid) + ':'
+  br
+  = @entry.sid
+p
+  strong= model_class.human_attribute_name(:crawled) + ':'
+  br
+  = @entry.crawled
+p
+  strong= model_class.human_attribute_name(:recrawled) + ':'
+  br
+  = @entry.recrawled
+p
+  strong= model_class.human_attribute_name(:published) + ':'
+  br
+  = @entry.published
+p
+  strong= model_class.human_attribute_name(:updated) + ':'
+  br
+  = @entry.updated
+
+= link_to t('.back', :default => t("helpers.links.back")),
+            entries_path,
+            :class => 'btn btn-default'
+'
+= link_to t('.edit', :default => t("helpers.links.edit")),
+            edit_entry_path(@entry),
+           :class => 'btn btn-default'
+'
+= link_to t('.destroy', :default => t("helpers.links.destroy")),
+            entry_path(@entry),
+            :method => "delete",
+            :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
+            :class => 'btn btn-danger'

@@ -1,0 +1,111 @@
+= form_for @entry, html: { class: "form form-horizontal entry" } do |f|
+  .form-group
+    = f.label :title, :class => 'control-label col-lg-2'
+    .col-lg-10
+      = f.text_field :title, :class => 'form-control'
+    = f.error_span(:title)
+  .form-group
+    = f.label :content, :class => 'control-label col-lg-2'
+    .col-lg-10
+      = f.text_field :content, :class => 'form-control'
+    = f.error_span(:content)
+  .form-group
+    = f.label :summary, :class => 'control-label col-lg-2'
+    .col-lg-10
+      = f.text_field :summary, :class => 'form-control'
+    = f.error_span(:summary)
+  .form-group
+    = f.label :author, :class => 'control-label col-lg-2'
+    .col-lg-10
+      = f.text_field :author, :class => 'form-control'
+    = f.error_span(:author)
+  .form-group
+    = f.label :alternate, :class => 'control-label col-lg-2'
+    .col-lg-10
+      = f.text_field :alternate, :class => 'form-control'
+    = f.error_span(:alternate)
+  .form-group
+    = f.label :origin, :class => 'control-label col-lg-2'
+    .col-lg-10
+      = f.text_field :origin, :class => 'form-control'
+    = f.error_span(:origin)
+  .form-group
+    = f.label :keywords, :class => 'control-label col-lg-2'
+    .col-lg-10
+      = f.text_field :keywords, :class => 'form-control'
+    = f.error_span(:keywords)
+  .form-group
+    = f.label :visual, :class => 'control-label col-lg-2'
+    .col-lg-10
+      = f.text_field :visual, :class => 'form-control'
+    = f.error_span(:visual)
+  .form-group
+    = f.label :tags, :class => 'control-label col-lg-2'
+    .col-lg-10
+      = f.text_field :tags, :class => 'form-control'
+    = f.error_span(:tags)
+  .form-group
+    = f.label :categories, :class => 'control-label col-lg-2'
+    .col-lg-10
+      = f.text_field :categories, :class => 'form-control'
+    = f.error_span(:categories)
+  .form-group
+    = f.label :unread, :class => 'control-label col-lg-2'
+    .col-lg-10
+      = f.text_field :unread, :class => 'form-control'
+    = f.error_span(:unread)
+  .form-group
+    = f.label :engagement, :class => 'control-label col-lg-2'
+    .col-lg-10
+      = f.text_field :engagement, :class => 'form-control'
+    = f.error_span(:engagement)
+  .form-group
+    = f.label :actionTimestamp, :class => 'control-label col-lg-2'
+    .col-lg-10
+      = f.text_field :actionTimestamp, :class => 'form-control'
+    = f.error_span(:actionTimestamp)
+  .form-group
+    = f.label :enclosure, :class => 'control-label col-lg-2'
+    .col-lg-10
+      = f.text_field :enclosure, :class => 'form-control'
+    = f.error_span(:enclosure)
+  .form-group
+    = f.label :fingerprint, :class => 'control-label col-lg-2'
+    .col-lg-10
+      = f.text_field :fingerprint, :class => 'form-control'
+    = f.error_span(:fingerprint)
+  .form-group
+    = f.label :originId, :class => 'control-label col-lg-2'
+    .col-lg-10
+      = f.text_field :originId, :class => 'form-control'
+    = f.error_span(:originId)
+  .form-group
+    = f.label :sid, :class => 'control-label col-lg-2'
+    .col-lg-10
+      = f.text_field :sid, :class => 'form-control'
+    = f.error_span(:sid)
+  .form-group
+    = f.label :crawled, :class => 'control-label col-lg-2'
+    .col-lg-10
+      = f.text_field :crawled, :class => 'form-control'
+    = f.error_span(:crawled)
+  .form-group
+    = f.label :recrawled, :class => 'control-label col-lg-2'
+    .col-lg-10
+      = f.text_field :recrawled, :class => 'form-control'
+    = f.error_span(:recrawled)
+  .form-group
+    = f.label :published, :class => 'control-label col-lg-2'
+    .col-lg-10
+      = f.text_field :published, :class => 'form-control'
+    = f.error_span(:published)
+  .form-group
+    = f.label :updated, :class => 'control-label col-lg-2'
+    .col-lg-10
+      = f.text_field :updated, :class => 'form-control'
+    = f.error_span(:updated)
+  .form-group
+    .col-lg-offset-2.col-lg-10
+      = f.submit nil, :class => 'btn btn-primary'
+      '
+      = link_to t('.cancel', :default => t("helpers.links.cancel")), entries_path, :class => 'btn'
