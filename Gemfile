@@ -14,6 +14,7 @@ gem 'jbuilder', '~> 2.0'
 gem 'unicorn'
 
 gem 'pg'
+gem 'doorkeeper'
 gem 'sorcery'
 gem 'slim-rails'
 gem 'feedlr'

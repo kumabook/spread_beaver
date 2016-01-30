@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  use_doorkeeper
   root :to => 'feeds#index'
   resources :user_sessions
   resources :users
