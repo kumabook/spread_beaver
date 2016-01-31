@@ -28,12 +28,14 @@ class Feed < ActiveRecord::Base
   end
 
   def escape
-    self.id = CGI.escape self.id
-    self
+    clone = self.dup
+    clone.id = CGI.escape self.id
+    clone
   end
 
   def unescape
-    self.id = CGI.unescape self.id
-    self
+    clone = self.dup
+    clone.id = CGI.unescape self.id
+    clone
   end
 end

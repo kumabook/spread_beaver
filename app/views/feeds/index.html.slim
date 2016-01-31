@@ -8,7 +8,6 @@ table.table.table-striped
       th= model_class.human_attribute_name(:id)
       th= model_class.human_attribute_name(:title)
       th= model_class.human_attribute_name(:description)
-      th= model_class.human_attribute_name(:website)
       th
       th
       th
@@ -19,8 +18,9 @@ table.table.table-striped
         td = feed.id.truncate(50)
         td = link_to feed.title, feed.website
         td = feed.description.truncate(30)
-        td = link_to 'Show', feed_path(feed.escape)
-        td = link_to 'Edit', edit_feed_path(feed)
+        td = link_to 'Detail', feed_path(feed.escape)
+        td = link_to 'Entries', feed_entries_path(feed.escape)
+        td = link_to 'Edit', edit_feed_path(feed.escape)
 
 br
 
