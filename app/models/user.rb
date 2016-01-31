@@ -1,4 +1,5 @@
 class User < ActiveRecord::Base
+  has_many :subscriptions
   enum type: {
     member: 'Member',
     admin: 'Admin'
