@@ -19,6 +19,8 @@ gem 'sorcery'
 gem 'slim-rails'
 gem 'feedlr'
 
+gem 'rest-client'
+
 group :development, :test do
   gem 'byebug'
 end

@@ -52,6 +52,8 @@ GEM
     commonjs (0.2.7)
     concurrent-ruby (1.0.0)
     debug_inspector (0.0.2)
+    domain_name (0.5.20160128)
+      unf (>= 0.0.5, < 1.0.0)
     doorkeeper (3.1.0)
       railties (>= 3.2)
     erubis (2.7.0)
@@ -69,6 +71,8 @@ GEM
     globalid (0.3.6)
       activesupport (>= 4.1.0)
     hashie (2.1.2)
+    http-cookie (1.0.2)
+      domain_name (~> 0.5)
     i18n (0.7.0)
     jbuilder (2.3.2)
       activesupport (>= 3.0.0, < 5)
@@ -98,6 +102,7 @@ GEM
     multi_json (1.11.2)
     multi_xml (0.5.5)
     multipart-post (2.0.0)
+    netrc (0.11.0)
     nokogiri (1.6.7)
       mini_portile2 (~> 2.0.0.rc2)
     oauth (0.4.7)
@@ -138,6 +143,10 @@ GEM
     raindrops (0.15.0)
     rake (10.4.2)
     ref (2.0.0)
+    rest-client (1.8.0)
+      http-cookie (>= 1.0.2, < 2.0)
+      mime-types (>= 1.16, < 3.0)
+      netrc (~> 0.7)
     sass (3.4.20)
     sass-rails (5.0.4)
       railties (>= 4.0.0, < 5.0)
@@ -185,6 +194,9 @@ GEM
     uglifier (2.7.2)
       execjs (>= 0.3.0)
       json (>= 1.8.0)
+    unf (0.1.4)
+      unf_ext
+    unf_ext (0.0.7.1)
     unicorn (5.0.1)
       kgio (~> 2.6)
       rack
@@ -208,6 +220,7 @@ DEPENDENCIES
   less-rails
   pg
   rails (= 4.2.5)
+  rest-client
   sass-rails (~> 5.0)
   slim-rails
   sorcery
