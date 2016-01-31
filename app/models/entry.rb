@@ -1,6 +1,8 @@
 # coding: utf-8
 class Entry < ActiveRecord::Base
   belongs_to :feed
+  has_many :entry_tracks
+  has_many :tracks, through: :entry_tracks
   self.primary_key = :id
   def self.first_or_create_by_feedlr(entry, feed)
     e = Entry.find_or_create_by(id: entry.id) do |e|
@@ -32,5 +34,9 @@ class Entry < ActiveRecord::Base
     end
     e.save
     e
+  end
+
+  def url
+    originId
   end
 end

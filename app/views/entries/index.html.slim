@@ -7,7 +7,6 @@ table.table.table-striped
     tr
       th= model_class.human_attribute_name(:id)
       th= model_class.human_attribute_name(:title)
-      th= model_class.human_attribute_name(:crawled)
       th
       th
 
@@ -16,8 +15,8 @@ table.table.table-striped
       tr
         td = entry.id.truncate(10)
         td = entry.title.truncate(50)
-        td = entry.crawled
-        td = link_to 'Show', entry_path(id: entry.id)
+        td = link_to 'Detail', entry_path(entry)
+        td = link_to "#{entry.tracks.size} tracks", entry_tracks_path(entry)
         td = link_to 'Edit', edit_entry_path(entry)
         td = link_to 'Destroy', entry, data: {:confirm => 'Are you sure?'}, :method => :delete
 

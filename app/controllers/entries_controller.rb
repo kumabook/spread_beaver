@@ -7,7 +7,7 @@ class EntriesController < ApplicationController
     if @feed.nil?
       @entries = Entry.all
     else
-      @entries = Entry.where(feed: @feed)
+      @entries = Entry.where(feed: @feed).includes(:tracks)
     end
     @entries = [] if @entries.nil?
   end
@@ -55,7 +55,7 @@ class EntriesController < ApplicationController
   private
 
   def set_entry
-    @entry = Entry.find(CGI.unescape params[:id])
+    @entry = Entry.find(params[:id])
   end
 
   def set_feed
