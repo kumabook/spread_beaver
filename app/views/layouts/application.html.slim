@@ -17,6 +17,8 @@ html
           - else
             li = link_to "Register", new_user_path
             li = link_to "Login", :login
+
+          li = link_to "Feeds", feeds_path
     div
       p#notice = flash[:notice]
       p#alert = flash[:alert]
