@@ -11,16 +11,30 @@ table.table.table-striped
       th
       th
       th
+      th
 
   tbody
     - @feeds.each do |feed|
+      - subscription = Subscription.find_or_initialize_by(user_id: current_user.id, feed_id: feed.id)
       tr
-        td = feed.id.truncate(50)
+        td = feed.id.truncate(30)
         td = link_to feed.title, feed.website
         td = feed.description.truncate(30)
-        td = link_to 'Detail', feed_path(feed.escape)
-        td = link_to 'Entries', feed_entries_path(feed.escape)
-        td = link_to 'Edit', edit_feed_path(feed.escape)
+        td = link_to 'Detail', feed_path(feed.escape), class: 'btn btn-primary'
+        td = link_to 'Entries', feed_entries_path(feed.escape), class: 'btn btn-primary'
+        - if subscription.id.nil?
+          td
+            = form_for subscription do |f|
+              = f.hidden_field :user_id, value: current_user.id
+              = f.hidden_field :feed_id, value: feed.id
+              = f.submit 'Subscribe', class: 'btn btn-primary'
+        - else
+          td
+            = form_for subscription, method: :delete do |f|
+              = hidden_field :user_id, current_user.id.to_s
+              = hidden_field :feed_id, feed.id
+              = f.submit 'Unsubscribe', class: 'btn btn-primary'
+        td = link_to 'Edit', edit_feed_path(feed.escape), class: 'btn btn-primary'
 
 br
 
