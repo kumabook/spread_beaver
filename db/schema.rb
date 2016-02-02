@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160131080107) do
+ActiveRecord::Schema.define(version: 20160131120742) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -45,6 +45,13 @@ ActiveRecord::Schema.define(version: 20160131080107) do
   end
 
   add_index "entries", ["id"], name: "index_entries_on_id", unique: true, using: :btree
+
+  create_table "entry_tracks", force: :cascade do |t|
+    t.string   "entry_id"
+    t.integer  "track_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "feeds", id: false, force: :cascade do |t|
     t.string   "id",          null: false
@@ -108,8 +115,28 @@ ActiveRecord::Schema.define(version: 20160131080107) do
   add_index "oauth_applications", ["uid"], name: "index_oauth_applications_on_uid", unique: true, using: :btree
 
   create_table "subscriptions", force: :cascade do |t|
+    t.integer  "user_id",    null: false
+    t.string   "feed_id",    null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "subscriptions", ["user_id", "feed_id"], name: "index_subscriptions_on_user_id_and_feed_id", unique: true, using: :btree
+
+  create_table "tracks", force: :cascade do |t|
+    t.string   "identifier"
+    t.string   "provider"
+    t.string   "title"
+    t.string   "url"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "tracks", ["provider", "identifier"], name: "index_tracks_on_provider_and_identifier", unique: true, using: :btree
+
+  create_table "user_entries", force: :cascade do |t|
     t.integer  "user_id"
-    t.string   "feed_id"
+    t.string   "entry_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
