@@ -5,9 +5,11 @@ class EntriesController < ApplicationController
 
   def index
     if @feed.nil?
-      @entries = Entry.all
+      @entries = Entry.all.includes(:tracks)
+      @user_entries = UserEntry.where(user_id: current_user.id)
     else
-      @entries = Entry.where(feed: @feed).includes(:tracks)
+      @entries = Entry.includes(:tracks).where(feed_id: @feed.id)
+      @user_entries = UserEntry.where(user_id: current_user.id)
     end
     @entries = [] if @entries.nil?
   end

@@ -1,50 +1,32 @@
 class UserEntriesController < ApplicationController
-  before_action :set_user_entry, only: [:show, :update, :destroy]
-
-  # GET /user_entries
-  # GET /user_entries.json
-  def index
-    @user_entries = UserEntry.all
-
-    render json: @user_entries
-  end
-
-  # GET /user_entries/1
-  # GET /user_entries/1.json
-  def show
-    render json: @user_entry
-  end
+  before_action :set_user_entry, only: [:destroy]
 
   # POST /user_entries
   # POST /user_entries.json
   def create
     @user_entry = UserEntry.new(user_entry_params)
 
-    if @user_entry.save
-      render json: @user_entry, status: :created, location: @user_entry
-    else
-      render json: @user_entry.errors, status: :unprocessable_entity
-    end
-  end
-
-  # PATCH/PUT /user_entries/1
-  # PATCH/PUT /user_entries/1.json
-  def update
-    @user_entry = UserEntry.find(params[:id])
-
-    if @user_entry.update(user_entry_params)
-      head :no_content
-    else
-      render json: @user_entry.errors, status: :unprocessable_entity
+    respond_to do |format|
+      if @user_entry.save
+        format.html { redirect_to entries_path, notice: 'UserEntry was successfully created.' }
+        format.json { render :show, status: :created, location: @user_entry }
+      else
+        format.html { redirect_to entries_path, notice: @user_entry.errors }
+        format.json { render json: @user_entry.errors, status: :unprocessable_entity }
+      end
     end
   end
 
   # DELETE /user_entries/1
   # DELETE /user_entries/1.json
   def destroy
-    @user_entry.destroy
-
-    head :no_content
+    if @user_entry.destroy
+      format.html { redirect_to entries_path, notice: 'UserEntry was successfully destroyed.' }
+      format.json { render :show, status: :created, location: @user_entry }
+    else
+      format.html { redirect_to entries_path, notice: @user_entry.errors }
+      format.json { render json: @user_entry.errors, status: :unprocessable_entity }
+    end
   end
 
   private

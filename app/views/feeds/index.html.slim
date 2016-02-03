@@ -15,16 +15,16 @@ table.table.table-striped
 
   tbody
     - @feeds.each do |feed|
-      - subscription = Subscription.find_or_initialize_by(user_id: current_user.id, feed_id: feed.id)
+      - subscription = @subscriptions.to_a.select {|s| feed.id == s.feed_id }.first
       tr
         td = feed.id.truncate(30)
         td = link_to feed.title, feed.website
         td = feed.description.truncate(30)
         td = link_to 'Detail', feed_path(feed.escape), class: 'btn btn-primary'
         td = link_to 'Entries', feed_entries_path(feed.escape), class: 'btn btn-primary'
-        - if subscription.id.nil?
+        - if subscription.nil?
           td
-            = form_for subscription do |f|
+            = form_for :subscription, url: '/subscriptions', method: :post do |f|
               = f.hidden_field :user_id, value: current_user.id
               = f.hidden_field :feed_id, value: feed.id
               = f.submit 'Subscribe', class: 'btn btn-primary'

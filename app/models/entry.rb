@@ -2,6 +2,8 @@
 class Entry < ActiveRecord::Base
   belongs_to :feed
   has_many :entry_tracks
+  has_many :user_entries
+  has_many :users,  through: :user_entries
   has_many :tracks, through: :entry_tracks
   self.primary_key = :id
   def self.first_or_create_by_feedlr(entry, feed)

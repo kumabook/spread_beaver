@@ -17,6 +17,18 @@ table.table.table-striped
         td = entry.title.truncate(50)
         td = link_to 'Detail', entry_path(entry)
         td = link_to "#{entry.tracks.size} tracks", entry_tracks_path(entry)
+        - if @user_entries.none? {|ue| ue.entry_id == entry.id }
+          td
+            = form_for :user_entry, url: '/user_entries', method: :post  do |f|
+              = f.hidden_field :user_id, value: current_user.id
+              = f.hidden_field :entry_id, value: entry.id
+              = f.submit 'Mark as Save', class: 'btn btn-primary'
+        - else
+          td
+            = form_for :user_entry, method: :delete do |f|
+              = f.hidden_field :user_id, value: current_user.id
+              = f.hidden_field :entry_id, value: entry.id
+              = f.submit 'Mark as Unsave', class: 'btn btn-primary'
         td = link_to 'Edit', edit_entry_path(entry)
         td = link_to 'Destroy', entry, data: {:confirm => 'Are you sure?'}, :method => :delete
 

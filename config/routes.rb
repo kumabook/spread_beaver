@@ -10,11 +10,12 @@ Rails.application.routes.draw do
   resources :entries do
     resources :tracks, only: :index
   end
+  resources :user_entries, only: [:create, :destroy]
   resources :feeds, constraints: { id: feed_id_regex },
                     shallow: true do
     resources :entries, only: [:index], constraints: { id: entry_id_regex }
   end
-  resources :subscriptions, only: [:index, :create, :destroy]
+  resources :subscriptions, only: [:create, :destroy]
   resources :tracks
 
   get 'login' => 'user_sessions#new', :as => :login

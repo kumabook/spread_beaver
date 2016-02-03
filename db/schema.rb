@@ -135,11 +135,13 @@ ActiveRecord::Schema.define(version: 20160131120742) do
   add_index "tracks", ["provider", "identifier"], name: "index_tracks_on_provider_and_identifier", unique: true, using: :btree
 
   create_table "user_entries", force: :cascade do |t|
-    t.integer  "user_id"
-    t.string   "entry_id"
+    t.integer  "user_id",    null: false
+    t.string   "entry_id",   null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
+
+  add_index "user_entries", ["user_id", "entry_id"], name: "index_user_entries_on_user_id_and_entry_id", unique: true, using: :btree
 
   create_table "users", force: :cascade do |t|
     t.string   "email",            null: false

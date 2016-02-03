@@ -1,9 +1,5 @@
 class SubscriptionsController < ApplicationController
-  before_action :set_subscription, only: [:show, :update, :destroy]
-
-  def index
-    @subscriptions = Subscription.where(user: current_user).includes(:feed)
-  end
+  before_action :set_subscription, only: [:show, :destroy]
 
   def create
     @subscription = Subscription.new(subscription_params)
