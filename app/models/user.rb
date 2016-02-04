@@ -1,6 +1,8 @@
 class User < ActiveRecord::Base
   has_many :subscriptions
   has_many :user_entries
+  has_many :likes
+  has_many :tracks, through: :likes
   enum type: {
     member: 'Member',
     admin: 'Admin'

@@ -7,8 +7,10 @@ class TracksController < ApplicationController
   def index
     if @entry.present?
       @tracks = @entry.tracks
+      @likes  = Like.where(user: current_user)
     else
       @tracks = Track.all
+      @likes  = Like.where(user: current_user)
     end
   end
 
@@ -55,7 +57,7 @@ class TracksController < ApplicationController
     end
 
     def set_entry
-      @entry = Entry.find(params[:entry_id])
+      @entry = Entry.find(params[:entry_id]) if params[:entry_id].present?
     end
 
     def track_params

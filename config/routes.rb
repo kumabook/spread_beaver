@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :likes
   feed_id_regex  = /[a-zA-Z1-9\.%#\$&\?\(\)\=\+\-\:\?\\]+/
   entry_id_regex = /[a-zA-Z1-9\-]+/
   use_doorkeeper

@@ -31,7 +31,7 @@ table.table.table-striped
         - else
           td
             = form_for subscription, method: :delete do |f|
-              = hidden_field :user_id, current_user.id.to_s
+              = hidden_field :user_id, current_user.id
               = hidden_field :feed_id, feed.id
               = f.submit 'Unsubscribe', class: 'btn btn-primary'
         td = link_to 'Edit', edit_feed_path(feed.escape), class: 'btn btn-primary'

@@ -8,17 +8,33 @@ table.table.table-striped
       th= model_class.human_attribute_name(:provider)
       th= model_class.human_attribute_name(:identifier)
       th= model_class.human_attribute_name(:url)
-      th=t '.actions', :default => t("helpers.actions")
+      th
+      th
+      th
   tbody
     - @tracks.each do |track|
+      - like = @likes.to_a.select {|l| track.id == l.track_id }.first
       tr
         td= link_to track.id, track_path(track)
         td= track.provider
         td= track.identifier
         td= link_to track.url, track.url
+        - if like.nil?
+          td
+            = form_for :like, url: '/likes', method: :post do |f|
+              = f.hidden_field :user_id, value: current_user.id
+              = f.hidden_field :track_id, value: track.id
+              = f.submit 'Like', class: 'btn btn-primary'
+        - else
+          td
+            = form_for like, method: :delete do |f|
+              = hidden_field :user_id, current_user.id
+              = hidden_field :track_id, track.id
+              = f.submit 'Unlike', class: 'btn btn-primary'
         td
-          = link_to t('.edit', :default => t("helpers.links.edit")), edit_track_path(track), :class => 'btn btn-default btn-xs'
+          = link_to t('.edit', :default => t("helpers.links.edit")), edit_track_path(track), :class => 'btn btn-default'
           '
-          = link_to t('.destroy', :default => t("helpers.links.destroy")), track_path(track), :method => :delete, :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, :class => 'btn btn-xs btn-danger'
+        td
+          = link_to t('.destroy', :default => t("helpers.links.destroy")), track_path(track), :method => :delete, :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, :class => 'btn btn-danger'
 
 = link_to t('.new', :default => t("helpers.links.new")), new_track_path, :class => 'btn btn-primary'
