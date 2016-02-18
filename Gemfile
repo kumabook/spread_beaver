@@ -18,6 +18,7 @@ gem 'doorkeeper'
 gem 'sorcery'
 gem 'slim-rails'
 gem 'feedlr'
+gem 'kaminari'
 
 gem 'rest-client'
 
