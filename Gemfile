@@ -26,6 +26,8 @@ group :development, :test do
   gem 'byebug'
   gem 'rspec-rails', '~> 3.0'
   gem "autodoc", group: :test
+  gem 'database_cleaner'
+  
 end
 
 group :development do
