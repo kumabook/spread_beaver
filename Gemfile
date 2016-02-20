@@ -24,6 +24,8 @@ gem 'rest-client'
 
 group :development, :test do
   gem 'byebug'
+  gem 'rspec-rails', '~> 3.0'
+  gem "autodoc", group: :test
 end
 
 group :development do
