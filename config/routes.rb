@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-  resources :likes
   feed_id_regex  = /[a-zA-Z1-9\.%#\$&\?\(\)\=\+\-\:\?\\]+/
   entry_id_regex = /[a-zA-Z1-9\-]+/
   use_doorkeeper
@@ -18,7 +17,18 @@ Rails.application.routes.draw do
   end
   resources :subscriptions, only: [:create, :destroy]
   resources :tracks
+  resources :likes
 
   get 'login' => 'user_sessions#new', :as => :login
   post 'logout' => 'user_sessions#destroy', :as => :logout
+
+  namespace :api, format: 'json' do
+    namespace :v1 do
+      get  '/me'       => 'credentials#me'
+      post '/me'       => 'users#create'
+      get  '/streams/:id/ids'      => 'streams#index', constraints: { id: feed_id_regex }
+      get  '/streams/:id/contents' => 'streams#index', constraints: { id: feed_id_regex }
+      resources :feeds,         only: [:index], constraints: { id: feed_id_regex }
+    end
+  end
 end
