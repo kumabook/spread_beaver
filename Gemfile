@@ -19,6 +19,8 @@ gem 'sorcery'
 gem 'slim-rails'
 gem 'feedlr'
 gem 'kaminari'
+gem 'rails-api'
+gem 'active_model_serializers'
 
 gem 'rest-client'
 
@@ -27,7 +29,7 @@ group :development, :test do
   gem 'rspec-rails', '~> 3.0'
   gem "autodoc", group: :test
   gem 'database_cleaner'
-  
+  gem 'factory_girl'
 end
 
 group :development do
