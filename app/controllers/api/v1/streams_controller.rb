@@ -20,7 +20,7 @@ class Api::V1::StreamsController < Api::V1::ApiController
         @subscriptions = current_resource_owner.subscriptions
         @entries = Entry.page(@page)
                         .per(@per_page)
-                        .joins(:users)
+                        .includes(:users)
                         .includes(:tracks)
                         .where(feed: @subscriptions.map { |s| s.feed_id })
       when :saved
