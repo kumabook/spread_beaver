@@ -29,6 +29,7 @@ Rails.application.routes.draw do
       get  '/streams/:id/ids'      => 'streams#index', constraints: { id: feed_id_regex }
       get  '/streams/:id/contents' => 'streams#index', constraints: { id: feed_id_regex }
       resources :feeds,         only: [:index], constraints: { id: feed_id_regex }
+      resources :subscriptions, only: [:index, :create, :destroy], constraints: { id: feed_id_regex }
     end
   end
 end
