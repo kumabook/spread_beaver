@@ -1,4 +1,8 @@
 # coding: utf-8
+
+TRACK_PER_ENTRY = 5
+ENTRY_PER_FEED  = 35
+
 FactoryGirl.define do
 
   factory :entry_track, class: EntryTrack do
@@ -37,7 +41,7 @@ FactoryGirl.define do
     updated         nil
     feed
     after(:create) do |e|
-      3.times {
+      TRACK_PER_ENTRY.times {
         t = create(:track)
         entry_track = create(:entry_track, entry: e, track: t)
       }
@@ -60,7 +64,7 @@ FactoryGirl.define do
     velocity     10.0
     topics       "[\"music\", \"音楽\"]"
     after(:create) do |f|
-      35.times { create(:entry, feed: f) }
+      ENTRY_PER_FEED.times { create(:entry, feed: f) }
     end
   end
 end
