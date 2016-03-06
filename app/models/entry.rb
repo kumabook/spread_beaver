@@ -41,4 +41,12 @@ class Entry < ActiveRecord::Base
   def url
     originId
   end
+
+  def fetch_playlist
+    url = "http://musicfav-cloud.herokuapp.com/playlistify"
+    response = RestClient.get url, params: { url: originId}, :accept => :json
+    return if response.code != 200
+    hash = JSON.parse(response)
+    Playlist.new(hash['id'], hash['url'], hash['tracks'], self)
+  end
 end

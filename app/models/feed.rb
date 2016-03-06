@@ -27,6 +27,28 @@ class Feed < ActiveRecord::Base
     end
   end
 
+  def self.fetch_all_latest_entries
+    Feed.all.each do |f|
+      f.fetch_latest_entries
+    end
+  end
+
+  def fetch_latest_entries
+    client = Feedlr::Client.new(sandbox: false)
+    puts "Fetch latest entries of #{id}"
+    cursor = client.stream_entries_contents(id, newerThan: crawled.to_time.to_i)
+    cursor.items.each do |entry|
+      e = Entry.first_or_create_by_feedlr(entry, self)
+      puts "Fetch tracks of entry(id: #{e.originId})"
+      playlist = e.fetch_playlist
+      playlist.create_tracks.each do |track|
+        puts "  Create track #{track.provider} #{track.identifier}"
+      end
+    end
+    self.crawled = DateTime.now
+    save
+  end
+
   def escape
     clone = self.dup
     clone.id = CGI.escape self.id
