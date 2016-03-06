@@ -6,7 +6,7 @@ class Api::V1::StreamsController < Api::V1::ApiController
 
   DEFAULT_PAGINATION = {
     'page' => 1,
-    'per_page' => 20
+    'per_page' => Kaminari::config::default_per_page
   }
 
   CONTINUATION_SALT = "continuation_salt"

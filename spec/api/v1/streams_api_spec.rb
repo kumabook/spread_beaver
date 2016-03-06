@@ -1,5 +1,6 @@
 require 'rails_helper'
 
+
 RSpec.describe "Streams api", type: :request, autodoc: true do
   context 'after login' do
     before(:all) do
@@ -9,11 +10,11 @@ RSpec.describe "Streams api", type: :request, autodoc: true do
       @subscribed   = FactoryGirl.create(:feed)
       Subscription.create! user: @user,
                            feed: @subscribed
-      (0...5).to_a.each { |n|
+      (0...ITEM_NUM).to_a.each { |n|
         UserEntry.create! user: @user,
                           entry: @feed.entries[n]
       }
-      (0...2).to_a.each { |n|
+      (0...ITEM_NUM).to_a.each { |n|
         Like.create! user: @user,
                      track: @subscribed.entries[0].tracks[n]
       }
@@ -24,17 +25,17 @@ RSpec.describe "Streams api", type: :request, autodoc: true do
           nil,
           Authorization: "Bearer #{@token['access_token']}"
       result = JSON.parse @response.body
-      expect(result['items'].count).to eq(20)
+      expect(result['items'].count).to eq(PER_PAGE)
       expect(result['continuation']).not_to be_nil
     end
 
     it "gets a specified page entries of a feed" do
-      continuation = Api::V1::StreamsController::continuation(2, 20)
+      continuation = Api::V1::StreamsController::continuation(ITEM_NUM, PER_PAGE)
       get "/api/v1/streams/#{@feed.escape.id}/contents",
           {continuation: continuation},
           Authorization: "Bearer #{@token['access_token']}"
       result = JSON.parse @response.body
-      expect(result['items'].count).to eq(15)
+      expect(result['items'].count).to eq(ENTRY_PER_FEED - PER_PAGE)
       expect(result['continuation']).to be_nil
     end
 
@@ -44,7 +45,7 @@ RSpec.describe "Streams api", type: :request, autodoc: true do
           {},
           Authorization: "Bearer #{@token['access_token']}"
       result = JSON.parse @response.body
-      expect(result['items'].count).to eq(20)
+      expect(result['items'].count).to eq(PER_PAGE)
       result['items'].each { |item|
         expect(item['feed_id']).to eq(@subscribed.id)
       }
@@ -57,7 +58,7 @@ RSpec.describe "Streams api", type: :request, autodoc: true do
           {},
           Authorization: "Bearer #{@token['access_token']}"
       result = JSON.parse @response.body
-      expect(result['items'].count).to eq(5)
+      expect(result['items'].count).to eq(ITEM_NUM)
       expect(result['continuation']).to be_nil
     end
   end

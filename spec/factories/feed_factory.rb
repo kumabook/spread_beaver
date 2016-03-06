@@ -1,10 +1,6 @@
 # coding: utf-8
 
-TRACK_PER_ENTRY = 5
-ENTRY_PER_FEED  = 35
-
 FactoryGirl.define do
-
   factory :entry_track, class: EntryTrack do
     entry_id 'entry'
     track_id 1
