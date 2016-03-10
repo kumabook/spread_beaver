@@ -24,8 +24,8 @@ Rails.application.routes.draw do
 
   namespace :api, format: 'json' do
     namespace :v1 do
-      get  '/me'       => 'credentials#me'
-      post '/me'       => 'users#create'
+      get  '/profile'  => 'credentials#me'
+      post '/profile'  => 'users#create'
       post '/markers'  => 'markers#mark'
       get  '/streams/:id/ids'      => 'streams#index', constraints: { id: feed_id_regex }
       get  '/streams/:id/contents' => 'streams#index', constraints: { id: feed_id_regex }

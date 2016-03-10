@@ -4,7 +4,7 @@ RSpec.describe "Users api", type: :request, autodoc: true do
   it "create a user" do
     email    = 'new_user@test.com'
     password = 'new_user_password'
-    post "/api/v1/me", {
+    post "/api/v1/profile", {
                            email: email,
                         password: password,
            password_confirmation: password
