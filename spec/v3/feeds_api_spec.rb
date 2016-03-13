@@ -8,7 +8,7 @@ RSpec.describe "Feeds api", :type => :request do
   end
 
   it "displays the feed list after successful login" do
-    get "/api/v1/feeds", nil, Authorization: "Bearer #{@token['access_token']}"
+    get "/v3/feeds", nil, Authorization: "Bearer #{@token['access_token']}"
     feeds = JSON.parse @response.body
     expect(feeds.count).to eq(ITEM_NUM)
   end

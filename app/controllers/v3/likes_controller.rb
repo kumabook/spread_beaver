@@ -1,4 +1,4 @@
-class Api::V1::LikesController < Api::V1::ApiController
+class V3::LikesController < V3::ApiController
   before_action :doorkeeper_authorize!
 
   def index

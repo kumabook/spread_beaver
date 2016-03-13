@@ -21,7 +21,7 @@ RSpec.describe "Streams api", type: :request, autodoc: true do
     end
 
     it "gets a first per_page entries of a feed" do
-      get "/api/v1/streams/#{@feed.escape.id}/contents",
+      get "/v3/streams/#{@feed.escape.id}/contents",
           nil,
           Authorization: "Bearer #{@token['access_token']}"
       result = JSON.parse @response.body
@@ -30,8 +30,8 @@ RSpec.describe "Streams api", type: :request, autodoc: true do
     end
 
     it "gets a specified page entries of a feed" do
-      continuation = Api::V1::StreamsController::continuation(ITEM_NUM, PER_PAGE)
-      get "/api/v1/streams/#{@feed.escape.id}/contents",
+      continuation = V3::StreamsController::continuation(ITEM_NUM, PER_PAGE)
+      get "/v3/streams/#{@feed.escape.id}/contents",
           {continuation: continuation},
           Authorization: "Bearer #{@token['access_token']}"
       result = JSON.parse @response.body
@@ -41,7 +41,7 @@ RSpec.describe "Streams api", type: :request, autodoc: true do
 
     it "gets entries of all subscirptions" do
       resource = CGI.escape "/user/#{@user.id}/category/global.all"
-      get "/api/v1/streams/#{resource}/contents",
+      get "/v3/streams/#{resource}/contents",
           {},
           Authorization: "Bearer #{@token['access_token']}"
       result = JSON.parse @response.body
@@ -54,7 +54,7 @@ RSpec.describe "Streams api", type: :request, autodoc: true do
 
     it "gets saved entries" do
       resource = CGI.escape "/user/#{@user.id}/tag/global.saved"
-      get "/api/v1/streams/#{resource}/contents",
+      get "/v3/streams/#{resource}/contents",
           {},
           Authorization: "Bearer #{@token['access_token']}"
       result = JSON.parse @response.body

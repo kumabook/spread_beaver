@@ -7,7 +7,7 @@ RSpec.describe "Credentials api", :type => :request do
   end
 
   it "displays me" do
-    get "/api/v1/me", nil, Authorization: "Bearer #{@token['access_token']}"
+    get "/v3/profile", nil, Authorization: "Bearer #{@token['access_token']}"
     me = JSON.parse @response.body
     expect(me['id']).to    eq(@user.id)
     expect(me['email']).to eq(@user.email)

@@ -1,4 +1,4 @@
-class Api::V1::StreamsController < Api::V1::ApiController
+class V3::StreamsController < V3::ApiController
   before_action :doorkeeper_authorize!
   before_action :set_feed, only: [:index]
   before_action :set_global_resource, only: [:index]
@@ -39,7 +39,7 @@ class Api::V1::StreamsController < Api::V1::ApiController
     total_count = @entries.total_count
     continuation = nil
     if total_count >= @per_page * @page + 1
-      continuation = Api::V1::StreamsController::continuation(@page + 1, @per_page)
+      continuation = V3::StreamsController::continuation(@page + 1, @per_page)
     end
     h = {
       direction: "ltr",
@@ -73,7 +73,7 @@ class Api::V1::StreamsController < Api::V1::ApiController
   end
 
   def set_page
-    pagination = Api::V1::StreamsController::pagination(params[:continuation])
+    pagination = V3::StreamsController::pagination(params[:continuation])
     @page       = pagination['page']
     @per_page   = pagination['per_page']
     @newer_than = pagination['newer_than']

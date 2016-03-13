@@ -19,7 +19,7 @@ RSpec.describe "Likes api", type: :request, autodoc: true do
 
     it "marks entries as saved" do
       count = Entry.joins(:users).where(users: { id: @user.id }).count
-      post "/api/v1/markers",
+      post "/v3/markers",
            {
              type: 'entries',
              action: 'markAsSaved',
@@ -33,7 +33,7 @@ RSpec.describe "Likes api", type: :request, autodoc: true do
 
     it "marks entries as unsaved" do
       count = Entry.joins(:users).where(users: { id: @user.id }).count
-      post "/api/v1/markers",
+      post "/v3/markers",
            {
              type: 'entries',
              action: 'markAsUnsaved',
@@ -47,7 +47,7 @@ RSpec.describe "Likes api", type: :request, autodoc: true do
 
     it "marks tracks as liked" do
       count = Track.joins(:users).where(users: { id: @user.id }).count
-      post "/api/v1/markers",
+      post "/v3/markers",
            {
              type: 'tracks',
              action: 'markAsLiked',
@@ -61,7 +61,7 @@ RSpec.describe "Likes api", type: :request, autodoc: true do
 
     it "marks tracks as unliked" do
       count = Track.joins(:users).where(users: { id: @user.id }).count
-      post "/api/v1/markers",
+      post "/v3/markers",
            {
              type: 'tracks',
              action: 'markAsUnliked',

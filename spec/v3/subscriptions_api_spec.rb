@@ -20,7 +20,7 @@ RSpec.describe "Subscriptions api", type: :request, autodoc: true do
     end
 
     it "gets subscriptions" do
-      get "/api/v1/subscriptions",
+      get "/v3/subscriptions",
           nil,
           Authorization: "Bearer #{@token['access_token']}"
       subscriptions = JSON.parse @response.body
@@ -28,11 +28,11 @@ RSpec.describe "Subscriptions api", type: :request, autodoc: true do
     end
 
     it "create a subscription" do
-      post "/api/v1/subscriptions",
+      post "/v3/subscriptions",
           @feed.as_json,
           Authorization: "Bearer #{@token['access_token']}"
       expect(@response.status).to eq(200)
-      get "/api/v1/subscriptions",
+      get "/v3/subscriptions",
           nil,
           Authorization: "Bearer #{@token['access_token']}"
       subscriptions = JSON.parse @response.body
@@ -40,11 +40,11 @@ RSpec.describe "Subscriptions api", type: :request, autodoc: true do
     end
 
     it "delete a subscription" do
-      delete "/api/v1/subscriptions/#{@subscribed.escape.id}",
+      delete "/v3/subscriptions/#{@subscribed.escape.id}",
              nil,
              Authorization: "Bearer #{@token['access_token']}"
       expect(@response.status).to eq(200)
-      get "/api/v1/subscriptions",
+      get "/v3/subscriptions",
           nil,
           Authorization: "Bearer #{@token['access_token']}"
       subscriptions = JSON.parse @response.body

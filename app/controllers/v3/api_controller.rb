@@ -1,4 +1,4 @@
-class Api::V1::ApiController < ActionController::API
+class V3::ApiController < ActionController::API
   include ActionController::Serialization
 #  protect_from_forgery with: :null_session
   def current_resource_owner

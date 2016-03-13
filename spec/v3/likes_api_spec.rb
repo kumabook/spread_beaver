@@ -13,7 +13,7 @@ RSpec.describe "Likes api", type: :request, autodoc: true do
     end
 
     it "gets a first per_page liked tracks of a user" do
-      get "/api/v1/likes",
+      get "/v3/likes",
           nil,
           Authorization: "Bearer #{@token['access_token']}"
       likes = JSON.parse @response.body
