@@ -50,6 +50,8 @@ class V3::StreamsController < V3::ApiController
                   }],
       items: @entries.map do |en|
         hash = en.as_json
+        hash['engagement'] = en.users.count
+        end
         hash['enclosure'] = en.tracks.map do |t|
           query = {
                     id: t['id'],
