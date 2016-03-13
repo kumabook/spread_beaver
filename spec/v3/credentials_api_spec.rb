@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "Credentials api", :type => :request do
+RSpec.describe "Credentials api", :type => :request, autodoc: true do
   before(:all) do
     setup()
     login()

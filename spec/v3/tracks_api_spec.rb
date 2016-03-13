@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "Tracks api", :type => :request do
+RSpec.describe "Tracks api", :type => :request, autodoc: true do
   before(:all) do
     setup()
     login()

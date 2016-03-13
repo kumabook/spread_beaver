@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "Feeds api", :type => :request do
+RSpec.describe "Feeds api", :type => :request, autodoc: true do
   before(:all) do
     setup()
     login()
@@ -27,4 +27,3 @@ RSpec.describe "Feeds api", :type => :request do
     expect(feed['id']).to eq(@feeds[0].id)
   end
 end
-
