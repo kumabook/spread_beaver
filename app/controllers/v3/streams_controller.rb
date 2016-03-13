@@ -50,7 +50,7 @@ class V3::StreamsController < V3::ApiController
                   }],
       items: @entries.map do |en|
         hash = en.as_json
-        hash['engagement'] = en.users.count
+        hash['engagement'] = en.users.size
         hash['tags'] = en.users.map do |u|
           {
             id: "users/#{u.id}/category/global.saved",
