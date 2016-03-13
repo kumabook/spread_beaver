@@ -17,6 +17,8 @@ RSpec.describe "Streams api", type: :request, autodoc: true do
       (0...ITEM_NUM).to_a.each { |n|
         Like.create! user: @user,
                      track: @subscribed.entries[0].tracks[n]
+        Like.create! user: @user,
+                     track: @feed.entries[0].tracks[n]
       }
     end
 

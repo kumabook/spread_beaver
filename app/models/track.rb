@@ -11,4 +11,18 @@ class Track < ActiveRecord::Base
       "https://api.soundcloud.com/tracks/#{identifier}"
     end
   end
+
+  def likesCount
+    likes.size
+  end
+
+  def as_json(options = {})
+    super(options.merge({ except: [:crypted_password, :salt] }))
+      .merge({ likesCount: likesCount})
+  end
+
+  def to_json(options = {})
+    super(options.merge({ except: [:crypted_password, :salt] }))
+      .merge({ likesCount: likesCount})
+  end
 end

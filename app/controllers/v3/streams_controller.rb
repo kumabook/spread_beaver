@@ -59,10 +59,11 @@ class V3::StreamsController < V3::ApiController
         end
         hash['enclosure'] = en.tracks.map do |t|
           query = {
-                    id: t['id'],
-              provider: t['provider'],
-            identifier: t['identifier'],
-                 title: t['title'],
+                    id: t.id,
+              provider: t.provider,
+            identifier: t.identifier,
+                 title: t.title,
+            likesCount: t.likesCount
           }.to_query
           {
             href: "#{v3_track_url(t)}?#{query}",
