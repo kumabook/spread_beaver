@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
-  feed_id_regex  = /[a-zA-Z1-9\.%#\$&\?\(\)\=\+\-\:\?\\]+/
-  entry_id_regex = /[a-zA-Z1-9\-]+/
+  feed_id_regex  = /[a-zA-Z0-9\.%#\$&\?\(\)\=\+\-\:\?\\]+/
+  entry_id_regex = /[a-zA-Z0-9\-]+/
   use_doorkeeper
   root :to => 'feeds#index'
   resources :user_sessions
