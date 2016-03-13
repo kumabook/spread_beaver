@@ -77,7 +77,7 @@ ActiveRecord::Schema.define(version: 20160306055654) do
   add_index "feeds", ["id"], name: "index_feeds_on_id", unique: true, using: :btree
 
   create_table "likes", force: :cascade do |t|
-    t.integer  "user_id",    null: false
+    t.uuid     "user_id",    null: false
     t.uuid     "track_id",   null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -86,7 +86,7 @@ ActiveRecord::Schema.define(version: 20160306055654) do
   add_index "likes", ["user_id", "track_id"], name: "index_likes_on_user_id_and_track_id", unique: true, using: :btree
 
   create_table "oauth_access_grants", force: :cascade do |t|
-    t.integer  "resource_owner_id", null: false
+    t.uuid     "resource_owner_id", null: false
     t.integer  "application_id",    null: false
     t.string   "token",             null: false
     t.integer  "expires_in",        null: false
@@ -99,7 +99,7 @@ ActiveRecord::Schema.define(version: 20160306055654) do
   add_index "oauth_access_grants", ["token"], name: "index_oauth_access_grants_on_token", unique: true, using: :btree
 
   create_table "oauth_access_tokens", force: :cascade do |t|
-    t.integer  "resource_owner_id"
+    t.uuid     "resource_owner_id"
     t.integer  "application_id"
     t.string   "token",             null: false
     t.string   "refresh_token"
@@ -126,7 +126,7 @@ ActiveRecord::Schema.define(version: 20160306055654) do
   add_index "oauth_applications", ["uid"], name: "index_oauth_applications_on_uid", unique: true, using: :btree
 
   create_table "subscriptions", force: :cascade do |t|
-    t.integer  "user_id",    null: false
+    t.uuid     "user_id",    null: false
     t.string   "feed_id",    null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -146,7 +146,7 @@ ActiveRecord::Schema.define(version: 20160306055654) do
   add_index "tracks", ["provider", "identifier"], name: "index_tracks_on_provider_and_identifier", unique: true, using: :btree
 
   create_table "user_entries", force: :cascade do |t|
-    t.integer  "user_id",    null: false
+    t.uuid     "user_id",    null: false
     t.string   "entry_id",   null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -154,7 +154,7 @@ ActiveRecord::Schema.define(version: 20160306055654) do
 
   add_index "user_entries", ["user_id", "entry_id"], name: "index_user_entries_on_user_id_and_entry_id", unique: true, using: :btree
 
-  create_table "users", force: :cascade do |t|
+  create_table "users", id: :uuid, default: "uuid_generate_v4()", force: :cascade do |t|
     t.string   "email",            null: false
     t.string   "crypted_password"
     t.string   "salt"

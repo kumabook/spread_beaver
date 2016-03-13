@@ -1,7 +1,7 @@
 class CreateSubscriptions < ActiveRecord::Migration
   def change
     create_table :subscriptions do |t|
-      t.integer :user_id, null: false
+      t.uuid   :user_id, null: false
       t.string :feed_id,  null: false
 
       t.timestamps null: false

@@ -42,7 +42,7 @@ RSpec.describe "Streams api", type: :request, autodoc: true do
     end
 
     it "gets entries of all subscirptions" do
-      resource = CGI.escape "/user/#{@user.id}/category/global.all"
+      resource = CGI.escape "user/#{@user.id}/category/global.all"
       get "/v3/streams/#{resource}/contents",
           {},
           Authorization: "Bearer #{@token['access_token']}"
@@ -55,7 +55,7 @@ RSpec.describe "Streams api", type: :request, autodoc: true do
     end
 
     it "gets saved entries" do
-      resource = CGI.escape "/user/#{@user.id}/tag/global.saved"
+      resource = CGI.escape "user/#{@user.id}/tag/global.saved"
       get "/v3/streams/#{resource}/contents",
           {},
           Authorization: "Bearer #{@token['access_token']}"
