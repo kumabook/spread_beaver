@@ -51,6 +51,11 @@ class V3::StreamsController < V3::ApiController
       items: @entries.map do |en|
         hash = en.as_json
         hash['engagement'] = en.users.count
+        hash['tags'] = en.users.map do |u|
+          {
+            id: "users/#{u.id}/category/global.saved",
+            label: u.id # TODO: use picture url or json string or url with query string
+          }
         end
         hash['enclosure'] = en.tracks.map do |t|
           query = {
