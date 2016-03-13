@@ -36,7 +36,8 @@ class Feed < ActiveRecord::Base
   def fetch_latest_entries
     client = Feedlr::Client.new(sandbox: false)
     puts "Fetch latest entries of #{id}"
-    cursor = client.stream_entries_contents(id, newerThan: crawled.to_time.to_i)
+    newer_than = crawled.present? ? crawled.to_time.to_i : nil
+    cursor = client.stream_entries_contents(id, newerThan: newer_than)
     cursor.items.each do |entry|
       e = Entry.first_or_create_by_feedlr(entry, self)
       puts "Fetch tracks of entry(id: #{e.originId})"
