@@ -27,3 +27,4 @@ RSpec.describe "Feeds api", :type => :request do
     expect(feed['id']).to eq(@feeds[0].id)
   end
 end
+

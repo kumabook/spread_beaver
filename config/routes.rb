@@ -32,5 +32,6 @@ Rails.application.routes.draw do
     resources :feeds,         only: [:show], constraints: { id: feed_id_regex }
     resources :subscriptions, only: [:index, :create, :destroy], constraints: { id: feed_id_regex }
     resources :likes,         only: [:index]
+    resources :tracks,        only: [:show]
   end
 end

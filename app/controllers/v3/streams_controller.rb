@@ -48,7 +48,22 @@ class V3::StreamsController < V3::ApiController
                     type: "text/html",
                     href: "http://www.theverge.com/"
                   }],
-      items: @entries.as_json(include: [:tracks])
+      items: @entries.map do |en|
+        hash = en.as_json
+        hash['enclosure'] = en.tracks.map do |t|
+          query = {
+                    id: t['id'],
+              provider: t['provider'],
+            identifier: t['identifier'],
+                 title: t['title'],
+          }.to_query
+          {
+            href: "#{v3_track_url(t)}?#{query}",
+            type: "application/json",
+          }
+        end
+        hash
+      end
     }
     if @feed.present?
       h[:updated] = @feed.updated_at.to_time.to_i * 1000
