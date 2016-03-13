@@ -18,4 +18,12 @@ RSpec.describe "Feeds api", :type => :request do
     expect(result['results'].count).to eq(count - 1)
     expect(result['hint']).to eq('music')
   end
+
+  it "shows a feed by id" do
+    id = @feeds[0].escape.id
+    get "/v3/feeds/#{id}", nil, Authorization: "Bearer #{@token['access_token']}"
+    feed = JSON.parse @response.body
+    expect(feed).not_to be_nil()
+    expect(feed['id']).to eq(@feeds[0].id)
+  end
 end

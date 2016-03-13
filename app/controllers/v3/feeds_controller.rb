@@ -13,6 +13,18 @@ class V3::FeedsController < V3::ApiController
     render json: result.to_json, status: 200
   end
 
+  def show
+    if @feed.present?
+      render json: @feed.to_json, status: 200
+    else
+      render json: {}, status: :not_found
+    end
+  end
+
+  def set_feed
+    @feed = Feed.find(CGI.unescape params[:id])
+  end
+
   def search_params
     params.permit(:query, :count, :locale)
   end
