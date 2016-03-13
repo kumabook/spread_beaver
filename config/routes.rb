@@ -33,5 +33,6 @@ Rails.application.routes.draw do
     resources :subscriptions, only: [:index, :create, :destroy], constraints: { id: feed_id_regex }
     resources :likes,         only: [:index]
     resources :tracks,        only: [:show]
+    post  '/tracks/.mget'        => 'tracks#list'
   end
 end

@@ -14,4 +14,12 @@ class User < ActiveRecord::Base
   validates :password_confirmation, presence: true, if: -> { new_record? || changes["password"] }
 
   validates :email, uniqueness: true
+
+  def as_json(options = {})
+    super(options.merge({ except: [:crypted_password, :salt] }))
+  end
+
+  def to_json(options = {})
+    super(options.merge({ except: [:crypted_password, :salt] }))
+  end
 end
