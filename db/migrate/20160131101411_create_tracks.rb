@@ -1,6 +1,7 @@
 class CreateTracks < ActiveRecord::Migration
   def change
-    create_table :tracks do |t|
+    enable_extension 'uuid-ossp'
+    create_table :tracks, id: :uuid, default: "uuid_generate_v4()", force: true do |t|
       t.string :identifier
       t.string :provider
       t.string :title

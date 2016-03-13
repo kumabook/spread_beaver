@@ -15,6 +15,7 @@ ActiveRecord::Schema.define(version: 20160306055654) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+  enable_extension "uuid-ossp"
 
   create_table "entries", id: false, force: :cascade do |t|
     t.string   "id"
@@ -48,7 +49,7 @@ ActiveRecord::Schema.define(version: 20160306055654) do
 
   create_table "entry_tracks", force: :cascade do |t|
     t.string   "entry_id",   null: false
-    t.integer  "track_id",   null: false
+    t.uuid     "track_id",   null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -77,7 +78,7 @@ ActiveRecord::Schema.define(version: 20160306055654) do
 
   create_table "likes", force: :cascade do |t|
     t.integer  "user_id",    null: false
-    t.integer  "track_id",   null: false
+    t.uuid     "track_id",   null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -133,7 +134,7 @@ ActiveRecord::Schema.define(version: 20160306055654) do
 
   add_index "subscriptions", ["user_id", "feed_id"], name: "index_subscriptions_on_user_id_and_feed_id", unique: true, using: :btree
 
-  create_table "tracks", force: :cascade do |t|
+  create_table "tracks", id: :uuid, default: "uuid_generate_v4()", force: :cascade do |t|
     t.string   "identifier"
     t.string   "provider"
     t.string   "title"

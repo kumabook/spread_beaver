@@ -2,7 +2,7 @@ class CreateLikes < ActiveRecord::Migration
   def change
     create_table :likes do |t|
       t.integer :user_id,  null: false
-      t.integer :track_id, null: false
+      t.uuid :track_id, null: false
 
       t.timestamps null: false
     end
