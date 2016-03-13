@@ -24,7 +24,7 @@ Rails.application.routes.draw do
 
   namespace :v3 do
     get  '/profile'  => 'credentials#me'
-    post '/profile'  => 'users#create'
+    put  '/profile'  => 'users#create'
     post '/markers'  => 'markers#mark'
     get  '/streams/:id/ids'      => 'streams#index', constraints: { id: feed_id_regex }
     get  '/streams/:id/contents' => 'streams#index', constraints: { id: feed_id_regex }
