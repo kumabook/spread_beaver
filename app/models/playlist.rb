@@ -13,8 +13,9 @@ class Playlist
                                       identifier: t['identifier'])
       track.url = Track::url t['provider'], t['identifier']
       track.entries.push @entry if track.entries.include? @entry
+      EntryTrack.create entry: @entry, track: track
       track
     end
-    tracks.select {|t| t.save }
+    tracks
   end
 end

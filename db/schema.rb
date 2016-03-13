@@ -47,8 +47,8 @@ ActiveRecord::Schema.define(version: 20160306055654) do
   add_index "entries", ["id"], name: "index_entries_on_id", unique: true, using: :btree
 
   create_table "entry_tracks", force: :cascade do |t|
-    t.string   "entry_id"
-    t.integer  "track_id"
+    t.string   "entry_id",   null: false
+    t.integer  "track_id",   null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
