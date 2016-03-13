@@ -12,7 +12,7 @@ gem 'therubyracer'
 gem 'less-rails'
 gem 'turbolinks'
 gem 'jbuilder', '~> 2.0'
-gem 'unicorn'
+gem 'puma'
 
 gem 'pg'
 gem 'doorkeeper'
