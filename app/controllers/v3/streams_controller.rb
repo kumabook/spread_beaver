@@ -61,7 +61,7 @@ class V3::StreamsController < V3::ApiController
               provider: t.provider,
             identifier: t.identifier,
                  title: t.title,
-            likesCount: t.likesCount
+#            likesCount: t.likesCount  TODO: performance issue
           }.to_query
           {
             href: "#{v3_track_url(t)}?#{query}",
