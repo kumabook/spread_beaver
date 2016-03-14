@@ -5,11 +5,7 @@ class V3::TracksController < V3::ApiController
 
   def show
     if @track.present?
-      render json: @track.as_json(include: {
-                                    likers: {
-                                      except: [:crypted_password, :salt]
-                                    }
-                                  }), status: 200
+      render json: @track.as_detail_json, status: 200
     else
       render json: {}, status: :not_found
     end
@@ -22,7 +18,7 @@ class V3::TracksController < V3::ApiController
   def list
     if @tracks.present?
       render json: @tracks.map {|t|
-        t.as_json(include: {users: {except: [:crypted_password, :salt]}})
+        t.as_detail_json
       }.to_json, status: 200
     else
       render json: {}, status: :not_found

@@ -16,9 +16,16 @@ class Track < ActiveRecord::Base
     likes.size
   end
 
-  def as_json(options = {})
-    super(options.merge({ except: [:crypted_password, :salt] }))
-      .merge({ likesCount: likesCount})
+  def as_detail_json
+    hash = as_json include: {
+                     users: {
+                       except: [:crypted_password, :salt],
+                     }
+                   }
+    hash['likesCount'] = likesCount
+    hash['likers']     = hash['users']
+    hash.delete('users')
+    hash
   end
 
   def to_json(options = {})
