@@ -33,6 +33,7 @@ class V3::StreamsController < V3::ApiController
     elsif @feed.present?
       @entries = Entry.page(@page)
                       .per(@per_page)
+                      .includes(:users)
                       .includes(:tracks)
                       .where(feed: @feed)
     end
