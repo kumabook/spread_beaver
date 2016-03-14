@@ -1,11 +1,12 @@
 Rails.application.routes.draw do
   feed_id_regex  = /[a-zA-Z0-9\.%#\$&\?\(\)\=\+\-\:\?\\]+/
-  entry_id_regex = /[a-zA-Z0-9\-]+/
+  uuid_regex     = /[a-zA-Z0-9\-]+/
+
   use_doorkeeper
   root :to => 'feeds#index'
   resources :user_sessions
   resources :users do
-    resources :entries, only: [:index], constraints: { id: entry_id_regex }
+    resources :entries, only: [:index], constraints: { id: uuid_regex }
   end
   resources :entries do
     resources :tracks, only: :index
@@ -13,7 +14,7 @@ Rails.application.routes.draw do
   resources :user_entries, only: [:create, :destroy]
   resources :feeds, constraints: { id: feed_id_regex },
                     shallow: true do
-    resources :entries, only: [:index], constraints: { id: entry_id_regex }
+    resources :entries, only: [:index], constraints: { id: uuid_regex }
   end
   resources :subscriptions, only: [:create, :destroy]
   resources :tracks
@@ -32,7 +33,7 @@ Rails.application.routes.draw do
     resources :feeds,         only: [:show], constraints: { id: feed_id_regex }
     resources :subscriptions, only: [:index, :create, :destroy], constraints: { id: feed_id_regex }
     resources :likes,         only: [:index]
-    resources :tracks,        only: [:show]
+    resources :tracks,        only: [:show], constraints: { id: uuid_regex }
     post  '/tracks/.mget'        => 'tracks#list'
   end
 end
