@@ -24,6 +24,7 @@ gem 'rails-api'
 gem 'active_model_serializers'
 
 gem 'rest-client'
+gem 'newrelic_rpm'
 
 group :development, :test do
   gem 'byebug'
