@@ -6,7 +6,7 @@ class V3::TracksController < V3::ApiController
   def show
     if @track.present?
       render json: @track.as_json(include: {
-                                    users: {
+                                    likers: {
                                       except: [:crypted_password, :salt]
                                     }
                                   }), status: 200
