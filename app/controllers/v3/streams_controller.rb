@@ -44,10 +44,7 @@ class V3::StreamsController < V3::ApiController
     h = {
       direction: "ltr",
       continuation: continuation,
-      alternate: [{
-                    type: "text/html",
-                    href: "http://www.theverge.com/"
-                  }],
+      alternate: [],
       items: @entries.map do |en|
         hash = en.as_json
         hash['engagement'] = en.users.size
