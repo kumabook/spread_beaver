@@ -54,6 +54,8 @@ ActiveRecord::Schema.define(version: 20160306055654) do
     t.datetime "updated_at", null: false
   end
 
+  add_index "entry_tracks", ["entry_id", "track_id"], name: "index_entry_tracks_on_entry_id_and_track_id", unique: true, using: :btree
+
   create_table "feeds", id: false, force: :cascade do |t|
     t.string   "id",          null: false
     t.string   "title"
@@ -143,6 +145,7 @@ ActiveRecord::Schema.define(version: 20160306055654) do
     t.datetime "updated_at", null: false
   end
 
+  add_index "tracks", ["id"], name: "index_tracks_on_id", unique: true, using: :btree
   add_index "tracks", ["provider", "identifier"], name: "index_tracks_on_provider_and_identifier", unique: true, using: :btree
 
   create_table "user_entries", force: :cascade do |t|
@@ -164,5 +167,6 @@ ActiveRecord::Schema.define(version: 20160306055654) do
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
+  add_index "users", ["id"], name: "index_users_on_id", unique: true, using: :btree
 
 end
