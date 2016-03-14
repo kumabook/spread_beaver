@@ -12,7 +12,7 @@ module ApiMacros
   end
 
   def login()
-    post "/oauth/token.json",
+    post "/v3/oauth/token.json",
          grant_type:  'password',
          client_id: @app.uid,
          client_secret: @app.secret,

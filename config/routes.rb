@@ -1,9 +1,8 @@
 Rails.application.routes.draw do
   feed_id_regex  = /[a-zA-Z0-9\.%#\$&\?\(\)\=\+\-\:\?\\]+/
   uuid_regex     = /[a-zA-Z0-9\-]+/
-
-  use_doorkeeper
   root :to => 'feeds#index'
+
   resources :user_sessions
   resources :users do
     resources :entries, only: [:index], constraints: { id: uuid_regex }
@@ -22,6 +21,10 @@ Rails.application.routes.draw do
 
   get 'login' => 'user_sessions#new', :as => :login
   post 'logout' => 'user_sessions#destroy', :as => :logout
+
+  scope :v3 do
+    use_doorkeeper
+  end
 
   namespace :v3 do
     get  '/profile'  => 'credentials#me'
