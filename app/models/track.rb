@@ -31,4 +31,20 @@ class Track < ActiveRecord::Base
     super(options.merge({ except: [:crypted_password, :salt] }))
       .merge({ likesCount: likesCount})
   end
+
+  def to_query
+    query = {
+              id: id,
+        provider: provider,
+      identifier: identifier,
+           title: title,
+    }.to_query
+  end
+
+  def as_enclosure
+    {
+      href: "track/#{id}?#{to_query}",
+      type: "application/json",
+    }
+  end
 end

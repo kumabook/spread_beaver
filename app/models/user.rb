@@ -15,6 +15,14 @@ class User < ActiveRecord::Base
 
   validates :email, uniqueness: true
 
+
+  def as_user_tag
+    {
+      id: "users/#{id}/category/global.saved",
+      label: id # TODO: use picture url or json string or url with query string
+    }
+  end
+
   def as_json(options = {})
     super(options.merge({ except: [:crypted_password, :salt] }))
   end

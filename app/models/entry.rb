@@ -49,4 +49,12 @@ class Entry < ActiveRecord::Base
     hash = JSON.parse(response)
     Playlist.new(hash['id'], hash['url'], hash['tracks'], self)
   end
+
+  def as_detail_json
+    hash = as_json
+    hash['engagement'] = users.size
+    hash['tags']       = users.map  { |u| u.as_user_tag }
+    hash['enclosure']  = tracks.map { |t| t.as_enclosure }
+    hash
+  end
 end

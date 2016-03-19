@@ -46,30 +46,7 @@ class V3::StreamsController < V3::ApiController
       direction: "ltr",
       continuation: continuation,
       alternate: [],
-      items: @entries.map do |en|
-        hash = en.as_json
-        hash['engagement'] = en.users.size
-        hash['tags'] = en.users.map do |u|
-          {
-            id: "users/#{u.id}/category/global.saved",
-            label: u.id # TODO: use picture url or json string or url with query string
-          }
-        end
-        hash['enclosure'] = en.tracks.map do |t|
-          query = {
-                    id: t.id,
-              provider: t.provider,
-            identifier: t.identifier,
-                 title: t.title,
-#            likesCount: t.likesCount  TODO: performance issue
-          }.to_query
-          {
-            href: "#{v3_track_url(t)}?#{query}",
-            type: "application/json",
-          }
-        end
-        hash
-      end
+      items: @entries.map { |en| en.as_detail_json }
     }
     if @feed.present?
       h[:updated] = @feed.updated_at.to_time.to_i * 1000
