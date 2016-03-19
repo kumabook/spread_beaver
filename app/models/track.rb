@@ -18,9 +18,8 @@ class Track < ActiveRecord::Base
 
   def as_detail_json
     hash = as_json include: {
-                     users: {
-                       except: [:crypted_password, :salt],
-                     }
+                       users: { except: [:crypted_password, :salt] },
+                     entries: {},
                    }
     hash['likesCount'] = likesCount
     hash['likers']     = hash['users']

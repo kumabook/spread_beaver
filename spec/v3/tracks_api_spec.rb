@@ -15,6 +15,9 @@ RSpec.describe "Tracks api", :type => :request, autodoc: true do
     track = JSON.parse @response.body
     expect(track).not_to be_nil()
     expect(track['id']).to eq(id)
+    expect(track['entries']).not_to be_nil()
+    expect(track['likers']).not_to be_nil()
+    expect(track['likesCount']).not_to be_nil()
   end
 
   it "shows track list by id list" do
@@ -25,8 +28,9 @@ RSpec.describe "Tracks api", :type => :request, autodoc: true do
          Accept: 'application/json'
     tracks = JSON.parse @response.body
     expect(tracks).not_to be_nil()
+    expect(tracks.count).to eq(ids.count)
     tracks.each_with_index {|t, i|
-      expect(t['id']).to eq(ids[i])
+      expect(ids).to include(t['id'])
     }
   end
 end
