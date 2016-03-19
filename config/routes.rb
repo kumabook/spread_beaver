@@ -27,14 +27,18 @@ Rails.application.routes.draw do
   end
 
   namespace :v3 do
-    get  '/profile'  => 'credentials#me'
-    put  '/profile'  => 'users#create'
-    post '/markers'  => 'markers#mark'
+    get  '/profile'              => 'credentials#me'
+    put  '/profile'              => 'users#create'
+
+    post '/markers'              => 'markers#mark'
+
     get  '/streams/:id/ids'      => 'streams#index', constraints: { id: feed_id_regex }
     get  '/streams/:id/contents' => 'streams#index', constraints: { id: feed_id_regex }
+
+    resources :feeds, only: [:show], constraints: { id: feed_id_regex }
     get  '/search/feeds'         => 'feeds#search'
-    resources :feeds,         only: [:show], constraints: { id: feed_id_regex }
-    post  '/feeds/.mget'         => 'feeds#list'
+    post '/feeds/.mget'          => 'feeds#list'
+
     resources :subscriptions, only: [:index, :create, :destroy], constraints: { id: feed_id_regex }
     resources :tracks,        only: [:show], constraints: { id: uuid_regex }
     post  '/tracks/.mget'        => 'tracks#list'
