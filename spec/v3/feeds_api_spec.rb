@@ -26,4 +26,17 @@ RSpec.describe "Feeds api", :type => :request, autodoc: true do
     expect(feed).not_to be_nil()
     expect(feed['id']).to eq(@feeds[0].id)
   end
+
+  it "shows feeds list by id list" do
+    ids = @feeds.map { |t| t.id }
+    post "/v3/feeds/.mget", ids.to_json,
+         Authorization: "Bearer #{@token['access_token']}",
+          CONTENT_TYPE: 'application/json',
+                Accept: 'application/json'
+    feeds = JSON.parse @response.body
+    expect(feeds).not_to be_nil()
+    feeds.each_with_index {|f, i|
+      expect(f['id']).to eq(ids[i])
+    }
+  end
 end
