@@ -1,17 +1,17 @@
 Rails.application.routes.draw do
-  feed_id_regex  = /[a-zA-Z0-9\.%#\$&\?\(\)\=\+\-\:\?\\]+/
+  resource_id_regex  = /[a-zA-Z0-9\.%#\$&\?\(\)\=\+\-\_\:\?\\]+/
   uuid_regex     = /[a-zA-Z0-9\-]+/
   root :to => 'feeds#index'
 
   resources :user_sessions
   resources :users do
-    resources :entries, only: [:index], constraints: { id: uuid_regex }
+    resources :entries, only: [:index], constraints: { id: resource_id_regex }
   end
   resources :entries do
     resources :tracks, only: :index
   end
   resources :user_entries, only: [:create, :destroy]
-  resources :feeds, constraints: { id: feed_id_regex },
+  resources :feeds, constraints: { id: resource_id_regex },
                     shallow: true do
     resources :entries, only: [:index], constraints: { id: uuid_regex }
   end
@@ -32,17 +32,17 @@ Rails.application.routes.draw do
 
     post '/markers'              => 'markers#mark'
 
-    get  '/streams/:id/ids'      => 'streams#index', constraints: { id: feed_id_regex }
-    get  '/streams/:id/contents' => 'streams#index', constraints: { id: feed_id_regex }
+    get  '/streams/:id/ids'      => 'streams#index', constraints: { id: resource_id_regex }
+    get  '/streams/:id/contents' => 'streams#index', constraints: { id: resource_id_regex }
 
-    resources :feeds, only: [:show], constraints: { id: feed_id_regex }
+    resources :feeds, only: [:show], constraints: { id: resource_id_regex }
     get  '/search/feeds'         => 'feeds#search'
     post '/feeds/.mget'          => 'feeds#list'
 
-    resources :entries, only: [:show], constraints: { id: uuid_regex }
+    resources :entries, only: [:show], constraints: { id: resource_id_regex }
     post '/entries/.mget'        => 'entries#list'
 
-    resources :subscriptions, only: [:index, :create, :destroy], constraints: { id: feed_id_regex }
+    resources :subscriptions, only: [:index, :create, :destroy], constraints: { id: resource_id_regex }
     resources :tracks,        only: [:show], constraints: { id: uuid_regex }
     post  '/tracks/.mget'        => 'tracks#list'
   end
