@@ -11,7 +11,7 @@ class V3::MarkersController < V3::ApiController
       when 'markAsSaved'
         @ids.each do |id|
           @user_entry = UserEntry.create(user: current_resource_owner,
-                                          entry_id: id)
+                                     entry_id: id)
         end
         render json: {}, status: 200
         return
