@@ -55,6 +55,10 @@ class Entry < ActiveRecord::Base
     hash['engagement'] = users.size
     hash['tags']       = users.map  { |u| u.as_user_tag }
     hash['enclosure']  = tracks.map { |t| t.as_enclosure }
+
+    ['summary', 'alternate', 'origin', 'keywords', 'visual'].each do |key|
+      hash[key]    = JSON.load(hash[key])
+    end
     hash
   end
 end
