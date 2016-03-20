@@ -16,6 +16,11 @@ class V3::StreamsController < V3::ApiController
     end
     if @resource.present?
       case @resource
+      when :latest
+        @entries = Entry.page(@page)
+                        .per(@per_page)
+                        .includes(:users)
+                        .includes(:tracks)
       when :all
         @subscriptions = current_resource_owner.subscriptions
         @entries = Entry.page(@page)
@@ -63,7 +68,9 @@ class V3::StreamsController < V3::ApiController
 
   def set_global_resource
     str = CGI.unescape params[:id] if params[:id].present?
-    if str.match /global\.all/
+    if str.match /global\.latest/
+      @resource = :latest
+    elsif str.match /global\.all/
       @resource = :all
     elsif str.match /global\.saved/
       @resource = :saved
