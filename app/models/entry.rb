@@ -28,10 +28,10 @@ class Entry < ActiveRecord::Base
       e.originId    = normalize_originId(entry.originId, feed)
       e.sid         = entry.sid
 
-      e.crawled     = entry.crawled
-      e.recrawled   = entry.recrawled
-      e.published   = entry.published
-      e.updated     = entry.updated
+      e.crawled     = Time.at(entry.crawled / 1000)
+      e.published   = Time.at(entry.published / 1000)
+      e.recrawled   = entry.recrawled.present? ? Time.at(entry.recrawled / 1000) : nil
+      e.updated     = entry.updated.present?   ? Time.at(entry.updated / 1000) : nil
       e.feed        = feed
     end
     e.save
