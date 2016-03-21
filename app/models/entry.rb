@@ -6,6 +6,13 @@ class Entry < ActiveRecord::Base
   has_many :users,  through: :user_entries
   has_many :tracks, through: :entry_tracks
   self.primary_key = :id
+
+  scope :with_detail,   ->        { includes(:users).includes(:tracks) }
+  scope :latest,        ->        { order('published DESC').with_detail }
+  scope :subscriptions, ->   (ss) { where(feed: ss.map { |s| s.feed_id }).with_detail }
+  scope :feed,          -> (feed) { where(feed: feed).with_detail }
+  scope :saved,         ->  (uid) { joins(:users).includes(:tracks).where(users: { id: uid }) }
+
   def self.first_or_create_by_feedlr(entry, feed)
     e = Entry.find_or_create_by(id: entry.id) do |e|
       e.title       = entry.title

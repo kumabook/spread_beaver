@@ -19,31 +19,23 @@ class V3::StreamsController < V3::ApiController
       when :latest
         @entries = Entry.page(@page)
                         .per(@per_page)
-                        .order('published DESC')
-                        .includes(:users)
-                        .includes(:tracks)
+                        .latest
       when :all
         @subscriptions = current_resource_owner.subscriptions
         @entries = Entry.page(@page)
                         .per(@per_page)
-                        .includes(:users)
-                        .includes(:tracks)
-                        .where(feed: @subscriptions.map { |s| s.feed_id })
+                        .subscriptions(@subscriptions)
       when :saved
         @entries = Entry.page(@page)
                         .per(@per_page)
-                        .joins(:users)
-                        .includes(:tracks)
-                        .where(users: { id: current_resource_owner.id })
+                        .saved(current_resource_owner.id)
       else
         render json: {}, status: :not_found
       end
     elsif @feed.present?
       @entries = Entry.page(@page)
                       .per(@per_page)
-                      .includes(:users)
-                      .includes(:tracks)
-                      .where(feed: @feed)
+                      .feed(@feed)
     end
     total_count = @entries.total_count
     continuation = nil
