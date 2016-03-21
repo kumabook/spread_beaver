@@ -59,6 +59,15 @@ class Entry < ActiveRecord::Base
     Playlist.new(hash['id'], hash['url'], hash['tracks'], self)
   end
 
+  def as_json(options = {})
+    h = super(options)
+    h['crawled']   = crawled.to_time.to_i * 1000
+    h['published'] = published.to_time.to_i * 1000
+    h['recrawled'] = recrawled.present? ? recrawled.to_time.to_i * 1000 : nil
+    h['updated']   = updated.present?   ? updated.to_time.to_i   * 1000 : nil
+    h
+  end
+
   def as_detail_json
     hash = as_json
     hash['engagement'] = users.size
