@@ -25,7 +25,7 @@ class Entry < ActiveRecord::Base
       e.actionTimestamp = entry.actionTimestamp
       e.enclosure   = entry.enclosure.to_json
       e.fingerprint = entry.fingerprint
-      e.originId    = entry.originId
+      e.originId    = normalize_originId(entry.originId, feed)
       e.sid         = entry.sid
 
       e.crawled     = entry.crawled
@@ -36,6 +36,15 @@ class Entry < ActiveRecord::Base
     end
     e.save
     e
+  end
+
+  def self.normalize_originId(origin_id, feed)
+    uri = URI(origin_id)
+    return origin_id if !uri.scheme.nil? && !uri.host.nil?
+    website_uri = URI(feed.website)
+    uri.scheme = website_uri.scheme
+    uri.host = website_uri.host
+    return uri.to_s
   end
 
   def url
