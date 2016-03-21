@@ -35,6 +35,8 @@ class V3::StreamsController < V3::ApiController
                         .joins(:users)
                         .includes(:tracks)
                         .where(users: { id: current_resource_owner.id })
+      else
+        render json: {}, status: :not_found
       end
     elsif @feed.present?
       @entries = Entry.page(@page)
