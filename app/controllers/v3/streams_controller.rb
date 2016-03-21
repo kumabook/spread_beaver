@@ -19,6 +19,7 @@ class V3::StreamsController < V3::ApiController
       when :latest
         @entries = Entry.page(@page)
                         .per(@per_page)
+                        .order('published DESC')
                         .includes(:users)
                         .includes(:tracks)
       when :all
