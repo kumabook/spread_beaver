@@ -31,9 +31,9 @@ FactoryGirl.define do
     fingerprint     ""
     originId        ""
     sid             nil
-    crawled         nil
+    crawled         DateTime.now
     recrawled       nil
-    published       nil
+    published       DateTime.now
     updated         nil
     feed
     after(:create) do |e|
