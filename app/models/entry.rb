@@ -8,7 +8,7 @@ class Entry < ActiveRecord::Base
   self.primary_key = :id
 
   scope :with_detail,   ->        { includes(:users).includes(:tracks) }
-  scope :latest,        ->        { order('published DESC').with_detail }
+  scope :latest,        -> (time) { where("published > ?", time).order('published DESC').with_detail }
   scope :subscriptions, ->   (ss) { where(feed: ss.map { |s| s.feed_id }).with_detail }
   scope :feed,          -> (feed) { where(feed: feed).with_detail }
   scope :saved,         ->  (uid) { joins(:users).includes(:tracks).where(users: { id: uid }) }
@@ -56,6 +56,19 @@ class Entry < ActiveRecord::Base
 
   def url
     originId
+  end
+
+  def self.latest_entries(entries_per_feed: 3, since: 3.days.ago)
+    entries = Entry.latest(since)
+    entries_list = entries.map { |entry| entry.feed_id }
+                          .uniq
+                          .map do |id|
+      entries.select { |e| e.feed_id == id }.first(entries_per_feed)
+    end
+
+    (0...entries_per_feed).to_a
+      .flat_map { |i| entries_list.map { |list| list[i] }}
+      .select   { |a| a.present? }
   end
 
   def fetch_playlist

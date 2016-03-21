@@ -44,4 +44,34 @@ describe Entry do
     expect(e.published).not_to be_nil()
     expect(e.crawled).not_to be_nil()
   end
+
+  context "Entry.latest_entries" do
+    feed_num = 5
+    before(:each) do
+      DatabaseCleaner.start
+      feeds = (0..feed_num-1).map { |i| FactoryGirl.create(:feed) }
+      feeds.each do |f|
+        f.entries.each do |e|
+          e.published = 2.days.ago
+          e.save!
+        end
+      end
+    end
+    after(:each) do
+      DatabaseCleaner.clean
+    end
+    it "showes first N entries since specified time" do
+      top_of_last_3_days = Entry.latest_entries(entries_per_feed: 1, since: 3.days.ago)
+      expect(top_of_last_3_days.count).to eq(feed_num)
+
+      top_of_last_1_days = Entry.latest_entries(entries_per_feed: 1, since: 1.days.ago)
+      expect(top_of_last_1_days.count).to eq(0)
+
+      top3_of_last_3_days = Entry.latest_entries(entries_per_feed: 3, since: 3.days.ago)
+      expect(top3_of_last_3_days.count).to eq(3 * feed_num)
+      expect(top3_of_last_3_days[0].feed_id).not_to eq(top3_of_last_3_days[1].feed_id)
+      expect(top3_of_last_3_days[0].feed_id).not_to eq(top3_of_last_3_days[2].feed_id)
+      expect(top3_of_last_3_days[0].feed_id).to eq(top3_of_last_3_days[5].feed_id)
+    end
+  end
 end

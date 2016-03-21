@@ -8,7 +8,7 @@ class V3::StreamsController < V3::ApiController
     'page' => 1,
     'per_page' => Kaminari::config::default_per_page
   }
-
+  LATEST_ENTRIES_PER_PAGE = 3
   CONTINUATION_SALT = "continuation_salt"
   def index
     if @resource.nil? && @feed.nil?
@@ -17,9 +17,8 @@ class V3::StreamsController < V3::ApiController
     if @resource.present?
       case @resource
       when :latest
-        @entries = Entry.page(@page)
-                        .per(@per_page)
-                        .latest
+        since    = @newer_than.present? ? Time.at(@newer_than / 1000) : 3.days.ago
+        @entries = Entry.latest_entries(entries_per_feed: LATEST_ENTRIES_PER_PAGE, since: since)
       when :all
         @subscriptions = current_resource_owner.subscriptions
         @entries = Entry.page(@page)
@@ -37,10 +36,11 @@ class V3::StreamsController < V3::ApiController
                       .per(@per_page)
                       .feed(@feed)
     end
-    total_count = @entries.total_count
     continuation = nil
-    if total_count >= @per_page * @page + 1
-      continuation = V3::StreamsController::continuation(@page + 1, @per_page)
+    if @entries.respond_to?(:total_count)
+      if @entries.total_count >= @per_page * @page + 1
+        continuation = V3::StreamsController::continuation(@page + 1, @per_page)
+      end
     end
     h = {
       direction: "ltr",
@@ -73,14 +73,15 @@ class V3::StreamsController < V3::ApiController
   end
 
   def set_page
-    pagination = V3::StreamsController::pagination(params[:continuation])
+    @newer_than = params[:newer_than].to_i
+    pagination  = V3::StreamsController::pagination(params[:continuation])
     @page       = pagination['page']
     @per_page   = pagination['per_page']
-    @newer_than = pagination['newer_than']
+    @newer_than = pagination['newer_than'] if pagination['newer_than'].present?
   end
 
-  def self.continuation(page=0, per_page = 20)
-    str = {page: page, per_page: per_page}.to_json
+  def self.continuation(page=0, per_page = 20, newer_than = nil)
+    str = {page: page, per_page: per_page, newer_than: newer_than}.to_json
     enc = OpenSSL::Cipher::Cipher.new('aes256')
     enc.encrypt
     enc.pkcs5_keyivgen(CONTINUATION_SALT)

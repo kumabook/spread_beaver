@@ -33,7 +33,13 @@ FactoryGirl.define do
     sid             nil
     crawled         DateTime.now
     recrawled       nil
-    published       DateTime.now
+    sequence(:published) do |n|
+      if n % ENTRY_PER_FEED == 0
+        1.days.ago
+      else
+        5.days.ago
+      end
+    end
     updated         nil
     feed
     after(:create) do |e|
