@@ -4,7 +4,7 @@ class Feed < ActiveRecord::Base
   def self.first_or_create_by_feedlr(feed)
     Feed.find_or_create_by(id: feed.id) do |f|
       f.title       = feed.title
-      f.description = feed.description
+      f.description = feed.description || ''
       f.website     = feed.website
       f.visualUrl   = feed.visualUrl
       f.coverUrl    = feed.coverUrl
