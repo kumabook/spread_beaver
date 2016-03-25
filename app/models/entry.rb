@@ -87,6 +87,9 @@ class Entry < ActiveRecord::Base
     h['recrawled'] = recrawled.present? ? recrawled.to_time.to_i * 1000 : nil
     h['updated']   = updated.present?   ? updated.to_time.to_i   * 1000 : nil
     h.delete('saved_count')
+    ['categories', 'summary', 'alternate', 'origin', 'keywords', 'visual'].each do |key|
+      h[key] = JSON.load(h[key])
+    end
     h
   end
 
@@ -95,10 +98,6 @@ class Entry < ActiveRecord::Base
     hash['engagement'] = saved_count
     hash['tags']       = nil
     hash['enclosure']  = tracks.map { |t| t.as_enclosure }
-
-    ['summary', 'alternate', 'origin', 'keywords', 'visual'].each do |key|
-      hash[key]    = JSON.load(hash[key])
-    end
     hash
   end
 
