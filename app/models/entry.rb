@@ -11,8 +11,8 @@ class Entry < ActiveRecord::Base
   scope :with_detail,   ->        { includes(:users).includes(:tracks) }
   scope :latest,        -> (time) { where("published > ?", time).order('published DESC').with_content }
   scope :popular,       ->        { joins(:users).order('saved_count DESC').with_content }
-  scope :subscriptions, ->   (ss) { where(feed: ss.map { |s| s.feed_id }).with_content }
-  scope :feed,          -> (feed) { where(feed: feed).with_content }
+  scope :subscriptions, ->   (ss) { where(feed: ss.map { |s| s.feed_id }).order('published DESC').with_content }
+  scope :feed,          -> (feed) { where(feed: feed).order('published DESC').with_content }
   scope :saved,         ->  (uid) { joins(:users).includes(:tracks).where(users: { id: uid }) }
 
   def self.first_or_create_by_feedlr(entry, feed)
