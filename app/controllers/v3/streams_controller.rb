@@ -24,6 +24,12 @@ class V3::StreamsController < V3::ApiController
         @entries = Entry.page(@page)
                         .per(@per_page)
                         .subscriptions(@subscriptions)
+      when :popular
+        @entries = Entry.page(@page)
+                        .per(@per_page)
+                        .joins(:users)
+                        .order('saved_count DESC')
+                        .includes(:tracks)
       when :saved
         @entries = Entry.page(@page)
                         .per(@per_page)
@@ -63,11 +69,13 @@ class V3::StreamsController < V3::ApiController
 
   def set_global_resource
     str = CGI.unescape params[:id] if params[:id].present?
-    if str.match /global\.latest/
+    if str.match /tag\/global\.latest/
       @resource = :latest
-    elsif str.match /global\.all/
+    elsif str.match /tag\/global\.popular/
+      @resource = :popular
+    elsif str.match /user\/.*\/category\/global\.all/
       @resource = :all
-    elsif str.match /global\.saved/
+    elsif str.match /user\/.*\/tag\/global\.saved/
       @resource = :saved
     end
   end

@@ -63,8 +63,19 @@ RSpec.describe "Streams api", type: :request, autodoc: true do
       expect(result['items'].count).to eq(ITEM_NUM)
       expect(result['continuation']).to be_nil
     end
+
     it "gets latest entries" do
       resource = CGI.escape "tag/global.latest"
+      get "/v3/streams/#{resource}/contents",
+          {newer_than: 3.days.ago.to_time.to_i * 1000},
+          Authorization: "Bearer #{@token['access_token']}"
+      result = JSON.parse @response.body
+      expect(result['items'].count).to eq(2)
+      expect(result['continuation']).to be_nil
+    end
+
+    it "gets popular entries" do
+      resource = CGI.escape "tag/global.popular"
       get "/v3/streams/#{resource}/contents",
           {newer_than: 3.days.ago.to_time.to_i * 1000},
           Authorization: "Bearer #{@token['access_token']}"

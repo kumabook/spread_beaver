@@ -9,6 +9,7 @@ class Entry < ActiveRecord::Base
 
   scope :with_detail,   ->        { includes(:users).includes(:tracks) }
   scope :latest,        -> (time) { where("published > ?", time).order('published DESC').with_detail }
+  scope :popular,       -> (time) { joins(:users).group('users.id').order('count(users.id) DESC').includes(:tracks) }
   scope :subscriptions, ->   (ss) { where(feed: ss.map { |s| s.feed_id }).with_detail }
   scope :feed,          -> (feed) { where(feed: feed).with_detail }
   scope :saved,         ->  (uid) { joins(:users).includes(:tracks).where(users: { id: uid }) }
