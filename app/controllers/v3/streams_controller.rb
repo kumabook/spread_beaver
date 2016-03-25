@@ -27,9 +27,7 @@ class V3::StreamsController < V3::ApiController
       when :popular
         @entries = Entry.page(@page)
                         .per(@per_page)
-                        .joins(:users)
-                        .order('saved_count DESC')
-                        .includes(:tracks)
+                        .popular
       when :saved
         @entries = Entry.page(@page)
                         .per(@per_page)
