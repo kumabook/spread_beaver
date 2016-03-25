@@ -7,11 +7,11 @@ class Entry < ActiveRecord::Base
   has_many :tracks, through: :entry_tracks
   self.primary_key = :id
 
+  scope :with_content,  ->        { includes(:tracks) }
   scope :with_detail,   ->        { includes(:users).includes(:tracks) }
-  scope :latest,        -> (time) { where("published > ?", time).order('published DESC').with_detail }
-  scope :popular,       -> (time) { joins(:users).group('users.id').order('count(users.id) DESC').includes(:tracks) }
-  scope :subscriptions, ->   (ss) { where(feed: ss.map { |s| s.feed_id }).with_detail }
-  scope :feed,          -> (feed) { where(feed: feed).with_detail }
+  scope :latest,        -> (time) { where("published > ?", time).order('published DESC').with_content }
+  scope :subscriptions, ->   (ss) { where(feed: ss.map { |s| s.feed_id }).with_content }
+  scope :feed,          -> (feed) { where(feed: feed).with_content }
   scope :saved,         ->  (uid) { joins(:users).includes(:tracks).where(users: { id: uid }) }
 
   def self.first_or_create_by_feedlr(entry, feed)
@@ -81,23 +81,30 @@ class Entry < ActiveRecord::Base
   end
 
   def as_json(options = {})
-    h = super(options)
+    h              = super(options)
     h['crawled']   = crawled.to_time.to_i * 1000
     h['published'] = published.to_time.to_i * 1000
     h['recrawled'] = recrawled.present? ? recrawled.to_time.to_i * 1000 : nil
     h['updated']   = updated.present?   ? updated.to_time.to_i   * 1000 : nil
+    h.delete('saved_count')
     h
   end
 
-  def as_detail_json
-    hash = as_json
-    hash['engagement'] = users.size
-    hash['tags']       = users.map  { |u| u.as_user_tag }
+  def as_content_json
+    hash               = as_json
+    hash['engagement'] = saved_count
+    hash['tags']       = nil
     hash['enclosure']  = tracks.map { |t| t.as_enclosure }
 
     ['summary', 'alternate', 'origin', 'keywords', 'visual'].each do |key|
       hash[key]    = JSON.load(hash[key])
     end
+    hash
+  end
+
+  def as_detail_json
+    hash         = as_content_json
+    hash['tags'] = users.map  { |u| u.as_user_tag }
     hash
   end
 end

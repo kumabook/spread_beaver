@@ -52,7 +52,7 @@ class V3::StreamsController < V3::ApiController
       direction: "ltr",
       continuation: continuation,
       alternate: [],
-      items: @entries.map { |en| en.as_detail_json }
+      items: @entries.map { |en| en.as_content_json }
     }
     if @feed.present?
       h[:updated] = @feed.updated_at.to_time.to_i * 1000
