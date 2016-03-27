@@ -15,6 +15,8 @@ class Entry < ActiveRecord::Base
   scope :feed,          -> (feed) { where(feed: feed).order('published DESC').with_content }
   scope :saved,         ->  (uid) { joins(:users).includes(:tracks).where(users: { id: uid }) }
 
+  JSON_ATTRS = ['content', 'categories', 'summary', 'alternate', 'origin', 'keywords', 'visual']
+
   def self.first_or_create_by_feedlr(entry, feed)
     e = Entry.find_or_create_by(id: entry.id) do |e|
       e.title       = entry.title
@@ -94,7 +96,7 @@ class Entry < ActiveRecord::Base
     h['recrawled'] = recrawled.present? ? recrawled.to_time.to_i * 1000 : nil
     h['updated']   = updated.present?   ? updated.to_time.to_i   * 1000 : nil
     h.delete('saved_count')
-    ['categories', 'summary', 'alternate', 'origin', 'keywords', 'visual'].each do |key|
+    JSON_ATTRS.each do |key|
       h[key] = JSON.load(h[key])
     end
     h
