@@ -45,6 +45,9 @@ class Feed < ActiveRecord::Base
       playlist.create_tracks.each do |track|
         puts "  Create track #{track.provider} #{track.identifier}"
       end
+      if self.lastUpdated.nil? || self.lastUpdated < e.published
+        self.lastUpdated = e.published
+      end
     end
     self.crawled = DateTime.now
     save
