@@ -12,8 +12,7 @@ class Playlist
       track = Track.find_or_create_by(provider: t['provider'],
                                       identifier: t['identifier'])
       track.url = Track::url t['provider'], t['identifier']
-      track.entries.push @entry if track.entries.include? @entry
-      EntryTrack.create entry: @entry, track: track
+      EntryTrack.find_or_create_by entry: @entry, track: track
       track
     end
     tracks
