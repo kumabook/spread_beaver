@@ -38,6 +38,9 @@ class V3::FeedsController < V3::ApiController
 
   def set_feeds
     @feeds = Feed.find(params['_json'])
+    @feeds = params['_json'].map { |id|
+      @feeds.select { |f| f.id == id }.first
+    }
   end
 
   def search_params
