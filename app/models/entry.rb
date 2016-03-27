@@ -63,6 +63,7 @@ class Entry < ActiveRecord::Base
   end
 
   def self.latest_entries(entries_per_feed: 3, since: 3.days.ago)
+    # TODO: Add page and per_page if need be
     entries = Entry.latest(since)
     entries_list = entries.map { |entry| entry.feed_id }
                           .uniq
@@ -77,6 +78,7 @@ class Entry < ActiveRecord::Base
 
   def self.popular_entries_within_period(from: nil, to: nil)
     raise ArgumentError, "Parameter must be not nil" if from.nil? || to.nil?
+    # TODO: Add page and per_page if need be
     user_count_map = UserEntry.period(from, to).user_count
     entries = Entry.with_content.find(user_count_map.keys)
     user_count_map.keys.flat_map { |id| entries.select { |e| e.id == id} } # order by user_count
