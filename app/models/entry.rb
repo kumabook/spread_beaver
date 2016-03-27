@@ -78,7 +78,8 @@ class Entry < ActiveRecord::Base
   def self.popular_entries_within_period(from: nil, to: nil)
     raise ArgumentError, "Parameter must be not nil" if from.nil? || to.nil?
     user_count_map = UserEntry.period(from, to).user_count
-    Entry.with_content.find(user_count_map.keys)
+    entries = Entry.with_content.find(user_count_map.keys)
+    user_count_map.keys.flat_map { |id| entries.select { |e| e.id == id} } # order by user_count
   end
 
   def fetch_playlist
