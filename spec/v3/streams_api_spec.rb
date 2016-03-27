@@ -12,7 +12,8 @@ RSpec.describe "Streams api", type: :request, autodoc: true do
                            feed: @subscribed
       (0...ITEM_NUM).to_a.each { |n|
         UserEntry.create! user: @user,
-                          entry: @feed.entries[n]
+                          entry: @feed.entries[n],
+                          created_at: 1.days.ago
       }
       (0...ITEM_NUM).to_a.each { |n|
         Like.create! user: @user,
@@ -76,8 +77,10 @@ RSpec.describe "Streams api", type: :request, autodoc: true do
 
     it "gets popular entries" do
       resource = CGI.escape "tag/global.popular"
-      get "/v3/streams/#{resource}/contents",
-          {newer_than: 3.days.ago.to_time.to_i * 1000},
+      get "/v3/streams/#{resource}/contents", {
+            newer_than: 200.days.ago.to_time.to_i * 1000,
+            older_than: Time.now.to_i * 1000
+          },
           Authorization: "Bearer #{@token['access_token']}"
       result = JSON.parse @response.body
       expect(result['items'].count).to eq(2)
