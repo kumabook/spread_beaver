@@ -64,4 +64,10 @@ class Feed < ActiveRecord::Base
     clone.id = CGI.unescape self.id
     clone
   end
+
+  def as_json(options = {})
+    h                = super(options)
+    h['lastUpdated'] = lastUpdated.present? ? lastUpdated.to_time.to_i * 1000 : nil
+    h
+  end
 end
