@@ -73,6 +73,12 @@ class Entry < ActiveRecord::Base
       .select   { |a| a.present? }
   end
 
+  def self.popular_entries_within_period(from: nil, to: nil)
+    raise ArgumentError, "Parameter must be not nil" if from.nil? || to.nil?
+    user_count_map = UserEntry.period(from, to).user_count
+    Entry.with_content.find(user_count_map.keys)
+  end
+
   def fetch_playlist
     url = "http://musicfav-cloud.herokuapp.com/playlistify"
     response = RestClient.get url, params: { url: originId}, :accept => :json

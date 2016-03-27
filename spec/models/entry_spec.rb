@@ -74,4 +74,40 @@ describe Entry do
       expect(top3_of_last_3_days[0].feed_id).to eq(top3_of_last_3_days[5].feed_id)
     end
   end
+
+  context "Entry.popular_entries_within_period" do
+    feed_num = 5
+    before(:each) do
+      DatabaseCleaner.start
+      user     = FactoryGirl.create(:member)
+      feed     = FactoryGirl.create(:feed)
+      old_feed = FactoryGirl.create(:feed)
+      old_user = FactoryGirl.create(:member)
+      (0...ITEM_NUM).to_a.each { |i|
+        n = i + 1
+        UserEntry.create! user:       user,
+                          entry:      feed.entries[n],
+                          created_at: n.days.ago,
+                          updated_at: n.days.ago
+        UserEntry.create! user:       old_user,
+                          entry:      old_feed.entries[n],
+                          created_at: n.months.ago,
+                          updated_at: n.months.ago
+      }
+    end
+    after(:each) do
+      DatabaseCleaner.clean
+    end
+
+    it "showes popular entries within a certain time period" do
+      all = Entry.popular_entries_within_period(from: 5.years.ago, to: Time.now)
+      expect(all.count).to eq(ITEM_NUM * 2)
+
+      latest_popular = Entry.popular_entries_within_period(from: 10.days.ago, to: Time.now)
+      expect(latest_popular.count).to eq(ITEM_NUM)
+
+      latest_popular = Entry.popular_entries_within_period(from: 1.years.ago, to: 20.days.ago)
+      expect(latest_popular.count).to eq(ITEM_NUM)
+    end
+  end
 end
