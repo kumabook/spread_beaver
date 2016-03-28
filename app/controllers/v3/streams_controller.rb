@@ -1,15 +1,11 @@
 class V3::StreamsController < V3::ApiController
+  include Pagination
   before_action :doorkeeper_authorize!
   before_action :set_feed, only: [:index]
   before_action :set_global_resource, only: [:index]
   before_action :set_page, only: [:index]
 
-  DEFAULT_PAGINATION = {
-    'page' => 1,
-    'per_page' => Kaminari::config::default_per_page
-  }
   LATEST_ENTRIES_PER_PAGE = 3
-  CONTINUATION_SALT       = "continuation_salt"
   DURATION                = 3.days
   def index
     if @resource.nil? && @feed.nil?
@@ -77,40 +73,5 @@ class V3::StreamsController < V3::ApiController
     elsif str.match /user\/.*\/tag\/global\.saved/
       @resource = :saved
     end
-  end
-
-  def set_page
-    @newer_than = params[:newer_than].present? ? Time.at(params[:newer_than].to_i / 1000) : nil
-    @older_than = params[:older_than].present? ? Time.at(params[:older_than].to_i / 1000) : nil
-    pagination  = V3::StreamsController::pagination(params[:continuation])
-    @page       = pagination['page']
-    @per_page   = pagination['per_page']
-    @newer_than = pagination['newer_than'] if pagination['newer_than'].present?
-    @older_than = pagination['older_than'] if pagination['older_than'].present?
-  end
-
-  def self.continuation(page=0, per_page = 20, newer_than = nil, older_than = nil)
-    str = {
-            page: page,
-        per_page: per_page,
-      newer_than: newer_than,
-      older_than: older_than
-    }.to_json
-    enc = OpenSSL::Cipher::Cipher.new('aes256')
-    enc.encrypt
-    enc.pkcs5_keyivgen(CONTINUATION_SALT)
-    ((enc.update(str) + enc.final).unpack("H*"))[0].to_s
-  rescue
-    false
-  end
-
-  def self.pagination(str)
-    return DEFAULT_PAGINATION if str.nil?
-    dec = OpenSSL::Cipher::Cipher.new('aes256')
-    dec.decrypt
-    dec.pkcs5_keyivgen(CONTINUATION_SALT)
-    JSON.parse (dec.update(Array.new([str]).pack("H*")) + dec.final)
-  rescue
-    return DEFAULT_PAGINATION
   end
 end
