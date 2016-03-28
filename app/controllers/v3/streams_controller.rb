@@ -1,12 +1,13 @@
 class V3::StreamsController < V3::ApiController
   include Pagination
   before_action :doorkeeper_authorize!
-  before_action :set_feed, only: [:index]
+  before_action :set_feed           , only: [:index]
   before_action :set_global_resource, only: [:index]
-  before_action :set_page, only: [:index]
+  before_action :set_page           , only: [:index]
 
   LATEST_ENTRIES_PER_PAGE = 3
   DURATION                = 3.days
+
   def index
     if @resource.nil? && @feed.nil?
       render json: {message: "Not found" }, status: 404
@@ -22,8 +23,8 @@ class V3::StreamsController < V3::ApiController
                         .per(@per_page)
                         .subscriptions(@subscriptions)
       when :popular
-        from           = @newer_than.present? ? @newer_than : DURATION.ago
-        to             = @older_than.present? ? @older_than : from + DURATION
+        from     = @newer_than.present? ? @newer_than : DURATION.ago
+        to       = @older_than.present? ? @older_than : from + DURATION
         @entries = Entry.popular_entries_within_period(from: from, to: to)
       when :saved
         @entries = Entry.page(@page)
