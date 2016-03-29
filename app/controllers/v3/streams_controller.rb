@@ -32,6 +32,7 @@ class V3::StreamsController < V3::ApiController
                         .saved(current_resource_owner.id)
       else
         render json: {}, status: :not_found
+        return
       end
     elsif @feed.present?
       @entries = Entry.page(@page)
@@ -41,7 +42,7 @@ class V3::StreamsController < V3::ApiController
     continuation = nil
     if @entries.respond_to?(:total_count)
       if @entries.total_count >= @per_page * @page + 1
-        continuation = V3::StreamsController::continuation(@page + 1, @per_page)
+        continuation = self.class.continuation(@page + 1, @per_page)
       end
     end
     h = {

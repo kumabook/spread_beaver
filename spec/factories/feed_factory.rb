@@ -9,6 +9,13 @@ FactoryGirl.define do
   factory :track, class: Track do
     sequence(:identifier) { |n| "track#{n}" }
     sequence(:title) { |n| "track #{n}" }
+    sequence(:created_at) { |n|
+      if n % TRACK_PER_ENTRY == 0
+        1.days.ago
+      else
+        5.days.ago
+      end
+    }
     provider "YouTube"
   end
 

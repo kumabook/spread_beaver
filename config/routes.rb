@@ -32,8 +32,10 @@ Rails.application.routes.draw do
 
     post '/markers'              => 'markers#mark'
 
-    get  '/streams/:id/ids'      => 'streams#index', constraints: { id: resource_id_regex }
-    get  '/streams/:id/contents' => 'streams#index', constraints: { id: resource_id_regex }
+    get  '/streams/:id/ids'             => 'streams#index'       , constraints: { id: resource_id_regex }
+    get  '/streams/:id/contents'        => 'streams#index'       , constraints: { id: resource_id_regex }
+    get  '/streams/:id/tracks/ids'      => 'streams/tracks#index', constraints: { id: resource_id_regex }
+    get  '/streams/:id/tracks/contents' => 'streams/tracks#index', constraints: { id: resource_id_regex }
 
     resources :feeds, only: [:show], constraints: { id: resource_id_regex }
     get  '/search/feeds'         => 'feeds#search'
