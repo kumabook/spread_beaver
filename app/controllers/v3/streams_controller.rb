@@ -5,7 +5,7 @@ class V3::StreamsController < V3::ApiController
   before_action :set_global_resource, only: [:index]
   before_action :set_page           , only: [:index]
 
-  LATEST_ENTRIES_PER_PAGE = 3
+  LATEST_ENTRIES_PER_FEED = 3
   DURATION                = 3.days
 
   def index
@@ -16,7 +16,7 @@ class V3::StreamsController < V3::ApiController
       case @resource
       when :latest
         since    = @newer_than.present? ? @newer_than : DURATION.ago
-        @entries = Entry.latest_entries(entries_per_feed: LATEST_ENTRIES_PER_PAGE, since: since)
+        @entries = Entry.latest_entries(entries_per_feed: LATEST_ENTRIES_PER_FEED, since: since)
       when :all
         @subscriptions = current_resource_owner.subscriptions
         @entries = Entry.page(@page)
