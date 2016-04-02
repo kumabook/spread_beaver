@@ -56,8 +56,17 @@ class Track < ActiveRecord::Base
   def self.popular_tracks_within_period(from: nil, to: nil)
     raise ArgumentError, "Parameter must be not nil" if from.nil? || to.nil?
     # TODO: Add page and per_page if need be
-    user_count_map = Like.period(from, to).user_count
-    tracks = Track.find(user_count_map.keys)
-    user_count_map.keys.flat_map { |id| tracks.select { |t| t.id == id} } # order by user_count
+    user_count_hash = Like.period(from, to).user_count
+    tracks = Track.find(user_count_hash.keys)
+    # order by user_count and updated
+    user_count_hash.keys.map { |id|
+      {
+                id: id,
+        user_count: user_count_hash[id],
+             track: tracks.select { |t| t.id == id }.first
+      }
+    }.sort_by { |hash|
+      [hash[:user_count], hash[:track].updated_at]
+    }.reverse.map { |hash| hash[:track] }
   end
 end
