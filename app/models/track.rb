@@ -26,6 +26,7 @@ class Track < ActiveRecord::Base
                        users: { except: [:crypted_password, :salt] },
                      entries: {},
                    }
+    hash['url']        = Track.url provider, identifier
     hash['likesCount'] = likesCount
     hash['likers']     = hash['users']
     hash.delete('users')
