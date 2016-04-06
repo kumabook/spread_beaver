@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   resources :user_sessions
   resources :users do
     resources :entries, only: [:index], constraints: { id: resource_id_regex }
+    resources :preferences, except: [:show]
   end
   resources :entries do
     resources :tracks, only: :index
