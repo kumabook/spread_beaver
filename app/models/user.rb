@@ -1,4 +1,5 @@
 class User < ActiveRecord::Base
+  has_many :preferences
   has_many :subscriptions
   has_many :user_entries
   has_many :likes

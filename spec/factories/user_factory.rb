@@ -4,6 +4,10 @@ FactoryGirl.define do
     password              'test_password'
     password_confirmation 'test_password'
     type                  'Member'
+    after(:create) do |u|
+      create(:preference, user: u, key: 'key1')
+      create(:preference, user: u, key: 'key2')
+    end
   end
 
   factory :member, class: User do
@@ -11,5 +15,10 @@ FactoryGirl.define do
     password              'test_password'
     password_confirmation 'test_password'
     type                  'Member'
+  end
+
+  factory :preference, class: Preference do
+    key   'key'
+    value 'value'
   end
 end

@@ -30,6 +30,9 @@ Rails.application.routes.draw do
     get  '/profile'              => 'credentials#me'
     put  '/profile'              => 'users#create'
 
+    get  '/preferences'          => 'preferences#index'
+    post '/preferences'          => 'preferences#update'
+
     post '/markers'              => 'markers#mark'
 
     get  '/streams/:id/ids'             => 'streams#index'       , constraints: { id: resource_id_regex }

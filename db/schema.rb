@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160327132942) do
+ActiveRecord::Schema.define(version: 20160405140220) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -128,6 +128,16 @@ ActiveRecord::Schema.define(version: 20160327132942) do
   end
 
   add_index "oauth_applications", ["uid"], name: "index_oauth_applications_on_uid", unique: true, using: :btree
+
+  create_table "preferences", force: :cascade do |t|
+    t.uuid     "user_id",    null: false
+    t.string   "key",        null: false
+    t.text     "value",      null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "preferences", ["user_id", "key"], name: "index_preferences_on_user_id_and_key", unique: true, using: :btree
 
   create_table "subscriptions", force: :cascade do |t|
     t.uuid     "user_id",    null: false
