@@ -1,6 +1,9 @@
 class Feed < ActiveRecord::Base
   has_many :entries
   self.primary_key = :id
+
+  JSON_ATTRS = ['topics']
+
   def self.first_or_create_by_feedlr(feed)
     Feed.find_or_create_by(id: feed.id) do |f|
       f.title       = feed.title
@@ -68,6 +71,9 @@ class Feed < ActiveRecord::Base
   def as_json(options = {})
     h                = super(options)
     h['lastUpdated'] = lastUpdated.present? ? lastUpdated.to_time.to_i * 1000 : nil
+    JSON_ATTRS.each do |key|
+      h[key] = JSON.load(h[key])
+    end
     h
   end
 end
