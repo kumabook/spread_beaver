@@ -5,11 +5,18 @@ class EntriesController < ApplicationController
 
   def index
     if @feed.nil?
-      @entries = Entry.all.includes(:tracks)
-      @user_entries = UserEntry.where(user_id: current_user.id)
+      @entries = Entry.includes(:tracks)
+                      .order('published DESC')
+                      .page(params[:page])
+      @user_entries = UserEntry.where(user_id: current_user.id,
+                                     entry_id: @entries.map { |e| e.id })
     else
-      @entries = Entry.includes(:tracks).where(feed_id: @feed.id)
-      @user_entries = UserEntry.where(user_id: current_user.id)
+      @entries = Entry.includes(:tracks)
+                      .where(feed_id: @feed.id)
+                      .order('published DESC')
+                      .page(params[:page])
+      @user_entries = UserEntry.where(user_id: current_user.id,
+                                     entry_id: @entries.map { |e| e.id })
     end
     @entries = [] if @entries.nil?
   end

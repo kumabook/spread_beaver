@@ -2,6 +2,9 @@
 
 .page-header
   h1=t '.title', :default => model_class.model_name.human.pluralize.titleize
+
+= paginate @entries
+
 table.table.table-striped
   thead
     tr
