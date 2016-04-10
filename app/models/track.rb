@@ -24,12 +24,12 @@ class Track < ActiveRecord::Base
 
   def as_detail_json
     hash = as_json include: {
-                       users: { except: [:crypted_password, :salt] },
-                     entries: {},
+                     users: { except: [:crypted_password, :salt] }
                    }
     hash['url']        = Track.url provider, identifier
     hash['likesCount'] = likesCount
     hash['likers']     = hash['users']
+    hash['entries']    = entries.map { |e| e.as_json }
     hash.delete('users')
     hash
   end
