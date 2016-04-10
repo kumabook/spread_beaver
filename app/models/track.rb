@@ -4,9 +4,10 @@ class Track < ActiveRecord::Base
   has_many :likes
   has_many :users, through: :likes
 
+  scope :detail,  ->        { includes(:users).includes(:entries) }
   scope :latest,  -> (time) { where("created_at > ?", time).order('created_at DESC') }
-  scope :popular, ->        { joins(:users).order('saved_count DESC') }
-  scope :liked,   ->  (uid) { joins(:users).where(users: { id: uid }) }
+  scope :popular, ->        { joins(:users).includes(:entries).order('saved_count DESC') }
+  scope :liked,   ->  (uid) { joins(:users).includes(:entries).where(users: { id: uid }) }
 
   def self.url provider, identifier
     case provider

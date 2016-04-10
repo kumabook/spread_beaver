@@ -12,7 +12,7 @@ class V3::TracksController < V3::ApiController
   end
 
   def set_track
-    @track = Track.includes(:users).find(params[:id])
+    @track = Track.detail.find(params[:id])
   end
 
   def list
@@ -26,7 +26,7 @@ class V3::TracksController < V3::ApiController
   end
 
   def set_tracks
-    @tracks = Track.includes(:users).find(params['_json'])
+    @tracks = Track.detail.find(params['_json'])
   end
 
 end
