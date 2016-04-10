@@ -7,10 +7,12 @@ class TracksController < ApplicationController
   def index
     if @entry.present?
       @tracks = @entry.tracks
-      @likes  = Like.where(user: current_user)
+      @likes  = Like.where(user_id: current_user.id,
+                          track_id: @tracks.map { |t| t.id })
     else
-      @tracks = Track.all
-      @likes  = Like.where(user: current_user)
+      @tracks = Track.order('created_at DESC').page()
+      @likes  = Like.where(user_id: current_user.id,
+                          track_id: @tracks.map { |t| t.id })
     end
   end
 

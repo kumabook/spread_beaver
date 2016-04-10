@@ -1,6 +1,9 @@
 - model_class = Track
 .page-header
   h1=t '.title', :default => model_class.model_name.human.pluralize.titleize
+
+= paginate @tracks
+
 table.table.table-striped
   thead
     tr
