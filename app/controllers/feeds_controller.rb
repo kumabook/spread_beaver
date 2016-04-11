@@ -3,7 +3,7 @@ class FeedsController < ApplicationController
   before_action :require_admin, only: [:new, :create, :destroy, :update]
 
   def index
-    @feeds = Feed.all
+    @feeds = Feed.all.order('velocity DESC')
     @subscriptions = Subscription.where(user_id: current_user.id)
   end
 

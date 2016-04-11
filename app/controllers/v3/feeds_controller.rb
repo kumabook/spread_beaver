@@ -4,7 +4,7 @@ class V3::FeedsController < V3::ApiController
   before_action :set_feeds, only: [:list]
 
   def search
-    @feeds = Feed.page(0).per(search_params[:count]).all
+    @feeds = Feed.page(0).per(search_params[:count]).all.order('velocity DESC')
     result = {
       related: [],
          hint: "music",

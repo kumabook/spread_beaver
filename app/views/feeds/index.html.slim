@@ -5,7 +5,7 @@
 table.table.table-striped
   thead
     tr
-      th= model_class.human_attribute_name(:id)
+      th= model_class.human_attribute_name(:velocity)
       th= model_class.human_attribute_name(:title)
       th= model_class.human_attribute_name(:description)
       th= model_class.human_attribute_name(:lastUpdated)
@@ -19,7 +19,7 @@ table.table.table-striped
     - @feeds.each do |feed|
       - subscription = @subscriptions.to_a.select {|s| feed.id == s.feed_id }.first
       tr
-        td = feed.id.truncate(30)
+        td = feed.velocity
         td = link_to feed.title, feed.website
         td = feed.description.truncate(30)
         td = feed.lastUpdated
