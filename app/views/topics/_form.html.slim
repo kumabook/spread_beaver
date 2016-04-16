@@ -1,0 +1,18 @@
+= form_for @topic, html: { class: "form form-horizontal topic" } do |f|
+  - if @topic.errors.any?
+    #error_explanation
+      h2 = "#{pluralize(@topic.errors.count, "error")} prohibited this topic from being saved:"
+      ul
+        - @topic.errors.full_messages.each do |message|
+          li = message
+
+  .form-group
+    = f.label :label, :class => 'control-label col-lg-2'
+    .col-lg-10
+      = f.text_field :label, :class => 'form-control'
+    = f.error_span(:label)
+  .form-group
+    .col-lg-offset-2.col-lg-10
+      = f.submit nil, :class => 'btn btn-primary'
+      '
+      = link_to t('.cancel', :default => t("helpers.links.cancel")), topics_path, :class => 'btn'
