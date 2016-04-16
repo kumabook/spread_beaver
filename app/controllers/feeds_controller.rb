@@ -45,8 +45,10 @@ class FeedsController < ApplicationController
   end
 
   def update
+    topics = Topic.find(feed_params[:topics].select { |t| !t.blank? })
+    @feed.update_attributes(feed_params.merge({topics: topics}))
     respond_to do |format|
-      if @feed.update(feed_params)
+      if @feed.save
         format.html { redirect_to feeds_path, notice: 'Feed was successfully updated.' }
         format.json { render :show, status: :ok, location: @feed }
       else
@@ -70,6 +72,6 @@ class FeedsController < ApplicationController
   end
 
   def feed_params
-    params.require(:feed).permit(:id, :title, :description, :website, :velocity, :topics)
+    params.require(:feed).permit(:id, :title, :description, :website, :velocity, topics: [])
   end
 end
