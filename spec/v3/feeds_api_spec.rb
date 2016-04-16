@@ -5,6 +5,11 @@ RSpec.describe "Feeds api", :type => :request, autodoc: true do
     setup()
     login()
     @feeds = (0...ITEM_NUM).to_a.map { FactoryGirl.create(:feed) }
+    @topic = FactoryGirl.create(:topic)
+    @feeds.each { |f|
+      f.topics = [@topic]
+      f.save!
+    }
   end
 
   it "searches feeds after successful login" do
@@ -25,6 +30,7 @@ RSpec.describe "Feeds api", :type => :request, autodoc: true do
     feed = JSON.parse @response.body
     expect(feed).not_to be_nil()
     expect(feed['id']).to eq(@feeds[0].id)
+    expect(feed['topics'][0]).to eq(@topic.label)
   end
 
   it "shows feeds list by id list" do

@@ -71,9 +71,12 @@ FactoryGirl.define do
     contentType  "article"
     subscribers  100
     velocity     10.0
-    topics       "[\"music\", \"音楽\"]"
     after(:create) do |f|
       ENTRY_PER_FEED.times { create(:entry, feed: f) }
     end
+  end
+
+  factory :topic, class: Topic do
+    sequence(:label) { |n| "topic-#{n}" }
   end
 end
