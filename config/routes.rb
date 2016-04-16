@@ -16,6 +16,9 @@ Rails.application.routes.draw do
                     shallow: true do
     resources :entries, only: [:index], constraints: { id: uuid_regex }
   end
+  resources :topics do
+    resources :feeds, only: [:index]
+  end
   resources :subscriptions, only: [:create, :destroy]
   resources :tracks
   resources :likes
