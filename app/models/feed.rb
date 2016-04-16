@@ -33,6 +33,15 @@ class Feed < ActiveRecord::Base
     end
   end
 
+  def self.create_with_ids(feedIds)
+    client = Feedlr::Client.new(sandbox: false)
+    feeds = client.feeds(feedIds)
+    return [] if feeds.nil?
+    feeds.map do |feed|
+      Feed.first_or_create_by_feedlr(feed)
+    end
+  end
+
   def self.fetch_all_latest_entries
     Feed.all.each do |f|
       f.fetch_latest_entries
