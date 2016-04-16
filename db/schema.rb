@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160405140220) do
+ActiveRecord::Schema.define(version: 20160416035945) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -57,6 +57,15 @@ ActiveRecord::Schema.define(version: 20160405140220) do
 
   add_index "entry_tracks", ["entry_id", "track_id"], name: "index_entry_tracks_on_entry_id_and_track_id", unique: true, using: :btree
 
+  create_table "feed_topics", force: :cascade do |t|
+    t.string   "feed_id"
+    t.string   "topic_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "feed_topics", ["feed_id", "topic_id"], name: "index_feed_topics_on_feed_id_and_topic_id", unique: true, using: :btree
+
   create_table "feeds", id: false, force: :cascade do |t|
     t.string   "id",          null: false
     t.string   "title"
@@ -71,7 +80,6 @@ ActiveRecord::Schema.define(version: 20160405140220) do
     t.string   "contentType"
     t.integer  "subscribers"
     t.float    "velocity"
-    t.string   "topics"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
     t.datetime "crawled"
@@ -147,6 +155,16 @@ ActiveRecord::Schema.define(version: 20160405140220) do
   end
 
   add_index "subscriptions", ["user_id", "feed_id"], name: "index_subscriptions_on_user_id_and_feed_id", unique: true, using: :btree
+
+  create_table "topics", id: false, force: :cascade do |t|
+    t.string   "id",         null: false
+    t.string   "label",      null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "topics", ["id"], name: "index_topics_on_id", unique: true, using: :btree
+  add_index "topics", ["label"], name: "index_topics_on_label", unique: true, using: :btree
 
   create_table "tracks", id: :uuid, default: "uuid_generate_v4()", force: :cascade do |t|
     t.string   "identifier"
