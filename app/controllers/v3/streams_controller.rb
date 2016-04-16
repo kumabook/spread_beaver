@@ -1,17 +1,15 @@
 class V3::StreamsController < V3::ApiController
   include Pagination
   before_action :doorkeeper_authorize!
-  before_action :set_feed           , only: [:index]
   before_action :set_global_resource, only: [:index]
+  before_action :set_feed           , only: [:index]
+  before_action :set_topic          , only: [:index]
   before_action :set_page           , only: [:index]
 
   LATEST_ENTRIES_PER_FEED = 3
   DURATION                = 3.days
 
   def index
-    if @resource.nil? && @feed.nil?
-      render json: {message: "Not found" }, status: 404
-    end
     if @resource.present?
       case @resource
       when :latest
@@ -38,8 +36,16 @@ class V3::StreamsController < V3::ApiController
       @entries = Entry.page(@page)
                       .per(@per_page)
                       .feed(@feed)
+    elsif @topic.present?
+      @entries = Entry.page(@page)
+                      .per(@per_page)
+                      .feeds(@topic.feeds)
     end
     continuation = nil
+    if @entries.nil?
+      render json: {message: "Not found" }, status: 404
+      return
+    end
     if @entries.respond_to?(:total_count)
       if @entries.total_count >= @per_page * @page + 1
         continuation = self.class.continuation(@page + 1, @per_page)
@@ -62,6 +68,10 @@ class V3::StreamsController < V3::ApiController
 
   def set_feed
     @feed = Feed.find_by(id: CGI.unescape(params[:id])) if params[:id].present?
+  end
+
+  def set_topic
+    @topic = Topic.includes(:feeds).find_by(id: CGI.unescape(params[:id])) if params[:id].present?
   end
 
   def set_global_resource

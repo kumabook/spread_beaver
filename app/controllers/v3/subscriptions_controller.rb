@@ -32,11 +32,11 @@ class V3::SubscriptionsController < V3::ApiController
   end
 
   def set_feed
-    @feed = Feed.find_by(id: params[:id])
+    @feed = Feed.includes(:topics).find_by(id: params[:id])
   end
 
   def set_unescaped_feed
-    @feed = Feed.find_by(id: CGI.unescape(params[:id]))
+    @feed = Feed.includes(:topics).find_by(id: CGI.unescape(params[:id]))
   end
 
 end

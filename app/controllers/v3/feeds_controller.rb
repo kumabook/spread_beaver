@@ -4,7 +4,11 @@ class V3::FeedsController < V3::ApiController
   before_action :set_feeds, only: [:list]
 
   def search
-    @feeds = Feed.page(0).per(search_params[:count]).all.order('velocity DESC')
+    @feeds = Feed.includes(:topics)
+                 .page(0)
+                 .per(search_params[:count])
+                 .all
+                 .order('velocity DESC')
     result = {
       related: [],
          hint: "music",
@@ -33,11 +37,11 @@ class V3::FeedsController < V3::ApiController
 
 
   def set_feed
-    @feed = Feed.find(CGI.unescape params[:id])
+    @feed = Feed.includes(:topics).find(CGI.unescape params[:id])
   end
 
   def set_feeds
-    @feeds = Feed.find(params['_json'])
+    @feeds = Feed.includes(:topics).find(params['_json'])
     @feeds = params['_json'].map { |id|
       @feeds.select { |f| f.id == id }.first
     }

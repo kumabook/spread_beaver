@@ -7,13 +7,14 @@ class Entry < ActiveRecord::Base
   has_many :tracks, through: :entry_tracks
   self.primary_key = :id
 
-  scope :with_content,  ->        { includes(:tracks) }
-  scope :with_detail,   ->        { includes(:users).includes(:tracks) }
-  scope :latest,        -> (time) { where("published > ?", time).order('published DESC').with_content }
-  scope :popular,       ->        { joins(:users).order('saved_count DESC').with_content }
-  scope :subscriptions, ->   (ss) { where(feed: ss.map { |s| s.feed_id }).order('published DESC').with_content }
-  scope :feed,          -> (feed) { where(feed: feed).order('published DESC').with_content }
-  scope :saved,         ->  (uid) { joins(:users).includes(:tracks).where(users: { id: uid }) }
+  scope :with_content,  ->         { includes(:tracks) }
+  scope :with_detail,   ->         { includes(:users).includes(:tracks) }
+  scope :latest,        ->  (time) { where("published > ?", time).order('published DESC').with_content }
+  scope :popular,       ->         { joins(:users).order('saved_count DESC').with_content }
+  scope :subscriptions, ->    (ss) { where(feed: ss.map { |s| s.feed_id }).order('published DESC').with_content }
+  scope :feed,          ->  (feed) { where(feed: feed).order('published DESC').with_content }
+  scope :feeds,         -> (feeds) { where(feed: feeds).order('published DESC').with_content }
+  scope :saved,         ->   (uid) { joins(:users).includes(:tracks).where(users: { id: uid }) }
 
   JSON_ATTRS = ['content', 'categories', 'summary', 'alternate', 'origin', 'keywords', 'visual']
 
