@@ -1,11 +1,18 @@
 class SubscriptionsController < ApplicationController
   before_action :set_subscription, only: [:show, :destroy]
 
+  def index
+    @title = 'Subscriptions'
+    @subscriptions = Subscription.where(user_id: current_user.id).includes(:feed)
+    @feeds = @subscriptions.map { |s| s.feed }
+    render template: 'feeds/index'
+  end
+
   def create
     @subscription = Subscription.new(subscription_params)
     respond_to do |format|
       if @subscription.save
-        format.html { redirect_to feeds_path, notice: 'Subscription was successfully created.' }
+        format.html { redirect_to subscriptions_path, notice: 'Subscription was successfully created.' }
         format.json { render :show, status: :created, location: @subscription }
       else
         format.html { render :new }
@@ -17,7 +24,7 @@ class SubscriptionsController < ApplicationController
   def destroy
     @subscription.destroy
     respond_to do |format|
-      format.html { redirect_to feeds_path, notice: 'Subscription was successfully destroyed.' }
+      format.html { redirect_to subscriptions_path, notice: 'Subscription was successfully destroyed.' }
       format.json { head :no_content }
     end
   end

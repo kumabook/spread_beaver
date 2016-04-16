@@ -4,6 +4,7 @@ class FeedsController < ApplicationController
   before_action :require_admin, only: [:new, :create, :destroy, :update]
 
   def index
+    @title = 'Feeds'
     if @topic.present?
       @feeds = @topic.feeds.order('velocity DESC')
     else

@@ -1,0 +1,20 @@
+- @categories = current_user.categories
+= form_for @subscription, url: subscription_path(@subscription), html: { class: "form form-horizontal subscription" } do |f|
+  - if @subscription.errors.any?
+    #error_explanation
+      h2 = "#{pluralize(@subscription.errors.count, "error")} prohibited this subscription from being saved:"
+      ul
+        - @subscription.errors.full_messages.each do |message|
+          li = message
+
+  .form-group
+    = f.label :categories_ids, :class => 'control-label col-lg-2'
+    .col-lg-10
+      = f.collection_select(:categories, @categories, :id, :label,
+          {selected: @subscription.category_ids, include_blank: false, include_hidden: false},
+          {multiple: true})
+  .form-group
+    .col-lg-offset-2.col-lg-10
+      = f.submit nil, :class => 'btn btn-primary'
+      '
+      = link_to t('.cancel', :default => t("helpers.links.cancel")), subscriptions_path, :class => 'btn'
