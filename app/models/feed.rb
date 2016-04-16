@@ -1,8 +1,8 @@
 class Feed < ActiveRecord::Base
   has_many :entries
+  has_many :feed_topics
+  has_many :topics, through: :feed_topics
   self.primary_key = :id
-
-  JSON_ATTRS = ['topics']
 
   def self.first_or_create_by_feedlr(feed)
     Feed.find_or_create_by(id: feed.id) do |f|
@@ -18,7 +18,10 @@ class Feed < ActiveRecord::Base
       f.contentType = feed.contentType
       f.subscribers = feed.subscribers
       f.velocity    = feed.velocity
-      f.topics      = feed.topics
+
+      if feed.topics.present?
+        f.topics = feed.topics.map {|t| Topic.find_or_create_by(label: t) }
+      end
 
 =begin
       f.facebookLikes     = feed.facebookLikes,
@@ -71,9 +74,7 @@ class Feed < ActiveRecord::Base
   def as_json(options = {})
     h                = super(options)
     h['lastUpdated'] = lastUpdated.present? ? lastUpdated.to_time.to_i * 1000 : nil
-    JSON_ATTRS.each do |key|
-      h[key] = JSON.load(h[key])
-    end
+    h['topics']      = topics.map { |topic| topic.label }
     h
   end
 end
