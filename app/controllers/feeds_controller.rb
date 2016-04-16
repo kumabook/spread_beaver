@@ -1,9 +1,14 @@
 class FeedsController < ApplicationController
   before_action :set_feed, only: [:show, :edit, :update, :destroy]
+  before_action :set_topic, only: [:index]
   before_action :require_admin, only: [:new, :create, :destroy, :update]
 
   def index
-    @feeds = Feed.all.order('velocity DESC')
+    if @topic.present?
+      @feeds = @topic.feeds.order('velocity DESC')
+    else
+      @feeds = Feed.all.order('velocity DESC')
+    end
     @subscriptions = Subscription.where(user_id: current_user.id)
   end
 
@@ -57,7 +62,11 @@ class FeedsController < ApplicationController
   private
 
   def set_feed
-    @feed = Feed.find(CGI.unescape params[:id])
+    @feed = Feed.includes(:topics).find(CGI.unescape params[:id])
+  end
+
+  def set_topic
+    @topic = Topic.find_by(id: params[:topic_id])
   end
 
   def feed_params

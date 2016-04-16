@@ -53,7 +53,7 @@ p
 p
   strong= model_class.human_attribute_name(:topics) + ':'
   br
-  = @feed.topics
+  = @feed.topics.map { |t| t.label }
 
 = link_to t('.back', :default => t("helpers.links.back")),
           feeds_path,
