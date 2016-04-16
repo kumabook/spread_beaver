@@ -1,11 +1,11 @@
 = form_tag user_sessions_path, :method => :post do
-  div.field
-    = label_tag :email
+  .form-group
+    = label_tag :email, nil, class: 'control-label col-lg-2'
     br
-    = text_field_tag :email
-  div.field
-    = label_tag :password
+    = text_field_tag :email, nil, class: 'form-control'
+  .form-group
+    = label_tag :password, nil, class: 'control-label col-lg-2'
     br
-    = password_field_tag :password
+    = password_field_tag :password, nil, class: 'form-control'
   div class="actions"
-    = submit_tag "Login"
+    = submit_tag "Login", class: 'btn btn-default btn-primary'

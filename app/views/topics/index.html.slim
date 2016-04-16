@@ -1,20 +1,28 @@
-.container
-  .page-header
-    h1.title Topics
-  table.table.table-striped
-    thead
+.page-header
+  h1.title Topics
+
+= link_to 'New Topic', new_topic_path, class: 'btn btn-primary'
+
+br
+br
+table.table.table-striped
+  thead
+    tr
+      th.col-md-2 id
+      th          label
+      th.col-md-1 links
+      th          actions
+  tbody
+    - @topics.each do |topic|
       tr
-        th.col-md-1 id
-        th          label
-        th.col-md-1
-        th.col-md-1
-    tbody
-      - @topics.each do |topic|
-        tr
-          td = topic.id.truncate(10)
-          td = topic.label
-          td = link_to "Feeds", topic_feeds_path(topic)
-          td = link_to 'Edit', edit_topic_path(topic)
-          td = link_to 'Destroy', topic, data: {:confirm => 'Are you sure?'}, :method => :delete
-  br
-  = link_to 'New ', new_topic_path
+        td = topic.id.truncate(20)
+        td = topic.label
+        td
+          = link_to "Feeds", topic_feeds_path(topic), class: 'btn btn-xs btn-primary'
+        td
+          = link_to 'Edit', edit_topic_path(topic), class: 'btn btn-xs btn-primary'
+          '
+          = link_to 'Destroy', topic,
+                    data: {:confirm => 'Are you sure?'},
+                    :method => :delete,
+                    class: 'btn btn-xs btn-primary'

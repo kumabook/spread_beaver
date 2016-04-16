@@ -1,5 +1,5 @@
 class TracksController < ApplicationController
-  before_action :set_track, only: [:show, :update, :destroy]
+  before_action :set_track, only: [:show, :edit, :update, :destroy]
   before_action :set_entry, only: [:index]
 
   # GET /tracks
@@ -10,7 +10,7 @@ class TracksController < ApplicationController
       @likes  = Like.where(user_id: current_user.id,
                           track_id: @tracks.map { |t| t.id })
     else
-      @tracks = Track.order('created_at DESC').page()
+      @tracks = Track.order('created_at DESC').page(params[:page])
       @likes  = Like.where(user_id: current_user.id,
                           track_id: @tracks.map { |t| t.id })
     end
@@ -19,6 +19,10 @@ class TracksController < ApplicationController
   # GET /tracks/1
   # GET /tracks/1.json
   def show
+  end
+
+  def new
+    @track = Track.new
   end
 
   # POST /tracks

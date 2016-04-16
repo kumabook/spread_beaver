@@ -1,40 +1,38 @@
-- model_class = Entry
-
 .page-header
-  h1=t '.title', :default => model_class.model_name.human.pluralize.titleize
+  h1 Entries
+= link_to 'New Entry', new_entry_path, class: 'btn btn-primary'
+br
 
 = paginate @entries
-
 table.table.table-striped
   thead
     tr
-      th= model_class.human_attribute_name(:id)
-      th= model_class.human_attribute_name(:title)
-      th
-      th
+      th id
+      th title
+      th links
+      th actions
 
   tbody
     - @entries.each do |entry|
       tr
         td = entry.id.truncate(10)
         td = entry.title.truncate(50)
-        td = link_to 'Detail', entry_path(entry)
-        td = link_to "#{entry.tracks.size} tracks", entry_tracks_path(entry)
-        - if @user_entries.none? {|ue| ue.entry_id == entry.id }
-          td
+        td
+          = link_to 'Detail', entry_path(entry), class: 'btn btn-xs btn-primary'
+          '
+          = link_to "#{entry.tracks.size} tracks", entry_tracks_path(entry), class: 'btn btn-xs btn-primary'
+        td
+          - if @user_entries.none? {|ue| ue.entry_id == entry.id }
             = form_for :user_entry, url: '/user_entries', method: :post  do |f|
               = f.hidden_field :user_id, value: current_user.id
               = f.hidden_field :entry_id, value: entry.id
-              = f.submit 'Mark as Save', class: 'btn btn-primary'
-        - else
-          td
+              = f.submit 'Mark as Save', class: 'btn btn-xs btn-primary'
+          - else
             = form_for :user_entry, method: :delete do |f|
               = f.hidden_field :user_id, value: current_user.id
               = f.hidden_field :entry_id, value: entry.id
-              = f.submit 'Mark as Unsave', class: 'btn btn-primary'
-        td = link_to 'Edit', edit_entry_path(entry)
-        td = link_to 'Destroy', entry, data: {:confirm => 'Are you sure?'}, :method => :delete
-
-br
-
-= link_to 'New Entry', new_entry_path
+              = f.submit 'Mark as Unsave', class: 'btn btn-xs btn-primary'
+          = link_to 'Edit', edit_entry_path(entry), class: 'btn btn-xs btn-primary'
+          '
+          = link_to 'Destroy', entry, data: {:confirm => 'Are you sure?'},
+                    :method => :delete, class: 'btn btn-xs btn-primary'

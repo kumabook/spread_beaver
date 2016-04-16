@@ -1,0 +1,17 @@
+= form_for @feed, url: feeds_path, html: { class: "form form-horizontal feed" } do |f|
+  - if @feed.errors.any?
+    #error_explanation
+      h2 = "#{pluralize(@feed.errors.count, "error")} prohibited this feed from being saved:"
+      ul
+        - @feed.errors.full_messages.each do |message|
+          li = message
+
+  .form-group
+    = f.label :url, :class => 'control-label col-lg-2'
+    .col-lg-10
+      = f.text_field :id, :class => 'form-control'
+  .form-group
+    .col-lg-offset-2.col-lg-10
+      = f.submit nil, :class => 'btn btn-primary'
+      '
+      = link_to t('.cancel', :default => t("helpers.links.cancel")), feeds_path, :class => 'btn'

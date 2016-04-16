@@ -1,19 +1,21 @@
-- model_class = Feed
-
 .page-header
-  h1=t '.title', :default => model_class.model_name.human.pluralize.titleize
+  h1 Feeds
+
+= link_to 'New Feed', new_feed_path, class: 'btn btn-primary'
+
+br
+br
+
 table.table.table-striped
   thead
     tr
-      th= model_class.human_attribute_name(:velocity)
-      th= model_class.human_attribute_name(:title)
-      th= model_class.human_attribute_name(:description)
-      th= model_class.human_attribute_name(:lastUpdated)
-      th= model_class.human_attribute_name(:crawled)
-      th
-      th
-      th
-      th
+      th velocity
+      th title
+      th description
+      th lastUpdated
+      th crawled
+      th links
+      th actions
 
   tbody
     - @feeds.each do |feed|
@@ -24,22 +26,19 @@ table.table.table-striped
         td = feed.description.truncate(30)
         td = feed.lastUpdated
         td = feed.crawled
-        td = link_to 'Detail', feed_path(feed.escape), class: 'btn btn-primary'
-        td = link_to 'Entries', feed_entries_path(feed.escape), class: 'btn btn-primary'
-        - if subscription.nil?
-          td
+        td
+          = link_to 'Detail', feed_path(feed.escape), class: 'btn btn-xs btn-primary'
+          '
+          = link_to 'Entries', feed_entries_path(feed.escape), class: 'btn btn-xs btn-primary'
+        td
+          - if subscription.nil?
             = form_for :subscription, url: '/subscriptions', method: :post do |f|
               = f.hidden_field :user_id, value: current_user.id
               = f.hidden_field :feed_id, value: feed.id
-              = f.submit 'Subscribe', class: 'btn btn-primary'
-        - else
-          td
+              = f.submit 'Subscribe', class: 'btn btn-xs btn-primary'
+          - else
             = form_for subscription, method: :delete do |f|
               = hidden_field :user_id, current_user.id
               = hidden_field :feed_id, feed.id
-              = f.submit 'Unsubscribe', class: 'btn btn-primary'
-        td = link_to 'Edit', edit_feed_path(feed.escape), class: 'btn btn-primary'
-
-br
-
-= link_to 'New Feed', new_feed_path
+              = f.submit 'Unsubscribe', class: 'btn btn-xs btn-primary'
+          = link_to 'Edit', edit_feed_path(feed.escape), class: 'btn btn-xs btn-primary'
