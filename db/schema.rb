@@ -11,11 +11,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160416035945) do
+ActiveRecord::Schema.define(version: 20160416152442) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "uuid-ossp"
+
+  create_table "categories", id: false, force: :cascade do |t|
+    t.string   "id",          null: false
+    t.string   "label",       null: false
+    t.string   "description"
+    t.uuid     "user_id",     null: false
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  add_index "categories", ["id"], name: "index_categories_on_id", unique: true, using: :btree
+  add_index "categories", ["label"], name: "index_categories_on_label", unique: true, using: :btree
 
   create_table "entries", id: false, force: :cascade do |t|
     t.string   "id"
@@ -146,6 +158,15 @@ ActiveRecord::Schema.define(version: 20160416035945) do
   end
 
   add_index "preferences", ["user_id", "key"], name: "index_preferences_on_user_id_and_key", unique: true, using: :btree
+
+  create_table "subscription_categories", force: :cascade do |t|
+    t.integer  "subscription_id"
+    t.string   "category_id"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+  end
+
+  add_index "subscription_categories", ["subscription_id", "category_id"], name: "subscription_categories_index", unique: true, using: :btree
 
   create_table "subscriptions", force: :cascade do |t|
     t.uuid     "user_id",    null: false

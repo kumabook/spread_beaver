@@ -1,6 +1,7 @@
 class User < ActiveRecord::Base
   has_many :preferences
   has_many :subscriptions
+  has_many :categories
   has_many :user_entries
   has_many :likes
   has_many :tracks, through: :likes
