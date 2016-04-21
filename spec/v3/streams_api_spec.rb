@@ -10,8 +10,11 @@ RSpec.describe "Streams api", type: :request, autodoc: true do
       @subscribed   = FactoryGirl.create(:feed)
       @topic        = FactoryGirl.create(:topic)
       @feed.topics  = [@topic]
-      Subscription.create! user: @user,
-                           feed: @subscribed
+      @subscription = Subscription.create! user: @user,
+                                           feed: @subscribed
+      @category     = Category.create! subscriptions: [@subscription],
+                                               label: "category",
+                                                user: @user
       (0...ITEM_NUM).to_a.each { |n|
         UserEntry.create! user: @user,
                           entry: @feed.entries[n],
@@ -100,6 +103,20 @@ RSpec.describe "Streams api", type: :request, autodoc: true do
       expect(result['items'].count).to eq(PER_PAGE)
       result['items'].each { |item|
         expect(Entry.find(item['id']).feed).to eq(@feed)
+      }
+    end
+
+    it "gets entries of feeds that has a specified category" do
+      resource = CGI.escape @category.id
+      get "/v3/streams/#{resource}/contents", {
+            newer_than: 200.days.ago.to_time.to_i * 1000,
+            older_than: Time.now.to_i * 1000
+          },
+          Authorization: "Bearer #{@token['access_token']}"
+      result = JSON.parse @response.body
+      expect(result['items'].count).to eq(PER_PAGE)
+      result['items'].each { |item|
+        expect(Entry.find(item['id']).feed).to eq(@subscription.feed)
       }
     end
   end

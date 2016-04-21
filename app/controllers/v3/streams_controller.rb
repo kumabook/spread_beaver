@@ -4,6 +4,7 @@ class V3::StreamsController < V3::ApiController
   before_action :set_global_resource, only: [:index]
   before_action :set_feed           , only: [:index]
   before_action :set_topic          , only: [:index]
+  before_action :set_category       , only: [:index]
   before_action :set_page           , only: [:index]
 
   LATEST_ENTRIES_PER_FEED = 3
@@ -40,6 +41,10 @@ class V3::StreamsController < V3::ApiController
       @entries = Entry.page(@page)
                       .per(@per_page)
                       .feeds(@topic.feeds)
+    elsif @category.present?
+      @entries = Entry.page(@page)
+                      .per(@per_page)
+                      .feeds(@category.subscriptions.map { |s| s.feed_id })
     end
     continuation = nil
     if @entries.nil?
@@ -72,6 +77,10 @@ class V3::StreamsController < V3::ApiController
 
   def set_topic
     @topic = Topic.includes(:feeds).find_by(id: CGI.unescape(params[:id])) if params[:id].present?
+  end
+
+  def set_category
+    @category = Category.includes(:subscriptions).find_by(id: CGI.unescape(params[:id])) if params[:id].present?
   end
 
   def set_global_resource
