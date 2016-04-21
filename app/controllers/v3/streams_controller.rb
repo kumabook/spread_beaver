@@ -1,6 +1,7 @@
 class V3::StreamsController < V3::ApiController
   include Pagination
   before_action :doorkeeper_authorize!
+  before_action :set_stream_id      , only: [:index]
   before_action :set_global_resource, only: [:index]
   before_action :set_feed           , only: [:index]
   before_action :set_topic          , only: [:index]
@@ -71,27 +72,36 @@ class V3::StreamsController < V3::ApiController
 
   private
 
+  def set_stream_id
+    @stream_id = CGI.unescape params[:id] if params[:id].present?
+  end
+
   def set_feed
-    @feed = Feed.find_by(id: CGI.unescape(params[:id])) if params[:id].present?
+    if params[:id].present?
+      @feed = Feed.find_by(id: @stream_id)
+    end
   end
 
   def set_topic
-    @topic = Topic.includes(:feeds).find_by(id: CGI.unescape(params[:id])) if params[:id].present?
+    if params[:id].present?
+      @topic = Topic.includes(:feeds).find_by(id: @stream_id)
+    end
   end
 
   def set_category
-    @category = Category.includes(:subscriptions).find_by(id: CGI.unescape(params[:id])) if params[:id].present?
+    if params[:id].present?
+      @category = Category.includes(:subscriptions).find_by(id: @stream_id)
+    end
   end
 
   def set_global_resource
-    str = CGI.unescape params[:id] if params[:id].present?
-    if str.match /tag\/global\.latest/
+    if @stream_id.match /tag\/global\.latest/
       @resource = :latest
-    elsif str.match /tag\/global\.popular/
+    elsif @stream_id.match /tag\/global\.popular/
       @resource = :popular
-    elsif str.match /user\/.*\/category\/global\.all/
+    elsif @stream_id.match /user\/.*\/category\/global\.all/
       @resource = :all
-    elsif str.match /user\/.*\/tag\/global\.saved/
+    elsif @stream_id.match /user\/.*\/tag\/global\.saved/
       @resource = :saved
     end
   end
