@@ -14,6 +14,7 @@ html
             li = link_to "Feeds"        , feeds_path
             li = link_to "Entries"      , entries_path
             li = link_to "Tracks"       , tracks_path
+            li = link_to "Categories"   , categories_path
             li = link_to "Subscriptions", subscriptions_path
             - if current_user.admin?
               li = link_to "Application", oauth_applications_path

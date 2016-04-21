@@ -19,7 +19,10 @@ Rails.application.routes.draw do
   resources :topics do
     resources :feeds, only: [:index]
   end
-  resources :subscriptions, only: [:index, :create, :destroy]
+  resources :subscriptions
+  resources :categories do
+    resources :subscriptions, only: [:index]
+  end
   resources :tracks
   resources :likes
 
