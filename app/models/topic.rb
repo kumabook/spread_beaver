@@ -9,6 +9,6 @@ class Topic < ActiveRecord::Base
 
   private
   def set_id
-    self.id = "topics/#{self.label}"
+    self.id = "topic/#{self.label}"
   end
 end
