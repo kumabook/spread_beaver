@@ -77,19 +77,19 @@ class V3::StreamsController < V3::ApiController
   end
 
   def set_feed
-    if params[:id].present?
+    if params[:id].present? && @stream_id.match(/feed\/.*/)
       @feed = Feed.find_by(id: @stream_id)
     end
   end
 
   def set_topic
-    if params[:id].present?
+    if params[:id].present? && @stream_id.match(/topic\/.*/)
       @topic = Topic.includes(:feeds).find_by(id: @stream_id)
     end
   end
 
   def set_category
-    if params[:id].present?
+    if params[:id].present? && @stream_id.match(/user\/.*\/category\/.*/)
       @category = Category.includes(:subscriptions).find_by(id: @stream_id)
     end
   end
