@@ -55,6 +55,10 @@ Rails.application.routes.draw do
     post '/entries/.mget'        => 'entries#list'
 
     resources :subscriptions, only: [:index, :create, :destroy], constraints: { id: resource_id_regex }
+
+    resources :categories, only: [:index, :destroy], constraints: { id: resource_id_regex }
+    post '/categories/:id/' => 'categories#update', constraints: { id: resource_id_regex }
+
     resources :tracks,        only: [:show], constraints: { id: uuid_regex }
     post  '/tracks/.mget'        => 'tracks#list'
   end
