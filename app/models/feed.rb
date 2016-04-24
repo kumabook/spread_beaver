@@ -1,4 +1,5 @@
 class Feed < ActiveRecord::Base
+  include Escapable
   has_many :entries
   has_many :feed_topics
   has_many :topics, through: :feed_topics
@@ -66,18 +67,6 @@ class Feed < ActiveRecord::Base
     end
     self.crawled = DateTime.now
     save
-  end
-
-  def escape
-    clone = self.dup
-    clone.id = CGI.escape self.id
-    clone
-  end
-
-  def unescape
-    clone = self.dup
-    clone.id = CGI.unescape self.id
-    clone
   end
 
   def as_json(options = {})

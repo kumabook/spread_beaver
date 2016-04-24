@@ -1,4 +1,5 @@
 class Topic < ActiveRecord::Base
+  include Escapable
   has_many :feeds, through: :feed_topics
   has_many :feed_topics
 
