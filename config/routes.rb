@@ -51,6 +51,9 @@ Rails.application.routes.draw do
     get  '/search/feeds'         => 'feeds#search'
     post '/feeds/.mget'          => 'feeds#list'
 
+    resources :topics, only: [:index, :update, :destroy], constraints: { id: resource_id_regex }
+    post '/topics/:id/' => 'topics#update', constraints: { id: resource_id_regex }
+
     resources :entries, only: [:show], constraints: { id: resource_id_regex }
     post '/entries/.mget'        => 'entries#list'
 
