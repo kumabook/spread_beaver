@@ -61,10 +61,10 @@ FactoryGirl.define do
     sequence(:id) { |n| "feed/http://test#{n}.com/rss" }
     sequence(:title) { |n| "Test feed #{n}" }
     description  "description"
-    website      "http://test.com"
-    visualUrl    "http://test.com"
-    coverUrl     "http://test.com"
-    iconUrl      "http://test.com"
+    sequence(:website)      { |n| "http://test#{n}.com" }
+    sequence(:visualUrl)    { |n| "http://test#{n}.com/visual" }
+    sequence(:coverUrl)     { |n| "http://test#{n}.com/cover" }
+    sequence(:iconUrl)      { |n| "http://test#{n}.com/icon" }
     language     "ja"
     partial      "t"
     coverColor   "000000"

@@ -16,13 +16,59 @@ RSpec.describe "Feeds api", :type => :request, autodoc: true do
     count = Feed.count
     get "/v3/search/feeds", {
           query: '',
-          count: count - 1,
+          count: count,
           locale: 'ja'
         }, Authorization: "Bearer #{@token['access_token']}"
     result = JSON.parse @response.body
-    expect(result['results'].count).to eq(count - 1)
+    expect(result['results'].count).to eq(count)
     expect(result['hint']).to eq('')
   end
+
+  it "searches feeds with topic" do
+    count = Feed.count
+    get "/v3/search/feeds", {
+          query: "##{@topic.label}",
+          count: count,
+          locale: 'ja'
+        }, Authorization: "Bearer #{@token['access_token']}"
+    result = JSON.parse @response.body
+    expect(result['results'].count).to eq(count)
+    expect(result['hint']).to eq('')
+  end
+
+  it "searches feeds with url" do
+    count = Feed.count
+    get "/v3/search/feeds", {
+          query: "#{@feeds.first.website}",
+          count: count,
+          locale: 'ja'
+        }, Authorization: "Bearer #{@token['access_token']}"
+    result = JSON.parse @response.body
+    expect(result['results'].count).to eq(1)
+    expect(result['hint']).to eq('')
+  end
+
+  it "searches feeds with title" do
+    count = Feed.count
+    get "/v3/search/feeds", {
+          query: "Test",
+          count: count,
+          locale: 'ja'
+        }, Authorization: "Bearer #{@token['access_token']}"
+    result = JSON.parse @response.body
+    expect(result['results'].count).to eq(count)
+    expect(result['hint']).to eq('')
+
+    get "/v3/search/feeds", {
+          query: "1",
+          count: count,
+          locale: 'ja'
+        }, Authorization: "Bearer #{@token['access_token']}"
+    result = JSON.parse @response.body
+    expect(result['results'].count).to eq(1)
+    expect(result['hint']).to eq('')
+  end
+
 
   it "shows a feed by id" do
     id = @feeds[0].escape.id

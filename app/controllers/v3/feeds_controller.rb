@@ -4,10 +4,10 @@ class V3::FeedsController < V3::ApiController
   before_action :set_feeds, only: [:list]
 
   def search
-    @feeds = Feed.includes(:topics)
-                 .page(0)
+    @feeds = Feed.page(0)
                  .per(search_params[:count])
-                 .all
+                 .search(search_params[:query])
+                 .locale(search_params[:locale])
                  .order('velocity DESC')
     result = {
       related: [],

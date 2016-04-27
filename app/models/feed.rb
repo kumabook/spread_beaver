@@ -5,6 +5,24 @@ class Feed < ActiveRecord::Base
   has_many :topics, through: :feed_topics
   self.primary_key = :id
 
+  scope :search, -> (query) {
+    q = search_query(query)
+    case q[:type]
+    when :all
+      includes(:topics).all
+    when :topic
+      joins(:topics).where(topics: { label: q[:value]})
+    when :url
+      includes(:topics).where(website: q[:value])
+    when :title
+      includes(:topics).where(arel_table[:title].matches("%#{q[:value]}%"))
+    else
+      includes(:topics).all
+    end
+  }
+
+  scope :locale, -> (locale) { where(language: locale) }
+
   def self.first_or_create_by_feedlr(feed)
     Feed.find_or_create_by(id: feed.id) do |f|
       f.title       = feed.title
@@ -75,4 +93,24 @@ class Feed < ActiveRecord::Base
     h['topics']      = topics.map { |topic| topic.label }
     h
   end
+
+  def self.search_query(query)
+    if query.blank?
+      return { type: :all }
+    elsif query.start_with? "#"
+      return { type: :topic, value: query[1..-1] }
+    elsif is_url? query
+      return { type: :url, value: query }
+    else
+      return { type: :title, value: query }
+    end
+  end
+
+  def self.is_url?(url)
+    uri = URI.parse(url)
+    uri.scheme.present?
+  rescue URI::InvalidURIError
+    false
+  end
+
 end
