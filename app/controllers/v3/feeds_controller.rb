@@ -11,7 +11,7 @@ class V3::FeedsController < V3::ApiController
                  .order('velocity DESC')
     result = {
       related: [],
-         hint: "music",
+         hint: "",
       results: @feeds
     }
 

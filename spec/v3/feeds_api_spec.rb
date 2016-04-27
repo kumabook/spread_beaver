@@ -21,7 +21,7 @@ RSpec.describe "Feeds api", :type => :request, autodoc: true do
         }, Authorization: "Bearer #{@token['access_token']}"
     result = JSON.parse @response.body
     expect(result['results'].count).to eq(count - 1)
-    expect(result['hint']).to eq('music')
+    expect(result['hint']).to eq('')
   end
 
   it "shows a feed by id" do
