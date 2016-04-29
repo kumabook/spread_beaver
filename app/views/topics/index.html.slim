@@ -18,6 +18,7 @@ table.table.table-striped
       tr
         td = topic.id.truncate(20)
         td = topic.label
+        td = topic.description
         td
           = link_to "Feeds", topic_feeds_path(topic), class: 'btn btn-xs btn-primary'
         td
