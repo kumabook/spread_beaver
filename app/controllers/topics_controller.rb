@@ -2,7 +2,7 @@ class TopicsController < ApplicationController
   before_action :set_topic, only: [:edit, :destroy, :update]
   before_action :require_admin, only: [:new, :create, :destroy, :update]
   def index
-    @topics = Topic.all
+    @topics = Topic.order('engagement DESC').all
   end
 
   def new
@@ -52,6 +52,6 @@ class TopicsController < ApplicationController
   end
 
   def topic_params
-    params.require(:topic).permit(:id, :label, :description)
+    params.require(:topic).permit(:id, :label, :description, :engagement)
   end
 end

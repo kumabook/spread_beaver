@@ -11,6 +11,7 @@ table.table.table-striped
       th.col-md-2 id
       th          label
       th          description
+      th          engagement
       th.col-md-1 links
       th          actions
   tbody
@@ -19,6 +20,7 @@ table.table.table-striped
         td = topic.id.truncate(20)
         td = topic.label
         td = topic.description
+        td = topic.engagement
         td
           = link_to "Feeds", topic_feeds_path(topic), class: 'btn btn-xs btn-primary'
         td
