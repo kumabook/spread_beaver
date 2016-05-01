@@ -21,7 +21,9 @@ class Feed < ActiveRecord::Base
     end
   }
 
-  scope :locale, -> (locale) { where(language: locale) }
+  scope :locale, -> (locale) {
+    where(language: locale) if locale.present?
+  }
 
   def self.first_or_create_by_feedlr(feed)
     Feed.find_or_create_by(id: feed.id) do |f|
