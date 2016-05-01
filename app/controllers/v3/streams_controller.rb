@@ -6,6 +6,7 @@ class V3::StreamsController < V3::ApiController
   before_action :set_feed           , only: [:index]
   before_action :set_topic          , only: [:index]
   before_action :set_category       , only: [:index]
+  before_action :set_need_visual    , only: [:index]
   before_action :set_page           , only: [:index]
 
   LATEST_ENTRIES_PER_FEED = 3
@@ -47,6 +48,7 @@ class V3::StreamsController < V3::ApiController
                       .per(@per_page)
                       .feeds(@category.subscriptions.map { |s| s.feed_id })
     end
+
     continuation = nil
     if @entries.nil?
       render json: {message: "Not found" }, status: 404
@@ -56,6 +58,12 @@ class V3::StreamsController < V3::ApiController
       if @entries.total_count >= @per_page * @page + 1
         continuation = self.class.continuation(@page + 1, @per_page)
       end
+    end
+    # TODO: currently visual is json string,
+    # so we cannot check if the entry has visual or not.
+    # Visual table should be created and check with where clause
+    if @need_visual
+      @entries = @entries.select { |entry| entry.has_visual? }
     end
     h = {
       direction: "ltr",
@@ -103,6 +111,16 @@ class V3::StreamsController < V3::ApiController
       @resource = :all
     elsif @stream_id.match /user\/.*\/tag\/global\.saved/
       @resource = :saved
+    end
+  end
+
+  def set_need_visual
+    if @resource.present?
+      @need_visual = true
+    elsif @topic.present?
+      @need_visual = true
+    else
+      @need_visual = false
     end
   end
 end

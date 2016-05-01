@@ -28,7 +28,7 @@ FactoryGirl.define do
     alternate       "[]"
     origin          "{}"
     keywords        "[]"
-    visual          "{}"
+    visual          '{"url": "http://test.jpg"}'
     tags            "null"
     categories      "null"
     unread          true

@@ -63,6 +63,11 @@ class Entry < ActiveRecord::Base
     originId
   end
 
+  def has_visual?
+    visual = JSON.load(self.visual)
+    visual.present? && visual['url'].present? && visual['url'] != 'none'
+  end
+
   def self.latest_entries(entries_per_feed: 3, since: 3.days.ago)
     # TODO: Add page and per_page if need be
     entries = Entry.latest(since)

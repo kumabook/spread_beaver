@@ -1,5 +1,5 @@
 class V3::FeedsController < V3::ApiController
-  before_action :doorkeeper_authorize!
+#  before_action :doorkeeper_authorize!
   before_action :set_feed,  only: [:show]
   before_action :set_feeds, only: [:list]
 
