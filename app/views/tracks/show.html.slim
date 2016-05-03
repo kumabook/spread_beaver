@@ -23,6 +23,6 @@ p
   - url = Track.url(@track.provider, @track.identifier)
   = link_to 'permalink', Track.url(@track.provider, @track.identifier)
 
-= link_to 'Edit', edit_track_path(@track), :class => 'btn btn-default btn-primary'
+= link_to 'Edit', edit_track_path(@track), :class => 'btn btn-primary'
 '
 = link_to 'Delete', track_path(@track), :method => "delete", :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, :class => 'btn btn-danger'
