@@ -93,6 +93,7 @@ class Feed < ActiveRecord::Base
     puts "Fetch latest entries of #{id}"
     newer_than = crawled.present? ? crawled.to_time.to_i : nil
     cursor = client.stream_entries_contents(id, newerThan: newer_than)
+    sleep(0.1)
     cursor.items.each do |entry|
       e = Entry.first_or_create_by_feedlr(entry, self)
       puts "Fetch tracks of #{e.url}"
