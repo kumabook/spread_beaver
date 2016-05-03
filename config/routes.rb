@@ -9,6 +9,7 @@ Rails.application.routes.draw do
     resources :preferences, except: [:show]
   end
   resources :entries do
+    get 'feedly' => :show_feedly
     resources :tracks, only: :index
   end
   resources :user_entries, only: [:create, :destroy]

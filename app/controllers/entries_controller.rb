@@ -1,5 +1,5 @@
 class EntriesController < ApplicationController
-  before_action :set_entry, only: [:show, :edit, :update, :destroy]
+  before_action :set_entry, only: [:show, :show_feedly, :edit, :update, :destroy]
   before_action :set_feed, only: [:index]
   before_action :require_admin, only: [:new, :create, :destroy, :update]
 
@@ -19,6 +19,11 @@ class EntriesController < ApplicationController
                                      entry_id: @entries.map { |e| e.id })
     end
     @entries = [] if @entries.nil?
+  end
+
+  def show_feedly
+    client = Feedlr::Client.new(sandbox: false)
+    @feedlr_entry = client.user_entry(@entry.id)
   end
 
   def new
@@ -64,7 +69,7 @@ class EntriesController < ApplicationController
   private
 
   def set_entry
-    @entry = Entry.find(params[:id])
+    @entry = Entry.find(params[:id] || params[:entry_id])
   end
 
   def set_feed

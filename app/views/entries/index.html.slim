@@ -32,6 +32,8 @@ table.table.table-striped
         td
           = link_to 'Detail', entry_path(entry), class: 'btn btn-xs btn-primary'
           '
+          = link_to 'Feedly', entry_feedly_path(entry), class: 'btn btn-xs btn-primary'
+          br
           = link_to "#{entry.tracks.size} tracks", entry_tracks_path(entry), class: 'btn btn-xs btn-primary'
         td
           - if @user_entries.none? {|ue| ue.entry_id == entry.id }

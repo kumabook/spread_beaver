@@ -1,0 +1,77 @@
+.page-header
+  h1 Entry on Feedly
+table.table.table-striped
+  thead
+    tr
+      th name
+      th value
+  tbody
+    tr
+      td id
+      td = @feedlr_entry.id
+    tr
+      td visual image
+      td = thumbnail_image_link(@feedlr_entry.visual.url)
+    tr
+      td title
+      td = @feedlr_entry.title
+    tr
+      td content
+      td = @feedlr_entry.content
+    tr
+      td summary
+      td = @feedlr_entry.summary
+    tr
+      td author
+      td = @feedlr_entry.author
+    tr
+      td alternate
+      td = @feedlr_entry.alternate
+    tr
+      td origin
+      td = @feedlr_entry.origin
+    tr
+      td keywords
+      td = @feedlr_entry.keywords
+    tr
+      td visual
+      td = @feedlr_entry.visual
+    tr
+      td tags
+      td = @feedlr_entry.tags
+    tr
+      td categories
+      td = @feedlr_entry.categories
+    tr
+      td unread
+      td = @feedlr_entry.unread
+    tr
+      td engagement
+      td = @feedlr_entry.engagement
+    tr
+      td actionTimestamp
+      td = @feedlr_entry.actionTimestamp
+    tr
+      td enclosure
+      td = @feedlr_entry.enclosure
+    tr
+      td fingerprint
+      td = @feedlr_entry.fingerprint
+    tr
+      td originId
+      td = @feedlr_entry.originId
+    tr
+      td sid
+      td = @feedlr_entry.sid
+    tr
+      td crawled
+      td = @feedlr_entry.crawled
+    tr
+      td recrawled
+      td = @feedlr_entry.recrawled
+    tr
+      td published
+      td = @feedlr_entry.published
+    tr
+      td updated
+      td = @feedlr_entry.updated
