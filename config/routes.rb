@@ -9,14 +9,16 @@ Rails.application.routes.draw do
     resources :preferences, except: [:show]
   end
   resources :entries do
-    get 'feedly' => :show_feedly
+    get 'feedly' => :show_feedly, on: :member
     resources :tracks, only: :index
   end
   resources :user_entries, only: [:create, :destroy]
   resources :feeds, constraints: { id: resource_id_regex },
                     shallow: true do
+    get 'feedly' => :show_feedly, on: :member
     resources :entries, only: [:index], constraints: { id: uuid_regex }
   end
+
   resources :topics do
     resources :feeds, only: [:index]
   end

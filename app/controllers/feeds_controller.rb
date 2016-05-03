@@ -1,5 +1,5 @@
 class FeedsController < ApplicationController
-  before_action :set_feed, only: [:show, :edit, :update, :destroy]
+  before_action :set_feed, only: [:show, :show_feedly, :edit, :update, :destroy]
   before_action :set_topic, only: [:index]
   before_action :require_admin, only: [:new, :create, :destroy, :update]
 
@@ -14,6 +14,11 @@ class FeedsController < ApplicationController
   end
 
   def show
+  end
+
+  def show_feedly
+    client = Feedlr::Client.new(sandbox: false)
+    @feedlr_feed = client.feed(@feed.id)
   end
 
   def new
@@ -68,7 +73,7 @@ class FeedsController < ApplicationController
   private
 
   def set_feed
-    @feed = Feed.includes(:topics).find(CGI.unescape params[:id])
+    @feed = Feed.includes(:topics).find(CGI.unescape(params[:id]))
   end
 
   def set_topic

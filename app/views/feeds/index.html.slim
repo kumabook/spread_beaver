@@ -34,6 +34,8 @@ table.table.table-striped
         td
           = link_to 'Detail', feed_path(feed.escape), class: 'btn btn-xs btn-primary'
           '
+          = link_to 'Feedly', feedly_feed_path(feed.escape), class: 'btn btn-xs btn-primary'
+          br
           = link_to 'Entries', feed_entries_path(feed.escape), class: 'btn btn-xs btn-primary'
         td
           - if subscription.nil?

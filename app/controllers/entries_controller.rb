@@ -69,7 +69,7 @@ class EntriesController < ApplicationController
   private
 
   def set_entry
-    @entry = Entry.find(params[:id] || params[:entry_id])
+    @entry = Entry.find(params[:id])
   end
 
   def set_feed
