@@ -95,7 +95,7 @@ class Feed < ActiveRecord::Base
     cursor = client.stream_entries_contents(id, newerThan: newer_than)
     cursor.items.each do |entry|
       e = Entry.first_or_create_by_feedlr(entry, self)
-      puts "Fetch tracks of entry(originId: #{e.originId})"
+      puts "Fetch tracks of #{e.url}"
       playlist = e.fetch_playlist
       playlist.create_tracks.each do |track|
         puts "  Create track #{track.provider} #{track.identifier}"
