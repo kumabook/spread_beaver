@@ -1,22 +1,23 @@
 Rails.application.routes.draw do
   resource_id_regex  = /[a-zA-Z0-9\.%#\$&\?\(\)\=\+\-\_\:\?\\]+/
-  uuid_regex     = /[a-zA-Z0-9\-]+/
+  uuid_regex         = /[a-zA-Z0-9\-]+/
+  res_options        = { id: resource_id_regex }
+  uuid_options       = { id: uuid_regex }
   root :to => 'feeds#index'
 
   resources :user_sessions
   resources :users do
-    resources :entries, only: [:index], constraints: { id: resource_id_regex }
+    resources :entries, only: [:index], constraints: res_options
     resources :preferences, except: [:show]
   end
   resources :entries do
-    get 'feedly' => :show_feedly, on: :member
+    get 'feedly', action: :show_feedly, on: :member
     resources :tracks, only: :index
   end
   resources :user_entries, only: [:create, :destroy]
-  resources :feeds, constraints: { id: resource_id_regex },
-                    shallow: true do
-    get 'feedly' => :show_feedly, on: :member
-    resources :entries, only: [:index], constraints: { id: uuid_regex }
+  resources :feeds, constraints: res_options, shallow: true do
+    get 'feedly', action: :show_feedly, on: :member
+    resources :entries, only: [:index], constraints: uuid_options
   end
 
   resources :topics do
@@ -29,7 +30,7 @@ Rails.application.routes.draw do
   resources :tracks
   resources :likes
 
-  get 'login' => 'user_sessions#new', :as => :login
+  get  'login'  => 'user_sessions#new'    , :as => :login
   post 'logout' => 'user_sessions#destroy', :as => :logout
 
   scope :v3 do
@@ -37,35 +38,50 @@ Rails.application.routes.draw do
   end
 
   namespace :v3 do
-    get  '/profile'              => 'credentials#me'
-    put  '/profile'              => 'users#create'
+    resources :profile, only: [] do
+      collection do
+        get '' => 'credentials#me'
+        put '' => 'users#create'
+      end
+    end
 
-    get  '/preferences'          => 'preferences#index'
-    post '/preferences'          => 'preferences#update'
+    resources :preferences, only: [:index] do
+      post '', action: 'update', on: :collection
+    end
 
-    post '/markers'              => 'markers#mark'
+    post '/markers' => 'markers#mark'
 
-    get  '/streams/:id/ids'             => 'streams#index'       , constraints: { id: resource_id_regex }
-    get  '/streams/:id/contents'        => 'streams#index'       , constraints: { id: resource_id_regex }
-    get  '/streams/:id/tracks/ids'      => 'streams/tracks#index', constraints: { id: resource_id_regex }
-    get  '/streams/:id/tracks/contents' => 'streams/tracks#index', constraints: { id: resource_id_regex }
+    resources :streams, only: [], constraints: res_options do
+      member do
+        get 'ids',      action: :index
+        get 'contents', action: :index
 
-    resources :feeds, only: [:show], constraints: { id: resource_id_regex }
-    get  '/search/feeds'         => 'feeds#search'
-    post '/feeds/.mget'          => 'feeds#list'
+        get 'tracks/ids'      => 'streams/tracks#index'
+        get 'tracks/contents' => 'streams/tracks#index'
+      end
+    end
 
-    resources :topics, only: [:index, :destroy], constraints: { id: resource_id_regex }
-    post '/topics/:id/' => 'topics#update', constraints: { id: resource_id_regex }
+    resources :feeds, only: [:show], constraints: res_options do
+      post '.mget', action: :list, on: :collection
+    end
+    get '/search/feeds'         => 'feeds#search'
 
-    resources :entries, only: [:show], constraints: { id: resource_id_regex }
-    post '/entries/.mget'        => 'entries#list'
+    resources :topics, only: [:index, :destroy], constraints: res_options do
+      post '', action: :update, on: :member
+    end
 
-    resources :subscriptions, only: [:index, :create, :destroy], constraints: { id: resource_id_regex }
+    resources :entries, only: [:show], constraints: res_options do
+      post '.mget', action: :list, on: :collection
+    end
 
-    resources :categories, only: [:index, :destroy], constraints: { id: resource_id_regex }
-    post '/categories/:id/' => 'categories#update', constraints: { id: resource_id_regex }
+    resources :subscriptions, only: [:index, :create, :destroy], constraints: res_options
 
-    resources :tracks,        only: [:show], constraints: { id: uuid_regex }
-    post  '/tracks/.mget'        => 'tracks#list'
+    resources :categories, only: [:index, :destroy], constraints: res_options do
+      post '', action: :update, on: :member
+    end
+
+    resources :tracks,        only: [:show], constraints: { id: uuid_regex } do
+      post '.mget', action: :list, on: :collection
+    end
   end
 end
