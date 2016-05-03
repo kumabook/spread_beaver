@@ -64,6 +64,10 @@ class Entry < ActiveRecord::Base
     end
   end
 
+  def origin_hash
+    JSON.load(self.origin)
+  end
+
   def has_visual?
     visual_url.present? && visual_url != 'none'
   end

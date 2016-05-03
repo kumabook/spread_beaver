@@ -9,6 +9,7 @@ table.table.table-striped
     tr
       th visual
       th title
+      td feeds
       th published
       th crawled
       th links
@@ -16,9 +17,11 @@ table.table.table-striped
 
   tbody
     - @entries.each do |entry|
+      - path = feed_path(CGI.escape entry.origin_hash['streamId'])
       tr
         td = thumbnail_image_link(entry)
         td = link_to entry.title.truncate(50), entry.url
+        td = link_to entry.origin_hash['title'], path
         td = entry.published
         td = entry.crawled
         td
