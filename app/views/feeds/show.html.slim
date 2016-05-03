@@ -59,6 +59,10 @@ table.table.table-striped
           = link_to(t.label, topic_feeds_path(t))
           = raw('&nbsp');
 
+= link_to 'Entries',
+          feed_entries_path(@feed.escape),
+          :class => 'btn btn-info'
+'
 = link_to t('.edit', :default => t("helpers.links.edit")),
           edit_feed_path(@feed.escape),
           :class => 'btn btn-default btn-primary'
