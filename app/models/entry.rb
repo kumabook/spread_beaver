@@ -52,6 +52,35 @@ class Entry < ActiveRecord::Base
     e
   end
 
+  def self.update_visuals(max: 200)
+    self.order('published DESC').page(0).per(max)
+        .where(visual: nil).find_in_batches(batch_size: 20) do |entries|
+
+      client         = Feedlr::Client.new(sandbox: false)
+      feedlr_entries = client.user_entries(entries.map { |e| e.id })
+      hash = entries.reduce({}) do |h, e|
+        h[e.id] = {} if h[e.id].nil?
+        h[e.id][:entry] = e
+        h
+      end
+      feedlr_entries.reduce(hash) do |h, e|
+        h[e.id][:feedlr_entry] = e
+        h
+      end
+      hash.each do |id, value|
+        entry        = value[:entry]
+        feedlr_entry = value[:feedlr_entry]
+        visual       = feedlr_entry.visual
+        visual_url   = visual.url if visual.present?
+        if !entry.has_visual? && visual_url.present? && visual_url != "none"
+          puts "Update the visual of #{entry.url} with #{visual_url}"
+          entry.visual = visual.to_json
+          entry.save
+        end
+      end
+    end
+  end
+
   def url
     items = JSON.load(alternate)
     items.present? && items[0]['href']
