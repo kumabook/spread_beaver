@@ -1,6 +1,9 @@
 .page-header
-  h1 Feeds
-
+  h1
+    - if @topic.present?
+      = "Feeds of #{@topic.label}"
+    - else
+      = "Feeds"
 = link_to 'New Feed', new_feed_path, class: 'btn btn-primary'
 
 br
