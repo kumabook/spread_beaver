@@ -54,7 +54,7 @@ class Feed < ActiveRecord::Base
     end
   end
 
-  def self.create_with_ids(feedIds)
+  def self.find_or_create_with_ids(feedIds)
     client = Feedlr::Client.new(sandbox: false)
     feeds = client.feeds(feedIds)
     return [] if feeds.nil?
@@ -64,9 +64,28 @@ class Feed < ActiveRecord::Base
   end
 
   def self.fetch_all_latest_entries
-    Feed.all.each do |f|
-      f.fetch_latest_entries
+    feeds = Feed.all
+    Feed.update_visuals(feeds)
+    feeds.each { |f| f.fetch_latest_entries }
+  end
+
+  def self.update_visuals(feeds)
+    client = Feedlr::Client.new(sandbox: false)
+    feedlr_feeds = client.feeds(feeds.map { |f| f.id })
+    return [] if feedlr_feeds.nil?
+    feedlr_feeds.map do |feedlr_feed|
+      feeds.select { |f| f.id == feedlr_feed.id }.each do |feed|
+        puts "Update visuals of #{feedlr_feed.id}"
+        feed.update_visuals_with_feedlr(feedlr_feed)
+      end
     end
+  end
+
+  def update_visuals_with_feedlr(feed)
+    self.visualUrl   = feed.visualUrl if feed.visualUrl.present?
+    self.coverUrl    = feed.coverUrl  if feed.coverUrl.present?
+    self.iconUrl     = feed.iconUrl   if feed.iconUrl.present?
+    save
   end
 
   def fetch_latest_entries

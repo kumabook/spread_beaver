@@ -21,7 +21,7 @@ class FeedsController < ApplicationController
   end
 
   def create
-    @feed = Feed.create_with_ids(["feed/#{feed_params[:id]}"]).first
+    @feed = Feed.find_or_create_with_ids(["feed/#{feed_params[:id]}"]).first
     respond_to do |format|
       if @feed.nil?
         format.html { redirect_to new_feed_path, notice: 'The url is invalid' }
