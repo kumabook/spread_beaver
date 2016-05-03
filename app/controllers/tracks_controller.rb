@@ -6,7 +6,7 @@ class TracksController < ApplicationController
   # GET /tracks.json
   def index
     if @entry.present?
-      @tracks = @entry.tracks
+      @tracks = @entry.tracks.page(params[:page])
       @likes  = Like.where(user_id: current_user.id,
                           track_id: @tracks.map { |t| t.id })
     else
