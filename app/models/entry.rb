@@ -64,9 +64,17 @@ class Entry < ActiveRecord::Base
     items.present? && items[0]['href']
   end
 
-  def has_visual?
+  def visual_url
     visual = JSON.load(self.visual)
-    visual.present? && visual['url'].present? && visual['url'] != 'none'
+    if visual.present? && visual['url'].present?
+      visual['url']
+    else
+      nil
+    end
+  end
+
+  def has_visual?
+    visual_url.present? && visual_url != 'none'
   end
 
   def self.latest_entries(entries_per_feed: 3, since: 3.days.ago)
