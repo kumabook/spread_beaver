@@ -9,17 +9,14 @@ table.table.table-striped
       th id
       th provider
       th identifier
-      th url
       th.col-md-2 actions
   tbody
     - @tracks.each do |track|
       - like = @likes.to_a.select {|l| track.id == l.track_id }.first
       tr
-        td= link_to track.id, track_path(track)
-        td= track.provider
-        td= track.identifier
-        td
-          = link_to track.url, track.url
+        td = link_to track.id, track_path(track)
+        td = track.provider
+        td = link_to track.identifier, Track.url(track.provider, track.identifier)
         td
           - if like.nil?
             = form_for :like, url: '/likes', method: :post do |f|

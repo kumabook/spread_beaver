@@ -18,9 +18,10 @@ p
   br
   = @track.title
 p
-  strong url
+  strong permalink url
   br
-  = @track.url
+  - url = Track.url(@track.provider, @track.identifier)
+  = link_to 'permalink', Track.url(@track.provider, @track.identifier)
 
 = link_to 'Edit', edit_track_path(@track), :class => 'btn btn-default btn-primary'
 '
