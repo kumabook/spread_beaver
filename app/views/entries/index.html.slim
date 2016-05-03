@@ -9,6 +9,8 @@ table.table.table-striped
     tr
       th visual
       th title
+      th published
+      th crawled
       th links
       th actions
 
@@ -17,6 +19,8 @@ table.table.table-striped
       tr
         td = thumbnail_image_link(entry)
         td = link_to entry.title.truncate(50), entry.url
+        td = entry.published
+        td = entry.crawled
         td
           = link_to 'Detail', entry_path(entry), class: 'btn btn-xs btn-primary'
           '
