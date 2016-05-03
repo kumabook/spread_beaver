@@ -144,7 +144,7 @@ class Entry < ActiveRecord::Base
   end
 
   def fetch_playlist
-    api_url = "http://musicfav-cloud.herokuapp.com/playlistify"
+    api_url = "http://pink-spider.herokuapp.com/playlistify"
     response = RestClient.get api_url, params: { url: url}, :accept => :json
     return if response.code != 200
     hash = JSON.parse(response)
