@@ -48,7 +48,10 @@ table.table.table-striped
       td = @feed.velocity
     tr
       td topics
-      td = @feed.topics.map { |t| t.label }.join(' | ')
+      td
+        - @feed.topics.each do |t|
+          = link_to(t.label, topic_feeds_path(t))
+          = raw('&nbsp');
 
 = link_to t('.edit', :default => t("helpers.links.edit")),
           edit_feed_path(@feed.escape),
