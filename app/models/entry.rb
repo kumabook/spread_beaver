@@ -60,7 +60,8 @@ class Entry < ActiveRecord::Base
   end
 
   def url
-    originId
+    items = JSON.load(alternate)
+    items.present? && items[0]['href']
   end
 
   def has_visual?
