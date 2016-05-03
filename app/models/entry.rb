@@ -7,6 +7,8 @@ class Entry < ActiveRecord::Base
   has_many :tracks, through: :entry_tracks
   self.primary_key = :id
 
+  before_save :normalize_visual
+
   scope :with_content,  ->         { includes(:tracks) }
   scope :with_detail,   ->         { includes(:users).includes(:tracks) }
   scope :latest,        ->  (time) { where("published > ?", time).order('published DESC').with_content }
@@ -61,6 +63,15 @@ class Entry < ActiveRecord::Base
       visual['url']
     else
       nil
+    end
+  end
+
+  def normalize_visual
+    return if self.visual.nil?
+    v = JSON.load(self.visual)
+    if v.blank? || v['url'].blank? || v['url'] == "none"
+      puts "Clear the visual of #{self.url}"
+      self.visual = nil
     end
   end
 
