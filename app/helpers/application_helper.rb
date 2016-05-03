@@ -12,4 +12,16 @@ module ApplicationHelper
     end
     nil
   end
+
+  def thumbnail_image_tag(model, size = "50x50")
+    if model.is_a?(String)
+      image_tag(model, size: size)
+    elsif model.is_a?(Feed) && model.visualUrl.present?
+      image_tag(model.visualUrl, size: size)
+    elsif model.is_a?(Entry) && model.has_visual?
+      image_tag(model.visual_url, size: size)
+    else
+      image_tag(asset_path('no_image.png'), size: size)
+    end
+  end
 end
