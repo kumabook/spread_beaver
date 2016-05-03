@@ -7,6 +7,12 @@ table.table.table-striped
       th value
   tbody
     tr
+      td id
+      td = @entry.id
+    tr
+      td visual image
+      td = thumbnail_image_link(@entry)
+    tr
       td title
       td = @entry.title
     tr
@@ -36,9 +42,6 @@ table.table.table-striped
     tr
       td categories
       td = @entry.categories
-    tr
-      td visual
-      td = @entry.visual
     tr
       td unread
       td = @entry.unread

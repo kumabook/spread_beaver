@@ -7,7 +7,7 @@ br
 table.table.table-striped
   thead
     tr
-      th id
+      th visual
       th title
       th links
       th actions
@@ -15,8 +15,8 @@ table.table.table-striped
   tbody
     - @entries.each do |entry|
       tr
-        td = entry.id.truncate(10)
-        td = entry.title.truncate(50)
+        td = thumbnail_image_link(entry)
+        td = link_to entry.title.truncate(50), entry.url
         td
           = link_to 'Detail', entry_path(entry), class: 'btn btn-xs btn-primary'
           '
