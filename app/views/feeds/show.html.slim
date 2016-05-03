@@ -5,6 +5,7 @@ table.table.table-striped
     tr
       th name
       th value
+      th
 
   tbody
     tr
@@ -18,16 +19,19 @@ table.table.table-striped
       td = @feed.description
     tr
       td website
-      td = @feed.website
+      td = link_to @feed.website, @feed.website
     tr
       td visualUrl
       td = @feed.visualUrl
+      td = thumbnail_image_link(@feed.visualUrl)
     tr
       td coverUrl
       td = @feed.coverUrl
+      td = thumbnail_image_link(@feed.coverUrl)
     tr
       td iconUrl
       td = @feed.iconUrl
+      td = thumbnail_image_link(@feed.iconUrl);
     tr
       td language
       td = @feed.language
