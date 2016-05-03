@@ -13,15 +13,23 @@ module ApplicationHelper
     nil
   end
 
-  def thumbnail_image_tag(model, size = "50x50")
+  def thumbnail_path(model)
     if model.is_a?(String)
-      image_tag(model, size: size)
+      model
     elsif model.is_a?(Feed) && model.visualUrl.present?
-      image_tag(model.visualUrl, size: size)
+      model.visualUrl
     elsif model.is_a?(Entry) && model.has_visual?
-      image_tag(model.visual_url, size: size)
+      model.visual_url
     else
-      image_tag(asset_path('no_image.png'), size: size)
+      asset_path('no_image.png')
     end
+  end
+
+  def thumbnail_image_tag(model, size = "50x50")
+    image_tag(thumbnail_path(model), size: size, alt: "broken image")
+  end
+
+  def thumbnail_image_link(model, size = "50x50")
+    link_to thumbnail_image_tag(model, size), thumbnail_path(model)
   end
 end
