@@ -8,6 +8,7 @@ class Entry < ActiveRecord::Base
   has_many :keywords, through: :entry_keywords
   has_many :tags    , through: :entry_tags
   has_many :users   , through: :user_entries
+  has_many :readers , through: :read_entries, source: :user
   has_many :tracks  , through: :entry_tracks
   self.primary_key = :id
 

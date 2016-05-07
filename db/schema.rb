@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160507155406) do
+ActiveRecord::Schema.define(version: 20160507185324) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -60,8 +60,8 @@ ActiveRecord::Schema.define(version: 20160507155406) do
   add_index "entries", ["id"], name: "index_entries_on_id", unique: true, using: :btree
 
   create_table "entry_keywords", force: :cascade do |t|
-    t.string   "entry_id"
-    t.string   "keyword_id"
+    t.string   "entry_id",   null: false
+    t.string   "keyword_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -184,6 +184,15 @@ ActiveRecord::Schema.define(version: 20160507155406) do
   end
 
   add_index "preferences", ["user_id", "key"], name: "index_preferences_on_user_id_and_key", unique: true, using: :btree
+
+  create_table "read_entries", force: :cascade do |t|
+    t.uuid     "user_id",    null: false
+    t.string   "entry_id",   null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "read_entries", ["user_id", "entry_id"], name: "index_read_entries_on_user_id_and_entry_id", unique: true, using: :btree
 
   create_table "subscription_categories", force: :cascade do |t|
     t.integer  "subscription_id"
