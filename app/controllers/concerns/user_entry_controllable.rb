@@ -1,9 +1,14 @@
-class UserEntriesController < ApplicationController
-  before_action :set_user_entry, only: [:destroy]
+module UserEntryControllable
+  extend ActiveSupport::Concern
+  def self.included(base)
+    base.extend(ClassMethods)
+    base.class_eval {
+      before_action :set_user_entry, only: [:destroy]
+    }
+  end
+  module ClassMethods
+  end
 
-
-  # POST /user_entries
-  # POST /user_entries.json
   def create
     @user_entry = new_user_entry
 
@@ -18,8 +23,6 @@ class UserEntriesController < ApplicationController
     end
   end
 
-  # DELETE /user_entries/1
-  # DELETE /user_entries/1.json
   def destroy
     respond_to do |format|
       if @user_entry.destroy
