@@ -15,6 +15,7 @@ Rails.application.routes.draw do
     resources :tracks, only: :index
   end
   resources :user_entries, only: [:create, :destroy]
+  resources :read_entries, only: [:create, :destroy]
   resources :feeds, constraints: res_options, shallow: true do
     get 'feedly', action: :show_feedly, on: :member
     resources :entries, only: [:index], constraints: uuid_options

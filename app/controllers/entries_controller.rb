@@ -25,6 +25,8 @@ class EntriesController < ApplicationController
                       .page(params[:page])
     end
     @user_entries = UserEntry.where(user_id: current_user.id,
+                                    entry_id: @entries.map { |e| e.id })
+    @read_entries = ReadEntry.where(user_id: current_user.id,
                                    entry_id: @entries.map { |e| e.id })
     @entries = [] if @entries.nil?
   end

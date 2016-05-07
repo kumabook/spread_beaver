@@ -1,10 +1,11 @@
 class UserEntriesController < ApplicationController
   before_action :set_user_entry, only: [:destroy]
 
+
   # POST /user_entries
   # POST /user_entries.json
   def create
-    @user_entry = UserEntry.new(user_entry_params)
+    @user_entry = new_user_entry
 
     respond_to do |format|
       if @user_entry.save
@@ -35,6 +36,10 @@ class UserEntriesController < ApplicationController
 
     def set_user_entry
       @user_entry = UserEntry.find(params[:id])
+    end
+
+    def new_user_entry
+      UserEntry.new(user_entry_params)
     end
 
     def user_entry_params

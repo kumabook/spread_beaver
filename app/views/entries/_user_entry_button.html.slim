@@ -1,0 +1,11 @@
+- user_entry = user_entries.select {|ue| ue.entry_id == entry.id }.first
+- if user_entry.nil?
+  = form_for :user_entry, url: url, method: :post  do |f|
+    = f.hidden_field :user_id, value: current_user.id
+    = f.hidden_field :entry_id, value: entry.id
+    = f.submit label, class: 'btn btn-xs btn-primary'
+- else
+  = form_for user_entry, method: :delete do |f|
+    = f.hidden_field :user_id, value: user_entry.user_id
+    = f.hidden_field :entry_id, value: user_entry.entry_id
+    = f.submit labelForRemove, class: 'btn btn-xs btn-primary'

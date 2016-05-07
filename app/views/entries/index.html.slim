@@ -40,16 +40,19 @@ table.table.table-striped
           br
           = link_to "#{entry.tracks.size} tracks", entry_tracks_path(entry), class: 'btn btn-xs btn-primary'
         td
-          - if @user_entries.none? {|ue| ue.entry_id == entry.id }
-            = form_for :user_entry, url: '/user_entries', method: :post  do |f|
-              = f.hidden_field :user_id, value: current_user.id
-              = f.hidden_field :entry_id, value: entry.id
-              = f.submit 'Mark as Save', class: 'btn btn-xs btn-primary'
-          - else
-            = form_for :user_entry, method: :delete do |f|
-              = f.hidden_field :user_id, value: current_user.id
-              = f.hidden_field :entry_id, value: entry.id
-              = f.submit 'Mark as Unsave', class: 'btn btn-xs btn-primary'
+          = render partial: "user_entry_button",
+                    locals: { url: '/user_entries',
+                            label: 'Mark as Save',
+                   labelForRemove: 'Mark as Unsave',
+                            entry: entry,
+                     user_entries: @user_entries }
+          - user_entry = @user_entries.select {|ue| ue.entry_id == entry.id }.first
+          = render partial: "user_entry_button",
+                    locals: { url: '/read_entries',
+                            label: 'Mark as Read',
+                   labelForRemove: 'Mark as Unread',
+                            entry: entry,
+                     user_entries: @read_entries}
           = link_to 'Edit', edit_entry_path(entry), class: 'btn btn-xs btn-primary'
           '
           = link_to 'Destroy', entry, data: {:confirm => 'Are you sure?'},
