@@ -90,6 +90,10 @@ Rails.application.routes.draw do
       post '.mget', action: :list, on: :collection
     end
 
+    resources :keywords, only: [:index, :destroy], constraints: res_options do
+      post action: :update, on: :member
+    end
+
     resources :tags, only: [:index], constraints: res_options do
       id_list_regex = /[a-zA-Z0-9\.\,%#\$&\?\(\)\=\+\-\_\:\?\\]+/
       c             = { tag_ids: id_list_regex, entry_ids: id_list_regex }
