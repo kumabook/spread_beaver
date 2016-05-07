@@ -1,6 +1,8 @@
 .page-header
   h1
-    - if @tag.present?
+    - if @keyword.present?
+      = "Entries of keyword/#{@keyword.label}"
+    - elsif @tag.present?
       = "Entries of tag/#{@tag.label}"
     - elsif @feed.present?
       = "Entries of #{@feed.title}"

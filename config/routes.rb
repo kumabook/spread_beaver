@@ -29,6 +29,9 @@ Rails.application.routes.draw do
   end
   resources :tracks
   resources :likes
+  resources :keywords do
+    resources :entries, only: [:index]
+  end
   resources :tags do
     resources :entries, only: [:index]
   end

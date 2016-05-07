@@ -12,11 +12,12 @@ html
           - if current_user
             li = link_to "Topics"       , topics_path
             li = link_to "Feeds"        , feeds_path
-            li = link_to "Entries"      , entries_path
-            li = link_to "Tracks"       , tracks_path
             li = link_to "Categories"   , categories_path
             li = link_to "Subscriptions", subscriptions_path
+            li = link_to "Keywords"     , keywords_path
             li = link_to "Tags"         , tags_path
+            li = link_to "Entries"      , entries_path
+            li = link_to "Tracks"       , tracks_path
             - if current_user.admin?
               li = link_to "Application", oauth_applications_path
             li = link_to "Edit Profile", edit_user_path(current_user.id)

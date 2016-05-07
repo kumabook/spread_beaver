@@ -31,9 +31,6 @@ table.table.table-striped
       td origin
       td = @entry.origin
     tr
-      td keywords
-      td = @entry.keywords
-    tr
       td visual
       td = @entry.visual
     tr
@@ -72,6 +69,12 @@ table.table.table-striped
     tr
       td updated
       td = @entry.updated
+    tr
+      td keywords
+      td
+        - @entry.keywords.each do |k|
+          = link_to(k.label, keyword_entries_path(k))
+          = raw('&nbsp');
     tr
       td tags
       td

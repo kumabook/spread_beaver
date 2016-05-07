@@ -1,0 +1,23 @@
+= form_for @keyword, html: { class: "form form-horizontal keyword" } do |f|
+  - if @keyword.errors.any?
+    #error_explanation
+      h2 = "#{pluralize(@keyword.errors.count, "error")} prohibited this keyword from being saved:"
+      ul
+        - @keyword.errors.full_messages.each do |message|
+          li = message
+
+  .form-group
+    = f.label :label, :class => 'control-label col-lg-2'
+    .col-lg-10
+      = f.text_field :label, :class => 'form-control'
+    = f.error_span(:label)
+  .form-group
+    = f.label :description, :class => 'control-label col-lg-2'
+    .col-lg-10
+      = f.text_area :description, :class => 'form-control'
+    = f.error_span(:description)
+  .form-group
+    .col-lg-offset-2.col-lg-10
+      = f.submit nil, :class => 'btn btn-primary'
+      '
+      = link_to t('.cancel', :default => t("helpers.links.cancel")), keywords_path, :class => 'btn'
