@@ -6,7 +6,7 @@ class UsersController < ApplicationController
   # GET /users
   # GET /users.json
   def index
-    @users = User.all.map {|u| u.becomes(User) }
+    @users = User.page(params[:page]) # don't become User for pagination
   end
 
   # GET /users/1
