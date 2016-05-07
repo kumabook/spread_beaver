@@ -37,9 +37,6 @@ table.table.table-striped
       td visual
       td = @entry.visual
     tr
-      td tags
-      td = @entry.tags
-    tr
       td categories
       td = @entry.categories
     tr
@@ -75,6 +72,12 @@ table.table.table-striped
     tr
       td updated
       td = @entry.updated
+    tr
+      td tags
+      td
+        - @entry.tags.each do |t|
+          = link_to(t.label, tag_entries_path(t))
+          = raw('&nbsp');
 
 = link_to t('.edit', :default => t("helpers.links.edit")),
             edit_entry_path(@entry),

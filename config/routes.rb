@@ -29,6 +29,9 @@ Rails.application.routes.draw do
   end
   resources :tracks
   resources :likes
+  resources :tags do
+    resources :entries, only: [:index]
+  end
 
   get  'login'  => 'user_sessions#new'    , :as => :login
   post 'logout' => 'user_sessions#destroy', :as => :logout

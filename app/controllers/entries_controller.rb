@@ -1,23 +1,26 @@
 class EntriesController < ApplicationController
   before_action :set_entry, only: [:show, :show_feedly, :edit, :update, :destroy]
-  before_action :set_feed, only: [:index]
+  before_action :set_feed , only: [:index]
+  before_action :set_tag  , only: [:index]
   before_action :require_admin, only: [:new, :create, :destroy, :update]
 
   def index
-    if @feed.nil?
-      @entries = Entry.includes(:tracks)
-                      .order('published DESC')
-                      .page(params[:page])
-      @user_entries = UserEntry.where(user_id: current_user.id,
-                                     entry_id: @entries.map { |e| e.id })
-    else
+    if @tag.present?
+      @entries = @tag.entries.includes(:tracks)
+                     .order('published DESC')
+                     .page(params[:page])
+    elsif @feed.present?
       @entries = Entry.includes(:tracks)
                       .where(feed_id: @feed.id)
                       .order('published DESC')
                       .page(params[:page])
-      @user_entries = UserEntry.where(user_id: current_user.id,
-                                     entry_id: @entries.map { |e| e.id })
+    else
+      @entries = Entry.includes(:tracks)
+                      .order('published DESC')
+                      .page(params[:page])
     end
+    @user_entries = UserEntry.where(user_id: current_user.id,
+                                   entry_id: @entries.map { |e| e.id })
     @entries = [] if @entries.nil?
   end
 
@@ -52,8 +55,10 @@ class EntriesController < ApplicationController
   end
 
   def update
+    tags = Tag.find(entry_params[:tags].select { |t| !t.blank? })
+    @entry.update_attributes(entry_params.merge({tags: tags}))
     respond_to do |format|
-      if @entry.update(entry_params)
+      if @entry.save
         format.html { redirect_to entries_path, notice: 'Entry was successfully updated.' }
         format.json { render :show, status: :ok, location: @entry }
       else
@@ -76,7 +81,11 @@ class EntriesController < ApplicationController
     @feed = Feed.find(CGI.unescape params[:feed_id]) if params[:feed_id].present?
   end
 
+  def set_tag
+    @tag = Tag.find_by(id: params[:tag_id])
+  end
+
   def entry_params
-    params.require(:entry).permit(:id, :title, :description, :website)
+    params.require(:entry).permit(:id, :title, :description, :website, tags: [])
   end
 end

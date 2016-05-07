@@ -16,6 +16,7 @@ html
             li = link_to "Tracks"       , tracks_path
             li = link_to "Categories"   , categories_path
             li = link_to "Subscriptions", subscriptions_path
+            li = link_to "Tags"         , tags_path
             - if current_user.admin?
               li = link_to "Application", oauth_applications_path
             li = link_to "Edit Profile", edit_user_path(current_user.id)

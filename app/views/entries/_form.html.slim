@@ -1,3 +1,4 @@
+- @tags = current_user.tags
 = form_for @entry, html: { class: "form form-horizontal entry" } do |f|
   .form-group
     = f.label :title, :class => 'control-label col-lg-2'
@@ -39,11 +40,6 @@
     .col-lg-10
       = f.text_field :visual, :class => 'form-control'
     = f.error_span(:visual)
-  .form-group
-    = f.label :tags, :class => 'control-label col-lg-2'
-    .col-lg-10
-      = f.text_field :tags, :class => 'form-control'
-    = f.error_span(:tags)
   .form-group
     = f.label :categories, :class => 'control-label col-lg-2'
     .col-lg-10
@@ -104,6 +100,12 @@
     .col-lg-10
       = f.text_field :updated, :class => 'form-control'
     = f.error_span(:updated)
+  .form-group
+    = f.label :tags, :class => 'control-label col-lg-2'
+    .col-lg-10
+      = f.collection_select(:tags, @tags, :id, :label,
+          {selected: @entry.tag_ids, include_blank: false, include_hidden: false},
+          {multiple: true})
   .form-group
     .col-lg-offset-2.col-lg-10
       = f.submit nil, :class => 'btn btn-primary'
