@@ -83,7 +83,7 @@ Rails.application.routes.draw do
       post '', action: :update, on: :member
     end
 
-    resources :tracks,        only: [:show], constraints: { id: uuid_regex } do
+    resources :tracks, only: [:show], constraints: uuid_options do
       post '.mget', action: :list, on: :collection
     end
   end
