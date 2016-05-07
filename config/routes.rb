@@ -33,8 +33,8 @@ Rails.application.routes.draw do
     resources :entries, only: [:index]
   end
 
-  get  'login'  => 'user_sessions#new'    , :as => :login
-  post 'logout' => 'user_sessions#destroy', :as => :logout
+  get  'login',  to: 'user_sessions#new'    , :as => :login
+  post 'logout', to: 'user_sessions#destroy', :as => :logout
 
   scope :v3 do
     use_doorkeeper
@@ -43,13 +43,13 @@ Rails.application.routes.draw do
   namespace :v3 do
     resources :profile, only: [] do
       collection do
-        get '' => 'credentials#me'
-        put '' => 'users#create'
+        get '', to: 'credentials#me'
+        put '', to: 'users#create'
       end
     end
 
     resources :preferences, only: [:index] do
-      post '', action: 'update', on: :collection
+      post action: 'update', on: :collection
     end
 
     post '/markers' => 'markers#mark'
@@ -70,7 +70,7 @@ Rails.application.routes.draw do
     get '/search/feeds'         => 'feeds#search'
 
     resources :topics, only: [:index, :destroy], constraints: res_options do
-      post '', action: :update, on: :member
+      post action: :update, on: :member
     end
 
     resources :entries, only: [:show], constraints: res_options do
@@ -80,7 +80,7 @@ Rails.application.routes.draw do
     resources :subscriptions, only: [:index, :create, :destroy], constraints: res_options
 
     resources :categories, only: [:index, :destroy], constraints: res_options do
-      post '', action: :update, on: :member
+      post action: :update, on: :member
     end
 
     resources :tracks, only: [:show], constraints: uuid_options do
