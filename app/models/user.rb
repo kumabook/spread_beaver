@@ -2,7 +2,7 @@ class User < ActiveRecord::Base
   has_many :preferences
   has_many :subscriptions
   has_many :categories
-  has_many :user_entries
+  has_many :saved_entries
   has_many :read_entries
   has_many :tags
   has_many :likes

@@ -21,9 +21,9 @@ RSpec.describe "Streams api", type: :request, autodoc: true do
                                   entries: @feed.entries
       @keyword.update! entries: @feed.entries
       (0...ITEM_NUM).to_a.each { |n|
-        UserEntry.create! user: @user,
-                          entry: @feed.entries[n],
-                          created_at: 1.days.ago
+        SavedEntry.create! user: @user,
+                           entry: @feed.entries[n],
+                           created_at: 1.days.ago
       }
       (0...ITEM_NUM).to_a.each { |n|
         ReadEntry.create! user: @user,

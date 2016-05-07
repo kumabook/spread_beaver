@@ -2,23 +2,23 @@
 class Entry < ActiveRecord::Base
   belongs_to :feed
   has_many :entry_tracks
-  has_many :user_entries
+  has_many :saved_entries
   has_many :read_entries
   has_many :entry_tags
   has_many :entry_keywords
-  has_many :keywords, through: :entry_keywords
-  has_many :tags    , through: :entry_tags
-  has_many :users   , through: :user_entries
-  has_many :readers , through: :read_entries, source: :user
-  has_many :tracks  , through: :entry_tracks
+  has_many :keywords   , through: :entry_keywords
+  has_many :tags       , through: :entry_tags
+  has_many :saved_users, through: :saved_entries, source: :user
+  has_many :readers    , through: :read_entries,  source: :user
+  has_many :tracks     , through: :entry_tracks
   self.primary_key = :id
 
   before_save :normalize_visual
 
   scope :with_content,  ->            { includes(:tracks) }
-  scope :with_detail,   ->            { includes(:users).includes(:tracks) }
+  scope :with_detail,   ->            { includes(:saved_users).includes(:tracks) }
   scope :latest,        ->     (time) { where("published > ?", time).order('published DESC').with_content }
-  scope :popular,       ->            { joins(:users).order('saved_count DESC').with_content }
+  scope :popular,       ->            { joins(:saved_users).order('saved_count DESC').with_content }
   scope :subscriptions, ->       (ss) { where(feed: ss.map { |s| s.feed_id }).order('published DESC').with_content }
   scope :feed,          ->     (feed) { where(feed: feed).order('published DESC').with_content }
   scope :feeds,         ->    (feeds) { where(feed: feeds).order('published DESC').with_content }
@@ -26,7 +26,7 @@ class Entry < ActiveRecord::Base
   scope :tag,           ->        (t) { joins(:tags).where(tags: { id: t.id}).order('published DESC').with_content }
   scope :topic,         ->    (topic) { feeds(topic.feeds) }
   scope :category,      -> (category) { feeds(category.subscriptions.map { |s| s.feed_id })}
-  scope :saved,         ->      (uid) { joins(:users).includes(:tracks).where(users: { id: uid }) }
+  scope :saved,         ->     (user) { joins(:saved_entries).includes(:tracks).where(saved_entries: { user_id: user.id }) }
   scope :read,          ->     (user) { joins(:read_entries).includes(:tracks).where(read_entries: { user_id: user.id }) }
 
   JSON_ATTRS = ['content', 'categories', 'summary', 'alternate', 'origin', 'visual']
@@ -140,7 +140,7 @@ class Entry < ActiveRecord::Base
 
 
   def self.popular_entries_within_period(from: nil, to: nil)
-    best_entries_within_period(from: from, to: to, clazz: UserEntry)
+    best_entries_within_period(from: from, to: to, clazz: SavedEntry)
   end
 
   def self.hot_entries_within_period(from: nil, to: nil)
@@ -195,7 +195,7 @@ class Entry < ActiveRecord::Base
 
   def as_detail_json
     hash         = as_content_json
-    hash['tags'] = users.map  { |u| u.as_user_tag }
+    hash['tags'] = saved_users.map  { |u| u.as_user_tag }
     hash
   end
 end

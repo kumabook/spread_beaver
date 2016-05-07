@@ -12,8 +12,8 @@ RSpec.describe "Markers api", type: :request, autodoc: true do
                      track: track
       }
       @feed.entries[0...MARKED_NUM].each { |entry|
-        UserEntry.create! user: @user,
-                          entry: entry
+        SavedEntry.create! user: @user,
+                           entry: entry
       }
       @feed.entries[0...MARKED_NUM].each { |entry|
         ReadEntry.create! user: @user,
@@ -50,7 +50,7 @@ RSpec.describe "Markers api", type: :request, autodoc: true do
     end
 
     it "marks entries as saved" do
-      count = Entry.joins(:users).where(users: { id: @user.id }).count
+      count = Entry.saved(@user).count
       post "/v3/markers",
            {
              type: 'entries',
@@ -59,12 +59,12 @@ RSpec.describe "Markers api", type: :request, autodoc: true do
            },
            Authorization: "Bearer #{@token['access_token']}"
       expect(@response.status).to eq(200)
-      after_count = Entry.joins(:users).where(users: { id: @user.id }).count
+      after_count = Entry.saved(@user).count
       expect(after_count).to eq(count + 1)
     end
 
     it "marks entries as unsaved" do
-      count = Entry.joins(:users).where(users: { id: @user.id }).count
+      count = Entry.saved(@user).count
       post "/v3/markers",
            {
              type: 'entries',
@@ -73,7 +73,7 @@ RSpec.describe "Markers api", type: :request, autodoc: true do
            },
            Authorization: "Bearer #{@token['access_token']}"
       expect(@response.status).to eq(200)
-      after_count = Entry.joins(:users).where(users: { id: @user.id }).count
+      after_count = Entry.saved(@user).count
       expect(after_count).to eq(count - 1)
     end
 

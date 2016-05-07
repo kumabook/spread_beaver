@@ -41,12 +41,12 @@ table.table.table-striped
           = link_to "#{entry.tracks.size} tracks", entry_tracks_path(entry), class: 'btn btn-xs btn-primary'
         td
           = render partial: "user_entry_button",
-                    locals: { url: '/user_entries',
+                    locals: { url: '/saved_entries',
                             label: 'Mark as Save',
                    labelForRemove: 'Mark as Unsave',
                             entry: entry,
-                     user_entries: @user_entries }
-          - user_entry = @user_entries.select {|ue| ue.entry_id == entry.id }.first
+                     user_entries: @saved_entries }
+          - user_entry = @saved_entries.select {|ue| ue.entry_id == entry.id }.first
           = render partial: "user_entry_button",
                     locals: { url: '/read_entries',
                             label: 'Mark as Read',

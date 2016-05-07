@@ -36,7 +36,7 @@ class V3::StreamsController < V3::ApiController
       when :saved
         @entries = Entry.page(@page)
                         .per(@per_page)
-                        .saved(current_resource_owner.id)
+                        .saved(current_resource_owner)
       else
         render json: {}, status: :not_found
         return
