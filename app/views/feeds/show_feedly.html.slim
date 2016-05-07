@@ -1,0 +1,57 @@
+.page-header
+  h1 Feed on feedly
+table.table.table-striped
+  thead
+    tr
+      th name
+      th value
+      th
+
+  tbody
+    tr
+      td id
+      td = @feedlr_feed.id
+    tr
+      td title
+      td = @feedlr_feed.title
+    tr
+      td description
+      td = @feedlr_feed.description
+    tr
+      td website
+      td = link_to @feedlr_feed.website, @feedlr_feed.website
+    tr
+      td visualUrl
+      td = @feedlr_feed.visualUrl
+      td = thumbnail_image_link(@feedlr_feed.visualUrl)
+    tr
+      td coverUrl
+      td = @feedlr_feed.coverUrl
+      td = thumbnail_image_link(@feedlr_feed.coverUrl)
+    tr
+      td iconUrl
+      td = @feedlr_feed.iconUrl
+      td = thumbnail_image_link(@feedlr_feed.iconUrl);
+    tr
+      td language
+      td = @feedlr_feed.language
+    tr
+      td partial
+      td = @feedlr_feed.partial
+    tr
+      td coverColor
+      td = @feedlr_feed.coverColor
+      td
+        = content_tag(:div, "", style: "width: 50px; height: 50px; background-color: ##{@feed.coverColor}")
+    tr
+      td contentType
+      td = @feedlr_feed.contentType
+    tr
+      td subscribers
+      td = @feedlr_feed.subscribers
+    tr
+      td velocity
+      td = @feedlr_feed.velocity
+    tr
+      td topics
+      td = @feedlr_feed.topics
