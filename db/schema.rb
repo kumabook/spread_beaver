@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160507185324) do
+ActiveRecord::Schema.define(version: 20160507200411) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -194,6 +194,15 @@ ActiveRecord::Schema.define(version: 20160507185324) do
 
   add_index "read_entries", ["user_id", "entry_id"], name: "index_read_entries_on_user_id_and_entry_id", unique: true, using: :btree
 
+  create_table "saved_entries", force: :cascade do |t|
+    t.uuid     "user_id",    null: false
+    t.string   "entry_id",   null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "saved_entries", ["user_id", "entry_id"], name: "index_saved_entries_on_user_id_and_entry_id", unique: true, using: :btree
+
   create_table "subscription_categories", force: :cascade do |t|
     t.integer  "subscription_id"
     t.string   "category_id"
@@ -247,15 +256,6 @@ ActiveRecord::Schema.define(version: 20160507185324) do
 
   add_index "tracks", ["id"], name: "index_tracks_on_id", unique: true, using: :btree
   add_index "tracks", ["provider", "identifier"], name: "index_tracks_on_provider_and_identifier", unique: true, using: :btree
-
-  create_table "user_entries", force: :cascade do |t|
-    t.uuid     "user_id",    null: false
-    t.string   "entry_id",   null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  add_index "user_entries", ["user_id", "entry_id"], name: "index_user_entries_on_user_id_and_entry_id", unique: true, using: :btree
 
   create_table "users", id: :uuid, default: "uuid_generate_v4()", force: :cascade do |t|
     t.string   "email",            null: false
