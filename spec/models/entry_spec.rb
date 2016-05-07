@@ -30,7 +30,6 @@ describe Entry do
     entry.engagementRate = 11.0
     entry.fingerprint    = "38c6513d"
     entry.id             = "12345"
-    entry.keywords       = ["SERIES"]
     entry.origin         =  origin
     entry.originId       = "http://test.com/1"
     entry.published      = 1458303643798

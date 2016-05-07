@@ -22,7 +22,7 @@ class Entry < ActiveRecord::Base
   scope :feeds,         -> (feeds) { where(feed: feeds).order('published DESC').with_content }
   scope :saved,         ->   (uid) { joins(:users).includes(:tracks).where(users: { id: uid }) }
 
-  JSON_ATTRS = ['content', 'categories', 'summary', 'alternate', 'origin', 'keywords', 'visual']
+  JSON_ATTRS = ['content', 'categories', 'summary', 'alternate', 'origin', 'visual']
 
   def self.first_or_create_by_feedlr(entry, feed)
     e = Entry.find_or_create_by(id: entry.id) do |e|
@@ -33,7 +33,6 @@ class Entry < ActiveRecord::Base
 
       e.alternate   = entry.alternate.to_json
       e.origin      = entry.origin.to_json
-      e.keywords    = entry.keywords.to_json
       e.visual      = entry.visual.to_json
       e.categories  = entry.categories.to_json
       e.unread      = entry.unread
@@ -50,6 +49,9 @@ class Entry < ActiveRecord::Base
       e.recrawled   = entry.recrawled.present? ? Time.at(entry.recrawled / 1000) : nil
       e.updated     = entry.updated.present?   ? Time.at(entry.updated / 1000) : nil
       e.feed        = feed
+      if entry.keywords.present?
+        e.keywords  = entry.keywords.map { |k| Keyword.find_or_create_by label: k }
+      end
     end
     e.save
     e

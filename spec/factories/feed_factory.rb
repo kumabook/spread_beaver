@@ -27,7 +27,6 @@ FactoryGirl.define do
     author          nil
     alternate       "[]"
     origin          "{}"
-    keywords        "[]"
     visual          '{"url": "http://test.jpg"}'
     categories      "null"
     unread          true
