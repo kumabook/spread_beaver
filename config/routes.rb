@@ -86,5 +86,17 @@ Rails.application.routes.draw do
     resources :tracks, only: [:show], constraints: uuid_options do
       post '.mget', action: :list, on: :collection
     end
+
+    resources :tags, only: [:index], constraints: res_options do
+      id_list_regex = /[a-zA-Z0-9\.\,%#\$&\?\(\)\=\+\-\_\:\?\\]+/
+      c             = { tag_ids: id_list_regex, entry_ids: id_list_regex }
+      post action: :update, on: :member
+      collection do
+        put    ':tag_ids'           , action: :tag_entry    , constraints: c
+        put    ':tag_ids/:entry_ids', action: :tag_entries  , constraints: c
+        delete ':tag_ids/:entry_ids', action: :untag_entries, constraints: c
+        delete ':tag_ids'           , action: :destroy      , constraints: c
+      end
+    end
   end
 end
