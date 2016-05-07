@@ -23,6 +23,21 @@ class V3::MarkersController < V3::ApiController
         end
         render json: {}, status: 200
         return
+      when 'markAsRead'
+        @ids.each do |id|
+          @user_entry = ReadEntry.create(user: current_resource_owner,
+                                         entry_id: id)
+        end
+        render json: {}, status: 200
+        return
+      when 'keepUnread'
+        @ids.each do |id|
+          @user_entry = ReadEntry.find_by(user: current_resource_owner,
+                                          entry_id: id)
+          @user_entry.destroy if @user_entry.present?
+        end
+        render json: {}, status: 200
+        return
       end
     when 'tracks'
       @ids = params[:trackIds] if params[:trackIds].present?

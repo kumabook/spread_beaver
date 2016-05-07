@@ -15,6 +15,38 @@ RSpec.describe "Likes api", type: :request, autodoc: true do
         UserEntry.create! user: @user,
                           entry: entry
       }
+      @feed.entries[0...MARKED_NUM].each { |entry|
+        ReadEntry.create! user: @user,
+                          entry: entry
+      }
+    end
+
+    it "marks entries as read" do
+      count = Entry.read(@user).count
+      post "/v3/markers",
+           {
+             type: 'entries',
+             action: 'markAsRead',
+             entryIds: [@feed.entries[MARKED_NUM + 1].id]
+           },
+           Authorization: "Bearer #{@token['access_token']}"
+      expect(@response.status).to eq(200)
+      after_count = Entry.read(@user).count
+      expect(after_count).to eq(count + 1)
+    end
+
+    it "keeps entries unread" do
+      count = Entry.read(@user).count
+      post "/v3/markers",
+           {
+             type: 'entries',
+             action: 'keepUnread',
+             entryIds: [@feed.entries[0].id]
+           },
+           Authorization: "Bearer #{@token['access_token']}"
+      expect(@response.status).to eq(200)
+      after_count = Entry.read(@user).count
+      expect(after_count).to eq(count - 1)
     end
 
     it "marks entries as saved" do

@@ -3,6 +3,7 @@ class Entry < ActiveRecord::Base
   belongs_to :feed
   has_many :entry_tracks
   has_many :user_entries
+  has_many :read_entries
   has_many :entry_tags
   has_many :entry_keywords
   has_many :keywords, through: :entry_keywords
@@ -26,6 +27,7 @@ class Entry < ActiveRecord::Base
   scope :topic,         ->    (topic) { feeds(topic.feeds) }
   scope :category,      -> (category) { feeds(category.subscriptions.map { |s| s.feed_id })}
   scope :saved,         ->      (uid) { joins(:users).includes(:tracks).where(users: { id: uid }) }
+  scope :read,          ->     (user) { joins(:read_entries).includes(:tracks).where(read_entries: { user_id: user.id }) }
 
   JSON_ATTRS = ['content', 'categories', 'summary', 'alternate', 'origin', 'visual']
 
