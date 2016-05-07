@@ -27,6 +27,6 @@ class V3::TopicsController < V3::ApiController
   end
 
   def set_topic
-    @topic = Topic.find(params[:id])
+    @topic = Topic.find(CGI.unescape params[:id])
   end
 end
