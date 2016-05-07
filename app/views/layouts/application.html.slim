@@ -20,6 +20,7 @@ html
             li = link_to "Tracks"       , tracks_path
             - if current_user.admin?
               li = link_to "Application", oauth_applications_path
+              li = link_to "Profiles"   , users_path
             li = link_to "Edit Profile", edit_user_path(current_user.id)
             li = link_to "Logout", :logout, method: :post
           - else
