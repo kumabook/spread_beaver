@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "Likes api", type: :request, autodoc: true do
+RSpec.describe "Markers api", type: :request, autodoc: true do
   MARKED_NUM = 2
   context 'after login' do
     before(:all) do
