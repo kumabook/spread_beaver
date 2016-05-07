@@ -42,11 +42,11 @@ class V3::StreamsController < V3::ApiController
     elsif @topic.present?
       @entries = Entry.page(@page)
                       .per(@per_page)
-                      .feeds(@topic.feeds)
+                      .topic(@topic)
     elsif @category.present?
       @entries = Entry.page(@page)
                       .per(@per_page)
-                      .feeds(@category.subscriptions.map { |s| s.feed_id })
+                      .category(@category)
     end
 
     continuation = nil

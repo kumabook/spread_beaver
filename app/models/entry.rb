@@ -13,14 +13,16 @@ class Entry < ActiveRecord::Base
 
   before_save :normalize_visual
 
-  scope :with_content,  ->         { includes(:tracks) }
-  scope :with_detail,   ->         { includes(:users).includes(:tracks) }
-  scope :latest,        ->  (time) { where("published > ?", time).order('published DESC').with_content }
-  scope :popular,       ->         { joins(:users).order('saved_count DESC').with_content }
-  scope :subscriptions, ->    (ss) { where(feed: ss.map { |s| s.feed_id }).order('published DESC').with_content }
-  scope :feed,          ->  (feed) { where(feed: feed).order('published DESC').with_content }
-  scope :feeds,         -> (feeds) { where(feed: feeds).order('published DESC').with_content }
-  scope :saved,         ->   (uid) { joins(:users).includes(:tracks).where(users: { id: uid }) }
+  scope :with_content,  ->            { includes(:tracks) }
+  scope :with_detail,   ->            { includes(:users).includes(:tracks) }
+  scope :latest,        ->     (time) { where("published > ?", time).order('published DESC').with_content }
+  scope :popular,       ->            { joins(:users).order('saved_count DESC').with_content }
+  scope :subscriptions, ->       (ss) { where(feed: ss.map { |s| s.feed_id }).order('published DESC').with_content }
+  scope :feed,          ->     (feed) { where(feed: feed).order('published DESC').with_content }
+  scope :feeds,         ->    (feeds) { where(feed: feeds).order('published DESC').with_content }
+  scope :topic,         ->    (topic) { feeds(topic.feeds) }
+  scope :category,      -> (category) { feeds(category.subscriptions.map { |s| s.feed_id })}
+  scope :saved,         ->      (uid) { joins(:users).includes(:tracks).where(users: { id: uid }) }
 
   JSON_ATTRS = ['content', 'categories', 'summary', 'alternate', 'origin', 'visual']
 
