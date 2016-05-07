@@ -26,6 +26,11 @@ RSpec.describe "Streams api", type: :request, autodoc: true do
                           created_at: 1.days.ago
       }
       (0...ITEM_NUM).to_a.each { |n|
+        ReadEntry.create! user: @user,
+                          entry: @feed.entries[n],
+                          created_at: 1.days.ago
+      }
+      (0...ITEM_NUM).to_a.each { |n|
         Like.create! user: @user,
                      track: @subscribed.entries[0].tracks[n]
         Like.create! user: @user,
@@ -79,6 +84,18 @@ RSpec.describe "Streams api", type: :request, autodoc: true do
       resource = CGI.escape "tag/global.latest"
       get "/v3/streams/#{resource}/contents",
           {newer_than: 3.days.ago.to_time.to_i * 1000},
+          Authorization: "Bearer #{@token['access_token']}"
+      result = JSON.parse @response.body
+      expect(result['items'].count).to eq(2)
+      expect(result['continuation']).to be_nil
+    end
+
+    it "gets hot entries" do
+      resource = CGI.escape "tag/global.hot"
+      get "/v3/streams/#{resource}/contents", {
+            newer_than: 200.days.ago.to_time.to_i * 1000,
+            older_than: Time.now.to_i * 1000
+          },
           Authorization: "Bearer #{@token['access_token']}"
       result = JSON.parse @response.body
       expect(result['items'].count).to eq(2)

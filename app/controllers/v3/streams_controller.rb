@@ -25,6 +25,10 @@ class V3::StreamsController < V3::ApiController
         @entries = Entry.page(@page)
                         .per(@per_page)
                         .subscriptions(@subscriptions)
+      when :hot
+        from     = @newer_than.present? ? @newer_than : DURATION.ago
+        to       = @older_than.present? ? @older_than : from + DURATION
+        @entries = Entry.hot_entries_within_period(from: from, to: to)
       when :popular
         from     = @newer_than.present? ? @newer_than : DURATION.ago
         to       = @older_than.present? ? @older_than : from + DURATION
@@ -127,6 +131,8 @@ class V3::StreamsController < V3::ApiController
   def set_global_resource
     if @stream_id.match /tag\/global\.latest/
       @resource = :latest
+    elsif @stream_id.match /tag\/global\.hot/
+      @resource = :hot
     elsif @stream_id.match /tag\/global\.popular/
       @resource = :popular
     elsif @stream_id.match /user\/.*\/category\/global\.all/

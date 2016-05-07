@@ -138,10 +138,19 @@ class Entry < ActiveRecord::Base
       .select   { |a| a.present? }
   end
 
+
   def self.popular_entries_within_period(from: nil, to: nil)
-    raise ArgumentError, "Parameter must be not nil" if from.nil? || to.nil?
+    best_entries_within_period(from: from, to: to, clazz: UserEntry)
+  end
+
+  def self.hot_entries_within_period(from: nil, to: nil)
+    best_entries_within_period(from: from, to: to, clazz: ReadEntry)
+  end
+
+  def self.best_entries_within_period(from: nil, to: nil, clazz: nil)
+    raise ArgumentError, "Parameter must be not nil" if from.nil? || to.nil? || clazz.nil?
     # TODO: Add page and per_page if need be
-    user_count_hash = UserEntry.period(from, to).user_count
+    user_count_hash = clazz.period(from, to).user_count
     entries = Entry.with_content.find(user_count_hash.keys)
     # order by user_count and updated
     user_count_hash.keys.map { |id|
