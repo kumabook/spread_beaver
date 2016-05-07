@@ -2,7 +2,7 @@ class KeywordsController < ApplicationController
   before_action :set_keyword, only: [:edit, :destroy, :update]
   before_action :require_admin, only: [:new, :create, :destroy, :update]
   def index
-    @keywords = Keyword.order('label ASC').all
+    @keywords = Keyword.order('label ASC').page(params[:page])
   end
 
   def new

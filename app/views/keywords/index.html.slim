@@ -4,7 +4,7 @@
 = link_to 'New Keyword', new_keyword_path, class: 'btn btn-primary'
 
 br
-br
+= paginate @keywords
 table.table.table-striped
   thead
     tr
