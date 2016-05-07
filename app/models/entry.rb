@@ -3,6 +3,8 @@ class Entry < ActiveRecord::Base
   belongs_to :feed
   has_many :entry_tracks
   has_many :user_entries
+  has_many :entry_tags
+  has_many :tags,   through: :entry_tags
   has_many :users,  through: :user_entries
   has_many :tracks, through: :entry_tracks
   self.primary_key = :id
@@ -31,7 +33,6 @@ class Entry < ActiveRecord::Base
       e.origin      = entry.origin.to_json
       e.keywords    = entry.keywords.to_json
       e.visual      = entry.visual.to_json
-      e.tags        = entry.tags.to_json
       e.categories  = entry.categories.to_json
       e.unread      = entry.unread
 

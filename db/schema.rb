@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160429013159) do
+ActiveRecord::Schema.define(version: 20160507125910) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -39,7 +39,6 @@ ActiveRecord::Schema.define(version: 20160429013159) do
     t.text     "origin"
     t.text     "keywords"
     t.text     "visual"
-    t.text     "tags"
     t.text     "categories"
     t.boolean  "unread",          null: false
     t.integer  "engagement"
@@ -59,6 +58,13 @@ ActiveRecord::Schema.define(version: 20160429013159) do
   end
 
   add_index "entries", ["id"], name: "index_entries_on_id", unique: true, using: :btree
+
+  create_table "entry_tags", force: :cascade do |t|
+    t.string   "tag_id"
+    t.string   "entry_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "entry_tracks", force: :cascade do |t|
     t.string   "entry_id",   null: false
@@ -176,6 +182,18 @@ ActiveRecord::Schema.define(version: 20160429013159) do
   end
 
   add_index "subscriptions", ["user_id", "feed_id"], name: "index_subscriptions_on_user_id_and_feed_id", unique: true, using: :btree
+
+  create_table "tags", id: false, force: :cascade do |t|
+    t.string   "id",          null: false
+    t.string   "user_id",     null: false
+    t.string   "label",       null: false
+    t.text     "description"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  add_index "tags", ["id"], name: "index_tags_on_id", unique: true, using: :btree
+  add_index "tags", ["user_id", "label"], name: "index_tags_on_user_id_and_label", unique: true, using: :btree
 
   create_table "topics", id: false, force: :cascade do |t|
     t.string   "id",                      null: false

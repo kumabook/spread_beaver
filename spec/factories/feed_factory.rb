@@ -29,7 +29,6 @@ FactoryGirl.define do
     origin          "{}"
     keywords        "[]"
     visual          '{"url": "http://test.jpg"}'
-    tags            "null"
     categories      "null"
     unread          true
     engagement      9
