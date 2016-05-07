@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160507125910) do
+ActiveRecord::Schema.define(version: 20160507155406) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -59,6 +59,15 @@ ActiveRecord::Schema.define(version: 20160507125910) do
 
   add_index "entries", ["id"], name: "index_entries_on_id", unique: true, using: :btree
 
+  create_table "entry_keywords", force: :cascade do |t|
+    t.string   "entry_id"
+    t.string   "keyword_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "entry_keywords", ["entry_id", "keyword_id"], name: "index_entry_keywords_on_entry_id_and_keyword_id", unique: true, using: :btree
+
   create_table "entry_tags", force: :cascade do |t|
     t.string   "tag_id"
     t.string   "entry_id"
@@ -105,6 +114,17 @@ ActiveRecord::Schema.define(version: 20160507125910) do
   end
 
   add_index "feeds", ["id"], name: "index_feeds_on_id", unique: true, using: :btree
+
+  create_table "keywords", id: false, force: :cascade do |t|
+    t.string   "id",          null: false
+    t.string   "label",       null: false
+    t.text     "description"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  add_index "keywords", ["id"], name: "index_keywords_on_id", unique: true, using: :btree
+  add_index "keywords", ["label"], name: "index_keywords_on_label", unique: true, using: :btree
 
   create_table "likes", force: :cascade do |t|
     t.uuid     "user_id",    null: false

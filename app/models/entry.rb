@@ -4,9 +4,11 @@ class Entry < ActiveRecord::Base
   has_many :entry_tracks
   has_many :user_entries
   has_many :entry_tags
-  has_many :tags,   through: :entry_tags
-  has_many :users,  through: :user_entries
-  has_many :tracks, through: :entry_tracks
+  has_many :entry_keywords
+  has_many :keywords, through: :entry_keywords
+  has_many :tags    , through: :entry_tags
+  has_many :users   , through: :user_entries
+  has_many :tracks  , through: :entry_tracks
   self.primary_key = :id
 
   before_save :normalize_visual
