@@ -4,6 +4,8 @@ class V3::StreamsController < V3::ApiController
   before_action :set_stream_id      , only: [:index]
   before_action :set_global_resource, only: [:index]
   before_action :set_feed           , only: [:index]
+  before_action :set_keyword        , only: [:index]
+  before_action :set_tag            , only: [:index]
   before_action :set_topic          , only: [:index]
   before_action :set_category       , only: [:index]
   before_action :set_need_visual    , only: [:index]
@@ -39,6 +41,14 @@ class V3::StreamsController < V3::ApiController
       @entries = Entry.page(@page)
                       .per(@per_page)
                       .feed(@feed)
+    elsif @keyword.present?
+      @entries = Entry.page(@page)
+                      .per(@per_page)
+                      .keyword(@keyword)
+    elsif @tag.present?
+      @entries = Entry.page(@page)
+                      .per(@per_page)
+                      .tag(@tag)
     elsif @topic.present?
       @entries = Entry.page(@page)
                       .per(@per_page)
@@ -87,6 +97,18 @@ class V3::StreamsController < V3::ApiController
   def set_feed
     if params[:id].present? && @stream_id.match(/feed\/.*/)
       @feed = Feed.find_by(id: @stream_id)
+    end
+  end
+
+  def set_keyword
+    if params[:id].present? && @stream_id.match(/keyword\/.*/)
+      @keyword = Keyword.find_by(id: @stream_id)
+    end
+  end
+
+  def set_tag
+    if params[:id].present? && @stream_id.match(/user\/.*\/tag\/.*/)
+      @tag = Tag.find_by(id: @stream_id)
     end
   end
 

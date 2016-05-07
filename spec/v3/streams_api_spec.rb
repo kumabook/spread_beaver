@@ -8,13 +8,18 @@ RSpec.describe "Streams api", type: :request, autodoc: true do
       login()
       @feed         = FactoryGirl.create(:feed)
       @subscribed   = FactoryGirl.create(:feed)
+      @keyword      = FactoryGirl.create(:keyword)
       @topic        = FactoryGirl.create(:topic)
       @feed.topics  = [@topic]
       @subscription = Subscription.create! user: @user,
                                            feed: @subscribed
       @category     = Category.create! subscriptions: [@subscription],
                                                label: "category",
-                                                user: @user
+                                               user: @user
+      @tag          = Tag.create! user: @user,
+                                  label: "tag",
+                                  entries: @feed.entries
+      @keyword.update! entries: @feed.entries
       (0...ITEM_NUM).to_a.each { |n|
         UserEntry.create! user: @user,
                           entry: @feed.entries[n],
@@ -90,6 +95,28 @@ RSpec.describe "Streams api", type: :request, autodoc: true do
       result = JSON.parse @response.body
       expect(result['items'].count).to eq(2)
       expect(result['continuation']).to be_nil
+    end
+
+    it "gets entries of a keyword" do
+      resource = CGI.escape @keyword.id
+      get "/v3/streams/#{resource}/contents", {
+            newer_than: 200.days.ago.to_time.to_i * 1000,
+            older_than: Time.now.to_i * 1000
+          },
+          Authorization: "Bearer #{@token['access_token']}"
+      result = JSON.parse @response.body
+      expect(result['items'].count).to eq(PER_PAGE)
+    end
+
+    it "gets entries of a tag" do
+      resource = CGI.escape @tag.id
+      get "/v3/streams/#{resource}/contents", {
+            newer_than: 200.days.ago.to_time.to_i * 1000,
+            older_than: Time.now.to_i * 1000
+          },
+          Authorization: "Bearer #{@token['access_token']}"
+      result = JSON.parse @response.body
+      expect(result['items'].count).to eq(PER_PAGE)
     end
 
     it "gets entries of feeds that has a specified topic " do

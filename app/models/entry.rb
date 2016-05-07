@@ -20,6 +20,8 @@ class Entry < ActiveRecord::Base
   scope :subscriptions, ->       (ss) { where(feed: ss.map { |s| s.feed_id }).order('published DESC').with_content }
   scope :feed,          ->     (feed) { where(feed: feed).order('published DESC').with_content }
   scope :feeds,         ->    (feeds) { where(feed: feeds).order('published DESC').with_content }
+  scope :keyword,       ->        (k) { joins(:keywords).where(keywords: { id: k.id}).order('published DESC').with_content }
+  scope :tag,           ->        (t) { joins(:tags).where(tags: { id: t.id}).order('published DESC').with_content }
   scope :topic,         ->    (topic) { feeds(topic.feeds) }
   scope :category,      -> (category) { feeds(category.subscriptions.map { |s| s.feed_id })}
   scope :saved,         ->      (uid) { joins(:users).includes(:tracks).where(users: { id: uid }) }

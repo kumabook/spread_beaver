@@ -74,6 +74,10 @@ FactoryGirl.define do
     end
   end
 
+  factory :keyword, class: Keyword do
+    sequence(:label) { |n| "keyword-#{n}" }
+  end
+
   factory :topic, class: Topic do
     sequence(:label) { |n| "topic-#{n}" }
   end
