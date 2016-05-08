@@ -16,7 +16,7 @@ class Entry < ActiveRecord::Base
   before_save :normalize_visual
 
   scope :with_content,  ->            { includes(:tracks) }
-  scope :with_detail,   ->            { includes(:saved_users).includes(:tracks) }
+  scope :with_detail,   ->            { includes(:saved_users).includes(:tracks).includes(:keywords) }
   scope :latest,        ->     (time) { where("published > ?", time).order('published DESC').with_content }
   scope :popular,       ->            { joins(:saved_users).order('saved_count DESC').with_content }
   scope :subscriptions, ->       (ss) { where(feed: ss.map { |s| s.feed_id }).order('published DESC').with_content }
@@ -180,7 +180,7 @@ class Entry < ActiveRecord::Base
     h['recrawled']  = recrawled.present? ? recrawled.to_time.to_i * 1000 : nil
     h['updated']    = updated.present?   ? updated.to_time.to_i   * 1000 : nil
     h['categories'] = []
-    h['keywords']   = []
+    h['keywords']   = nil
     h.delete('saved_count')
     JSON_ATTRS.each do |key|
       h[key] = JSON.load(h[key])
@@ -197,8 +197,9 @@ class Entry < ActiveRecord::Base
   end
 
   def as_detail_json
-    hash         = as_content_json
-    hash['tags'] = saved_users.map  { |u| u.as_user_tag }
+    hash             = as_content_json
+    hash['tags']     = saved_users.map  { |u| u.as_user_tag }
+    hash['keywords'] = keywords.map { |k| k.label }
     hash
   end
 end
