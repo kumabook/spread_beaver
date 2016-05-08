@@ -92,9 +92,10 @@ class Feed < ActiveRecord::Base
     client = Feedlr::Client.new(sandbox: false)
     puts "Fetch latest entries of #{id}"
     newer_than = crawled.present? ? crawled.to_time.to_i : nil
+    sleep(0.25)
     cursor = client.stream_entries_contents(id, newerThan: newer_than)
-    sleep(0.1)
     cursor.items.each do |entry|
+      sleep(0.1)
       e = Entry.first_or_create_by_feedlr(entry, self)
       puts "Fetch tracks of #{e.url}"
       playlist = e.fetch_playlist

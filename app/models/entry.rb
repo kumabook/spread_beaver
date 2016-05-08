@@ -69,6 +69,7 @@ class Entry < ActiveRecord::Base
         .where(visual: nil).find_in_batches(batch_size: 20) do |entries|
 
       client         = Feedlr::Client.new(sandbox: false)
+      sleep(0.1)
       feedlr_entries = client.user_entries(entries.map { |e| e.id })
       hash = entries.reduce({}) do |h, e|
         h[e.id] = {} if h[e.id].nil?
