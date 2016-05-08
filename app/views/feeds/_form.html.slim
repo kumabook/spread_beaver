@@ -28,6 +28,21 @@
       = f.text_field :website, :class => 'form-control'
     = f.error_span(:website)
   .form-group
+    = f.label :visualUrl, :class => 'control-label col-lg-2'
+    .col-lg-10
+      = f.text_field :visualUrl, :class => 'form-control'
+    = f.error_span(:visualUrl)
+  .form-group
+    = f.label :coverUrl, :class => 'control-label col-lg-2'
+    .col-lg-10
+      = f.text_field :coverUrl, :class => 'form-control'
+    = f.error_span(:coverUrl)
+  .form-group
+    = f.label :iconUrl, :class => 'control-label col-lg-2'
+    .col-lg-10
+      = f.text_field :iconUrl, :class => 'form-control'
+    = f.error_span(:iconUrl)
+  .form-group
     = f.label :topic_ids, :class => 'control-label col-lg-2'
     .col-lg-10
       = f.collection_select(:topics, @topics, :id, :label,
