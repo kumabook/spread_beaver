@@ -174,11 +174,13 @@ class Entry < ActiveRecord::Base
   end
 
   def as_json(options = {})
-    h              = super(options)
-    h['crawled']   = crawled.to_time.to_i * 1000
-    h['published'] = published.to_time.to_i * 1000
-    h['recrawled'] = recrawled.present? ? recrawled.to_time.to_i * 1000 : nil
-    h['updated']   = updated.present?   ? updated.to_time.to_i   * 1000 : nil
+    h               = super(options)
+    h['crawled']    = crawled.to_time.to_i * 1000
+    h['published']  = published.to_time.to_i * 1000
+    h['recrawled']  = recrawled.present? ? recrawled.to_time.to_i * 1000 : nil
+    h['updated']    = updated.present?   ? updated.to_time.to_i   * 1000 : nil
+    h['categories'] = []
+    h['keywords']   = []
     h.delete('saved_count')
     JSON_ATTRS.each do |key|
       h[key] = JSON.load(h[key])
