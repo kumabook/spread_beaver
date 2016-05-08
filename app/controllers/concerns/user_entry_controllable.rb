@@ -13,11 +13,12 @@ module UserEntryControllable
     @user_entry = new_user_entry
 
     respond_to do |format|
+      to = request.referer ? :back : entries_path
       if @user_entry.save
-        format.html { redirect_to entries_path, notice: 'UserEntry was successfully created.' }
+        format.html { redirect_to to, notice: 'UserEntry was successfully created.' }
         format.json { render :show, status: :created, location: @user_entry }
       else
-        format.html { redirect_to entries_path, notice: @user_entry.errors }
+        format.html { redirect_to to, notice: @user_entry.errors }
         format.json { render json: @user_entry.errors, status: :unprocessable_entity }
       end
     end
@@ -25,11 +26,12 @@ module UserEntryControllable
 
   def destroy
     respond_to do |format|
+      to = request.referer ? :back : entries_path
       if @user_entry.destroy
-        format.html { redirect_to entries_path, notice: 'UserEntry was successfully destroyed.' }
+        format.html { redirect_to to, notice: 'UserEntry was successfully destroyed.' }
         format.json { render :show, status: :created, location: @user_entry }
       else
-        format.html { redirect_to entries_path, notice: @user_entry.errors }
+        format.html { redirect_to to, notice: @user_entry.errors }
         format.json { render json: @user_entry.errors, status: :unprocessable_entity }
       end
     end
