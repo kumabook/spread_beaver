@@ -58,7 +58,7 @@ class FeedsController < ApplicationController
     @feed.update_attributes(feed_params.merge({topics: topics}))
     respond_to do |format|
       if @feed.save
-        format.html { redirect_to feeds_path, notice: 'Feed was successfully updated.' }
+        format.html { redirect_to feed_path(@feed.escape), notice: 'Feed was successfully updated.' }
         format.json { render :show, status: :ok, location: @feed }
       else
         format.html { render :edit }

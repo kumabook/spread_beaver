@@ -76,7 +76,7 @@ class EntriesController < ApplicationController
                                                 }))
     respond_to do |format|
       if @entry.save
-        format.html { redirect_to entries_path, notice: 'Entry was successfully updated.' }
+        format.html { redirect_to entry_path(@entry), notice: 'Entry was successfully updated.' }
         format.json { render :show, status: :ok, location: @entry }
       else
         format.html { render :edit }
