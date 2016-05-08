@@ -62,8 +62,14 @@ class EntriesController < ApplicationController
   end
 
   def update
-    keywords = Keyword.find(entry_params[:keywords].select { |k| !k.blank? })
-    tags     = Tag.find(entry_params[:tags].select { |t| !t.blank? })
+    tags     = []
+    keywords = []
+    if entry_params[:keywords].present?
+      keywords = Keyword.find(entry_params[:keywords].select { |k| !k.blank? })
+    end
+    if entry_params[:tags].present?
+      tags     = Tag.find(entry_params[:tags].select { |t| !t.blank? })
+    end
     @entry.update_attributes(entry_params.merge({
                                                   keywords: keywords,
                                                       tags: tags
