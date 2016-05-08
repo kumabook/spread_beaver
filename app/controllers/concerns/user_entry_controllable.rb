@@ -15,7 +15,7 @@ module UserEntryControllable
     respond_to do |format|
       to = request.referer ? :back : entries_path
       if @user_entry.save
-        format.html { redirect_to to, notice: 'UserEntry was successfully created.' }
+        format.html { redirect_to to, notice: 'Entry was successfully marked.' }
         format.json { render :show, status: :created, location: @user_entry }
       else
         format.html { redirect_to to, notice: @user_entry.errors }
@@ -28,7 +28,7 @@ module UserEntryControllable
     respond_to do |format|
       to = request.referer ? :back : entries_path
       if @user_entry.destroy
-        format.html { redirect_to to, notice: 'UserEntry was successfully destroyed.' }
+        format.html { redirect_to to, notice: 'Entry was successfully unmarked.' }
         format.json { render :show, status: :created, location: @user_entry }
       else
         format.html { redirect_to to, notice: @user_entry.errors }
