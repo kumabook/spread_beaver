@@ -83,6 +83,7 @@ class FeedsController < ApplicationController
   def feed_params
     params.require(:feed).permit(:id, :title, :description, :website, :velocity,
                                  :visualUrl, :coverUrl, :iconUrl,
+                                 :language, :partial, :coverColor,
                                  topics: [])
   end
 end

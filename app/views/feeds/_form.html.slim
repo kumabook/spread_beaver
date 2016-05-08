@@ -43,6 +43,21 @@
       = f.text_field :iconUrl, :class => 'form-control'
     = f.error_span(:iconUrl)
   .form-group
+    = f.label :language, :class => 'control-label col-lg-2'
+    .col-lg-10
+      = f.text_field :language, :class => 'form-control'
+    = f.error_span(:language)
+  .form-group
+    = f.label :partial, :class => 'control-label col-lg-2'
+    .col-lg-10
+      = f.text_field :partial, :class => 'form-control'
+    = f.error_span(:partial)
+  .form-group
+    = f.label :coverColor, :class => 'control-label col-lg-2'
+    .col-lg-10
+      = f.text_field :coverColor, :class => 'form-control'
+    = f.error_span(:coverColor)
+  .form-group
     = f.label :topic_ids, :class => 'control-label col-lg-2'
     .col-lg-10
       = f.collection_select(:topics, @topics, :id, :label,
