@@ -9,7 +9,8 @@ class Playlist
 
   def create_tracks
     tracks = @tracks.map do |t|
-      track = Track.find_or_create_by(provider: t['provider'],
+      track = Track.find_or_create_by(id: t['id'],
+                                      provider: t['provider'],
                                       identifier: t['identifier'])
       track.url = Track::url t['provider'], t['identifier']
       EntryTrack.find_or_create_by entry: @entry, track: track
