@@ -125,9 +125,15 @@ class Entry < ActiveRecord::Base
     visual_url.present? && visual_url != 'none'
   end
 
-  def self.latest_entries(entries_per_feed: 3, since: 3.days.ago)
+  def self.latest_entries(since: 3.days.ago, entries_per_feed: 3)
     # TODO: Add page and per_page if need be
     entries = Entry.latest(since)
+    sort_one_by_one_by_feed(entries, entries_per_feed: entries_per_feed)
+  end
+
+  def self.latest_entries_of_topic(topic, since: 3.days.ago, entries_per_feed: 3)
+    # TODO: Add page and per_page if need be
+    entries = Entry.topic(topic).latest(since)
     sort_one_by_one_by_feed(entries, entries_per_feed: entries_per_feed)
   end
 

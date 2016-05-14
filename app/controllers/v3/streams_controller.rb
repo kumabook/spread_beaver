@@ -54,9 +54,9 @@ class V3::StreamsController < V3::ApiController
                       .per(@per_page)
                       .tag(@tag)
     elsif @topic.present?
-      @entries = Entry.page(@page)
-                      .per(@per_page)
-                      .topic(@topic)
+      # TODO: Replace this with  mixes api
+      since    = @newer_than.present? ? @newer_than : DURATION.ago
+      @entries = Entry.latest_entries_of_topic(@topic, since: since)
     elsif @category.present?
       @entries = Entry.page(@page)
                       .per(@per_page)
