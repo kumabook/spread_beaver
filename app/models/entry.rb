@@ -128,9 +128,13 @@ class Entry < ActiveRecord::Base
   def self.latest_entries(entries_per_feed: 3, since: 3.days.ago)
     # TODO: Add page and per_page if need be
     entries = Entry.latest(since)
+    sort_one_by_one_by_feed(entries, entries_per_feed: entries_per_feed)
+  end
+
+  def self.sort_one_by_one_by_feed(entries, entries_per_feed: 3)
     entries_list = entries.map { |entry| entry.feed_id }
-                          .uniq
-                          .map do |id|
+                   .uniq
+                   .map do |id|
       entries.select { |e| e.feed_id == id }.first(entries_per_feed)
     end
 
@@ -138,7 +142,6 @@ class Entry < ActiveRecord::Base
       .flat_map { |i| entries_list.map { |list| list[i] }}
       .select   { |a| a.present? }
   end
-
 
   def self.popular_entries_within_period(from: nil, to: nil)
     best_entries_within_period(from: from, to: to, clazz: SavedEntry)
