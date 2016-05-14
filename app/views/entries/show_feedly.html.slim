@@ -11,7 +11,7 @@ table.table.table-striped
       td = @feedlr_entry.id
     tr
       td visual image
-      td = thumbnail_image_link(@feedlr_entry.visual.url)
+      td = thumbnail_image_link(@feedlr_entry.visual.present? ? @feedlr_entry.visual.url : nil)
     tr
       td title
       td = @feedlr_entry.title
