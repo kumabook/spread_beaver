@@ -12,7 +12,7 @@ class V3::StreamsController < V3::ApiController
   before_action :set_page           , only: [:index]
 
   LATEST_ENTRIES_PER_FEED = 3
-  DURATION                = 3.days
+  DURATION                = 5.days
 
   def index
     if @resource.present?
