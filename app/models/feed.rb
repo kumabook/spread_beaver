@@ -95,24 +95,28 @@ class Feed < ActiveRecord::Base
     sleep(0.25)
     cursor = client.stream_entries_contents(id, newerThan: newer_than)
     cursor.items.each do |entry|
-      sleep(0.1)
-      e = Entry.first_or_create_by_feedlr(entry, self)
-      puts "Fetch tracks of #{e.url}"
-      playlist = e.fetch_playlist
-      playlist.create_tracks.each do |track|
-        puts "  Create track #{track.provider} #{track.identifier}"
-      end
-      if playlist.visual_url.present?
-
-        e.visual = {
-          url: playlist.visual_url,
-          processor: "pink-spider-v1"
-        }.to_json
-      end
-      e.save
-      puts "Update entry visual with #{playlist.visual_url}"
-      if self.lastUpdated.nil? || self.lastUpdated < e.published
-        self.lastUpdated = e.published
+      begin
+        sleep(0.1)
+        e = Entry.first_or_create_by_feedlr(entry, self)
+        puts "Fetch tracks of #{e.url}"
+        playlist = e.fetch_playlist
+        playlist.create_tracks.each do |track|
+          puts "  Create track #{track.provider} #{track.identifier}"
+        end
+        if playlist.visual_url.present?
+          e.visual = {
+            url: playlist.visual_url,
+            processor: "pink-spider-v1"
+          }.to_json
+        end
+        e.save
+        puts "Update entry visual with #{playlist.visual_url}"
+        if self.lastUpdated.nil? || self.lastUpdated < e.published
+          self.lastUpdated = e.published
+        end
+      rescue => err
+        puts "Failed to fetch #{e.url}  #{err}"
+        puts err.backtrace
       end
     end
     self.crawled = DateTime.now
