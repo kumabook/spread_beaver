@@ -57,7 +57,7 @@ class Entry < ActiveRecord::Base
       e.updated     = entry.updated.present?   ? Time.at(entry.updated / 1000) : nil
       e.feed        = feed
       if entry.keywords.present?
-        e.keywords  = entry.keywords.map { |k| Keyword.find_or_create_by label: k }
+        e.keywords  = entry.keywords.uniq.map { |k| Keyword.find_or_create_by label: k }
       end
     end
     e.save
