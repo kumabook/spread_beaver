@@ -64,7 +64,7 @@ class Entry < ActiveRecord::Base
     e
   end
 
-  def self.update_visuals(max: 200)
+  def self.update_visuals(max: 50)
     self.order('published DESC').page(0).per(max)
         .where(visual: nil).find_in_batches(batch_size: 20) do |entries|
 
