@@ -102,6 +102,15 @@ class Feed < ActiveRecord::Base
       playlist.create_tracks.each do |track|
         puts "  Create track #{track.provider} #{track.identifier}"
       end
+      if playlist.visual_url.present?
+
+        e.visual = {
+          url: playlist.visual_url,
+          processor: "pink-spider-v1"
+        }.to_json
+      end
+      e.save
+      puts "Update entry visual with #{playlist.visual_url}"
       if self.lastUpdated.nil? || self.lastUpdated < e.published
         self.lastUpdated = e.published
       end

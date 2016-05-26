@@ -174,12 +174,19 @@ class Entry < ActiveRecord::Base
     }.reverse.map { |hash| hash[:entry] }
   end
 
-  def fetch_playlist
+  def fetch_playlist(force: false)
     api_url = "http://pink-spider.herokuapp.com/playlistify"
-    response = RestClient.get api_url, params: { url: url}, :accept => :json
+    params  = { url: url, force: force}
+    response = RestClient.get api_url, params: params, :accept => :json
     return if response.code != 200
     hash = JSON.parse(response)
-    Playlist.new(hash['id'], hash['url'], hash['tracks'], self)
+    Playlist.new(hash['id'],
+                 hash['url'],
+                 hash['title'],
+                 hash['description'],
+                 hash['visual_url'],
+                 hash['locale'],
+                 hash['tracks'], self)
   end
 
   def as_json(options = {})
