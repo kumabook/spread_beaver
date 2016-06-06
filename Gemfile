@@ -22,6 +22,7 @@ gem 'feedlr'
 gem 'kaminari'
 gem 'rails-api'
 gem 'active_model_serializers'
+gem 'twitter'
 
 gem 'rest-client'
 gem 'newrelic_rpm'
@@ -38,4 +39,3 @@ group :development do
   gem 'web-console', '~> 2.0'
   gem 'spring'
 end
-
