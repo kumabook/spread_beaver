@@ -20,12 +20,13 @@ def get_twitter_client
 end
 
 def get_hot_entry_tweet
-  from     = @newer_than.present? ? @newer_than : DURATION.ago
-  to       = @older_than.present? ? @older_than : from + DURATION
+  from     = DURATION.ago
+  to       = from + DURATION
   @entries = Entry.hot_entries_within_period(from: from, to: to)
 
-  if @entries.nil?
+  if @entries.blank?
     puts "Not found hot entries."
+    return
   end
 
   entry  = @entries[0]
