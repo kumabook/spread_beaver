@@ -18,6 +18,44 @@ class Track < ActiveRecord::Base
     end
   end
 
+  def self.permalink_url provider, identifier
+    case provider
+    when 'YouTube'
+      self.url(provider, identifier)
+    when 'SoundCloud'
+      api_url   = "http://api.soundcloud.com/tracks/#{identifier}"
+      client_id = Rails.application.secrets.soundcloud_client_id
+      params    = { :client_id => client_id}
+      response  = RestClient.get api_url, params: params, :accept => :json
+      return nil if response.code != 200
+      hash      = JSON.parse(response)
+      url       = hash["permalink_url"]
+    end
+  end
+
+  def self.title provider, identifier
+    case provider
+    when 'YouTube'
+      api_url   = "https://www.googleapis.com/youtube/v3/videos"
+      key       = Rails.application.secrets.youtube_data_api_key
+      params    = { :id => identifier, :key => key, :fields => "items(snippet(title))", :part => "snippet"}
+      response  = RestClient.get api_url, params: params, :accept => :json
+      return nil if response.code != 200
+      hash      = JSON.parse(response)
+      title     = hash['items'][0]["snippet"]["title"]
+    when 'SoundCloud'
+      api_url   = "http://api.soundcloud.com/tracks/#{identifier}"
+      client_id = Rails.application.secrets.soundcloud_client_id
+      params    = { :client_id => client_id}
+      response  = RestClient.get api_url, params: params, :accept => :json
+      return nil if response.code != 200
+      hash      = JSON.parse(response)
+      title     = hash["title"]
+      user      = hash["user"]["username"]
+      "#{title} / #{user}"
+    end
+  end
+
   def likesCount
     likes.size
   end
