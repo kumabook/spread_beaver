@@ -41,7 +41,7 @@ def get_hot_entry_tweet
   origin = JSON.load(entry.origin)
 
   if origin.present? && origin['title'].present?
-    body  = "✏[話題の記事] #{entry.title} by #{origin['title']}"
+    body  = "✏[Today's Hot Entry] #{entry.title} by #{origin['title']}"
     body  = (body.length > 116) ? body[0..115].to_s : body
     tweet = "#{body} #{entry.originId}"
     tweet.chomp
@@ -66,7 +66,7 @@ def get_popular_track_tweet
   url   = Track.permalink_url(track.provider, track.identifier)
 
   if title.present? && url.present?
-    body  = "🎧[人気の曲] #{title}"
+    body  = "🎧[Today's Hot Track] #{title}"
     body  = (body.length > 116) ? body[0..115].to_s : body
     tweet = "#{body} #{url}"
     tweet.chomp
