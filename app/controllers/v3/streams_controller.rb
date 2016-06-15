@@ -13,6 +13,7 @@ class V3::StreamsController < V3::ApiController
 
   LATEST_ENTRIES_PER_FEED = 3
   DURATION                = 5.days
+  DURATION_FOR_RANKING    = 3.days
 
   def index
     if @resource.present?
@@ -26,12 +27,12 @@ class V3::StreamsController < V3::ApiController
                         .per(@per_page)
                         .subscriptions(@subscriptions)
       when :hot
-        from     = @newer_than.present? ? @newer_than : DURATION.ago
-        to       = @older_than.present? ? @older_than : from + DURATION
+        from     = @newer_than.present? ? @newer_than : DURATION_FOR_RANKING.ago
+        to       = @older_than.present? ? @older_than : from + DURATION_FOR_RANKING
         @entries = Entry.hot_entries_within_period(from: from, to: to)
       when :popular
-        from     = @newer_than.present? ? @newer_than : DURATION.ago
-        to       = @older_than.present? ? @older_than : from + DURATION
+        from     = @newer_than.present? ? @newer_than : DURATION_FOR_RANKING.ago
+        to       = @older_than.present? ? @older_than : from + DURATION_FOR_RANKING
         @entries = Entry.popular_entries_within_period(from: from, to: to)
       when :saved
         @entries = Entry.page(@page)
