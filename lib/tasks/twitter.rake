@@ -16,7 +16,7 @@ namespace :twitter do
   end
 end
 
-DURATION = 3.days
+DURATION_FOR_RANKING = Rails.application.secrets.duration_for_ranking&.days || 3.days
 
 def get_twitter_client
   Twitter::REST::Client.new do |config|
@@ -28,8 +28,8 @@ def get_twitter_client
 end
 
 def get_hot_entry_tweet
-  from     = DURATION.ago
-  to       = from + DURATION
+  from     = DURATION_FOR_RANKING.ago
+  to       = from + DURATION_FOR_RANKING
   entries = Entry.hot_entries_within_period(from: from, to: to)
 
   if entries.blank?
@@ -52,8 +52,8 @@ def get_hot_entry_tweet
 end
 
 def get_popular_track_tweet
-  from   = DURATION.ago
-  to     = from + DURATION
+  from   = DURATION_FOR_RANKING.ago
+  to     = from + DURATION_FOR_RANKING
   tracks = Track.popular_tracks_within_period(from: from, to: to)
 
   if tracks.blank?
