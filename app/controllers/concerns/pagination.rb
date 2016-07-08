@@ -5,10 +5,6 @@ module Pagination
   end
 
   module ClassMethods
-    DEFAULT_PAGINATION = {
-      'page' => 1,
-      'per_page' => Kaminari::config::default_per_page
-    }
     CONTINUATION_SALT       = "continuation_salt"
     def pagination(str)
       return DEFAULT_PAGINATION if str.nil?
@@ -17,10 +13,10 @@ module Pagination
       dec.pkcs5_keyivgen(CONTINUATION_SALT)
       JSON.parse (dec.update(Array.new([str]).pack("H*")) + dec.final)
     rescue
-      return DEFAULT_PAGINATION
+      return {}
     end
 
-    def continuation(page=0, per_page = 20, newer_than = nil, older_than = nil)
+    def continuation(page=0, per_page = nil, newer_than = nil, older_than = nil)
       str = {
               page: page,
           per_page: per_page,
@@ -40,8 +36,8 @@ module Pagination
     @newer_than = params[:newer_than].present? ? Time.at(params[:newer_than].to_i / 1000) : nil
     @older_than = params[:older_than].present? ? Time.at(params[:older_than].to_i / 1000) : nil
     pagination  = V3::StreamsController::pagination(params[:continuation])
-    @page       = pagination['page']
-    @per_page   = pagination['per_page']
+    @page       = pagination['page'] || params[:page]&.to_i || 1
+    @per_page   = pagination['per_page'] || params[:count]&.to_i || Kaminari::config::default_per_page
     @newer_than = pagination['newer_than'] if pagination['newer_than'].present?
     @older_than = pagination['older_than'] if pagination['older_than'].present?
   end
