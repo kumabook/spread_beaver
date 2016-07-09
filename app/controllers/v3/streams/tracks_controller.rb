@@ -15,7 +15,7 @@ class V3::Streams::TracksController < V3::ApiController
     case @resource
     when :latest
       since   = @newer_than.present? ? @newer_than : DURATION.ago
-      @tracks = Track.latest(since)
+      @tracks = Track.latest(since).page(@page).per(@per_page)
     when :popular
       from    = @newer_than.present? ? @newer_than : DURATION_FOR_RANKING.ago
       to      = @older_than.present? ? @older_than : from + DURATION_FOR_RANKING
