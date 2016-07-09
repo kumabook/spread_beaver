@@ -141,7 +141,7 @@ RSpec.describe "Streams api", type: :request, autodoc: true do
       get "/v3/streams/#{resource}/contents", {
             newer_than: 200.days.ago.to_time.to_i * 1000,
             older_than: Time.now.to_i * 1000,
-            per_page: 2
+            count: 2
           },
           Authorization: "Bearer #{@token['access_token']}"
       result = JSON.parse @response.body

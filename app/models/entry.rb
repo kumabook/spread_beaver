@@ -1,4 +1,13 @@
 # coding: utf-8
+
+class PaginatedEntryArray < Array
+  attr_reader(:total_count)
+  def initialize(array, total_count)
+    super(array)
+    @total_count = total_count
+  end
+end
+
 class Entry < ActiveRecord::Base
   belongs_to :feed
   has_many :entry_tracks
@@ -177,10 +186,11 @@ class Entry < ActiveRecord::Base
                                       page: 1,
                                       per_page: Kaminari::config::default_per_page)
     raise ArgumentError, "Parameter must be not nil" if from.nil? || to.nil? || clazz.nil?
-    user_count_hash = clazz.period(from, to).page(page).per(per_page).user_count
+    user_entries    = clazz.period(from, to).page(page).per(per_page)
+    user_count_hash = user_entries.user_count
     entries = Entry.with_content.find(user_count_hash.keys)
     # order by user_count and updated
-    user_count_hash.keys.map { |id|
+    sorted_entries = user_count_hash.keys.map { |id|
       {
                 id: id,
         user_count: user_count_hash[id],
@@ -189,6 +199,7 @@ class Entry < ActiveRecord::Base
     }.sort_by { |hash|
       [hash[:user_count], [hash[:entry].updated_at]]
     }.reverse.map { |hash| hash[:entry] }
+    PaginatedEntryArray.new(sorted_entries, user_entries.total_count)
   end
 
   def fetch_playlist(force: false)
