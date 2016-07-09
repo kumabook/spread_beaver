@@ -125,16 +125,27 @@ class Entry < ActiveRecord::Base
     visual_url.present? && visual_url != 'none'
   end
 
-  def self.latest_entries(since: 3.days.ago, entries_per_feed: 3)
-    # TODO: Add page and per_page if need be
+  def self.latest_entries(since: 3.days.ago, entries_per_feed: 3, per_page: nil)
     entries = Entry.latest(since)
-    sort_one_by_one_by_feed(entries, entries_per_feed: entries_per_feed)
+    items = sort_one_by_one_by_feed(entries, entries_per_feed: entries_per_feed)
+    if per_page.present?
+      items.first(per_page)
+    else
+      items
+    end
   end
 
-  def self.latest_entries_of_topic(topic, since: 3.days.ago, entries_per_feed: 3)
+  def self.latest_entries_of_topic(topic,
+                                   since: 3.days.ago, entries_per_feed: 3,
+                                   per_page: nil)
     # TODO: Add page and per_page if need be
-    entries = Entry.topic(topic).latest(since)
-    sort_one_by_one_by_feed(entries, entries_per_feed: entries_per_feed)
+    entries = Entry.topic(topic).latest(since).page(1).per(per_page)
+    items = sort_one_by_one_by_feed(entries, entries_per_feed: entries_per_feed)
+    if per_page.present?
+      items.first(per_page)
+    else
+      items
+    end
   end
 
   def self.sort_one_by_one_by_feed(entries, entries_per_feed: 3)
@@ -149,18 +160,21 @@ class Entry < ActiveRecord::Base
       .select   { |a| a.present? }
   end
 
-  def self.popular_entries_within_period(from: nil, to: nil)
-    best_entries_within_period(from: from, to: to, clazz: SavedEntry)
+  def self.popular_entries_within_period(from: nil, to: nil, per_page: nil, page: 0)
+    best_entries_within_period(from: from, to: to, clazz: SavedEntry,
+                               per_page: per_page, page: page)
   end
 
-  def self.hot_entries_within_period(from: nil, to: nil)
-    best_entries_within_period(from: from, to: to, clazz: ReadEntry)
+  def self.hot_entries_within_period(from: nil, to: nil, page: 0, per_page: nil)
+    best_entries_within_period(from: from, to: to, clazz: ReadEntry,
+                               page: page, per_page: per_page)
   end
 
-  def self.best_entries_within_period(from: nil, to: nil, clazz: nil)
+  def self.best_entries_within_period(from: nil, to: nil, clazz: nil,
+                                      page: 1,
+                                      per_page: Kaminari::config::default_per_page)
     raise ArgumentError, "Parameter must be not nil" if from.nil? || to.nil? || clazz.nil?
-    # TODO: Add page and per_page if need be
-    user_count_hash = clazz.period(from, to).user_count
+    user_count_hash = clazz.period(from, to).page(page).per(per_page).user_count
     entries = Entry.with_content.find(user_count_hash.keys)
     # order by user_count and updated
     user_count_hash.keys.map { |id|

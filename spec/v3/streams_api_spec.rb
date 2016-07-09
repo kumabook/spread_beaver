@@ -137,15 +137,15 @@ RSpec.describe "Streams api", type: :request, autodoc: true do
     end
 
     it "gets entries of feeds that has a specified topic " do
-      entries_per_feed = 3
       resource = CGI.escape @topic.id
       get "/v3/streams/#{resource}/contents", {
             newer_than: 200.days.ago.to_time.to_i * 1000,
-            older_than: Time.now.to_i * 1000
+            older_than: Time.now.to_i * 1000,
+            per_page: 2
           },
           Authorization: "Bearer #{@token['access_token']}"
       result = JSON.parse @response.body
-      expect(result['items'].count).to eq(entries_per_feed)
+      expect(result['items'].count).to eq(2)
       result['items'].each { |item|
         expect(Entry.find(item['id']).feed).to eq(@feed)
       }
