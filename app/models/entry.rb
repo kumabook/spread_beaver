@@ -125,24 +125,27 @@ class Entry < ActiveRecord::Base
     visual_url.present? && visual_url != 'none'
   end
 
-  def self.latest_entries(since: 3.days.ago, entries_per_feed: 3, per_page: nil)
+  def self.latest_entries(since: 3.days.ago,
+                          entries_per_feed: 3,
+                          page: 1, per_page: nil)
     entries = Entry.latest(since)
-    items = sort_one_by_one_by_feed(entries, entries_per_feed: entries_per_feed)
-    if per_page.present?
-      items.first(per_page)
-    else
-      items
-    end
+    mix_up_and_paginate(entries, entries_per_feed, page, per_page)
   end
 
   def self.latest_entries_of_topic(topic,
                                    since: 3.days.ago, entries_per_feed: 3,
-                                   per_page: nil)
-    # TODO: Add page and per_page if need be
-    entries = Entry.topic(topic).latest(since).page(1).per(per_page)
+                                   page: 1, per_page: nil)
+    entries = Entry.topic(topic).latest(since)
+    items = mix_up_and_paginate(entries, entries_per_feed, page, per_page)
+    PaginatedEntryArray.new(items, entries.count)
+  end
+
+  def self.mix_up_and_paginate(entries, entries_per_feed, page, per_page)
     items = sort_one_by_one_by_feed(entries, entries_per_feed: entries_per_feed)
     if per_page.present?
-      items.first(per_page)
+      page   = 1 if page < 1
+      offset = (page - 1) * per_page
+      items[offset...offset+per_page]
     else
       items
     end

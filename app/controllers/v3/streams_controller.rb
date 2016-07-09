@@ -20,7 +20,10 @@ class V3::StreamsController < V3::ApiController
       case @resource
       when :latest
         since    = @newer_than.present? ? @newer_than : DURATION.ago
-        @entries = Entry.latest_entries(entries_per_feed: LATEST_ENTRIES_PER_FEED, since: since)
+        @entries = Entry.latest_entries(entries_per_feed: LATEST_ENTRIES_PER_FEED,
+                                                   since: since,
+                                                    page: @page,
+                                                per_page: @per_page)
       when :all
         @subscriptions = current_resource_owner.subscriptions
         @entries = Entry.page(@page)
@@ -61,7 +64,8 @@ class V3::StreamsController < V3::ApiController
       since    = @newer_than.present? ? @newer_than : DURATION.ago
       @entries = Entry.latest_entries_of_topic(@topic,
                                                since: since,
-                                               per_page: @per_page)
+                                                page: @page,
+                                            per_page: @per_page)
     elsif @category.present?
       @entries = Entry.page(@page)
                       .per(@per_page)
