@@ -21,11 +21,6 @@ class V3::Streams::TracksController < V3::ApiController
       to      = @older_than.present? ? @older_than : from + DURATION_FOR_RANKING
       @tracks = Track.popular_tracks_within_period(from: from, to: to,
                                                    page: @page, per_page: @per_page)
-    when :all
-      @subscriptions = current_resource_owner.subscriptions
-      @entries = Entry.page(@page)
-                      .per(@per_page)
-                      .subscriptions(@subscriptions)
     when :liked
       @tracks = Entry.page(@page)
                      .per(@per_page)
