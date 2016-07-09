@@ -93,13 +93,13 @@ class Track < ActiveRecord::Base
     }
   end
 
-  def self.popular_tracks_within_period(from: nil, to: nil)
+  def self.popular_tracks_within_period(from: nil, to: nil, page: 1, per_page: nil)
     raise ArgumentError, "Parameter must be not nil" if from.nil? || to.nil?
-    # TODO: Add page and per_page if need be
-    user_count_hash = Like.period(from, to).user_count
+    likes = Like.period(from, to).page(page).per(per_page)
+    user_count_hash = likes.user_count
     tracks = Track.find(user_count_hash.keys)
     # order by user_count and updated
-    user_count_hash.keys.map { |id|
+    sorted_tracks = user_count_hash.keys.map { |id|
       {
                 id: id,
         user_count: user_count_hash[id],
@@ -108,5 +108,14 @@ class Track < ActiveRecord::Base
     }.sort_by { |hash|
       [hash[:user_count], hash[:track].updated_at]
     }.reverse.map { |hash| hash[:track] }
+    PaginatedTracks.new(sorted_tracks, likes.total_count)
+  end
+end
+
+class PaginatedTracks < Array
+  attr_reader(:total_count)
+  def initialize(values, total_count)
+    super(values)
+    @total_count = total_count
   end
 end
