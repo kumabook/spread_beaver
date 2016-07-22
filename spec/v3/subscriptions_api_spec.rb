@@ -39,6 +39,13 @@ RSpec.describe "Subscriptions api", type: :request, autodoc: true do
       expect(subscriptions.count).to eq(2)
     end
 
+    it "fail to create exist subscription" do
+      post "/v3/subscriptions",
+           @subscribed.as_json,
+           Authorization: "Bearer #{@token['access_token']}"
+      expect(@response.status).to eq(409)
+    end
+
     it "delete a subscription" do
       delete "/v3/subscriptions/#{@subscribed.escape.id}",
              nil,
@@ -51,6 +58,12 @@ RSpec.describe "Subscriptions api", type: :request, autodoc: true do
       expect(subscriptions.count).to eq(0)
     end
 
+    it "fail to delete unexist subscription" do
+      delete "/v3/subscriptions/#{@feed.escape.id}",
+             nil,
+             Authorization: "Bearer #{@token['access_token']}"
+      expect(@response.status).to eq(404)
+    end
   end
 
 end
