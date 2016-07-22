@@ -15,25 +15,6 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def render_forbidden
-    respond_to do |format|
-      format.html {
-        render file: "#{Rails.root}/public/403.html", status: :forbidden
-      }
-      format.json { render json: {}, status: :forbidden }
-    end
-  end
-
-  def render_not_found
-    respond_to do |format|
-      format.html {
-        render file: "#{Rails.root}/public/404.html", status: :not_found
-      }
-      format.json { render json: {}, status: :not_found }
-    end
-  end
-
-
   private
   def not_authenticated
     redirect_to login_path, alert: "Please login first"
