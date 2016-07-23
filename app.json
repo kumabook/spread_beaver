@@ -6,9 +6,8 @@
     "news"
   ],
   "repository": "https://github.com/kumabook/spread_beaver",
-  "success_url": "/welcome",
   "scripts": {
-    "postdeploy": "bundle exec rake bootstrap"
+    "postdeploy": "bundle exec rake db:setup"
   },
   "env": {
     "SECRET_TOKEN": {
@@ -21,9 +20,9 @@
     },
     "APP_TITLE": "Spread Beaver",
     "LATEST_ENTRIES_PER_FEED": "1",
-    "DURATION_FOR_COMMON_STREAM": 4,
-    "DURATION_FOR_RANKING": 2,
-    "FEEDLY_TARGET": 'production'
+    "DURATION_FOR_COMMON_STREAM": "4",
+    "DURATION_FOR_RANKING": "2",
+    "FEEDLY_TARGET": "production"
   },
   "formation": {
     "web": {
