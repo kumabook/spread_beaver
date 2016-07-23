@@ -17,7 +17,7 @@ class FeedsController < ApplicationController
   end
 
   def show_feedly
-    client = Feedlr::Client.new(sandbox: false)
+    client = Feedlr::Client.new
     @feedlr_feed = client.feed(@feed.id)
   end
 

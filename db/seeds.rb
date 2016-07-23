@@ -1,9 +1,9 @@
 require 'rest-client'
 
-user = User.first_or_create(email: 'spread_beaver@test.com',
+user = User.first_or_create(email: 'admin@example.com',
                              type: User.types[:admin],
-                         password: 'spread_beaver',
-                         password_confirmation: 'spread_beaver')
+                         password: 'admin',
+                         password_confirmation: 'admin')
 
 puts "Create admin user as id: #{user.id}"
 
@@ -13,7 +13,7 @@ app = Doorkeeper::Application.find_or_create_by name: "ios",
 
 puts "Create ios app id: #{app.id}"
 
-client = Feedlr::Client.new(sandbox: false)
+client = Feedlr::Client.new
 
 feedIds = [
   "feed/http://pitchfork.com/rss/news",

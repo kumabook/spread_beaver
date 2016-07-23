@@ -32,7 +32,7 @@ class EntriesController < ApplicationController
   end
 
   def show_feedly
-    client = Feedlr::Client.new(sandbox: false)
+    client = Feedlr::Client.new
     @feedlr_entry = client.user_entry(@entry.id)
   end
 

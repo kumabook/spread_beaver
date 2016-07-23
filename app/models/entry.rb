@@ -77,7 +77,7 @@ class Entry < ActiveRecord::Base
     self.order('published DESC').page(0).per(max)
         .where(visual: nil).find_in_batches(batch_size: 20) do |entries|
 
-      client         = Feedlr::Client.new(sandbox: false)
+      client         = Feedlr::Client.new
       sleep(0.1)
       feedlr_entries = client.user_entries(entries.map { |e| e.id })
       hash = entries.reduce({}) do |h, e|

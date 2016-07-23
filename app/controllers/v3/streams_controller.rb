@@ -11,9 +11,9 @@ class V3::StreamsController < V3::ApiController
   before_action :set_need_visual    , only: [:index]
   before_action :set_page           , only: [:index]
 
-  LATEST_ENTRIES_PER_FEED = Rails.application.secrets.latest_entries_per_feed || 3
-  DURATION                = Rails.application.secrets.duration_for_common_stream&.days || 5.days
-  DURATION_FOR_RANKING    = Rails.application.secrets.duration_for_ranking&.days || 3.days
+  LATEST_ENTRIES_PER_FEED = Setting.latest_entries_per_feed
+  DURATION                = Setting.duration_for_common_stream.days
+  DURATION_FOR_RANKING    = Setting.duration_for_ranking.days
 
   def index
     if @resource.present?

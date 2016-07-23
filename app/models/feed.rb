@@ -55,7 +55,7 @@ class Feed < ActiveRecord::Base
   end
 
   def self.find_or_create_with_ids(feedIds)
-    client = Feedlr::Client.new(sandbox: false)
+    client = Feedlr::Client.new
     feeds = client.feeds(feedIds)
     return [] if feeds.nil?
     feeds.map do |feed|
@@ -70,7 +70,7 @@ class Feed < ActiveRecord::Base
   end
 
   def self.update_visuals(feeds)
-    client = Feedlr::Client.new(sandbox: false)
+    client = Feedlr::Client.new
     feedlr_feeds = client.feeds(feeds.map { |f| f.id })
     return [] if feedlr_feeds.nil?
     feedlr_feeds.map do |feedlr_feed|
@@ -89,7 +89,7 @@ class Feed < ActiveRecord::Base
   end
 
   def fetch_latest_entries
-    client = Feedlr::Client.new(sandbox: false)
+    client = Feedlr::Client.new
     puts "Fetch latest entries of #{id}"
     newer_than = crawled.present? ? crawled.to_time.to_i : nil
     sleep(0.25)

@@ -1,0 +1,15 @@
+title: <%= ENV["APP_TITLE"] || 'Spread Beaver' %>
+
+latest_entries_per_feed: <%= ENV["LATEST_ENTRIES_PER_FEED"] || 1 %>
+duration_for_common_stream: <%= ENV["DURATION_FOR_COMMON_STREAM"] || 4 %>
+duration_for_ranking: <%= ENV["DURATION_FOR_RANKING"] || 2 %>
+
+feedly_target: <%= ENV["FEEDLY_TARGET"] || 'sandbox' %>
+
+twitter_consumer_key: <%= ENV["TWITTER_CONSUMER_KEY"] %>
+twitter_consumer_secret: <%= ENV["TWITTER_CONSUMER_SECRET"] %>
+twitter_access_token: <%= ENV["TWITTER_ACCESS_TOKEN"] %>
+twitter_access_secret: <%= ENV["TWITTER_ACCESS_SECRET"] %>
+
+youtube_data_api_key:  <%= ENV["YOUTUBE_DATA_API_KEY"] %>
+soundcloud_client_id:  <%= ENV["SOUNDCLOUD_CLIENT_ID"] %>

@@ -1,3 +1,4 @@
+# coding: utf-8
 namespace :twitter do
   desc "This task is called by the Heroku scheduler add-on"
   task :tweet_hot_entry => :environment do
@@ -16,20 +17,19 @@ namespace :twitter do
   end
 end
 
-DURATION_FOR_RANKING = Rails.application.secrets.duration_for_ranking&.days || 3.days
-
 def get_twitter_client
   Twitter::REST::Client.new do |config|
-    config.consumer_key        = Rails.application.secrets.twitter_consumer_key
-    config.consumer_secret     = Rails.application.secrets.twitter_consumer_secret
-    config.access_token        = Rails.application.secrets.twitter_access_token
-    config.access_token_secret = Rails.application.secrets.twitter_access_secret
+    config.consumer_key        = Setting.twitter_consumer_key
+    config.consumer_secret     = Setting.twitter_consumer_secret
+    config.access_token        = Setting.twitter_access_token
+    config.access_token_secret = Setting.twitter_access_secret
   end
 end
 
 def get_hot_entry_tweet
-  from     = DURATION_FOR_RANKING.ago
-  to       = from + DURATION_FOR_RANKING
+  duration = Setting.duration_for_ranking.days
+  from     = duration.ago
+  to       = from + duration
   entries = Entry.hot_entries_within_period(from: from, to: to)
 
   if entries.blank?
@@ -52,9 +52,10 @@ def get_hot_entry_tweet
 end
 
 def get_popular_track_tweet
-  from   = DURATION_FOR_RANKING.ago
-  to     = from + DURATION_FOR_RANKING
-  tracks = Track.popular_tracks_within_period(from: from, to: to)
+  duration = Setting.duration_for_ranking.days
+  from     = duration.ago
+  to       = from + duration
+  tracks   = Track.popular_tracks_within_period(from: from, to: to)
 
   if tracks.blank?
     puts "Not found popular tracks."

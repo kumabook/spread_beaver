@@ -24,7 +24,7 @@ class Track < ActiveRecord::Base
       self.url(provider, identifier)
     when 'SoundCloud'
       api_url   = "http://api.soundcloud.com/tracks/#{identifier}"
-      client_id = Rails.application.secrets.soundcloud_client_id
+      client_id = Setting.soundcloud_client_id
       params    = { :client_id => client_id}
       response  = RestClient.get api_url, params: params, :accept => :json
       return nil if response.code != 200
@@ -37,7 +37,7 @@ class Track < ActiveRecord::Base
     case provider
     when 'YouTube'
       api_url   = "https://www.googleapis.com/youtube/v3/videos"
-      key       = Rails.application.secrets.youtube_data_api_key
+      key       = Setting.youtube_data_api_key
       params    = { :id => identifier, :key => key, :fields => "items(snippet(title))", :part => "snippet"}
       response  = RestClient.get api_url, params: params, :accept => :json
       return nil if response.code != 200
@@ -45,7 +45,7 @@ class Track < ActiveRecord::Base
       title     = hash['items'][0]["snippet"]["title"]
     when 'SoundCloud'
       api_url   = "http://api.soundcloud.com/tracks/#{identifier}"
-      client_id = Rails.application.secrets.soundcloud_client_id
+      client_id = Setting.soundcloud_client_id
       params    = { :client_id => client_id}
       response  = RestClient.get api_url, params: params, :accept => :json
       return nil if response.code != 200

@@ -4,8 +4,8 @@ class V3::Streams::TracksController < V3::ApiController
   before_action :set_global_resource, only: [:index]
   before_action :set_page           , only: [:index]
 
-  DURATION             = Rails.application.secrets.duration_for_common_stream&.days || 5.days
-  DURATION_FOR_RANKING = Rails.application.secrets.duration_for_ranking&.days || 3.days
+  DURATION             = Setting.duration_for_common_stream.days
+  DURATION_FOR_RANKING = Setting.duration_for_ranking.days
 
   def index
     if @resource.nil?
