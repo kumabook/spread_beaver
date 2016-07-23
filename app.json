@@ -1,0 +1,43 @@
+{
+  "name": "Spread Beaver",
+  "description": "a news, videos and tracks aggregation api server written in rails",
+  "keywords": [
+    "rss",
+    "news"
+  ],
+  "repository": "https://github.com/kumabook/spread_beaver",
+  "success_url": "/welcome",
+  "scripts": {
+    "postdeploy": "bundle exec rake bootstrap"
+  },
+  "env": {
+    "SECRET_TOKEN": {
+      "description": "A secret key for verifying the integrity of signed cookies.",
+      "generator": "secret"
+    },
+    "WEB_CONCURRENCY": {
+      "description": "The number of processes to run.",
+      "value": "5"
+    },
+    "APP_TITLE": "Spread Beaver",
+    "LATEST_ENTRIES_PER_FEED": "1",
+    "DURATION_FOR_COMMON_STREAM": 4,
+    "DURATION_FOR_RANKING": 2,
+    "FEEDLY_TARGET": 'production'
+  },
+  "formation": {
+    "web": {
+      "quantity": 1,
+      "size": "free"
+    }
+  },
+  "image": "heroku/ruby",
+  "addons": [
+    "heroku-postgresql"
+  ],
+  "buildpacks": [
+    {
+      "url": "heroku/ruby"
+    }
+  ]
+}
