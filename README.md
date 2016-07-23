@@ -76,3 +76,19 @@ See [Feedly Cloud API document](https://developer.feedly.com/v3/)
 - [Tags API](doc/tags_api.md)
 - [Keywords API](doc/keywords_api.md)
 - [Playlists API](doc/playlists_api.md)
+
+## How to build and deploy
+
+### Running locally
+
+- Install ruby and postgres
+- Run  `bundle install`
+- Create `config/database.yml` from `config.database.yml.dist` and change it if need
+- Run `rake db:create`
+- Run `rake db:migrate`
+- Run `rake db:seed`
+- Run `rails s`
+
+### Deploying on Heroku
+
+[![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
