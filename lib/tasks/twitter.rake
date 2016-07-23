@@ -3,17 +3,17 @@ namespace :twitter do
   desc "This task is called by the Heroku scheduler add-on"
   task :tweet_hot_entry => :environment do
     puts "Start making tweet of hot entry"
-  	client = get_twitter_client
-  	tweet  = get_hot_entry_tweet
-  	update(client, tweet) if tweet.present?
+    client = get_twitter_client
+    tweet  = get_hot_entry_tweet
+    update(client, tweet) if tweet.present?
   end
 
   desc "This task is called by the Heroku scheduler add-on"
   task :tweet_popular_track => :environment do
     puts "Start making tweet of popular track"
-  	client = get_twitter_client
-  	tweet  = get_popular_track_tweet
-  	update(client, tweet) if tweet.present?
+    client = get_twitter_client
+    tweet  = get_popular_track_tweet
+    update(client, tweet) if tweet.present?
   end
 end
 
