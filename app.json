@@ -32,7 +32,8 @@
   },
   "image": "heroku/ruby",
   "addons": [
-    "heroku-postgresql"
+    "heroku-postgresql",
+    "scheduler:standard"
   ],
   "buildpacks": [
     {

@@ -92,3 +92,6 @@ See [Feedly Cloud API document](https://developer.feedly.com/v3/)
 ### Deploying on Heroku
 
 [![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
+
+- After deployment, open scheculer page by `heroku addons:open scheduler`,
+And add `rake crawl`.
