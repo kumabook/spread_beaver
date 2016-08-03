@@ -137,7 +137,7 @@ class V3::StreamsController < V3::ApiController
 
   def set_topic
     if params[:id].present? && @stream_id.match(/topic\/.*/)
-      @topic = Topic.includes(:feeds).find_by(id: @stream_id)
+      @topic = Topic.eager_load(:feeds).find_by(id: @stream_id)
     end
   end
 
