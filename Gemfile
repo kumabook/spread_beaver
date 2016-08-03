@@ -24,6 +24,7 @@ gem 'rails-api'
 gem 'active_model_serializers'
 gem 'twitter'
 
+gem 'redis-rails'
 gem 'rest-client'
 group :production do
   gem 'newrelic_rpm'
