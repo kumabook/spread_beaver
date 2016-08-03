@@ -9,7 +9,8 @@ class V3::Streams::TracksController < V3::ApiController
 
   def index
     if @resource.nil?
-      render json: {message: "Not found" }, status: 404
+      render json: {message: "Not found" }, status: :not_found
+      return
     end
 
     case @resource
