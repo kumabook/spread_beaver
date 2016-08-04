@@ -7,6 +7,14 @@ task :crawl => :environment do
   Entry.update_visuals
 
   puts "Finish crawling."
+
+  Rails.cache.delete_matched(/latest_entries_of_*/)
+  puts "Clear cache"
+end
+
+task :clear_cache => :environment do
+  Rails.cache.delete_matched("latest_entries_of_*")
+  puts "Clear cache"
 end
 
 desc "Create latest entries as daily top keyword"
