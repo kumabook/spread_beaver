@@ -75,16 +75,24 @@ class Feed < ActiveRecord::Base
     return [] if feedlr_feeds.nil?
     feedlr_feeds.map do |feedlr_feed|
       feeds.select { |f| f.id == feedlr_feed.id }.each do |feed|
-        puts "Update visuals of #{feedlr_feed.id}"
         feed.update_visuals_with_feedlr(feedlr_feed)
       end
     end
   end
 
-  def update_visuals_with_feedlr(feed)
-    self.visualUrl   = feed.visualUrl if feed.visualUrl.present?
-    self.coverUrl    = feed.coverUrl  if feed.coverUrl.present?
-    self.iconUrl     = feed.iconUrl   if feed.iconUrl.present?
+  def update_visuals_with_feedlr(feed, force=false)
+    if feed.visualUrl.present? && (self.visualUrl.blank? || force)
+      puts "Update visualUrl of #{feed.id}: #{feed.visualUrl}"
+      self.visualUrl = feed.visualUrl
+    end
+    if feed.coverUrl.present? && (self.coverUrl.blank? || force)
+      puts "Update coverUrl of #{feed.id}: #{feed.coverUrl}"
+      self.coverUrl = feed.coverUrl
+    end
+    if feed.iconUrl.present? && (self.iconUrl.blank? || force)
+      puts "Update iconUrl of #{feed.id}: #{feed.iconUrl}"
+      self.iconUrl = feed.iconUrl
+    end
     save
   end
 
