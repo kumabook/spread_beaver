@@ -9,22 +9,25 @@ table.table.table-striped
       th id
       th provider
       th identifier
+      th likes
       th.col-md-2 actions
   tbody
     - @tracks.each do |track|
-      - like = @likes.to_a.select {|l| track.id == l.track_id }.first
+      - my  = @likes_dic[track][:my]
+      - count = @likes_dic[track][:count]
       tr
         td = link_to track.id, track_path(track)
         td = track.provider
         td = link_to track.identifier, Track.url(track.provider, track.identifier)
+        td = "#{count || 0} likes"
         td
-          - if like.nil?
+          - if my.nil?
             = form_for :like, url: '/likes', method: :post do |f|
               = f.hidden_field :user_id, value: current_user.id
               = f.hidden_field :track_id, value: track.id
               = f.submit 'Like', class: 'btn btn-xs btn-primary'
           - else
-            = form_for like, method: :delete do |f|
+            = form_for my, method: :delete do |f|
               = hidden_field :user_id, current_user.id
               = hidden_field :track_id, track.id
               = f.submit 'Unlike', class: 'btn btn-xs btn-primary'

@@ -7,12 +7,19 @@ class TracksController < ApplicationController
   def index
     if @entry.present?
       @tracks = @entry.tracks.page(params[:page])
-      @likes  = Like.where(user_id: current_user.id,
-                          track_id: @tracks.map { |t| t.id })
     else
       @tracks = Track.order('created_at DESC').page(params[:page])
-      @likes  = Like.where(user_id: current_user.id,
-                          track_id: @tracks.map { |t| t.id })
+    end
+    my_likes = Like.where(user_id: current_user.id,
+                         track_id: @tracks.map { |t| t.id })
+    count = Like.where(track_id: @tracks.map { |t| t.id })
+                .group(:track_id).count('track_id')
+    @likes_dic = @tracks.inject({}) do |h, t|
+      h[t] = {
+        my: my_likes.to_a.select {|l| t.id == l.track_id }.first,
+        count: count.to_a.select {|c| t.id == c[0] }.map {|c| c[1] }.first,
+      }
+      h
     end
   end
 
