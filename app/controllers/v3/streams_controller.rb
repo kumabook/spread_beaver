@@ -6,6 +6,7 @@ class V3::StreamsController < V3::ApiController
   before_action :set_feed           , only: [:index]
   before_action :set_keyword        , only: [:index]
   before_action :set_tag            , only: [:index]
+  before_action :set_journal        , only: [:index]
   before_action :set_topic          , only: [:index]
   before_action :set_category       , only: [:index]
   before_action :set_need_visual    , only: [:index]
@@ -70,8 +71,11 @@ class V3::StreamsController < V3::ApiController
       @entries = Entry.page(@page)
                       .per(@per_page)
                       .category(@category)
+    elsif @journal.present?
+      @entries = Entry.page(@page)
+                      .per(@per_page)
+                      .issue(@journal.current_issue)
     end
-
     continuation = nil
     if @entries.nil?
       render json: {message: "Not found" }, status: 404
@@ -122,6 +126,12 @@ class V3::StreamsController < V3::ApiController
   def set_tag
     if params[:id].present? && @stream_id.match(/user\/.*\/tag\/.*/)
       @tag = Tag.find_by(id: @stream_id)
+    end
+  end
+
+  def set_journal
+    if params[:id].present? && @stream_id.match(/journal\/.*/)
+      @journal = Journal.find_by(stream_id: @stream_id)
     end
   end
 

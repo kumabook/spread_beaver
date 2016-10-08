@@ -37,6 +37,7 @@ class Entry < ActiveRecord::Base
   scope :tag,           ->        (t) { joins(:tags).where(tags: { id: t.id}).order('published DESC').with_content }
   scope :topic,         ->    (topic) { feeds(topic.feeds) }
   scope :category,      -> (category) { feeds(category.subscriptions.map { |s| s.feed_id })}
+  scope :issue,       ->          (j) { joins(:issues).where(issues: { id: j.id}).order('entry_issues.engagement DESC').with_content }
   scope :saved,         ->     (user) { joins(:saved_entries).includes(:tracks).where(saved_entries: { user_id: user.id }) }
   scope :read,          ->     (user) { joins(:read_entries).includes(:tracks).where(read_entries: { user_id: user.id }) }
 
