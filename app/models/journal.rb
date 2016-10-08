@@ -6,7 +6,7 @@ class Journal < ActiveRecord::Base
   before_save      :set_stream_id
 
 
-  def create_daily_issue(date=Time.now)
+  def create_daily_issue(date=Time.now.tomorrow)
     date_str = "#{date.strftime('%Y%m%d')}"
     issue = Issue.find_or_create_by(journal_id: id, label: date_str) do |issue|
       issue.description = "#{label} entries at #{date_str}"
