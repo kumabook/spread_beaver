@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160507200411) do
+ActiveRecord::Schema.define(version: 20160925092846) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -58,6 +58,16 @@ ActiveRecord::Schema.define(version: 20160507200411) do
   end
 
   add_index "entries", ["id"], name: "index_entries_on_id", unique: true, using: :btree
+
+  create_table "entry_issues", force: :cascade do |t|
+    t.string   "entry_id",               null: false
+    t.uuid     "issue_id",               null: false
+    t.integer  "engagement", default: 0, null: false
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+  end
+
+  add_index "entry_issues", ["entry_id", "issue_id"], name: "index_entry_issues_on_entry_id_and_issue_id", unique: true, using: :btree
 
   create_table "entry_keywords", force: :cascade do |t|
     t.string   "entry_id",   null: false
@@ -114,6 +124,29 @@ ActiveRecord::Schema.define(version: 20160507200411) do
   end
 
   add_index "feeds", ["id"], name: "index_feeds_on_id", unique: true, using: :btree
+
+  create_table "issues", id: :uuid, default: "uuid_generate_v4()", force: :cascade do |t|
+    t.string   "label",                   null: false
+    t.text     "description"
+    t.integer  "state",       default: 0, null: false
+    t.uuid     "journal_id",              null: false
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
+  end
+
+  add_index "issues", ["id"], name: "index_issues_on_id", unique: true, using: :btree
+  add_index "issues", ["journal_id", "label"], name: "index_issues_on_journal_id_and_label", unique: true, using: :btree
+
+  create_table "journals", id: :uuid, default: "uuid_generate_v4()", force: :cascade do |t|
+    t.string   "stream_id",   null: false
+    t.string   "label",       null: false
+    t.text     "description"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  add_index "journals", ["id"], name: "index_journals_on_id", unique: true, using: :btree
+  add_index "journals", ["label"], name: "index_journals_on_label", unique: true, using: :btree
 
   create_table "keywords", id: false, force: :cascade do |t|
     t.string   "id",          null: false
