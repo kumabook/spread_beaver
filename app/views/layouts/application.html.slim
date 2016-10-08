@@ -8,9 +8,10 @@ html
     = csrf_meta_tags
   body
     .navbar.navbar-default.navbar-static-top
-      .navbar-collapse.collapse.navbar-responsive-collapse
+      .navbar-collapse.navbar-responsive-collapse
         ul.nav.navbar-nav
           - if current_user
+            li = link_to "Journal"      , journals_path
             li = link_to "Topics"       , topics_path
             li = link_to "Feeds"        , feeds_path
             li = link_to "Categories"   , categories_path
