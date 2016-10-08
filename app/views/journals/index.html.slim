@@ -1,0 +1,29 @@
+.page-header
+  h1.title Journals
+
+= link_to 'New Journal', new_journal_path, class: 'btn btn-primary'
+
+br
+= paginate @journals
+table.table.table-striped
+  thead
+    tr
+      th.col-md-2 id
+      th          label
+      th          description
+      th          link
+      th          actions
+  tbody
+    - @journals.each do |journal|
+      tr
+        td = journal.id.truncate(20)
+        td = journal.label
+        td = journal.description
+        td = link_to 'Issues', journal_issues_path(journal), class: 'btn btn-xs btn-primary'
+        td
+          = link_to 'Edit', edit_journal_path(journal), class: 'btn btn-xs btn-primary'
+          '
+          = link_to 'Destroy', journal,
+                    data: {:confirm => 'Are you sure?'},
+                    :method => :delete,
+                    class: 'btn btn-xs btn-primary'
