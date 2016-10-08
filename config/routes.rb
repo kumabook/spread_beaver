@@ -36,6 +36,13 @@ Rails.application.routes.draw do
   resources :tags do
     resources :entries, only: [:index]
   end
+  resources :journals do
+    resources :issues
+  end
+  resources :issues, only: []  do
+    resources :entry_issues, only: [:new, :edit, :update, :destory]
+  end
+  resources :entry_issues, only: [:create, :update, :destroy, :edit]
 
   get  'login',  to: 'user_sessions#new'    , :as => :login
   post 'logout', to: 'user_sessions#destroy', :as => :logout
