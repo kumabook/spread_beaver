@@ -1,6 +1,5 @@
 class JournalsController < ApplicationController
   before_action :set_journal, only: [:edit, :destroy, :update]
-  before_action :set_entries, only: [:edit]
   before_action :require_admin, only: [:new, :create, :destroy, :update]
   def index
     @journals = Journal.order('label ASC').page(params[:page])
@@ -50,10 +49,6 @@ class JournalsController < ApplicationController
 
   def set_journal
     @journal = Journal.find(params[:id])
-  end
-
-  def set_entries
-    @journal_entries = @journal.entry_journals.page(params[:page])
   end
 
   def journal_params
