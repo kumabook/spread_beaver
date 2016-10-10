@@ -17,6 +17,13 @@ FactoryGirl.define do
     type                  'Member'
   end
 
+  factory :admin, class: User do
+    sequence(:email) { |n| "admin#{n}@test.com" }
+    password              'test_password'
+    password_confirmation 'test_password'
+    type                  'Admin'
+  end
+
   factory :preference, class: Preference do
     key   'key'
     value 'value'
