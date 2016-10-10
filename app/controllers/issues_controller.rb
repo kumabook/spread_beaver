@@ -17,10 +17,10 @@ class IssuesController < ApplicationController
     @issue.journal = @journal
     respond_to do |format|
       if @issue.save
-        format.html { redirect_to journal_issues_path(@journal, @issue), notice: 'Issue was successfully created.' }
+        format.html { redirect_to journal_issues_path(@journal), notice: 'Issue was successfully created.' }
         format.json { render :show, status: :created, location: @issue }
       else
-        format.html { redirect_to journal_issues_path, notice: @issue.errors }
+        format.html { redirect_to journal_issues_path(@journal), notice: @issue.errors }
         format.json { render json: @issue.errors, status: :unprocessable_entity }
       end
     end
