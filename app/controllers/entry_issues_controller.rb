@@ -1,8 +1,8 @@
 class EntryIssuesController < ApplicationController
   before_action :set_entry_issue, only: [:show, :edit, :update, :destroy]
-  before_action :set_entry      , only: [:show, :edit, :update, :destroy]
-  before_action :set_issue      , only: [:show, :edit, :update, :destroy]
-  before_action :set_journal    , only: [:show, :edit, :update, :destroy]
+  before_action :set_entry      , only: [:show, :edit, :update, :destroy, :create]
+  before_action :set_issue      , only: [:show, :edit, :update, :destroy, :create]
+  before_action :set_journal    , only: [:show, :edit, :update, :destroy, :create]
   before_action :require_admin
 
   def new
@@ -11,13 +11,12 @@ class EntryIssuesController < ApplicationController
 
   def create
     @entry_issue = EntryIssue.new(entry_issue_params)
-
     begin
       if @entry_issue.save
-        redirect_to edit_journal_issue_path(@journal, @issue)
+        redirect_to(edit_journal_issue_path(@journal, @issue))
       else
         redirect_to(edit_journal_issue_path(@journal, @issue),
-                                            notice: @entry_issue.errors.full_messages)
+                    notice: @entry_issue.errors.full_messages)
       end
     rescue ActiveRecord::RecordNotUnique => e
       redirect_to new_issue_entry_issue_path(@entry_issue.issue_id, notice: e.message)
@@ -47,15 +46,23 @@ class EntryIssuesController < ApplicationController
     end
 
     def set_entry
-      @entry = @entry_issue.entry
+      if @entry_issue.present?
+        @entry = @entry_issue.entry
+      else
+        @entry = Entry.find(params[:entry_id])
+      end
     end
 
     def set_issue
-      @issue = @entry_issue.issue
+      if @entry_issue.present?
+        @issue = @entry_issue.issue
+      else
+        @issue = Issue.find(params[:issue_id])
+      end
     end
 
     def set_journal
-      @journal = @issue.journal
+      @journal = @issue.journal if @issue.present?
     end
 
     def entry_issue_params
