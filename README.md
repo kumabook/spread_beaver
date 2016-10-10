@@ -1,5 +1,7 @@
 # spread_beaver
 
+[![Build Status](https://travis-ci.org/kumabook/spread_beaver.svg?branch=master)](https://travis-ci.org/kumabook/spread_beaver)
+
 ## Overview
 
 spread_beaver is a news, videos and tracks
