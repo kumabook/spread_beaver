@@ -25,7 +25,9 @@ gem 'active_model_serializers'
 gem 'twitter'
 
 gem 'rest-client'
-gem 'newrelic_rpm'
+group :production do
+  gem 'newrelic_rpm'
+end
 
 group :development, :test do
   gem 'byebug'
