@@ -60,7 +60,7 @@ RSpec.describe "Feeds api", :type => :request, autodoc: true do
     expect(result['hint']).to eq('')
 
     get "/v3/search/feeds", {
-          query: "1",
+          query: "Test feed 15",
           count: count,
           locale: 'ja'
         }, Authorization: "Bearer #{@token['access_token']}"
