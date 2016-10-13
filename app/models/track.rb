@@ -1,8 +1,8 @@
 class Track < ActiveRecord::Base
-  has_many :entry_tracks
-  has_many :entries, through: :entry_tracks
-  has_many :likes
-  has_many :users, through: :likes
+  has_many :entry_tracks, dependent: :destroy
+  has_many :entries     , through: :entry_tracks
+  has_many :likes       , dependent: :destroy
+  has_many :users       , through: :likes
 
   scope :detail,  ->        { includes(:users).includes(:entries) }
   scope :latest,  -> (time) { where("created_at > ?", time).order('created_at DESC') }

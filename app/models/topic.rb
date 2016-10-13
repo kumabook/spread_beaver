@@ -1,7 +1,7 @@
 class Topic < ActiveRecord::Base
   include Escapable
-  has_many :feeds, through: :feed_topics
-  has_many :feed_topics
+  has_many :feed_topics, dependent: :destroy
+  has_many :feeds      , through: :feed_topics
 
   self.primary_key = :id
 

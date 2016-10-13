@@ -1,7 +1,7 @@
 class Category < ActiveRecord::Base
   include Escapable
-  has_many :subscription_categories
-  has_many :subscriptions, through: :subscription_categories
+  has_many :subscription_categories, dependent: :destroy
+  has_many :subscriptions          , through: :subscription_categories
 
   belongs_to :user
 

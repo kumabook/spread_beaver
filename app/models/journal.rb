@@ -1,5 +1,5 @@
 class Journal < ActiveRecord::Base
-  has_many :issues
+  has_many :issues, dependent: :destroy
   self.primary_key = :id
 
   after_initialize :set_stream_id, if: :new_record?

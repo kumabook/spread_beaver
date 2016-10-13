@@ -1,7 +1,7 @@
 class Keyword < ActiveRecord::Base
   include Escapable
-  has_many :entries, through: :entry_keywords
-  has_many :entry_keywords
+  has_many :entry_keywords, dependent: :destroy
+  has_many :entries       , through: :entry_keywords
 
   self.primary_key = :id
 

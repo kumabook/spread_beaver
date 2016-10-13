@@ -1,15 +1,15 @@
 class User < ActiveRecord::Base
-  has_many :preferences
-  has_many :subscriptions
-  has_many :categories
-  has_many :saved_entries
-  has_many :read_entries
-  has_many :tags
-  has_many :likes
-  has_many :tracks, through: :likes
+  has_many :preferences  , dependent: :destroy
+  has_many :subscriptions, dependent: :destroy
+  has_many :categories   , dependent: :destroy
+  has_many :saved_entries, dependent: :destroy
+  has_many :read_entries , dependent: :destroy
+  has_many :tags         , dependent: :destroy
+  has_many :likes        , dependent: :destroy
+  has_many :tracks       , through: :likes
   enum type: {
     member: 'Member',
-    admin: 'Admin'
+    admin:  'Admin'
   }
   authenticates_with_sorcery!
 

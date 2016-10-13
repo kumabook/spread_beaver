@@ -1,7 +1,7 @@
 class Tag < ActiveRecord::Base
   include Escapable
-  has_many :entry_tags
-  has_many :entries, through: :entry_tags
+  has_many :entry_tags, dependent: :destroy
+  has_many :entries   , through: :entry_tags
 
   belongs_to :user
 
