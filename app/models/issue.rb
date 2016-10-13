@@ -17,7 +17,7 @@ class Issue < ActiveRecord::Base
     if entries.empty?
       puts "Failed to create journal because there is no entry"
     end
-    entry_journals = entries.each_with_index do |entry, i|
+    entries.each_with_index do |entry, i|
       ej = EntryIssue.find_or_create_by(entry_id: entry.id,
                                         issue_id: id)
       ej.update_attributes(engagement: (entries.count - i) * 10)
