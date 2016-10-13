@@ -27,4 +27,4 @@
     .col-lg-offset-2.col-lg-10
       = f.submit nil, :class => 'btn btn-primary'
       '
-      = link_to t('.cancel', :default => t("helpers.links.cancel")), edit_journal_issue_path(@journal, @entry_issue.entry), :class => 'btn'
+      = link_to t('.cancel', :default => t("helpers.links.cancel")), edit_journal_issue_path(@journal, @issue), :class => 'btn'
