@@ -10,18 +10,18 @@ end
 
 class Entry < ActiveRecord::Base
   belongs_to :feed
-  has_many :entry_tracks
-  has_many :saved_entries
-  has_many :read_entries
-  has_many :entry_tags
-  has_many :entry_keywords
-  has_many :entry_issues
-  has_many :keywords   , through: :entry_keywords
-  has_many :tags       , through: :entry_tags
-  has_many :issues     , through: :entry_issues
-  has_many :saved_users, through: :saved_entries, source: :user
-  has_many :readers    , through: :read_entries,  source: :user
-  has_many :tracks     , through: :entry_tracks
+  has_many :entry_tracks  , dependent: :destroy
+  has_many :saved_entries , dependent: :destroy
+  has_many :read_entries  , dependent: :destroy
+  has_many :entry_tags    , dependent: :destroy
+  has_many :entry_keywords, dependent: :destroy
+  has_many :entry_issues  , dependent: :destroy
+  has_many :keywords      , through: :entry_keywords
+  has_many :tags          , through: :entry_tags
+  has_many :issues        , through: :entry_issues
+  has_many :saved_users   , through: :saved_entries, source: :user
+  has_many :readers       , through: :read_entries , source: :user
+  has_many :tracks        , through: :entry_tracks
   self.primary_key = :id
 
   before_save :normalize_visual
