@@ -49,6 +49,7 @@ RSpec.describe "Feeds api", :type => :request, autodoc: true do
   end
 
   it "searches feeds with title" do
+    Feed.first.update_attributes(title: "Sample")
     count = Feed.count
     get "/v3/search/feeds", {
           query: "Test",
@@ -56,11 +57,11 @@ RSpec.describe "Feeds api", :type => :request, autodoc: true do
           locale: 'ja'
         }, Authorization: "Bearer #{@token['access_token']}"
     result = JSON.parse @response.body
-    expect(result['results'].count).to eq(count)
+    expect(result['results'].count).to eq(count - 1)
     expect(result['hint']).to eq('')
 
     get "/v3/search/feeds", {
-          query: "Test feed 15",
+          query: "Sample",
           count: count,
           locale: 'ja'
         }, Authorization: "Bearer #{@token['access_token']}"
