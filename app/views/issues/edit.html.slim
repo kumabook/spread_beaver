@@ -27,7 +27,7 @@
         tr
           td = issue_entry.engagement
           td = thumbnail_image_link(entry)
-          td = link_to entry.title.truncate(50), entry.url
+          td = link_to entry.title&.truncate(50), entry.url
           td = link_to entry.origin_hash['title'], path
           td = entry.published
           td = entry.crawled

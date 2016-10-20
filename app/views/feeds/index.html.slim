@@ -28,7 +28,7 @@ table.table.table-striped
         td = thumbnail_image_link(feed)
         td = feed.velocity
         td = link_to feed.title, feed.website
-        td = feed.description.truncate(30)
+        td = feed.description&.truncate(30)
         td = feed.lastUpdated
         td = feed.crawled
         td
