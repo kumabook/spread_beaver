@@ -56,17 +56,11 @@ class Track < ActiveRecord::Base
     end
   end
 
-  def likesCount
-    likes.size
-  end
-
   def as_detail_json
-    hash = as_json include: {
-                     users: { except: [:crypted_password, :salt] }
-                   }
+    hash = as_json
     hash['url']        = Track.url provider, identifier
-    hash['likesCount'] = likesCount
-    hash['likers']     = hash['users']
+    hash['likesCount'] = like_count
+    hash['likers']     = [] # hash['users'] TODO
     hash['entries']    = entries.map { |e| e.as_json }
     hash.delete('users')
     hash
@@ -74,7 +68,7 @@ class Track < ActiveRecord::Base
 
   def to_json(options = {})
     super(options.merge({ except: [:crypted_password, :salt] }))
-      .merge({ likesCount: likesCount})
+      .merge({ likesCount: like_count})
   end
 
   def to_query
@@ -97,7 +91,7 @@ class Track < ActiveRecord::Base
     raise ArgumentError, "Parameter must be not nil" if from.nil? || to.nil?
     likes = Like.period(from, to).page(page).per(per_page)
     user_count_hash = likes.user_count
-    tracks = Track.find(user_count_hash.keys)
+    tracks = Track.includes(:entries).find(user_count_hash.keys)
     # order by user_count and updated
     sorted_tracks = user_count_hash.keys.map { |id|
       {
