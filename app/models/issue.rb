@@ -5,6 +5,7 @@ class Issue < ActiveRecord::Base
   has_many :entries, through: :entry_issues
   belongs_to :journal
 
+  after_touch  :delete_cache_entries
   after_update :delete_cache_entries
 
   self.primary_key = :id
