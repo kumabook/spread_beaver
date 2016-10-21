@@ -3,8 +3,8 @@ class V3::TopicsController < V3::ApiController
   before_action :set_topic,  except: [:index]
 
   def index
-    @topic = Topic.order('engagement DESC').all
-    render json: @topic.to_json, status: 200
+    @topics = Topic.topics
+    render json: @topics.to_json, status: 200
   end
 
   def update
