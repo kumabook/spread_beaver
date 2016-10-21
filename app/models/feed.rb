@@ -1,8 +1,11 @@
 class Feed < ActiveRecord::Base
   include Escapable
+  after_touch :touch_topics
+
   has_many :entries
   has_many :feed_topics, dependent: :destroy
   has_many :topics     , through: :feed_topics
+
   self.primary_key = :id
 
   scope :search, -> (query) {
@@ -157,4 +160,8 @@ class Feed < ActiveRecord::Base
     false
   end
 
+
+  def touch_topics
+    Feed.eager_load(:topics).find(id).topics.each {|t| t.delete_cache_entries }
+  end
 end
