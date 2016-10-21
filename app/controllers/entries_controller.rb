@@ -7,20 +7,20 @@ class EntriesController < ApplicationController
 
   def index
     if @keyword.present?
-      @entries = @keyword.entries.includes(:tracks)
+      @entries = @keyword.entries.eager_load(:tracks)
                          .order('published DESC')
                          .page(params[:page])
     elsif @tag.present?
-      @entries = @tag.entries.includes(:tracks)
+      @entries = @tag.entries.eager_load(:tracks)
                      .order('published DESC')
                      .page(params[:page])
     elsif @feed.present?
-      @entries = Entry.includes(:tracks)
+      @entries = Entry.eager_load(:tracks)
                       .where(feed_id: @feed.id)
                       .order('published DESC')
                       .page(params[:page])
     else
-      @entries = Entry.includes(:tracks)
+      @entries = Entry.eager_load(:tracks)
                       .order('published DESC')
                       .page(params[:page])
     end

@@ -60,7 +60,7 @@ class IssuesController < ApplicationController
   end
 
   def set_entries
-    @issue_entries = @issue.entry_issues.page(params[:page])
+    @issue_entries = @issue.entry_issues.eager_load(entry: :tracks).page(params[:page])
   end
 
   def issue_params

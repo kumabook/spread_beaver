@@ -26,8 +26,8 @@ class Entry < ActiveRecord::Base
 
   before_save :normalize_visual
 
-  scope :with_content,  ->            { includes(:tracks) }
-  scope :with_detail,   ->            { includes(:saved_users).includes(:tracks).includes(:keywords) }
+  scope :with_content,  ->            { eager_load(:tracks) }
+  scope :with_detail,   ->            { eager_load(:saved_users).eager_load(:tracks).eager_load(:keywords) }
   scope :latest,        ->     (time) { where("published > ?", time).order('published DESC').with_content }
   scope :popular,       ->            { joins(:saved_users).order('saved_count DESC').with_content }
   scope :subscriptions, ->       (ss) { where(feed: ss.map { |s| s.feed_id }).order('published DESC').with_content }
@@ -38,8 +38,8 @@ class Entry < ActiveRecord::Base
   scope :topic,         ->    (topic) { feeds(topic.feeds) }
   scope :category,      -> (category) { feeds(category.subscriptions.map { |s| s.feed_id })}
   scope :issue,       ->          (j) { joins(:issues).where(issues: { id: j.id}).order('entry_issues.engagement DESC').with_content }
-  scope :saved,         ->     (user) { joins(:saved_entries).includes(:tracks).where(saved_entries: { user_id: user.id }) }
-  scope :read,          ->     (user) { joins(:read_entries).includes(:tracks).where(read_entries: { user_id: user.id }) }
+  scope :saved,         ->     (user) { joins(:saved_entries).eager_load(:tracks).where(saved_entries: { user_id: user.id }) }
+  scope :read,          ->     (user) { joins(:read_entries).eager_load(:tracks).where(read_entries: { user_id: user.id }) }
 
   JSON_ATTRS = ['content', 'categories', 'summary', 'alternate', 'origin', 'visual']
 

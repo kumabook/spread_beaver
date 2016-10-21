@@ -4,10 +4,10 @@ class Track < ActiveRecord::Base
   has_many :likes       , dependent: :destroy
   has_many :users       , through: :likes
 
-  scope :detail,  ->        { includes(:users).includes(:entries) }
+  scope :detail,  ->        { eager_load(:users).eager_load(:entries) }
   scope :latest,  -> (time) { where("created_at > ?", time).order('created_at DESC') }
-  scope :popular, ->        { joins(:users).includes(:entries).order('saved_count DESC') }
-  scope :liked,   ->  (uid) { joins(:users).includes(:entries).where(users: { id: uid }) }
+  scope :popular, ->        { eager_load(:users).eager_load(:entries).order('saved_count DESC') }
+  scope :liked,   ->  (uid) { eager_load(:users).eager_load(:entries).where(users: { id: uid }) }
 
   def self.url provider, identifier
     case provider
@@ -91,7 +91,7 @@ class Track < ActiveRecord::Base
     raise ArgumentError, "Parameter must be not nil" if from.nil? || to.nil?
     likes = Like.period(from, to).page(page).per(per_page)
     user_count_hash = likes.user_count
-    tracks = Track.includes(:entries).find(user_count_hash.keys)
+    tracks = Track.eager_load(:entries).find(user_count_hash.keys)
     # order by user_count and updated
     sorted_tracks = user_count_hash.keys.map { |id|
       {

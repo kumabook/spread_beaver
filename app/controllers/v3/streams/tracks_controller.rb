@@ -1,3 +1,4 @@
+# coding: utf-8
 class V3::Streams::TracksController < V3::ApiController
   include Pagination
   before_action :doorkeeper_authorize!

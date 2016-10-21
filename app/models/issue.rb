@@ -1,7 +1,7 @@
 class Issue < ActiveRecord::Base
   include Escapable
   enum state: { draft: 0, published: 1 }
-  has_many :entry_issues, ->{order("engagement DESC")}, dependent: :destroy
+  has_many :entry_issues, ->{order("entry_issues.engagement DESC")}, dependent: :destroy
   has_many :entries, through: :entry_issues
   belongs_to :journal
 
