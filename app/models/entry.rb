@@ -43,6 +43,14 @@ class Entry < ActiveRecord::Base
 
   JSON_ATTRS = ['content', 'categories', 'summary', 'alternate', 'origin', 'visual']
 
+  def self.cache_key_of_entries_of_stream(stream_id, page: 1, per_page: nil)
+    "entries_of_#{stream_id}-#{page}-per_page-#{per_page}"
+  end
+
+  def self.delete_cache_of_stream(stream_id)
+    Rails.cache.delete_matched("entries_of_#{stream_id}-*")
+  end
+
   def self.first_or_create_by_feedlr(entry, feed)
     e = Entry.find_or_create_by(id: entry.id) do |e|
       e.title       = entry.title
@@ -147,7 +155,10 @@ class Entry < ActiveRecord::Base
   def self.latest_entries_of_topic(topic,
                                    since: 3.days.ago, entries_per_feed: 3,
                                    page: 1, per_page: nil)
-    key = "latest_entries_of_#{topic.id}-#{page}-per_page-#{per_page}-#{entries_per_feed}"
+    query = "since-#{since}-#{entries_per_feed}-"
+    key = cache_key_of_entries_of_stream("#{topic.id}-#{query}",
+                                         page: page,
+                                         per_page: per_page)
     items, count = Rails.cache.fetch(key) do
       entries = Entry.topic(topic).latest(since)
       items = mix_up_and_paginate(entries, entries_per_feed, page, per_page)
