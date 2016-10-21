@@ -42,7 +42,7 @@ class V3::Streams::TracksController < V3::ApiController
       direction: "ltr",
       continuation: continuation,
       alternate: [],
-      items: @tracks.map { |t| t.as_detail_json }
+      items: @tracks.map { |t| t.as_content_json }
     }
     render json: h, status: 200
   end

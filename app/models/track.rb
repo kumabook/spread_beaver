@@ -56,13 +56,18 @@ class Track < ActiveRecord::Base
     end
   end
 
-  def as_detail_json
+  def as_content_json
     hash = as_json
     hash['url']        = Track.url provider, identifier
     hash['likesCount'] = like_count
+    hash.delete('users')
+    hash
+  end
+
+  def as_detail_json
+    hash = as_content_json
     hash['likers']     = [] # hash['users'] TODO
     hash['entries']    = entries.map { |e| e.as_json }
-    hash.delete('users')
     hash
   end
 
