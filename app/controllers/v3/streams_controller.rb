@@ -72,9 +72,9 @@ class V3::StreamsController < V3::ApiController
                       .per(@per_page)
                       .category(@category)
     elsif @journal.present?
-      @entries = Entry.page(@page)
-                      .per(@per_page)
-                      .issue(@journal.current_issue)
+      @entries = Entry.entries_of_issue(@journal.current_issue,
+                                        page: @page,
+                                    per_page: @per_page)
     end
     continuation = nil
     if @entries.nil?

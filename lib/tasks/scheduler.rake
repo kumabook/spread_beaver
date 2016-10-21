@@ -8,12 +8,15 @@ task :crawl => :environment do
 
   puts "Finish crawling."
 
-  Rails.cache.delete_matched(/latest_entries_of_*/)
+  Topic.all.each do |topic|
+    Entry.delete_cache_of_stream(topic.id)
+  end
+
   puts "Clear cache"
 end
 
 task :clear_cache => :environment do
-  Rails.cache.delete_matched("latest_entries_of_*")
+  Rails.cache.delete_matched("*")
   puts "Clear cache"
 end
 

@@ -145,6 +145,15 @@ class Entry < ActiveRecord::Base
     visual_url.present? && visual_url != 'none'
   end
 
+  def self.entries_of_issue(issue, page: 1, per_page: nil)
+    key = cache_key_of_entries_of_stream(issue.id, page: 1, per_page: per_page)
+    Rails.cache.fetch(key) do
+      Entry.page(page)
+           .per(per_page)
+           .issue(issue).to_a
+    end
+  end
+
   def self.latest_entries(since: 3.days.ago,
                           entries_per_feed: 3,
                           page: 1, per_page: nil)

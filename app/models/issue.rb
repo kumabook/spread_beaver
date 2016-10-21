@@ -5,6 +5,8 @@ class Issue < ActiveRecord::Base
   has_many :entries, through: :entry_issues
   belongs_to :journal
 
+  after_update :delete_cache_entries
+
   self.primary_key = :id
 
   def stream_id
@@ -28,5 +30,9 @@ class Issue < ActiveRecord::Base
                                                issue_id: id)
     first_ej.update_attributes(engagement: (entries.count + 1) * 10)
     puts "Add #{entries.count} entries to Create daily issue: #{label} #{journal.label}"
+  end
+
+  def delete_cache_entries
+    Entry.delete_cache_of_stream(stream_id)
   end
 end
