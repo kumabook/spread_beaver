@@ -10,10 +10,6 @@ class Issue < ActiveRecord::Base
 
   self.primary_key = :id
 
-  def stream_id
-    "journal/#{journal.id}/#{label}"
-  end
-
   def create_daily_issue_of_topic(date=Time.now, topic)
     entries = Entry.latest_entries_of_topic(topic)
                    .select { |entry| entry.has_visual? }
@@ -34,6 +30,6 @@ class Issue < ActiveRecord::Base
   end
 
   def delete_cache_entries
-    Entry.delete_cache_of_stream(stream_id)
+    Entry.delete_cache_of_stream(id)
   end
 end
