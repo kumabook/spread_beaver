@@ -1,6 +1,8 @@
 class Feed < ActiveRecord::Base
   include Escapable
-  after_touch :touch_topics
+  after_touch   :touch_topics
+  after_save    :delete_cache_of_search_results
+  after_destroy :delete_cache_of_search_results
 
   has_many :entries
   has_many :feed_topics, dependent: :destroy
@@ -12,21 +14,41 @@ class Feed < ActiveRecord::Base
     q = search_query(query)
     case q[:type]
     when :all
-      includes(:topics).all
+      eager_load(:topics).all
     when :topic
       joins(:topics).where(topics: { label: q[:value]})
     when :url
-      includes(:topics).where(website: q[:value])
+      eager_load(:topics).where(website: q[:value])
     when :title
-      includes(:topics).where(arel_table[:title].matches("%#{q[:value]}%"))
+      eager_load(:topics).where(arel_table[:title].matches("%#{q[:value]}%"))
     else
-      includes(:topics).all
+      eager_load(:topics).all
     end
   }
 
   scope :locale, -> (locale) {
     where(language: locale) if locale.present?
   }
+
+
+  def self.delete_cache_of_search_results
+    Rails.cache.delete_matched("feeds_of_search_by_*")
+  end
+
+  def delete_cache_of_search_results
+    Feed.delete_cache_of_search_results
+  end
+
+  def self.search_by(query: '', locale: 'ja', page: 1, per_page: 15)
+    key = "feeds_of_search_by_#{count}_#{query}_#{locale}"
+    Rails.cache.fetch(key) do
+      Feed.page(page)
+          .per(per_page)
+          .search(query)
+          .locale(locale)
+          .order('velocity DESC').to_a
+    end
+  end
 
   def self.first_or_create_by_feedlr(feed)
     Feed.find_or_create_by(id: feed.id) do |f|
