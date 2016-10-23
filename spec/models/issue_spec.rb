@@ -19,4 +19,25 @@ describe Issue do
     end
     it { expect(issue.entry_issues.count).to eq(count - 1) }
   end
+
+  describe "Issue#delete_cache" do
+    context "when the issue is updated" do
+      it {
+        expect(issue).to receive(:delete_cache_entries)
+        issue.update!(label: "new issue")
+      }
+    end
+
+    context "when the entries of issue are updated" do
+      it {
+        expect(Entry).to receive(:delete_cache_of_stream)
+        issue.entry_issues[0].update! engagement: 100
+      }
+      it {
+        expect(Entry).to receive(:delete_cache_of_stream)
+        issue.entries[0].destroy!
+      }
+    end
+  end
+
 end
