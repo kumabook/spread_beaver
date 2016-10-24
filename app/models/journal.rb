@@ -8,8 +8,8 @@ class Journal < ActiveRecord::Base
 
   def create_daily_issue(date=Time.now.tomorrow)
     date_str = "#{date.strftime('%Y%m%d')}"
-    issue = Issue.find_or_create_by(journal_id: id, label: date_str) do |issue|
-      issue.description = "#{label} entries at #{date_str}"
+    issue = Issue.find_or_create_by(journal_id: id, label: date_str) do |i|
+      i.description = "#{label} entries at #{date_str}"
     end
     topic = Topic.find_by(id: "topic/#{label}")
     issue.create_daily_issue_of_topic(topic) if topic.present?
