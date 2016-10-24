@@ -44,7 +44,7 @@ class Entry < ActiveRecord::Base
   JSON_ATTRS = ['content', 'categories', 'summary', 'alternate', 'origin', 'visual']
 
   def self.first_or_create_by_feedlr(entry, feed)
-    e = Entry.find_or_create_by(id: entry.id) do |e|
+    en = Entry.find_or_create_by(id: entry.id) do |e|
       e.title       = entry.title
       e.content     = entry.content.to_json
       e.summary     = entry.summary.to_json
@@ -72,8 +72,8 @@ class Entry < ActiveRecord::Base
         e.keywords  = entry.keywords.uniq.map { |k| Keyword.find_or_create_by label: k }
       end
     end
-    e.save
-    e
+    en.save
+    en
   end
 
   def self.update_visuals(max: 50)
