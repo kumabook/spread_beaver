@@ -43,14 +43,6 @@ class Entry < ActiveRecord::Base
 
   JSON_ATTRS = ['content', 'categories', 'summary', 'alternate', 'origin', 'visual']
 
-  def self.cache_key_of_entries_of_stream(stream_id, page: 1, per_page: nil)
-    "entries_of_#{stream_id}-#{page}-per_page-#{per_page}"
-  end
-
-  def self.delete_cache_of_stream(stream_id)
-    Rails.cache.delete_matched("entries_of_#{stream_id}-*")
-  end
-
   def self.first_or_create_by_feedlr(entry, feed)
     e = Entry.find_or_create_by(id: entry.id) do |e|
       e.title       = entry.title
@@ -143,15 +135,6 @@ class Entry < ActiveRecord::Base
 
   def has_visual?
     visual_url.present? && visual_url != 'none'
-  end
-
-  def self.entries_of_issue(issue, page: 1, per_page: nil)
-    key = cache_key_of_entries_of_stream(issue.id, page: 1, per_page: per_page)
-    Rails.cache.fetch(key) do
-      Entry.page(page)
-           .per(per_page)
-           .issue(issue).to_a
-    end
   end
 
   def self.latest_entries(since: 3.days.ago,

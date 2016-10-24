@@ -1,5 +1,6 @@
 class Keyword < ActiveRecord::Base
   include Escapable
+  include Stream
   has_many :entry_keywords, dependent: :destroy
   has_many :entries       , through: :entry_keywords
 
@@ -7,6 +8,10 @@ class Keyword < ActiveRecord::Base
 
   after_initialize :set_id, if: :new_record?
   before_save      :set_id
+
+  def entries_of_stream(page: 1, per_page: nil, since: nil)
+    Entry.page(page).per(per_page).keyword(self)
+  end
 
   private
   def set_id

@@ -21,6 +21,10 @@ class Journal < ActiveRecord::Base
           .first
   end
 
+  def entries_of_stream(page: 1, per_page: nil, since: nil)
+    Entry.page(page).per(per_page).issue(current_issue)
+  end
+
   private
   def set_stream_id
     self.stream_id = "journal/#{label}"

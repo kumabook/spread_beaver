@@ -49,17 +49,11 @@ class V3::StreamsController < V3::ApiController
         return
       end
     elsif @feed.present?
-      @entries = Entry.page(@page)
-                      .per(@per_page)
-                      .feed(@feed)
+      @entries = @feed.stream_entries(page: @page, per_page: @per_page)
     elsif @keyword.present?
-      @entries = Entry.page(@page)
-                      .per(@per_page)
-                      .keyword(@keyword)
+      @entries = @keyword.stream_entries(page: @page, per_page: @per_page)
     elsif @tag.present?
-      @entries = Entry.page(@page)
-                      .per(@per_page)
-                      .tag(@tag)
+      @entries = @tag.stream_entries(page: @page, per_page: @per_page)
     elsif @topic.present?
       # TODO: Replace this with  mixes api
       since    = @newer_than.present? ? @newer_than : DURATION.ago
@@ -68,13 +62,10 @@ class V3::StreamsController < V3::ApiController
                                                 page: @page,
                                             per_page: @per_page)
     elsif @category.present?
-      @entries = Entry.page(@page)
-                      .per(@per_page)
-                      .category(@category)
+      @entries = @category.stream_entries(page: @page, per_page: @per_page)
     elsif @journal.present?
-      @entries = Entry.entries_of_issue(@journal.current_issue,
-                                        page: @page,
-                                    per_page: @per_page)
+      @issue   = @journal.current_issue
+      @entries = @issue.stream_entries(page: @page, per_page: @per_page)
     end
     continuation = nil
     if @entries.nil?

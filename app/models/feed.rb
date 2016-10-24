@@ -1,5 +1,6 @@
 class Feed < ActiveRecord::Base
   include Escapable
+  include Stream
   after_touch   :touch_topics
   after_save    :delete_cache_of_search_results
   after_destroy :delete_cache_of_search_results
@@ -30,6 +31,10 @@ class Feed < ActiveRecord::Base
     where(language: locale) if locale.present?
   }
 
+
+  def entries_of_stream(page: 1, per_page: nil, since: nil)
+    Entry.page(page).per(per_page).feed(self)
+  end
 
   def self.delete_cache_of_search_results
     Rails.cache.delete_matched("feeds_of_search_by_*")

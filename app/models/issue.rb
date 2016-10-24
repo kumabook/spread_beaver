@@ -1,12 +1,11 @@
 class Issue < ActiveRecord::Base
   include Escapable
+  include Stream
+
   enum state: { draft: 0, published: 1 }
   has_many :entry_issues, ->{order("entry_issues.engagement DESC")}, dependent: :destroy
   has_many :entries, through: :entry_issues
   belongs_to :journal
-
-  after_touch  :delete_cache_entries
-  after_update :delete_cache_entries
 
   self.primary_key = :id
 
@@ -29,7 +28,7 @@ class Issue < ActiveRecord::Base
     puts "Add #{entries.count} entries to Create daily issue: #{label} #{journal.label}"
   end
 
-  def delete_cache_entries
-    Entry.delete_cache_of_stream(id)
+  def entries_of_stream(page: 1, per_page: nil, since: nil)
+    Entry.page(page).per(per_page).issue(self)
   end
 end

@@ -1,6 +1,6 @@
 class Topic < ActiveRecord::Base
   include Escapable
-  after_touch   :delete_cache_entries
+  include Stream
   after_save    :delete_cache
   after_destroy :delete_cache
 
@@ -12,8 +12,8 @@ class Topic < ActiveRecord::Base
   after_initialize :set_id, if: :new_record?
   before_save      :set_id
 
-  def delete_cache_entries
-    Entry.delete_cache_of_stream(id)
+  def entries_of_stream(page: 1, per_page: nil, since: nil)
+    Entry.page(page).per(per_page).topic(self)
   end
 
   def self.topics
