@@ -9,8 +9,8 @@ class Issue < ActiveRecord::Base
 
   self.primary_key = :id
 
-  def create_daily_issue_of_topic(date=Time.now, topic)
-    entries = Entry.latest_entries_of_topic(topic)
+  def create_daily_issue_of_topic(topic)
+    entries = topic.entries_of_mix
                    .select { |entry| entry.has_visual? }
     if entries.empty?
       puts "Failed to create journal because there is no entry"
