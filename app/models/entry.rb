@@ -165,9 +165,7 @@ class Entry < ActiveRecord::Base
                                    since: 3.days.ago, entries_per_feed: 3,
                                    page: 1, per_page: nil)
     query = "since-#{since}-#{entries_per_feed}-"
-    key = cache_key_of_entries_of_stream("#{topic.id}-#{query}",
-                                         page: page,
-                                         per_page: per_page)
+    key = "entries_of_#{topic.id}-#{query}-page(#{page})-per_page(#{per_page})"
     items, count = Rails.cache.fetch(key) do
       entries = Entry.topic(topic).latest(since)
       items = mix_up_and_paginate(entries, entries_per_feed, page, per_page)
