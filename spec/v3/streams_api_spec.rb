@@ -48,7 +48,7 @@ RSpec.describe "Streams api", type: :request, autodoc: true do
     end
 
     it "gets a specified page entries of a feed" do
-      continuation = V3::StreamsController::continuation(ITEM_NUM, PER_PAGE)
+      continuation = V3::StreamsController::continuation(2, PER_PAGE)
       get "/v3/streams/#{@feed.escape.id}/contents",
           {continuation: continuation},
           Authorization: "Bearer #{@token['access_token']}"

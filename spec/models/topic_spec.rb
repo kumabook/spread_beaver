@@ -39,31 +39,33 @@ describe Topic do
     end
   end
 
-  context "when feed of topic is created" do
-    it {
-      expect(Entry).to receive(:delete_cache_of_stream)
-      topic.feeds << FactoryGirl.create(:feed)
-    }
-  end
+  describe "Topic#delete_cache_of_stream" do
+    context "when feed of topic is created" do
+      it {
+        expect(Topic).to receive(:delete_cache_of_stream)
+        topic.feeds << FactoryGirl.create(:feed)
+      }
+    end
 
-  context "when feed of topic is destroyed" do
-    it {
-      expect(Entry).to receive(:delete_cache_of_stream)
-      topic.feeds[0].destroy
-    }
-  end
+    context "when feed of topic is destroyed" do
+      it {
+        expect(Topic).to receive(:delete_cache_of_stream)
+        topic.feeds[0].destroy
+      }
+    end
 
-  context "when entries of topic is updated" do
-    it {
-      expect(Entry).to receive(:delete_cache_of_stream)
-      topic.feeds[0].entries[0].destroy!
-    }
-  end
+    context "when entries of topic is destroyed" do
+      it {
+        expect(Topic).to receive(:delete_cache_of_stream)
+        topic.feeds[0].entries[0].destroy!
+      }
+    end
 
-  context "when entries of topic is updated" do
-    it {
-      expect(Entry).to receive(:delete_cache_of_stream)
-      topic.feeds[0].entries << FactoryGirl.create(:entry)
-    }
+    context "when entries of topic is created" do
+      it {
+        expect(Topic).to receive(:delete_cache_of_stream)
+        topic.feeds[0].entries << FactoryGirl.create(:entry)
+      }
+    end
   end
 end

@@ -16,10 +16,12 @@ RSpec.configure do |config|
 
   config.before(:all) do
     DatabaseCleaner.start
+    DatabaseCleaner[:redis].start
   end
 
   config.after(:all) do
     DatabaseCleaner.clean
+    DatabaseCleaner[:redis].clean
   end
 
   config.include FactoryGirl::Syntax::Methods

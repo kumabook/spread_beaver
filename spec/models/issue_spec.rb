@@ -30,11 +30,11 @@ describe Issue do
 
     context "when the entries of issue are updated" do
       it {
-        expect(Entry).to receive(:delete_cache_of_stream)
+        expect(Issue).to receive(:delete_cache_of_stream)
         issue.entry_issues[0].update! engagement: 100
       }
       it {
-        expect(Entry).to receive(:delete_cache_of_stream)
+        expect(Issue).to receive(:delete_cache_of_stream)
         issue.entries[0].destroy!
       }
     end

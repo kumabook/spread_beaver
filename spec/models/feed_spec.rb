@@ -23,4 +23,25 @@ describe Feed do
       }
     end
   end
+
+  describe "Feed#delete_cache_of_stream" do
+    context "when entries of feed is destroyed" do
+      it {
+        expect(Feed).to receive(:delete_cache_of_stream)
+        feed.entries[0].destroy!
+      }
+    end
+
+    context "when entries of topic is created" do
+      it {
+        expect(Feed).to receive(:delete_cache_of_stream)
+        feed.entries << Entry.create(id: "xxxxx",
+                                     title: "entry",
+                                     unread: 0,
+                                     fingerprint: "",
+                                     originId: "",
+                                     feed_id: feed.id)
+      }
+    end
+  end
 end
