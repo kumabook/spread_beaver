@@ -162,7 +162,7 @@ class Entry < ActiveRecord::Base
     if per_page.present?
       page   = 1 if page < 1
       offset = (page - 1) * per_page
-      items[offset...offset+per_page]
+      items[offset...offset+per_page] || []
     else
       items
     end
