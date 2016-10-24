@@ -43,6 +43,7 @@ describe Topic do
     context "when feed of topic is created" do
       it {
         expect(Topic).to receive(:delete_cache_of_stream)
+        expect(Topic).to receive(:delete_cache_of_mix)
         topic.feeds << FactoryGirl.create(:feed)
       }
     end
@@ -50,6 +51,7 @@ describe Topic do
     context "when feed of topic is destroyed" do
       it {
         expect(Topic).to receive(:delete_cache_of_stream)
+        expect(Topic).to receive(:delete_cache_of_mix)
         topic.feeds[0].destroy
       }
     end
@@ -57,6 +59,7 @@ describe Topic do
     context "when entries of topic is destroyed" do
       it {
         expect(Topic).to receive(:delete_cache_of_stream)
+        expect(Topic).to receive(:delete_cache_of_mix)
         topic.feeds[0].entries[0].destroy!
       }
     end
@@ -64,6 +67,7 @@ describe Topic do
     context "when entries of topic is created" do
       it {
         expect(Topic).to receive(:delete_cache_of_stream)
+        expect(Topic).to receive(:delete_cache_of_mix)
         topic.feeds[0].entries << FactoryGirl.create(:entry)
       }
     end

@@ -1,6 +1,7 @@
 class Topic < ActiveRecord::Base
   include Escapable
   include Stream
+  include Mix
   after_save    :delete_cache
   after_destroy :delete_cache
 
@@ -14,6 +15,12 @@ class Topic < ActiveRecord::Base
 
   def entries_of_stream(page: 1, per_page: nil, since: nil)
     Entry.page(page).per(per_page).topic(self)
+  end
+
+  def entries_of_mix(page: 1, per_page: nil, query: Mix::Query.new())
+    entries = Entry.topic(self).latest(query.since)
+    items   = Mix::mix_up_and_paginate(entries, query.entries_per_feed, page, per_page)
+    PaginatedEntryArray.new(items, entries.count)
   end
 
   def self.topics

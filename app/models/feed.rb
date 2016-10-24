@@ -189,6 +189,9 @@ class Feed < ActiveRecord::Base
 
 
   def touch_topics
-    Feed.eager_load(:topics).find(id).topics.each {|t| t.delete_cache_entries }
+    Feed.eager_load(:topics).find(id).topics.each do |t|
+      t.delete_cache_entries
+      t.delete_cache_mix_entries
+    end
   end
 end

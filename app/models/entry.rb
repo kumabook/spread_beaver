@@ -141,43 +141,7 @@ class Entry < ActiveRecord::Base
                           entries_per_feed: 3,
                           page: 1, per_page: nil)
     entries = Entry.latest(since)
-    mix_up_and_paginate(entries, entries_per_feed, page, per_page)
-  end
-
-  def self.latest_entries_of_topic(topic,
-                                   since: 3.days.ago, entries_per_feed: 3,
-                                   page: 1, per_page: nil)
-    query = "since-#{since}-#{entries_per_feed}-"
-    key = "entries_of_#{topic.id}-#{query}-page(#{page})-per_page(#{per_page})"
-    items, count = Rails.cache.fetch(key) do
-      entries = Entry.topic(topic).latest(since)
-      items = mix_up_and_paginate(entries, entries_per_feed, page, per_page)
-      [items, entries.count]
-    end
-    PaginatedEntryArray.new(items, count)
-  end
-
-  def self.mix_up_and_paginate(entries, entries_per_feed, page, per_page)
-    items = sort_one_by_one_by_feed(entries, entries_per_feed: entries_per_feed)
-    if per_page.present?
-      page   = 1 if page < 1
-      offset = (page - 1) * per_page
-      items[offset...offset+per_page] || []
-    else
-      items
-    end
-  end
-
-  def self.sort_one_by_one_by_feed(entries, entries_per_feed: 3)
-    entries_list = entries.map { |entry| entry.feed_id }
-                          .uniq
-                          .map do |id|
-      entries.select { |e| e.feed_id == id }.first(entries_per_feed)
-    end
-
-    (0...entries_per_feed).to_a
-      .flat_map { |i| entries_list.map { |list| list[i] }}
-      .select   { |a| a.present? }
+    Mix::mix_up_and_paginate(entries, entries_per_feed, page, per_page)
   end
 
   def self.popular_entries_within_period(from: nil, to: nil, per_page: nil, page: 0)
