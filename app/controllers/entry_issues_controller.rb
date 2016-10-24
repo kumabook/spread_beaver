@@ -1,8 +1,8 @@
 class EntryIssuesController < ApplicationController
   before_action :set_entry_issue, only: [:show, :edit, :update, :destroy]
   before_action :set_entry      , only: [:show, :edit, :update, :destroy, :create]
-  before_action :set_issue      , only: [:show, :edit, :update, :destroy, :create]
-  before_action :set_journal    , only: [:show, :edit, :update, :destroy, :create]
+  before_action :set_issue      , only: [:new, :show, :edit, :update, :destroy, :create]
+  before_action :set_journal    , only: [:new, :show, :edit, :update, :destroy, :create]
   before_action :require_admin
 
   def new
