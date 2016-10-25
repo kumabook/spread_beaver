@@ -58,7 +58,7 @@ Rails.application.configure do
 
   if ENV['REDIS_URL']
     config.action_controller.perform_caching = true
-    config.cache_store = :redis_store
+    config.cache_store = :redis_store, { expires_in: 1.day }
   else
     config.action_controller.perform_caching = false
   end
