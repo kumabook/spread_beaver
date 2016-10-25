@@ -37,7 +37,7 @@ class Feed < ActiveRecord::Base
   end
 
   def self.delete_cache_of_search_results
-    Rails.cache.delete_matched("feeds_of_search_by_*")
+    Rails.cache.delete_matched("feeds_of_search_by-*")
   end
 
   def delete_cache_of_search_results
@@ -45,7 +45,7 @@ class Feed < ActiveRecord::Base
   end
 
   def self.search_by(query: '', locale: 'ja', page: 1, per_page: 15)
-    key = "feeds_of_search_by_#{count}_#{query}_#{locale}"
+    key = "feeds_of_search_by-page(#{page})-page_page(#{per_page})-#{query}-#{locale}"
     Rails.cache.fetch(key) do
       Feed.page(page)
           .per(per_page)
