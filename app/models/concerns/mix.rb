@@ -6,7 +6,11 @@ module Mix
       @entries_per_feed = entries_per_feed
     end
     def cache_key
-      "since(#{since})-entries_per_feed(#{entries_per_feed})"
+      if @since.nil?
+        "entries_per_feed(#{entries_per_feed})"
+      else
+        "since-#{since.strftime("%Y%m%d")}-entries_per_feed(#{entries_per_feed})"
+      end
     end
   end
   extend ActiveSupport::Concern

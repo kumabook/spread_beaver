@@ -34,7 +34,11 @@ module Stream
 
   class_methods do
     def cache_key_of_entries_of_stream(stream_id, page: 1, per_page: nil, since: nil)
-      "entries_of_#{stream_id}-page(#{page})-per_page(#{per_page})-since(#{since})"
+      if since.nil?
+        "entries_of_#{stream_id}-page(#{page})-per_page(#{per_page})}"
+      else
+        "entries_of_#{stream_id}-page(#{page})-per_page(#{per_page})-since-#{since.strftime("%Y%m%d")}"
+      end
     end
 
     def delete_cache_of_stream(stream_id)
