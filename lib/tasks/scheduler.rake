@@ -9,7 +9,7 @@ task :crawl => :environment do
   puts "Finish crawling."
 
   Topic.all.each do |topic|
-    Entry.delete_cache_of_stream(topic.id)
+    topic.delete_cache_of_stream
   end
 
   puts "Clear cache"
