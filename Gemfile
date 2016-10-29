@@ -1,6 +1,8 @@
 source 'https://rubygems.org'
 ruby '2.3.0'
 
+gem 'coveralls', require: false
+
 gem 'rails', '4.2.5'
 gem 'rails_12factor', group: :production
 gem 'sass-rails', '~> 5.0'
