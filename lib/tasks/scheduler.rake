@@ -7,9 +7,10 @@ task :crawl => :environment do
   notify_slack "Start crawling with feedly api..."
   results = Feed.fetch_all_latest_entries
   message = "Successfully crawling\n"
-  message += results.map { |f|
-    "Create #{f[:entries].count} entries and #{f[:tracks].count} tracks from #{f[:feed].id}"
-  }.join("\n")
+  message += results.select {|f|
+    f[:entries].present?
+  }.map { |f|
+    "Create #{f[:entries].count} entries and #{f[:tracks].count} tracks from #{f[:feed].id}" }.join("\n")
   notify_slack message
   puts "Finish crawling."
 
