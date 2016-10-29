@@ -2,6 +2,7 @@
 
 [![Build Status](https://travis-ci.org/kumabook/spread_beaver.svg?branch=master)](https://travis-ci.org/kumabook/spread_beaver)
 [![Coverage Status](https://coveralls.io/repos/github/kumabook/spread_beaver/badge.svg?branch=master)](https://coveralls.io/github/kumabook/spread_beaver?branch=master)
+<a href="https://codeclimate.com/github/kumabook/spread_beaver"><img src="https://codeclimate.com/github/kumabook/spread_beaver/badges/gpa.svg" /></a>
 
 ## Overview
 
