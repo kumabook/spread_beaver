@@ -10,9 +10,10 @@ task :crawl => :environment do
   message += results.map { |f|
     "Create #{f[:entries].count} entries and #{f[:tracks].count} tracks from #{f[:feed].id}"
   }.join("\n")
-  Entry.update_visuals
   notify_slack message
   puts "Finish crawling."
+
+  Entry.update_visuals
 
   Topic.all.each do |topic|
     topic.delete_cache_entries

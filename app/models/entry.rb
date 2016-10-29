@@ -42,6 +42,7 @@ class Entry < ActiveRecord::Base
   scope :read,          ->     (user) { joins(:read_entries).eager_load(:tracks).where(read_entries: { user_id: user.id }) }
 
   JSON_ATTRS = ['content', 'categories', 'summary', 'alternate', 'origin', 'visual']
+  WAITING_SEC_FOR_VISUAL = 0.5
 
   def self.first_or_create_by_feedlr(entry, feed)
     en = Entry.find_or_create_by(id: entry.id) do |e|
@@ -80,8 +81,8 @@ class Entry < ActiveRecord::Base
     self.order('published DESC').page(0).per(max)
         .where(visual: nil).find_in_batches(batch_size: 20) do |entries|
 
-      client         = Feedlr::Client.new
-      sleep(0.1)
+      client         = Feedlr::Client.new(sandbox: false)
+      sleep(WAITING_SEC_FOR_VISUAL)
       feedlr_entries = client.user_entries(entries.map { |e| e.id })
       hash = entries.reduce({}) do |h, e|
         h[e.id] = {} if h[e.id].nil?

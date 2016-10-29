@@ -11,6 +11,8 @@ class Feed < ActiveRecord::Base
 
   self.primary_key = :id
 
+  WAITING_SEC_FOR_FEED = 0.25
+
   scope :search, -> (query) {
     q = search_query(query)
     case q[:type]
@@ -96,7 +98,10 @@ class Feed < ActiveRecord::Base
   def self.fetch_all_latest_entries
     feeds = Feed.all
     Feed.update_visuals(feeds)
-    feeds.map { |f| f.fetch_latest_entries }
+    feeds.map do |f|
+      sleep(WAITING_SEC_FOR_FEED)
+      f.fetch_latest_entries
+    end
   end
 
   def self.update_visuals(feeds)
@@ -132,11 +137,13 @@ class Feed < ActiveRecord::Base
     client = Feedlr::Client.new(sandbox: false)
     puts "Fetch latest entries of #{id}"
     newer_than = crawled.present? ? crawled.to_time.to_i : nil
-    sleep(0.25)
     cursor = client.stream_entries_contents(id, newerThan: newer_than)
+
+    return { feed: self, entries: [], tracks: [] } if cursor.items.nil?
+
     cursor.items.each do |entry|
       begin
-        sleep(0.1)
+        sleep(WAITING_SEC_FOR_FEED)
         e = Entry.first_or_create_by_feedlr(entry, self)
         puts "Fetch tracks of #{e.url}"
         playlist = e.fetch_playlist
