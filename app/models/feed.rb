@@ -96,7 +96,7 @@ class Feed < ActiveRecord::Base
   def self.fetch_all_latest_entries
     feeds = Feed.all
     Feed.update_visuals(feeds)
-    feeds.each { |f| f.fetch_latest_entries }
+    feeds.map { |f| f.fetch_latest_entries }
   end
 
   def self.update_visuals(feeds)
@@ -127,7 +127,9 @@ class Feed < ActiveRecord::Base
   end
 
   def fetch_latest_entries
-    client = Feedlr::Client.new
+    new_entries = []
+    new_tracks  = []
+    client = Feedlr::Client.new(sandbox: false)
     puts "Fetch latest entries of #{id}"
     newer_than = crawled.present? ? crawled.to_time.to_i : nil
     sleep(0.25)
@@ -140,6 +142,7 @@ class Feed < ActiveRecord::Base
         playlist = e.fetch_playlist
         playlist.create_tracks.each do |track|
           puts "  Create track #{track.provider} #{track.identifier}"
+          new_tracks << track
         end
         if playlist.visual_url.present?
           e.visual = {
@@ -148,6 +151,7 @@ class Feed < ActiveRecord::Base
           }.to_json
         end
         e.save
+        new_entries << e
         puts "Update entry visual with #{playlist.visual_url}"
         if self.lastUpdated.nil? || self.lastUpdated < e.published
           self.lastUpdated = e.published
@@ -159,6 +163,7 @@ class Feed < ActiveRecord::Base
     end
     self.crawled = DateTime.now
     save
+    { feed: self, entries: new_entries, tracks: new_tracks }
   end
 
   def as_json(options = {})
