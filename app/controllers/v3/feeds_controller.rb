@@ -13,8 +13,7 @@ class V3::FeedsController < V3::ApiController
          hint: "",
       results: @feeds
     }
-
-    render json: result.to_json, status: 200
+    render json: result, status: 200
   end
 
   def show
