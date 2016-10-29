@@ -9,15 +9,9 @@ task :crawl => :environment do
   puts "Finish crawling."
 
   Topic.all.each do |topic|
-    topic.delete_cache_of_stream
+    topic.delete_cache_entries
+    topic.delete_cache_mix_entries
   end
-
-  puts "Clear cache"
-end
-
-task :clear_cache => :environment do
-  Rails.cache.delete_matched("*")
-  puts "Clear cache"
 end
 
 desc "Create latest entries as daily top keyword"
