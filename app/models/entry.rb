@@ -43,6 +43,7 @@ class Entry < ActiveRecord::Base
 
   JSON_ATTRS = ['content', 'categories', 'summary', 'alternate', 'origin', 'visual']
   WAITING_SEC_FOR_VISUAL = 0.5
+  PER_PAGE = Kaminari::config::default_per_page
 
   def self.first_or_create_by_feedlr(entry, feed)
     en = Entry.find_or_create_by(id: entry.id) do |e|
@@ -145,34 +146,36 @@ class Entry < ActiveRecord::Base
     Mix::mix_up_and_paginate(entries, entries_per_feed, page, per_page)
   end
 
-  def self.popular_entries_within_period(from: nil, to: nil, per_page: nil, page: 0)
+  def self.popular_entries_within_period(from: nil, to: nil, page: 0, per_page: PER_PAGE)
     best_entries_within_period(from: from, to: to, clazz: SavedEntry,
                                per_page: per_page, page: page)
   end
 
-  def self.hot_entries_within_period(from: nil, to: nil, page: 0, per_page: nil)
+  def self.hot_entries_within_period(from: nil, to: nil, page: 0, per_page: PER_PAGE)
     best_entries_within_period(from: from, to: to, clazz: ReadEntry,
                                page: page, per_page: per_page)
   end
 
-  def self.best_entries_within_period(from: nil, to: nil, clazz: nil,
-                                      page: 1,
-                                      per_page: Kaminari::config::default_per_page)
+  def self.best_entries_within_period(from: nil, to: nil, clazz: nil, page: 1, per_page: PER_PAGE)
     raise ArgumentError, "Parameter must be not nil" if from.nil? || to.nil? || clazz.nil?
-    user_entries    = clazz.period(from, to).page(page).per(per_page)
-    user_count_hash = user_entries.user_count
-    entries = Entry.with_content.find(user_count_hash.keys)
-    # order by user_count and updated
-    sorted_entries = user_count_hash.keys.map { |id|
+    user_count_hash = clazz.period(from, to).user_count
+    total_count     = user_count_hash.keys.count
+    start_index     = [0, page - 1].max * per_page
+    end_index       = [total_count - 1, start_index + per_page - 1].min
+    sorted_hashes   = user_count_hash.keys.map { |id|
       {
                 id: id,
-        user_count: user_count_hash[id],
-             entry: entries.select { |e| e.id == id }.first
+        user_count: user_count_hash[id]
       }
     }.sort_by { |hash|
-      [hash[:user_count], [hash[:entry].updated_at]]
-    }.reverse.map { |hash| hash[:entry] }
-    PaginatedEntryArray.new(sorted_entries, user_entries.total_count)
+      hash[:user_count]
+    }.reverse.slice(start_index..end_index)
+
+    entries = Entry.with_content.find(sorted_hashes.map {|h| h[:id] })
+    sorted_entries = sorted_hashes.map {|h|
+      entries.select { |e| e.id == h[:id] }.first
+    }
+    PaginatedEntryArray.new(sorted_entries, total_count)
   end
 
   def fetch_playlist(force: false)

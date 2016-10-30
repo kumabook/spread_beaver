@@ -94,20 +94,25 @@ class Track < ActiveRecord::Base
 
   def self.popular_tracks_within_period(from: nil, to: nil, page: 1, per_page: nil)
     raise ArgumentError, "Parameter must be not nil" if from.nil? || to.nil?
-    likes = Like.period(from, to).page(page).per(per_page)
-    user_count_hash = likes.user_count
-    tracks = Track.eager_load(:entries).find(user_count_hash.keys)
-    # order by user_count and updated
-    sorted_tracks = user_count_hash.keys.map { |id|
+    user_count_hash = Like.period(from, to).user_count
+    total_count     = user_count_hash.keys.count
+    start_index     = [0, page - 1].max * per_page
+    end_index       = [total_count - 1, start_index + per_page - 1].min
+    sorted_hashes   = user_count_hash.keys.map {|id|
       {
                 id: id,
-        user_count: user_count_hash[id],
-             track: tracks.select { |t| t.id == id }.first
+        user_count: user_count_hash[id]
       }
     }.sort_by { |hash|
-      [hash[:user_count], hash[:track].updated_at]
-    }.reverse.map { |hash| hash[:track] }
-    PaginatedTracks.new(sorted_tracks, likes.total_count)
+      hash[:user_count]
+    }.reverse.slice(start_index..end_index)
+
+    tracks = Track.eager_load(:entries)
+                  .find(sorted_hashes.map {|h| h[:id] })
+    sorted_tracks = sorted_hashes.map {|h|
+      tracks.select { |t| t.id == h[:id] }.first
+    }
+    PaginatedTracks.new(sorted_tracks, total_count)
   end
 end
 
