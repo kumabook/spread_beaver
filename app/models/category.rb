@@ -1,4 +1,4 @@
-class Category < ActiveRecord::Base
+class Category < ApplicationRecord
   include Escapable
   include Stream
   has_many :subscription_categories, dependent: :destroy

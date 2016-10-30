@@ -1,4 +1,4 @@
-class ReadEntry < ActiveRecord::Base
+class ReadEntry < ApplicationRecord
   belongs_to :user
   belongs_to :entry, counter_cache: :read_count, touch: true
 

@@ -1,4 +1,4 @@
-class Keyword < ActiveRecord::Base
+class Keyword < ApplicationRecord
   include Escapable
   include Stream
   has_many :entry_keywords, dependent: :destroy

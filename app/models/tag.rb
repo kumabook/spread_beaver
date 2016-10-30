@@ -1,4 +1,4 @@
-class Tag < ActiveRecord::Base
+class Tag < ApplicationRecord
   include Escapable
   include Stream
   has_many :entry_tags, dependent: :destroy

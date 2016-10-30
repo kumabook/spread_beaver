@@ -8,8 +8,8 @@ class User < ActiveRecord::Base
   has_many :likes        , dependent: :destroy
   has_many :tracks       , through: :likes
   enum type: {
-    member: 'Member',
-    admin:  'Admin'
+    Member: 'Member',
+    Admin:  'Admin'
   }
   authenticates_with_sorcery!
 

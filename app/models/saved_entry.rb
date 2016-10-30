@@ -1,4 +1,4 @@
-class SavedEntry < ActiveRecord::Base
+class SavedEntry < ApplicationRecord
   belongs_to :user
   belongs_to :entry, counter_cache: :saved_count, touch: true
 

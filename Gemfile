@@ -1,19 +1,20 @@
 source 'https://rubygems.org'
-ruby '2.3.0'
+ruby '2.3.1'
 
 gem 'coveralls', require: false
 
-gem 'rails', '4.2.5'
+gem 'rails', '5.0.0'
 gem 'rails_12factor', group: :production
-gem 'sass-rails', '~> 5.0'
-gem 'uglifier', '>= 1.3.0'
-gem 'coffee-rails', '~> 4.1.0'
+gem 'rails-controller-testing'
+gem 'sass-rails'
+gem 'uglifier'
+gem 'coffee-rails'
 gem 'jquery-rails'
 gem 'twitter-bootstrap-rails'
 gem 'therubyracer'
 gem 'less-rails'
 gem 'turbolinks'
-gem 'jbuilder', '~> 2.0'
+gem 'jbuilder'
 gem 'puma'
 
 gem 'pg'
@@ -22,7 +23,6 @@ gem 'sorcery'
 gem 'slim-rails'
 gem 'feedlr'
 gem 'kaminari'
-gem 'rails-api'
 gem 'active_model_serializers'
 gem 'twitter'
 
@@ -34,7 +34,7 @@ end
 
 group :development, :test do
   gem 'byebug'
-  gem 'rspec-rails', '~> 3.0'
+  gem 'rspec-rails', '~> 3.5'
   gem "autodoc", group: :test
   gem 'database_cleaner'
   gem 'factory_girl'
@@ -42,6 +42,6 @@ group :development, :test do
 end
 
 group :development do
-  gem 'web-console', '~> 2.0'
+  gem 'web-console'
   gem 'spring'
 end

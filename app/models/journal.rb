@@ -1,4 +1,4 @@
-class Journal < ActiveRecord::Base
+class Journal < ApplicationRecord
   has_many :issues, dependent: :destroy
   self.primary_key = :id
 

@@ -1,4 +1,4 @@
-class Issue < ActiveRecord::Base
+class Issue < ApplicationRecord
   include Escapable
   include Stream
 

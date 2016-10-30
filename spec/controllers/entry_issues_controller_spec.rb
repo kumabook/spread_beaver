@@ -12,16 +12,20 @@ describe EntryIssuesController, type: :controller do
   end
 
   describe 'GET new' do
-    before { get :new, issue_id: issue.id, entry_id: entry.id }
+    before { get :new, params: { issue_id: issue.id, entry_id: entry.id }}
     it { expect(response).to render_template("new") }
   end
 
   describe 'POST create' do
     before do
-      post :create, issue_id: issue.id, entry_id: entry.id, entry_issue: {
+      post :create, params: {
              issue_id: issue.id,
              entry_id: entry.id,
-             engagement: 100
+             entry_issue: {
+               issue_id: issue.id,
+               entry_id: entry.id,
+               engagement: 100
+             }
            }
     end
     it { expect(response).to redirect_to edit_journal_issue_url(journal, issue) }
@@ -30,16 +34,20 @@ describe EntryIssuesController, type: :controller do
 
   describe 'GET edit' do
     before do
-      get :edit, id: entry_issue.id, issue_id: issue.id
+      get :edit, params: { id: entry_issue.id, issue_id: issue.id }
     end
     it { expect(response).to render_template("edit") }
   end
 
   describe 'POST update' do
     before do
-      post :update, id: entry_issue.id, issue_id: issue.id, entry_issue: {
-             engagement: 200
-           }
+      post :update, params: {
+        id: entry_issue.id,
+        issue_id: issue.id,
+        entry_issue: {
+          engagement: 200
+        }
+      }
     end
     it { expect(response).to redirect_to edit_journal_issue_url(journal, issue) }
     it { expect(EntryIssue.find(entry_issue.id).engagement).to eq(200) }

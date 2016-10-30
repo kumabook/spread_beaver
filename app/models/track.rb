@@ -1,4 +1,4 @@
-class Track < ActiveRecord::Base
+class Track < ApplicationRecord
   has_many :entry_tracks, dependent: :destroy
   has_many :entries     , through: :entry_tracks
   has_many :likes       , dependent: :destroy

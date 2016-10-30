@@ -1,4 +1,4 @@
-class Topic < ActiveRecord::Base
+class Topic < ApplicationRecord
   include Escapable
   include Stream
   include Mix

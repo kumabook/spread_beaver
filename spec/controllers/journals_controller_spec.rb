@@ -22,25 +22,25 @@ describe JournalsController, type: :controller do
   describe 'POST create' do
     label       = "new_journal"
     description = "desc"
-    before { post :create, journal: { label: label, description: description} }
+    before { post :create, params: { journal: { label: label, description: description} }}
     it { expect(response).to redirect_to journals_url }
     it { expect(Journal.find_by(label: label).label).to eq(label) }
   end
 
   describe 'GET edit' do
-    before { get :edit, id: journal.id }
+    before { get :edit, params: { id: journal.id }}
     it { expect(response).to render_template("edit") }
   end
 
   describe 'POST update' do
     label = "changed"
-    before { post :update, id: journal.id, journal: { label: label } }
+    before { post :update, params: { id: journal.id, journal: { label: label } }}
     it { expect(response).to redirect_to journals_url }
     it { expect(Journal.find(journal.id).label).to eq(label) }
   end
 
   describe "DELETE destroy" do
-    before { delete :destroy, id: journal.id }
+    before { delete :destroy, params: { id: journal.id }}
     it { expect(response).to redirect_to journals_url }
     it { expect(Journal.find_by(id: journal.id)).to be_nil }
   end

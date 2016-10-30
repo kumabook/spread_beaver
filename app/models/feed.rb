@@ -1,4 +1,4 @@
-class Feed < ActiveRecord::Base
+class Feed < ApplicationRecord
   include Escapable
   include Stream
   after_touch   :touch_topics

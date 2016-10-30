@@ -12,9 +12,7 @@ RSpec.describe "Categories api", :type => :request, autodoc: true do
   end
 
   it "get list of all categories of current user" do
-    get "/v3/categories",
-        nil,
-        Authorization: "Bearer #{@token['access_token']}"
+    get "/v3/categories", headers: { Authorization: "Bearer #{@token['access_token']}" }
     categories = JSON.parse @response.body
     expect(categories.count).to eq(5)
   end
@@ -25,10 +23,13 @@ RSpec.describe "Categories api", :type => :request, autodoc: true do
       label: "new-label",
       description: "new-description"
     }
-    post "/v3/categories/#{category.escape.id}", hash.to_json,
-         Authorization: "Bearer #{@token['access_token']}",
-          CONTENT_TYPE: 'application/json',
-                ACCEPT: 'applfdfication/json'
+    post "/v3/categories/#{category.escape.id}",
+         params: hash.to_json,
+         headers: {
+           Authorization: "Bearer #{@token['access_token']}",
+           CONTENT_TYPE: 'application/json',
+           ACCEPT: 'applfdfication/json'
+         }
     category = Category.find("user/#{@user.id}/category/new-label")
     expect(category.label).to eq("new-label")
     expect(category.description).to eq("new-description")
@@ -39,10 +40,13 @@ RSpec.describe "Categories api", :type => :request, autodoc: true do
     hash = {
       label: "new-label",
     }
-    delete "/v3/categories/#{category.escape.id}", hash.to_json,
-         Authorization: "Bearer #{@token['access_token']}",
-          CONTENT_TYPE: 'application/json',
-                ACCEPT: 'applfdfication/json'
+    delete "/v3/categories/#{category.escape.id}",
+           params: hash.to_json,
+           headers: {
+             Authorization: "Bearer #{@token['access_token']}",
+             CONTENT_TYPE: 'application/json',
+             ACCEPT: 'applfdfication/json'
+           }
     categories = Category.where(user: @user)
     expect(categories.count).to eq(4)
   end

@@ -91,7 +91,7 @@ Rails.application.routes.draw do
     resources :subscriptions, only: [:index, :create, :destroy], constraints: res_options
 
     resources :categories, only: [:index, :destroy], constraints: res_options do
-      post action: :update, on: :member
+      post '', action: :update, on: :member
     end
 
     resources :tracks, only: [:show], constraints: uuid_options do
@@ -99,7 +99,7 @@ Rails.application.routes.draw do
     end
 
     resources :keywords, only: [:index, :destroy], constraints: res_options do
-      post action: :update, on: :member
+      post '', action: :update, on: :member
     end
 
     resources :tags, only: [:index], constraints: res_options do

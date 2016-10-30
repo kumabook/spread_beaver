@@ -12,12 +12,13 @@ module ApiMacros
   end
 
   def login()
-    post "/v3/oauth/token.json",
-         grant_type:  'password',
-         client_id: @app.uid,
-         client_secret: @app.secret,
-         email: @email,
-         password: @password
+    post "/v3/oauth/token.json", params: {
+           grant_type:  'password',
+           client_id: @app.uid,
+           client_secret: @app.secret,
+           email: @email,
+           password: @password
+         }
     @token = JSON.parse @response.body
   end
 end
