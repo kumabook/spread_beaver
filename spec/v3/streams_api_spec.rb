@@ -83,7 +83,7 @@ RSpec.describe "Streams api", type: :request, autodoc: true do
     it "gets latest entries" do
       resource = CGI.escape "tag/global.latest"
       get "/v3/streams/#{resource}/contents",
-          {newer_than: 3.days.ago.to_time.to_i * 1000},
+          {newerThan: 3.days.ago.to_time.to_i * 1000},
           Authorization: "Bearer #{@token['access_token']}"
       result = JSON.parse @response.body
       expect(result['items'].count).to eq(2)
@@ -93,8 +93,8 @@ RSpec.describe "Streams api", type: :request, autodoc: true do
     it "gets hot entries" do
       resource = CGI.escape "tag/global.hot"
       get "/v3/streams/#{resource}/contents", {
-            newer_than: 200.days.ago.to_time.to_i * 1000,
-            older_than: Time.now.to_i * 1000
+            newerThan: 200.days.ago.to_time.to_i * 1000,
+            olderThan: Time.now.to_i * 1000
           },
           Authorization: "Bearer #{@token['access_token']}"
       result = JSON.parse @response.body
@@ -105,8 +105,8 @@ RSpec.describe "Streams api", type: :request, autodoc: true do
     it "gets popular entries" do
       resource = CGI.escape "tag/global.popular"
       get "/v3/streams/#{resource}/contents", {
-            newer_than: 200.days.ago.to_time.to_i * 1000,
-            older_than: Time.now.to_i * 1000
+            newerThan: 200.days.ago.to_time.to_i * 1000,
+            olderThan: Time.now.to_i * 1000
           },
           Authorization: "Bearer #{@token['access_token']}"
       result = JSON.parse @response.body
@@ -117,8 +117,8 @@ RSpec.describe "Streams api", type: :request, autodoc: true do
     it "gets entries of a keyword" do
       resource = CGI.escape @keyword.id
       get "/v3/streams/#{resource}/contents", {
-            newer_than: 200.days.ago.to_time.to_i * 1000,
-            older_than: Time.now.to_i * 1000
+            newerThan: 200.days.ago.to_time.to_i * 1000,
+            olderThan: Time.now.to_i * 1000
           },
           Authorization: "Bearer #{@token['access_token']}"
       result = JSON.parse @response.body
@@ -128,8 +128,8 @@ RSpec.describe "Streams api", type: :request, autodoc: true do
     it "gets entries of a tag" do
       resource = CGI.escape @tag.id
       get "/v3/streams/#{resource}/contents", {
-            newer_than: 200.days.ago.to_time.to_i * 1000,
-            older_than: Time.now.to_i * 1000
+            newerThan: 200.days.ago.to_time.to_i * 1000,
+            olderThan: Time.now.to_i * 1000
           },
           Authorization: "Bearer #{@token['access_token']}"
       result = JSON.parse @response.body
@@ -139,8 +139,8 @@ RSpec.describe "Streams api", type: :request, autodoc: true do
     it "gets entries of feeds that has a specified topic " do
       resource = CGI.escape @topic.id
       get "/v3/streams/#{resource}/contents", {
-            newer_than: 200.days.ago.to_time.to_i * 1000,
-            older_than: Time.now.to_i * 1000,
+            newerThan: 200.days.ago.to_time.to_i * 1000,
+            olderThan: Time.now.to_i * 1000,
             count: 2
           },
           Authorization: "Bearer #{@token['access_token']}"
@@ -154,8 +154,8 @@ RSpec.describe "Streams api", type: :request, autodoc: true do
     it "gets entries of feeds that has a specified category" do
       resource = CGI.escape @category.id
       get "/v3/streams/#{resource}/contents", {
-            newer_than: 200.days.ago.to_time.to_i * 1000,
-            older_than: Time.now.to_i * 1000
+            newerThan: 200.days.ago.to_time.to_i * 1000,
+            olderThan: Time.now.to_i * 1000
           },
           Authorization: "Bearer #{@token['access_token']}"
       result = JSON.parse @response.body
