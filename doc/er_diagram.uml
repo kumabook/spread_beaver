@@ -1,0 +1,68 @@
+@startuml
+
+class User {
+}
+
+class Preference {
+}
+
+class Feed {
+}
+
+class Entry {
+}
+
+class Track {
+}
+
+class Topic {
+}
+
+class Keyword {
+}
+
+Feed  "1" -- "*" Entry
+Entry "*" -- "*" Track
+Feed  "*" -- "*" Topic
+Entry "*" -- "*" Keyword
+
+class Subscription {
+}
+
+class Tag {
+}
+
+class Category {
+}
+
+class Like {
+}
+
+User     "1" -- "*" Preference
+User     "1" -- "*" Subscription
+Feed     "1" -- "*" Subscription
+User     "1" -- "*" Tag
+Tag      "*" -- "*" Entry
+User     "1" -- "*" Category
+Category "*" -- "1" Subscription
+Track    "1" -- "*" Like
+User     "1" -- "*" Like
+User     "1" -- "*" ReadEntry
+User     "1" -- "*" SavedEntry
+Entry    "1" -- "*" ReadEntry
+Entry    "1" -- "*" SavedEntry
+
+class Journal {
+}
+class Issue {
+}
+
+class EntryIssue {
+}
+
+Journal "1" -- "*" Issue
+Issue   "*" -- "1" EntryIssue
+Entry   "*" -- "1" EntryIssue
+
+
+@enduml
