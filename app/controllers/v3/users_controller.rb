@@ -8,7 +8,7 @@ class V3::UsersController < V3::ApiController
     @user = User.new(email: params[:email],
                      password: params[:password],
                      password_confirmation: params[:password_confirmation])
-    @user.type = User.types[:member]
+    @user.type = User::MEMBER
     if @user.save
       render json: @user.to_json, status: :ok
     else

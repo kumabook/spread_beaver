@@ -1,4 +1,6 @@
 class User < ActiveRecord::Base
+  MEMBER = 'Member'
+  ADMIN  = 'Admin'
   has_many :preferences  , dependent: :destroy
   has_many :subscriptions, dependent: :destroy
   has_many :categories   , dependent: :destroy
@@ -7,10 +9,6 @@ class User < ActiveRecord::Base
   has_many :tags         , dependent: :destroy
   has_many :likes        , dependent: :destroy
   has_many :tracks       , through: :likes
-  enum type: {
-    Member: 'Member',
-    Admin:  'Admin'
-  }
   authenticates_with_sorcery!
 
   validates :password, length: { minimum: 3 }, if: -> { new_record? || changes["password"] }
@@ -19,6 +17,13 @@ class User < ActiveRecord::Base
 
   validates :email, uniqueness: true
 
+  def admin?
+    type == ADMIN
+  end
+
+  def member?
+    type == MEMBER
+  end
 
   def as_user_tag
     {

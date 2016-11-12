@@ -1,7 +1,7 @@
 require 'rest-client'
 
 user = User.first_or_create(email: 'admin@example.com',
-                             type: User.types[:admin],
+                             type: User::ADMIN,
                          password: 'admin',
                          password_confirmation: 'admin')
 
