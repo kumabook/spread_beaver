@@ -12,7 +12,7 @@ RSpec.describe "Keywords api", :type => :request, autodoc: true do
 
   it "get list of all keywords" do
     get "/v3/keywords",
-        headers: { Authorization: "Bearer #{@token['access_token']}" }
+        headers: headers_for_login_user_api
     keywords = JSON.parse @response.body
     expect(keywords.count).to eq(5)
   end
@@ -25,11 +25,7 @@ RSpec.describe "Keywords api", :type => :request, autodoc: true do
     }
     post "/v3/keywords/#{keyword.escape.id}",
          params: hash.to_json,
-         headers: {
-           Authorization: "Bearer #{@token['access_token']}",
-           CONTENT_TYPE:  "application/json",
-           ACCEPT:        "application/json"
-         }
+         headers: headers_for_login_user_api
     keyword = Keyword.find("keyword/new-label")
     expect(keyword.label).to eq("new-label")
     expect(keyword.description).to eq("new-description")
@@ -38,11 +34,7 @@ RSpec.describe "Keywords api", :type => :request, autodoc: true do
   it "delete a keyword" do
     keyword = Keyword.all[0]
     delete "/v3/keywords/#{keyword.escape.id}",
-           headers: {
-             Authorization: "Bearer #{@token['access_token']}",
-             CONTENT_TYPE:  "application/json",
-             ACCEPT:        "applfdfication/json"
-           }
+           headers: headers_for_login_user_api
     keywords = Keyword.all
     expect(keywords.count).to eq(4)
   end

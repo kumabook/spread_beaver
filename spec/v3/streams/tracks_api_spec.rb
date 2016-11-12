@@ -19,14 +19,14 @@ RSpec.describe "Track Stream api", type: :request, autodoc: true do
       resource = CGI.escape "playlist/global.latest"
       get "/v3/streams/#{resource}/tracks/contents",
           params: { newer_than: 3.days.ago.to_time.to_i * 1000 },
-          headers: { Authorization: "Bearer #{@token['access_token']}" }
+          headers: headers_for_login_user_api
       result = JSON.parse @response.body
       expect(result['items'].count).to eq(PER_PAGE)
       expect(result['continuation']).not_to be_nil
 
       get "/v3/streams/#{resource}/tracks/contents",
           params: { continuation: result['continuation'] },
-          headers: { Authorization: "Bearer #{@token['access_token']}" }
+          headers: headers_for_login_user_api
       result = JSON.parse @response.body
       expect(result['items'].count).to eq(Entry.all.count - PER_PAGE)
       expect(result['continuation']).to be_nil
@@ -39,7 +39,7 @@ RSpec.describe "Track Stream api", type: :request, autodoc: true do
             newer_than: 200.days.ago.to_time.to_i * 1000,
             older_than: Time.now.to_i * 1000
           },
-          headers: { Authorization: "Bearer #{@token['access_token']}" }
+          headers: headers_for_login_user_api
       result = JSON.parse @response.body
       expect(result['items'].count).to eq(2)
       expect(result['continuation']).to be_nil

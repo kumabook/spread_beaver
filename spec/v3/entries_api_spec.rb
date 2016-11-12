@@ -10,7 +10,7 @@ RSpec.describe "Entries api", :type => :request, autodoc: true do
   it "shows a entry by id" do
     id = @entries[0].id
     get "/v3/entries/#{id}",
-        headers: { Authorization: "Bearer #{@token['access_token']}" }
+        headers: headers_for_login_user_api
     entry = JSON.parse @response.body
     expect(entry).not_to be_nil()
     expect(entry['id']).to eq(@entries[0].id)
@@ -20,11 +20,7 @@ RSpec.describe "Entries api", :type => :request, autodoc: true do
     ids = @entries.map { |e| e.id }
     post "/v3/entries/.mget",
          params: ids.to_json,
-         headers: {
-           Authorization: "Bearer #{@token['access_token']}",
-           CONTENT_TYPE:  "application/json",
-           Accept:        "application/json"
-         }
+         headers: headers_for_login_user_api
     entries = JSON.parse @response.body
     expect(entries).not_to be_nil()
     entries.each_with_index { |e, i|

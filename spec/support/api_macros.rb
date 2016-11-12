@@ -21,4 +21,18 @@ module ApiMacros
          }
     @token = JSON.parse @response.body
   end
+
+  def headers_for_login_user_api
+    {
+      Authorization: "Bearer #{@token['access_token']}",
+      CONTENT_TYPE:  "application/json",
+      ACCEPT:        "application/json"
+    }
+  end
+
+  def headers_for_login_user
+    {
+      Authorization: "Bearer #{@token['access_token']}"
+    }
+  end
 end

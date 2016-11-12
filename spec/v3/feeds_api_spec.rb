@@ -16,7 +16,7 @@ RSpec.describe "Feeds api", :type => :request, autodoc: true do
     count = Feed.count
     get "/v3/search/feeds",
         params: { query: '', count: count, locale: 'ja' },
-        headers: { Authorization: "Bearer #{@token['access_token']}" }
+        headers: headers_for_login_user_api
     result = JSON.parse @response.body
     expect(result['results'].count).to eq(count)
     expect(result['hint']).to eq('')
@@ -37,7 +37,7 @@ RSpec.describe "Feeds api", :type => :request, autodoc: true do
     query = "#{@feeds.first.website}"
     get "/v3/search/feeds",
         params: { query: query, count: count, locale: 'ja' },
-        headers: { Authorization: "Bearer #{@token['access_token']}" }
+        headers: headers_for_login_user_api
     result = JSON.parse @response.body
     expect(result['results'].count).to eq(1)
     expect(result['hint']).to eq('')
@@ -55,7 +55,7 @@ RSpec.describe "Feeds api", :type => :request, autodoc: true do
 
     get "/v3/search/feeds",
         params: { query: "Sample", count: count, locale: 'ja' },
-        headers: { Authorization: "Bearer #{@token['access_token']}" }
+        headers: headers_for_login_user_api
     result = JSON.parse @response.body
     expect(result['results'].count).to eq(1)
     expect(result['hint']).to eq('')
@@ -65,7 +65,7 @@ RSpec.describe "Feeds api", :type => :request, autodoc: true do
   it "shows a feed by id" do
     id = @feeds[0].escape.id
     get "/v3/feeds/#{id}",
-        headers: { Authorization: "Bearer #{@token['access_token']}" }
+        headers: headers_for_login_user_api
     feed = JSON.parse @response.body
     expect(feed).not_to be_nil()
     expect(feed['id']).to eq(@feeds[0].id)
@@ -76,11 +76,7 @@ RSpec.describe "Feeds api", :type => :request, autodoc: true do
     ids = @feeds.map { |t| t.id }
     post "/v3/feeds/.mget",
          params: ids.to_json,
-         headers: {
-           Authorization: "Bearer #{@token['access_token']}",
-           CONTENT_TYPE:  'application/json',
-           Accept:        'application/json'
-         }
+         headers: headers_for_login_user_api
     feeds = JSON.parse @response.body
     expect(feeds).not_to be_nil()
     feeds.each_with_index {|f, i|

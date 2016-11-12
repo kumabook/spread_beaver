@@ -29,7 +29,7 @@ RSpec.describe "Markers api", type: :request, autodoc: true do
              action: 'markAsRead',
              entryIds: [@feed.entries[MARKED_NUM + 1].id]
            },
-           headers: { Authorization: "Bearer #{@token['access_token']}" }
+           headers: headers_for_login_user
       expect(@response.status).to eq(200)
       after_count = Entry.read(@user).count
       expect(after_count).to eq(count + 1)
@@ -43,7 +43,7 @@ RSpec.describe "Markers api", type: :request, autodoc: true do
              action: 'keepUnread',
              entryIds: [@feed.entries[0].id]
            },
-           headers: { Authorization: "Bearer #{@token['access_token']}" }
+           headers: headers_for_login_user
       expect(@response.status).to eq(200)
       after_count = Entry.read(@user).count
       expect(after_count).to eq(count - 1)
@@ -57,7 +57,7 @@ RSpec.describe "Markers api", type: :request, autodoc: true do
              action: 'markAsSaved',
              entryIds: [@feed.entries[MARKED_NUM + 1].id]
            },
-           headers: { Authorization: "Bearer #{@token['access_token']}" }
+           headers: headers_for_login_user
       expect(@response.status).to eq(200)
       after_count = Entry.saved(@user).count
       expect(after_count).to eq(count + 1)
@@ -71,7 +71,7 @@ RSpec.describe "Markers api", type: :request, autodoc: true do
              action: 'markAsUnsaved',
              entryIds: [@feed.entries[0].id]
            },
-           headers: { Authorization: "Bearer #{@token['access_token']}" }
+           headers: headers_for_login_user
       expect(@response.status).to eq(200)
       after_count = Entry.saved(@user).count
       expect(after_count).to eq(count - 1)
@@ -85,7 +85,7 @@ RSpec.describe "Markers api", type: :request, autodoc: true do
              action: 'markAsLiked',
              trackIds: [@feed.entries[0].tracks[MARKED_NUM + 1].id]
            },
-           headers: { Authorization: "Bearer #{@token['access_token']}" }
+           headers: headers_for_login_user
       expect(@response.status).to eq(200)
       after_count = Track.joins(:users).where(users: { id: @user.id }).count
       expect(after_count).to eq(count + 1)
@@ -99,7 +99,7 @@ RSpec.describe "Markers api", type: :request, autodoc: true do
              action: 'markAsUnliked',
              trackIds: [@feed.entries[0].tracks[0].id]
            },
-           headers: { Authorization: "Bearer #{@token['access_token']}" }
+           headers: headers_for_login_user
       expect(@response.status).to eq(200)
       after_count = Track.joins(:users).where(users: { id: @user.id }).count
       expect(after_count).to eq(count - 1)

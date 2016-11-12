@@ -40,7 +40,7 @@ RSpec.describe "Streams api", type: :request, autodoc: true do
 
     it "gets a first per_page entries of a feed" do
       get "/v3/streams/#{@feed.escape.id}/contents",
-          headers: { Authorization: "Bearer #{@token['access_token']}" }
+          headers: headers_for_login_user_api
       result = JSON.parse @response.body
       expect(result['items'].count).to eq(PER_PAGE)
       expect(result['continuation']).not_to be_nil
@@ -50,7 +50,7 @@ RSpec.describe "Streams api", type: :request, autodoc: true do
       continuation = V3::StreamsController::continuation(2, PER_PAGE)
       get "/v3/streams/#{@feed.escape.id}/contents",
           params: {continuation: continuation},
-          headers: { Authorization: "Bearer #{@token['access_token']}" }
+          headers: headers_for_login_user_api
       result = JSON.parse @response.body
       expect(result['items'].count).to eq(ENTRY_PER_FEED - PER_PAGE)
       expect(result['continuation']).to be_nil
@@ -59,7 +59,7 @@ RSpec.describe "Streams api", type: :request, autodoc: true do
     it "gets entries of all subscirptions" do
       resource = CGI.escape "user/#{@user.id}/category/global.all"
       get "/v3/streams/#{resource}/contents",
-          headers: { Authorization: "Bearer #{@token['access_token']}" }
+          headers: headers_for_login_user_api
       result = JSON.parse @response.body
       expect(result['items'].count).to eq(PER_PAGE)
       result['items'].each { |item|
@@ -71,7 +71,7 @@ RSpec.describe "Streams api", type: :request, autodoc: true do
     it "gets saved entries" do
       resource = CGI.escape "user/#{@user.id}/tag/global.saved"
       get "/v3/streams/#{resource}/contents",
-          headers: { Authorization: "Bearer #{@token['access_token']}" }
+          headers: headers_for_login_user_api
       result = JSON.parse @response.body
       expect(result['items'].count).to eq(ITEM_NUM)
       expect(result['continuation']).to be_nil
@@ -81,7 +81,7 @@ RSpec.describe "Streams api", type: :request, autodoc: true do
       resource = CGI.escape "tag/global.latest"
       get "/v3/streams/#{resource}/contents",
           params: { newerThan: 3.days.ago.to_time.to_i * 1000 },
-          headers: { Authorization: "Bearer #{@token['access_token']}" }
+          headers: headers_for_login_user_api
       result = JSON.parse @response.body
       expect(result['items'].count).to eq(2)
       expect(result['continuation']).to be_nil
@@ -94,7 +94,7 @@ RSpec.describe "Streams api", type: :request, autodoc: true do
             newerThan: 200.days.ago.to_time.to_i * 1000,
             olderThan: Time.now.to_i * 1000
           },
-          headers: { Authorization: "Bearer #{@token['access_token']}" }
+          headers: headers_for_login_user_api
       result = JSON.parse @response.body
       expect(result['items'].count).to eq(2)
       expect(result['continuation']).to be_nil
@@ -107,7 +107,7 @@ RSpec.describe "Streams api", type: :request, autodoc: true do
             newerThan: 200.days.ago.to_time.to_i * 1000,
             olderThan: Time.now.to_i * 1000
           },
-          headers: { Authorization: "Bearer #{@token['access_token']}" }
+          headers: headers_for_login_user_api
       result = JSON.parse @response.body
       expect(result['items'].count).to eq(2)
       expect(result['continuation']).to be_nil
@@ -120,7 +120,7 @@ RSpec.describe "Streams api", type: :request, autodoc: true do
             newerThan: 200.days.ago.to_time.to_i * 1000,
             olderThan: Time.now.to_i * 1000
           },
-          headers: { Authorization: "Bearer #{@token['access_token']}" }
+          headers: headers_for_login_user_api
       result = JSON.parse @response.body
       expect(result['items'].count).to eq(PER_PAGE)
     end
@@ -132,7 +132,7 @@ RSpec.describe "Streams api", type: :request, autodoc: true do
             newerThan: 200.days.ago.to_time.to_i * 1000,
             olderThan: Time.now.to_i * 1000
           },
-          headers: { Authorization: "Bearer #{@token['access_token']}" }
+          headers: headers_for_login_user_api
       result = JSON.parse @response.body
       expect(result['items'].count).to eq(PER_PAGE)
     end
@@ -145,7 +145,7 @@ RSpec.describe "Streams api", type: :request, autodoc: true do
             olderThan: Time.now.to_i * 1000,
             count: 2
           },
-          headers: { Authorization: "Bearer #{@token['access_token']}" }
+          headers: headers_for_login_user_api
       result = JSON.parse @response.body
       expect(result['items'].count).to eq(2)
       result['items'].each { |item|
@@ -160,7 +160,7 @@ RSpec.describe "Streams api", type: :request, autodoc: true do
             newerThan: 200.days.ago.to_time.to_i * 1000,
             olderThan: Time.now.to_i * 1000
           },
-          headers: { Authorization: "Bearer #{@token['access_token']}" }
+          headers: headers_for_login_user_api
       result = JSON.parse @response.body
       expect(result['items'].count).to eq(PER_PAGE)
       result['items'].each { |item|
