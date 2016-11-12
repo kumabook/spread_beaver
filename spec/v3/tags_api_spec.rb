@@ -14,8 +14,7 @@ RSpec.describe "Tags api", :type => :request, autodoc: true do
 
   it "get list of all tags" do
     get "/v3/tags",
-        nil,
-        Authorization: "Bearer #{@token['access_token']}"
+        headers: { Authorization: "Bearer #{@token['access_token']}" }
     tags = JSON.parse @response.body
     expect(tags.count).to eq(5)
   end
@@ -26,10 +25,13 @@ RSpec.describe "Tags api", :type => :request, autodoc: true do
       label: "new-label",
       description: "new-description"
     }
-    post "/v3/tags/#{tag.escape.id}", hash.to_json,
-         Authorization: "Bearer #{@token['access_token']}",
-          CONTENT_TYPE: 'application/json',
-                ACCEPT: 'application/json'
+    post "/v3/tags/#{tag.escape.id}",
+         params: hash.to_json,
+         headers: {
+           Authorization: "Bearer #{@token['access_token']}",
+           CONTENT_TYPE:  "application/json",
+           ACCEPT:        "application/json"
+         }
     tag = Tag.find("user/#{@user.id}/tag/new-label")
     expect(tag.label).to eq("new-label")
     expect(tag.description).to eq("new-description")
@@ -38,10 +40,12 @@ RSpec.describe "Tags api", :type => :request, autodoc: true do
   it "delete tags" do
     tags = Tag.all
     tag_ids = tags.map { |t| t.escape.id}.join(",")
-    delete "/v3/tags/#{tag_ids}", nil,
-         Authorization: "Bearer #{@token['access_token']}",
-          CONTENT_TYPE: 'application/json',
-                ACCEPT: 'applfdfication/json'
+    delete "/v3/tags/#{tag_ids}",
+           headers: {
+             Authorization: "Bearer #{@token['access_token']}",
+             CONTENT_TYPE:  "application/json",
+             ACCEPT:        "applfdfication/json"
+           }
     expect(Tag.all.count).to eq(0)
   end
 
@@ -49,10 +53,13 @@ RSpec.describe "Tags api", :type => :request, autodoc: true do
     tags = Tag.all
     tag_ids  = tags.map { |t| t.escape.id}.join(",")
     entry_id = @feed.entries[0].id
-    put "/v3/tags/#{tag_ids}", { entryId: entry_id }.to_json,
-         Authorization: "Bearer #{@token['access_token']}",
-          CONTENT_TYPE: 'application/json',
-                ACCEPT: 'application/json'
+    put "/v3/tags/#{tag_ids}",
+        params: { entryId: entry_id }.to_json,
+        headers: {
+          Authorization: "Bearer #{@token['access_token']}",
+          CONTENT_TYPE:  "application/json",
+          ACCEPT:        "application/json"
+        }
     expect(Entry.find(entry_id).tags.count).to eq(5)
   end
 
@@ -61,10 +68,12 @@ RSpec.describe "Tags api", :type => :request, autodoc: true do
     entries   = @feed.entries[0..1]
     tag_ids   = tags.map { |t| t.escape.id}.join(",")
     entry_ids = entries.map { |e| e.id }.join(",")
-    put "/v3/tags/#{tag_ids}/#{entry_ids}", nil,
-         Authorization: "Bearer #{@token['access_token']}",
-          CONTENT_TYPE: 'application/json',
-                ACCEPT: 'application/json'
+    put "/v3/tags/#{tag_ids}/#{entry_ids}",
+        headers: {
+          Authorization: "Bearer #{@token['access_token']}",
+          CONTENT_TYPE:  "application/json",
+          ACCEPT:        "application/json"
+        }
     entries.each do |entry|
       expect(Entry.find(entry.id).tags.count).to eq(5)
     end
@@ -80,10 +89,12 @@ RSpec.describe "Tags api", :type => :request, autodoc: true do
 
     tag_ids   = tags.map { |t| t.escape.id}.join(",")
     entry_ids = entries.map { |e| e.id }.join(",")
-    delete "/v3/tags/#{tag_ids}/#{entry_ids}", nil,
-         Authorization: "Bearer #{@token['access_token']}",
-          CONTENT_TYPE: 'application/json',
-                ACCEPT: 'application/json'
+    delete "/v3/tags/#{tag_ids}/#{entry_ids}",
+           headers: {
+             Authorization: "Bearer #{@token['access_token']}",
+             CONTENT_TYPE:  "application/json",
+             ACCEPT:        "application/json"
+           }
     entries.each do |entry|
       expect(Entry.find(entry.id).tags.count).to eq(0)
     end

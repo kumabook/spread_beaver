@@ -24,12 +24,12 @@ RSpec.describe "Markers api", type: :request, autodoc: true do
     it "marks entries as read" do
       count = Entry.read(@user).count
       post "/v3/markers",
-           {
+           params: {
              type: 'entries',
              action: 'markAsRead',
              entryIds: [@feed.entries[MARKED_NUM + 1].id]
            },
-           Authorization: "Bearer #{@token['access_token']}"
+           headers: { Authorization: "Bearer #{@token['access_token']}" }
       expect(@response.status).to eq(200)
       after_count = Entry.read(@user).count
       expect(after_count).to eq(count + 1)
@@ -38,12 +38,12 @@ RSpec.describe "Markers api", type: :request, autodoc: true do
     it "keeps entries unread" do
       count = Entry.read(@user).count
       post "/v3/markers",
-           {
+           params: {
              type: 'entries',
              action: 'keepUnread',
              entryIds: [@feed.entries[0].id]
            },
-           Authorization: "Bearer #{@token['access_token']}"
+           headers: { Authorization: "Bearer #{@token['access_token']}" }
       expect(@response.status).to eq(200)
       after_count = Entry.read(@user).count
       expect(after_count).to eq(count - 1)
@@ -52,12 +52,12 @@ RSpec.describe "Markers api", type: :request, autodoc: true do
     it "marks entries as saved" do
       count = Entry.saved(@user).count
       post "/v3/markers",
-           {
+           params: {
              type: 'entries',
              action: 'markAsSaved',
              entryIds: [@feed.entries[MARKED_NUM + 1].id]
            },
-           Authorization: "Bearer #{@token['access_token']}"
+           headers: { Authorization: "Bearer #{@token['access_token']}" }
       expect(@response.status).to eq(200)
       after_count = Entry.saved(@user).count
       expect(after_count).to eq(count + 1)
@@ -66,12 +66,12 @@ RSpec.describe "Markers api", type: :request, autodoc: true do
     it "marks entries as unsaved" do
       count = Entry.saved(@user).count
       post "/v3/markers",
-           {
+           params: {
              type: 'entries',
              action: 'markAsUnsaved',
              entryIds: [@feed.entries[0].id]
            },
-           Authorization: "Bearer #{@token['access_token']}"
+           headers: { Authorization: "Bearer #{@token['access_token']}" }
       expect(@response.status).to eq(200)
       after_count = Entry.saved(@user).count
       expect(after_count).to eq(count - 1)
@@ -80,12 +80,12 @@ RSpec.describe "Markers api", type: :request, autodoc: true do
     it "marks tracks as liked" do
       count = Track.joins(:users).where(users: { id: @user.id }).count
       post "/v3/markers",
-           {
+           params: {
              type: 'tracks',
              action: 'markAsLiked',
              trackIds: [@feed.entries[0].tracks[MARKED_NUM + 1].id]
            },
-           Authorization: "Bearer #{@token['access_token']}"
+           headers: { Authorization: "Bearer #{@token['access_token']}" }
       expect(@response.status).to eq(200)
       after_count = Track.joins(:users).where(users: { id: @user.id }).count
       expect(after_count).to eq(count + 1)
@@ -94,12 +94,12 @@ RSpec.describe "Markers api", type: :request, autodoc: true do
     it "marks tracks as unliked" do
       count = Track.joins(:users).where(users: { id: @user.id }).count
       post "/v3/markers",
-           {
+           params: {
              type: 'tracks',
              action: 'markAsUnliked',
              trackIds: [@feed.entries[0].tracks[0].id]
            },
-           Authorization: "Bearer #{@token['access_token']}"
+           headers: { Authorization: "Bearer #{@token['access_token']}" }
       expect(@response.status).to eq(200)
       after_count = Track.joins(:users).where(users: { id: @user.id }).count
       expect(after_count).to eq(count - 1)

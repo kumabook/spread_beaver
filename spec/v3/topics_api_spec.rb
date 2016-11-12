@@ -12,8 +12,7 @@ RSpec.describe "Topics api", :type => :request, autodoc: true do
 
   it "get list of all topics" do
     get "/v3/topics",
-        nil,
-        Authorization: "Bearer #{@token['access_token']}"
+        headers: { Authorization: "Bearer #{@token['access_token']}" }
     topics = JSON.parse @response.body
     expect(topics.count).to eq(5)
   end
@@ -24,10 +23,13 @@ RSpec.describe "Topics api", :type => :request, autodoc: true do
       label: "new-label",
       description: "new-description"
     }
-    post "/v3/topics/#{topic.escape.id}", hash.to_json,
-         Authorization: "Bearer #{@token['access_token']}",
-          CONTENT_TYPE: 'application/json',
-                ACCEPT: 'application/json'
+    post "/v3/topics/#{topic.escape.id}",
+         params: hash.to_json,
+         headers: {
+           Authorization: "Bearer #{@token['access_token']}",
+           CONTENT_TYPE:  "application/json",
+           ACCEPT:        "application/json"
+         }
     topic = Topic.find("topic/new-label")
     expect(topic.label).to eq("new-label")
     expect(topic.description).to eq("new-description")
@@ -35,10 +37,12 @@ RSpec.describe "Topics api", :type => :request, autodoc: true do
 
   it "delete a topic" do
     topic = Topic.all[0]
-    delete "/v3/topics/#{topic.escape.id}", nil,
-         Authorization: "Bearer #{@token['access_token']}",
-          CONTENT_TYPE: 'application/json',
-                ACCEPT: 'applfdfication/json'
+    delete "/v3/topics/#{topic.escape.id}",
+           headers: {
+             Authorization: "Bearer #{@token['access_token']}",
+             CONTENT_TYPE:  "application/json",
+             ACCEPT:        "applfdfication/json"
+           }
     topics = Topic.all
     expect(topics.count).to eq(4)
   end

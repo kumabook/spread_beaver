@@ -7,7 +7,8 @@ RSpec.describe "Preferences api", :type => :request, autodoc: true do
   end
 
   it "shows preferences of a user" do
-    get "/v3/preferences", nil, Authorization: "Bearer #{@token['access_token']}"
+    get "/v3/preferences",
+        headers: { Authorization: "Bearer #{@token['access_token']}" }
     preferences = JSON.parse @response.body
     expect(preferences.count).to eq(2)
   end
@@ -18,11 +19,15 @@ RSpec.describe "Preferences api", :type => :request, autodoc: true do
       key2: '==DELETE==',
       key3: 'new_value',
     }
-    post "/v3/preferences", hash.to_json,
-         Authorization: "Bearer #{@token['access_token']}",
-          CONTENT_TYPE: 'application/json',
-                ACCEPT: 'applfdfication/json'
-    get "/v3/preferences", nil, Authorization: "Bearer #{@token['access_token']}"
+    post "/v3/preferences",
+         params: hash.to_json,
+         headers: {
+           Authorization: "Bearer #{@token['access_token']}",
+           CONTENT_TYPE:  "application/json",
+           ACCEPT:        "applfdfication/json"
+         }
+    get "/v3/preferences",
+        headers: { Authorization: "Bearer #{@token['access_token']}" }
     preferences = JSON.parse @response.body
     expect(preferences.count).to eq(2)
     expect(preferences['key1']).to eq('new_value')

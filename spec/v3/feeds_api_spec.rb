@@ -14,11 +14,9 @@ RSpec.describe "Feeds api", :type => :request, autodoc: true do
 
   it "searches feeds after successful login" do
     count = Feed.count
-    get "/v3/search/feeds", {
-          query: '',
-          count: count,
-          locale: 'ja'
-        }, Authorization: "Bearer #{@token['access_token']}"
+    get "/v3/search/feeds",
+        params: { query: '', count: count, locale: 'ja' },
+        headers: { Authorization: "Bearer #{@token['access_token']}" }
     result = JSON.parse @response.body
     expect(result['results'].count).to eq(count)
     expect(result['hint']).to eq('')
@@ -26,11 +24,9 @@ RSpec.describe "Feeds api", :type => :request, autodoc: true do
 
   it "searches feeds with topic" do
     count = Feed.count
-    get "/v3/search/feeds", {
-          query: "##{@topic.label}",
-          count: count,
-          locale: 'ja'
-        }, Authorization: "Bearer #{@token['access_token']}"
+    get "/v3/search/feeds",
+        params: { query: "##{@topic.label}", count: count, locale: 'ja' },
+        headers: { Authorization: "Bearer #{@token['access_token']}" }
     result = JSON.parse @response.body
     expect(result['results'].count).to eq(count)
     expect(result['hint']).to eq('')
@@ -38,11 +34,10 @@ RSpec.describe "Feeds api", :type => :request, autodoc: true do
 
   it "searches feeds with url" do
     count = Feed.count
-    get "/v3/search/feeds", {
-          query: "#{@feeds.first.website}",
-          count: count,
-          locale: 'ja'
-        }, Authorization: "Bearer #{@token['access_token']}"
+    query = "#{@feeds.first.website}"
+    get "/v3/search/feeds",
+        params: { query: query, count: count, locale: 'ja' },
+        headers: { Authorization: "Bearer #{@token['access_token']}" }
     result = JSON.parse @response.body
     expect(result['results'].count).to eq(1)
     expect(result['hint']).to eq('')
@@ -51,20 +46,16 @@ RSpec.describe "Feeds api", :type => :request, autodoc: true do
   it "searches feeds with title" do
     Feed.first.update_attributes(title: "Sample")
     count = Feed.count
-    get "/v3/search/feeds", {
-          query: "Test",
-          count: count,
-          locale: 'ja'
-        }, Authorization: "Bearer #{@token['access_token']}"
+    get "/v3/search/feeds",
+        params: { query: "Test", count: count, locale: 'ja' },
+        headers: { Authorization: "Bearer #{@token['access_token']}" }
     result = JSON.parse @response.body
     expect(result['results'].count).to eq(count - 1)
     expect(result['hint']).to eq('')
 
-    get "/v3/search/feeds", {
-          query: "Sample",
-          count: count,
-          locale: 'ja'
-        }, Authorization: "Bearer #{@token['access_token']}"
+    get "/v3/search/feeds",
+        params: { query: "Sample", count: count, locale: 'ja' },
+        headers: { Authorization: "Bearer #{@token['access_token']}" }
     result = JSON.parse @response.body
     expect(result['results'].count).to eq(1)
     expect(result['hint']).to eq('')
@@ -73,7 +64,8 @@ RSpec.describe "Feeds api", :type => :request, autodoc: true do
 
   it "shows a feed by id" do
     id = @feeds[0].escape.id
-    get "/v3/feeds/#{id}", nil, Authorization: "Bearer #{@token['access_token']}"
+    get "/v3/feeds/#{id}",
+        headers: { Authorization: "Bearer #{@token['access_token']}" }
     feed = JSON.parse @response.body
     expect(feed).not_to be_nil()
     expect(feed['id']).to eq(@feeds[0].id)
@@ -82,10 +74,13 @@ RSpec.describe "Feeds api", :type => :request, autodoc: true do
 
   it "shows feeds list by id list" do
     ids = @feeds.map { |t| t.id }
-    post "/v3/feeds/.mget", ids.to_json,
-         Authorization: "Bearer #{@token['access_token']}",
-          CONTENT_TYPE: 'application/json',
-                Accept: 'application/json'
+    post "/v3/feeds/.mget",
+         params: ids.to_json,
+         headers: {
+           Authorization: "Bearer #{@token['access_token']}",
+           CONTENT_TYPE:  'application/json',
+           Accept:        'application/json'
+         }
     feeds = JSON.parse @response.body
     expect(feeds).not_to be_nil()
     feeds.each_with_index {|f, i|
