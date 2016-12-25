@@ -58,8 +58,9 @@ class Track < ActiveRecord::Base
 
   def as_content_json
     hash = as_json
-    hash['url']        = Track.url provider, identifier
-    hash['likesCount'] = like_count
+    hash['url']          = Track.url provider, identifier
+    hash['likesCount']   = like_count
+    hash['entriesCount'] = entries_count
     hash.delete('users')
     hash
   end
@@ -73,7 +74,10 @@ class Track < ActiveRecord::Base
 
   def to_json(options = {})
     super(options.merge({ except: [:crypted_password, :salt] }))
-      .merge({ likesCount: like_count})
+      .merge({
+               likesCount:   like_count,
+               entriesCount: entries_count,
+             })
   end
 
   def to_query

@@ -18,6 +18,7 @@ RSpec.describe "Tracks api", :type => :request, autodoc: true do
     expect(track['entries']).not_to be_nil()
     expect(track['likers']).not_to be_nil()
     expect(track['likesCount']).not_to be_nil()
+    expect(track['entriesCount']).not_to be_nil()
   end
 
   it "shows track list by id list" do
