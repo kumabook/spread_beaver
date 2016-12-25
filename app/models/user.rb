@@ -1,6 +1,8 @@
 class User < ActiveRecord::Base
   MEMBER = 'Member'
   ADMIN  = 'Admin'
+  include Escapable
+  include Stream
   has_many :preferences  , dependent: :destroy
   has_many :subscriptions, dependent: :destroy
   has_many :categories   , dependent: :destroy
@@ -25,6 +27,14 @@ class User < ActiveRecord::Base
     type == MEMBER
   end
 
+  def stream_id
+    "user_subscription-#{id}"
+  end
+
+  def entries_of_stream(page: 1, per_page: nil, since: nil)
+    Entry.page(page).per(per_page).subscriptions(Subscription.of(self))
+  end
+
   def as_user_tag
     {
       id: "users/#{id}/category/global.saved",
@@ -38,5 +48,9 @@ class User < ActiveRecord::Base
 
   def to_json(options = {})
     super(options.merge({ except: [:crypted_password, :salt] }))
+  end
+
+  def User.delete_cache_of_entries_of_all_user
+    Rails.cache.delete_matched("entries_of_user_subscription-*")
   end
 end

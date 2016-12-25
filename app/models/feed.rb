@@ -6,8 +6,9 @@ class Feed < ApplicationRecord
   after_destroy :delete_cache_of_search_results
 
   has_many :entries
-  has_many :feed_topics, dependent: :destroy
-  has_many :topics     , through: :feed_topics
+  has_many :feed_topics,   dependent: :destroy
+  has_many :topics     ,   through:   :feed_topics
+  has_many :subscriptions, dependent: :destroy
 
   self.primary_key = :id
 

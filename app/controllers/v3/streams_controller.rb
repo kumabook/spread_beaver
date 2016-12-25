@@ -26,10 +26,8 @@ class V3::StreamsController < V3::ApiController
                                                     page: @page,
                                                 per_page: @per_page)
       when :all
-        @subscriptions = current_resource_owner.subscriptions
-        @entries = Entry.page(@page)
-                        .per(@per_page)
-                        .subscriptions(@subscriptions)
+        @entries = current_resource_owner.stream_entries(page:     @page,
+                                                         per_page: @per_page)
       when :hot
         from     = @newer_than.present? ? @newer_than : DURATION_FOR_RANKING.ago
         to       = @older_than.present? ? @older_than : from + DURATION_FOR_RANKING
