@@ -11,15 +11,22 @@ task :crawl => :environment do
     f[:entries].present?
   }.map { |f|
     "Create #{f[:entries].count} entries and #{f[:tracks].count} tracks from #{f[:feed].id}" }.join("\n")
-  notify_slack message
+
   puts "Finish crawling."
 
-  Entry.update_visuals
-
+  puts "Clearing cache entries..."
   Topic.all.each do |topic|
     topic.delete_cache_entries
     topic.delete_cache_mix_entries
   end
+  User.delete_cache_of_entries_of_all_user
+
+  notify_slack message
+
+  puts "Updating entry visual..."
+  Entry.update_visuals
+  puts "Updated entry visual."
+  puts "Finish!"
 end
 
 desc "Create latest entries as daily top keyword"
