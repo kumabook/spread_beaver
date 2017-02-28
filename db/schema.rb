@@ -1,4 +1,3 @@
-# encoding: UTF-8
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -24,10 +23,9 @@ ActiveRecord::Schema.define(version: 20161225010831) do
     t.uuid     "user_id",     null: false
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
+    t.index ["id"], name: "index_categories_on_id", unique: true, using: :btree
+    t.index ["label"], name: "index_categories_on_label", unique: true, using: :btree
   end
-
-  add_index "categories", ["id"], name: "index_categories_on_id", unique: true, using: :btree
-  add_index "categories", ["label"], name: "index_categories_on_label", unique: true, using: :btree
 
   create_table "entries", id: false, force: :cascade do |t|
     t.string   "id"
@@ -56,9 +54,8 @@ ActiveRecord::Schema.define(version: 20161225010831) do
     t.string   "feed_id",                     null: false
     t.integer  "saved_count",     default: 0, null: false
     t.integer  "read_count",      default: 0, null: false
+    t.index ["id"], name: "index_entries_on_id", unique: true, using: :btree
   end
-
-  add_index "entries", ["id"], name: "index_entries_on_id", unique: true, using: :btree
 
   create_table "entry_issues", force: :cascade do |t|
     t.string   "entry_id",               null: false
@@ -66,18 +63,16 @@ ActiveRecord::Schema.define(version: 20161225010831) do
     t.integer  "engagement", default: 0, null: false
     t.datetime "created_at",             null: false
     t.datetime "updated_at",             null: false
+    t.index ["entry_id", "issue_id"], name: "index_entry_issues_on_entry_id_and_issue_id", unique: true, using: :btree
   end
-
-  add_index "entry_issues", ["entry_id", "issue_id"], name: "index_entry_issues_on_entry_id_and_issue_id", unique: true, using: :btree
 
   create_table "entry_keywords", force: :cascade do |t|
     t.string   "entry_id",   null: false
     t.string   "keyword_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["entry_id", "keyword_id"], name: "index_entry_keywords_on_entry_id_and_keyword_id", unique: true, using: :btree
   end
-
-  add_index "entry_keywords", ["entry_id", "keyword_id"], name: "index_entry_keywords_on_entry_id_and_keyword_id", unique: true, using: :btree
 
   create_table "entry_tags", force: :cascade do |t|
     t.string   "tag_id"
@@ -91,18 +86,16 @@ ActiveRecord::Schema.define(version: 20161225010831) do
     t.uuid     "track_id",   null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["entry_id", "track_id"], name: "index_entry_tracks_on_entry_id_and_track_id", unique: true, using: :btree
   end
-
-  add_index "entry_tracks", ["entry_id", "track_id"], name: "index_entry_tracks_on_entry_id_and_track_id", unique: true, using: :btree
 
   create_table "feed_topics", force: :cascade do |t|
     t.string   "feed_id"
     t.string   "topic_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["feed_id", "topic_id"], name: "index_feed_topics_on_feed_id_and_topic_id", unique: true, using: :btree
   end
-
-  add_index "feed_topics", ["feed_id", "topic_id"], name: "index_feed_topics_on_feed_id_and_topic_id", unique: true, using: :btree
 
   create_table "feeds", id: false, force: :cascade do |t|
     t.string   "id",          null: false
@@ -122,32 +115,29 @@ ActiveRecord::Schema.define(version: 20161225010831) do
     t.datetime "updated_at",  null: false
     t.datetime "crawled"
     t.datetime "lastUpdated"
+    t.index ["id"], name: "index_feeds_on_id", unique: true, using: :btree
   end
 
-  add_index "feeds", ["id"], name: "index_feeds_on_id", unique: true, using: :btree
-
-  create_table "issues", id: :uuid, default: "uuid_generate_v4()", force: :cascade do |t|
+  create_table "issues", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.string   "label",                   null: false
     t.text     "description"
     t.integer  "state",       default: 0, null: false
     t.uuid     "journal_id",              null: false
     t.datetime "created_at",              null: false
     t.datetime "updated_at",              null: false
+    t.index ["id"], name: "index_issues_on_id", unique: true, using: :btree
+    t.index ["journal_id", "label"], name: "index_issues_on_journal_id_and_label", unique: true, using: :btree
   end
 
-  add_index "issues", ["id"], name: "index_issues_on_id", unique: true, using: :btree
-  add_index "issues", ["journal_id", "label"], name: "index_issues_on_journal_id_and_label", unique: true, using: :btree
-
-  create_table "journals", id: :uuid, default: "uuid_generate_v4()", force: :cascade do |t|
+  create_table "journals", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.string   "stream_id",   null: false
     t.string   "label",       null: false
     t.text     "description"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
+    t.index ["id"], name: "index_journals_on_id", unique: true, using: :btree
+    t.index ["label"], name: "index_journals_on_label", unique: true, using: :btree
   end
-
-  add_index "journals", ["id"], name: "index_journals_on_id", unique: true, using: :btree
-  add_index "journals", ["label"], name: "index_journals_on_label", unique: true, using: :btree
 
   create_table "keywords", id: false, force: :cascade do |t|
     t.string   "id",          null: false
@@ -155,19 +145,17 @@ ActiveRecord::Schema.define(version: 20161225010831) do
     t.text     "description"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
+    t.index ["id"], name: "index_keywords_on_id", unique: true, using: :btree
+    t.index ["label"], name: "index_keywords_on_label", unique: true, using: :btree
   end
-
-  add_index "keywords", ["id"], name: "index_keywords_on_id", unique: true, using: :btree
-  add_index "keywords", ["label"], name: "index_keywords_on_label", unique: true, using: :btree
 
   create_table "likes", force: :cascade do |t|
     t.uuid     "user_id",    null: false
     t.uuid     "track_id",   null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["user_id", "track_id"], name: "index_likes_on_user_id_and_track_id", unique: true, using: :btree
   end
-
-  add_index "likes", ["user_id", "track_id"], name: "index_likes_on_user_id_and_track_id", unique: true, using: :btree
 
   create_table "oauth_access_grants", force: :cascade do |t|
     t.uuid     "resource_owner_id", null: false
@@ -178,9 +166,8 @@ ActiveRecord::Schema.define(version: 20161225010831) do
     t.datetime "created_at",        null: false
     t.datetime "revoked_at"
     t.string   "scopes"
+    t.index ["token"], name: "index_oauth_access_grants_on_token", unique: true, using: :btree
   end
-
-  add_index "oauth_access_grants", ["token"], name: "index_oauth_access_grants_on_token", unique: true, using: :btree
 
   create_table "oauth_access_tokens", force: :cascade do |t|
     t.uuid     "resource_owner_id"
@@ -191,11 +178,10 @@ ActiveRecord::Schema.define(version: 20161225010831) do
     t.datetime "revoked_at"
     t.datetime "created_at",        null: false
     t.string   "scopes"
+    t.index ["refresh_token"], name: "index_oauth_access_tokens_on_refresh_token", unique: true, using: :btree
+    t.index ["resource_owner_id"], name: "index_oauth_access_tokens_on_resource_owner_id", using: :btree
+    t.index ["token"], name: "index_oauth_access_tokens_on_token", unique: true, using: :btree
   end
-
-  add_index "oauth_access_tokens", ["refresh_token"], name: "index_oauth_access_tokens_on_refresh_token", unique: true, using: :btree
-  add_index "oauth_access_tokens", ["resource_owner_id"], name: "index_oauth_access_tokens_on_resource_owner_id", using: :btree
-  add_index "oauth_access_tokens", ["token"], name: "index_oauth_access_tokens_on_token", unique: true, using: :btree
 
   create_table "oauth_applications", force: :cascade do |t|
     t.string   "name",                      null: false
@@ -205,9 +191,8 @@ ActiveRecord::Schema.define(version: 20161225010831) do
     t.string   "scopes",       default: "", null: false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.index ["uid"], name: "index_oauth_applications_on_uid", unique: true, using: :btree
   end
-
-  add_index "oauth_applications", ["uid"], name: "index_oauth_applications_on_uid", unique: true, using: :btree
 
   create_table "preferences", force: :cascade do |t|
     t.uuid     "user_id",    null: false
@@ -215,45 +200,40 @@ ActiveRecord::Schema.define(version: 20161225010831) do
     t.text     "value",      null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["user_id", "key"], name: "index_preferences_on_user_id_and_key", unique: true, using: :btree
   end
-
-  add_index "preferences", ["user_id", "key"], name: "index_preferences_on_user_id_and_key", unique: true, using: :btree
 
   create_table "read_entries", force: :cascade do |t|
     t.uuid     "user_id",    null: false
     t.string   "entry_id",   null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["user_id", "entry_id"], name: "index_read_entries_on_user_id_and_entry_id", unique: true, using: :btree
   end
-
-  add_index "read_entries", ["user_id", "entry_id"], name: "index_read_entries_on_user_id_and_entry_id", unique: true, using: :btree
 
   create_table "saved_entries", force: :cascade do |t|
     t.uuid     "user_id",    null: false
     t.string   "entry_id",   null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["user_id", "entry_id"], name: "index_saved_entries_on_user_id_and_entry_id", unique: true, using: :btree
   end
-
-  add_index "saved_entries", ["user_id", "entry_id"], name: "index_saved_entries_on_user_id_and_entry_id", unique: true, using: :btree
 
   create_table "subscription_categories", force: :cascade do |t|
     t.integer  "subscription_id"
     t.string   "category_id"
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
+    t.index ["subscription_id", "category_id"], name: "subscription_categories_index", unique: true, using: :btree
   end
-
-  add_index "subscription_categories", ["subscription_id", "category_id"], name: "subscription_categories_index", unique: true, using: :btree
 
   create_table "subscriptions", force: :cascade do |t|
     t.uuid     "user_id",    null: false
     t.string   "feed_id",    null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["user_id", "feed_id"], name: "index_subscriptions_on_user_id_and_feed_id", unique: true, using: :btree
   end
-
-  add_index "subscriptions", ["user_id", "feed_id"], name: "index_subscriptions_on_user_id_and_feed_id", unique: true, using: :btree
 
   create_table "tags", id: false, force: :cascade do |t|
     t.string   "id",          null: false
@@ -262,10 +242,9 @@ ActiveRecord::Schema.define(version: 20161225010831) do
     t.text     "description"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
+    t.index ["id"], name: "index_tags_on_id", unique: true, using: :btree
+    t.index ["user_id", "label"], name: "index_tags_on_user_id_and_label", unique: true, using: :btree
   end
-
-  add_index "tags", ["id"], name: "index_tags_on_id", unique: true, using: :btree
-  add_index "tags", ["user_id", "label"], name: "index_tags_on_user_id_and_label", unique: true, using: :btree
 
   create_table "topics", id: false, force: :cascade do |t|
     t.string   "id",                      null: false
@@ -274,12 +253,11 @@ ActiveRecord::Schema.define(version: 20161225010831) do
     t.datetime "created_at",              null: false
     t.datetime "updated_at",              null: false
     t.integer  "engagement",  default: 0, null: false
+    t.index ["id"], name: "index_topics_on_id", unique: true, using: :btree
+    t.index ["label"], name: "index_topics_on_label", unique: true, using: :btree
   end
 
-  add_index "topics", ["id"], name: "index_topics_on_id", unique: true, using: :btree
-  add_index "topics", ["label"], name: "index_topics_on_label", unique: true, using: :btree
-
-  create_table "tracks", id: :uuid, default: "uuid_generate_v4()", force: :cascade do |t|
+  create_table "tracks", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.string   "identifier"
     t.string   "provider"
     t.string   "title"
@@ -288,21 +266,19 @@ ActiveRecord::Schema.define(version: 20161225010831) do
     t.datetime "updated_at",                null: false
     t.integer  "like_count",    default: 0, null: false
     t.integer  "entries_count", default: 0, null: false
+    t.index ["id"], name: "index_tracks_on_id", unique: true, using: :btree
+    t.index ["provider", "identifier"], name: "index_tracks_on_provider_and_identifier", unique: true, using: :btree
   end
 
-  add_index "tracks", ["id"], name: "index_tracks_on_id", unique: true, using: :btree
-  add_index "tracks", ["provider", "identifier"], name: "index_tracks_on_provider_and_identifier", unique: true, using: :btree
-
-  create_table "users", id: :uuid, default: "uuid_generate_v4()", force: :cascade do |t|
+  create_table "users", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.string   "email",            null: false
     t.string   "crypted_password"
     t.string   "salt"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "type"
+    t.index ["email"], name: "index_users_on_email", unique: true, using: :btree
+    t.index ["id"], name: "index_users_on_id", unique: true, using: :btree
   end
-
-  add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
-  add_index "users", ["id"], name: "index_users_on_id", unique: true, using: :btree
 
 end
