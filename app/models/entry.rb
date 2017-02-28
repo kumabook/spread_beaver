@@ -26,7 +26,7 @@ class Entry < ActiveRecord::Base
 
   before_save :normalize_visual
 
-  scope :with_content,  ->            { eager_load(:tracks) }
+  scope :with_content,  ->            { includes(:entry_tracks).eager_load(:tracks) }
   scope :with_detail,   ->            { eager_load(:saved_users).eager_load(:tracks).eager_load(:keywords) }
   scope :latest,        ->     (time) { where("published > ?", time).order('published DESC').with_content }
   scope :popular,       ->            { joins(:saved_users).order('saved_count DESC').with_content }
