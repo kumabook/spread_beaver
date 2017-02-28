@@ -22,5 +22,12 @@ module SpreadBeaver
 
     # Do not swallow errors in after_commit/after_rollback callbacks.
     config.api_only = false
+
+    config.action_dispatch.default_headers = {
+      'Access-Control-Allow-Origin'      =>  ENV['ACCESS_CONTROL_ALLOW_ORIGIN'] || '*',
+      'Access-Control-Allow-Credentials' => 'true',
+      'Access-Control-Request-Method'    => '*',
+      'Access-Control-Allow-Headers'     => 'Accept,Authorization,Cache-Control,Content-Type,DNT,If-Modified-Since,Keep-Alive,Origin,User-Agent,X-Mx-ReqToken,X-Requested-With',
+    }
   end
 end
