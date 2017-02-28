@@ -18,6 +18,9 @@ class V3::ApiController < ActionController::API
     render json: {}, status: :conflict
   end
 
+  def doorkeeper_unauthorized_render_options(error: nil)
+    { json: { error: "Not authorized" } }
+  end
 
 #  protect_from_forgery with: :null_session
   def current_resource_owner

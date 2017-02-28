@@ -1,5 +1,5 @@
 class V3::TopicsController < V3::ApiController
-  before_action :doorkeeper_authorize!
+  before_action :doorkeeper_authorize!, except: [:index]
   before_action :set_topic,  except: [:index]
 
   def index

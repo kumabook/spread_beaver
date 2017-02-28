@@ -1,6 +1,6 @@
 class V3::StreamsController < V3::ApiController
   include Pagination
-  before_action :doorkeeper_authorize!
+  before_action :doorkeeper_authorize!, except: [:index]
   before_action :set_stream_id      , only: [:index]
   before_action :set_global_resource, only: [:index]
   before_action :set_feed           , only: [:index]
