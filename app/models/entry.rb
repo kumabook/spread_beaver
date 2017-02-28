@@ -97,7 +97,7 @@ class Entry < ActiveRecord::Base
       hash.each do |id, value|
         entry        = value[:entry]
         feedlr_entry = value[:feedlr_entry]
-        visual       = feedlr_entry.visual
+        visual       = feedlr_entry&.visual
         visual_url   = visual.url if visual.present?
         if !entry.has_visual? && visual_url.present? && visual_url != "none"
           puts "Update the visual of #{entry.url} with #{visual_url}"
