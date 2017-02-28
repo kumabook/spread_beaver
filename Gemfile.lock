@@ -337,7 +337,6 @@ DEPENDENCIES
   jbuilder
   jquery-rails
   kaminari
-  less-rails
   newrelic_rpm
   pg
   puma
