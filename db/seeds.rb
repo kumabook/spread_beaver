@@ -13,14 +13,11 @@ app = Doorkeeper::Application.find_or_create_by name: "ios",
 
 puts "Create ios app id: #{app.id}"
 
-client = Feedlr::Client.new
-
 feedIds = [
   "feed/http://pitchfork.com/rss/news",
   "feed/http://pitchfork.com/rss/reviews/best/albums",
   "feed/http://pitchfork.com/rss/reviews/best/tracks",
 ]
-
 
 Feed.find_or_create_with_ids(feedIds).each do |f|
   puts "Create feed(id: #{f.id})"
