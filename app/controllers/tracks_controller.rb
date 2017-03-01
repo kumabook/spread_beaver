@@ -37,20 +37,25 @@ class TracksController < ApplicationController
   def create
     @track = Track.new(track_params)
 
-    if @track.save
-      format.html { redirect_to tracks_path, notice: 'Track was successfully created.' }
-    else
-      format.html { render :new }
+    respond_to do |format|
+      if @track.save
+        format.html { redirect_to tracks_path, notice: 'Track was successfully created.' }
+      else
+        format.html { render :new }
+      end
     end
   end
 
   # PATCH/PUT /tracks/1
   # PATCH/PUT /tracks/1.json
   def update
-    if @track.update(track_params)
-      format.html { redirect_to tracks_path, notice: 'Track was successfully updated.' }
-    else
-      format.html { render :edit }
+
+    respond_to do |format|
+      if @track.update(track_params)
+        format.html { redirect_to tracks_path, notice: 'Track was successfully updated.' }
+      else
+        format.html { render :edit }
+      end
     end
   end
 
