@@ -28,8 +28,9 @@ Rails.application.routes.draw do
   resources :categories do
     resources :subscriptions, only: [:index]
   end
-  resources :tracks
-  resources :likes
+  resources :tracks do
+    resources :likes, controller: :track_likes, as: :likes, only: [:create, :destroy]
+  end
   resources :keywords do
     resources :entries, only: [:index]
   end

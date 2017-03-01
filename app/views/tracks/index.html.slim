@@ -22,14 +22,10 @@ table.table.table-striped
         td = "#{count || 0} likes"
         td
           - if my.nil?
-            = form_for :like, url: '/likes', method: :post do |f|
-              = f.hidden_field :user_id, value: current_user.id
-              = f.hidden_field :track_id, value: track.id
+            = form_for :like, url: track_likes_path(track), method: :post do |f|
               = f.submit 'Like', class: 'btn btn-xs btn-primary'
           - else
-            = form_for my, method: :delete do |f|
-              = hidden_field :user_id, current_user.id
-              = hidden_field :track_id, track.id
+            = form_for :like, url: track_like_path(track, my), method: :delete do |f|
               = f.submit 'Unlike', class: 'btn btn-xs btn-primary'
           = link_to 'Edit',
                     edit_track_path(track),
