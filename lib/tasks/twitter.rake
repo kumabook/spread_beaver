@@ -55,7 +55,7 @@ def get_popular_track_tweet
   duration = Setting.duration_for_ranking.days
   from     = duration.ago
   to       = from + duration
-  tracks   = Track.popular_tracks_within_period(from: from, to: to)
+  tracks   = Track.popular_items_within_period(from: from, to: to, page: 1, per_page: 1)
 
   if tracks.blank?
     puts "Not found popular tracks."

@@ -5,8 +5,6 @@ class Track < ApplicationRecord
 
   scope :detail,  ->        { eager_load(:users).eager_load(:entries) }
   scope :latest,  -> (time) { where("created_at > ?", time).order('created_at DESC') }
-  scope :popular, ->        { eager_load(:users).eager_load(:entries).order('saved_count DESC') }
-  scope :liked,   ->  (uid) { eager_load(:users).eager_load(:entries).where(users: { id: uid }) }
 
   def self.url provider, identifier
     case provider
@@ -93,36 +91,5 @@ class Track < ApplicationRecord
       href: "track/#{id}?#{to_query}",
       type: "application/json",
     }
-  end
-
-  def self.popular_tracks_within_period(from: nil, to: nil, page: 1, per_page: nil)
-    raise ArgumentError, "Parameter must be not nil" if from.nil? || to.nil?
-    user_count_hash = TrackLike.period(from, to).user_count
-    total_count     = user_count_hash.keys.count
-    start_index     = [0, page - 1].max * per_page
-    end_index       = [total_count - 1, start_index + per_page - 1].min
-    sorted_hashes   = user_count_hash.keys.map {|id|
-      {
-                id: id,
-        user_count: user_count_hash[id]
-      }
-    }.sort_by { |hash|
-      hash[:user_count]
-    }.reverse.slice(start_index..end_index)
-
-    tracks = Track.eager_load(:entries)
-                  .find(sorted_hashes.map {|h| h[:id] })
-    sorted_tracks = sorted_hashes.map {|h|
-      tracks.select { |t| t.id == h[:id] }.first
-    }
-    PaginatedTracks.new(sorted_tracks, total_count)
-  end
-end
-
-class PaginatedTracks < Array
-  attr_reader(:total_count)
-  def initialize(values, total_count)
-    super(values)
-    @total_count = total_count
   end
 end
