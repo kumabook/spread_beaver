@@ -1,8 +1,8 @@
-class User < ActiveRecord::Base
-  MEMBER = 'Member'
-  ADMIN  = 'Admin'
+class User < ApplicationRecord
   include Escapable
   include Stream
+  MEMBER = 'Member'
+  ADMIN  = 'Admin'
   has_many :preferences  , dependent: :destroy
   has_many :subscriptions, dependent: :destroy
   has_many :categories   , dependent: :destroy

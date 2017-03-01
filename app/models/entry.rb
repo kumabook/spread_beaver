@@ -8,7 +8,7 @@ class PaginatedEntryArray < Array
   end
 end
 
-class Entry < ActiveRecord::Base
+class Entry < ApplicationRecord
   belongs_to :feed        , touch: true
   has_many :entry_tracks  , dependent: :destroy
   has_many :saved_entries , dependent: :destroy
