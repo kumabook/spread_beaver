@@ -71,8 +71,8 @@ Rails.application.routes.draw do
         get 'ids',      action: :index
         get 'contents', action: :index
 
-        get 'tracks/ids'      => 'streams/tracks#index'
-        get 'tracks/contents' => 'streams/tracks#index'
+        get ':enclosures/ids'      => 'streams/enclosures#index'
+        get ':enclosures/contents' => 'streams/enclosures#index'
       end
     end
 
