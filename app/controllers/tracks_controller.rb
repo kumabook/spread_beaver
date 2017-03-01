@@ -1,4 +1,5 @@
 class TracksController < ApplicationController
+  include LikableController
   before_action :set_track, only: [:show, :edit, :update, :destroy]
   before_action :set_entry, only: [:index]
 
@@ -80,5 +81,9 @@ class TracksController < ApplicationController
 
     def track_params
       params.require(:track).permit(:identifier, :provider, :title, :url)
+    end
+
+    def like_params
+      params.permit(:track_id)
     end
 end

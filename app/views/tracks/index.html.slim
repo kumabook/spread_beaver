@@ -25,7 +25,7 @@ table.table.table-striped
             = form_for :like, url: track_likes_path(track), method: :post do |f|
               = f.submit 'Like', class: 'btn btn-xs btn-primary'
           - else
-            = form_for :like, url: track_like_path(track, my), method: :delete do |f|
+            = form_for :like, url: track_like_path(track), method: :delete do |f|
               = f.submit 'Unlike', class: 'btn btn-xs btn-primary'
           = link_to 'Edit',
                     edit_track_path(track),
