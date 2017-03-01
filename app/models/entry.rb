@@ -8,6 +8,38 @@ class PaginatedEntryArray < Array
   end
 end
 
+class PlaylistifiedEntry
+  attr_reader( :id, :url, :title, :descriptions,
+               :visual_url, :locale, :tracks, :entry)
+  def initialize(id, url, title, description, visual_url, locale, tracks, entry)
+    @id          = id
+    @url         = url
+    @title       = title
+    @description = description
+    @visual_url  = visual_url
+    @locale      = locale
+    @tracks      = tracks
+    @entry       = entry
+  end
+
+  def create_tracks
+    tracks = @tracks.map do |t|
+      track = Track.find_or_create_by(id: t['id'],
+                                      provider: t['provider'],
+                                      identifier: t['identifier']) do
+        puts "New track #{t['provider']} #{t['identifier']}}"
+      end
+      track.url = Track::url t['provider'], t['identifier']
+      EntryTrack.find_or_create_by entry: @entry, track: track do
+        puts "Add new track #{t['provider']} #{t['identifier']} " +
+             "to entry #{@entry.id}"
+      end
+      track
+    end
+    tracks
+  end
+end
+
 class Entry < ApplicationRecord
   belongs_to :feed        , touch: true
   has_many :entry_tracks  , dependent: :destroy
@@ -178,13 +210,13 @@ class Entry < ApplicationRecord
     PaginatedEntryArray.new(sorted_entries, total_count)
   end
 
-  def fetch_playlist(force: false)
+  def playlistify(force: false)
     api_url = "http://pink-spider.herokuapp.com/playlistify"
     params  = { url: url, force: force}
     response = RestClient.get api_url, params: params, :accept => :json
     return if response.code != 200
     hash = JSON.parse(response)
-    Playlist.new(hash['id'],
+    PlaylistifiedEntry.new(hash['id'],
                  hash['url'],
                  hash['title'],
                  hash['description'],

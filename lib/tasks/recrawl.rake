@@ -4,20 +4,20 @@ task :recrawl => :environment do
 
   Entry.find_each do |entry|
     begin
-      playlist = entry.fetch_playlist(force: true)
+      playlistified_entry = entry.playtified_entry(force: true)
     rescue
       puts "Entry #{entry.id} no longer exist"
       next
     end
-    if playlist.visual_url.present?
+    if playlistified_entry.visual_url.present?
       entry.visual = {
-        url: playlist.visual_url,
+        url: playlistified_entry.visual_url,
         processor: "pink-spider-v1"
       }.to_json
-      puts "Update visual of entry #{entry.id} with #{playlist.visual_url}"
+      puts "Update visual of entry #{entry.id} with #{playlistified_entry.visual_url}"
       entry.save
     end
-    playlist.create_tracks
+    playlistified_entry.create_tracks
   end
 
   puts "Finish recrawling."

@@ -148,20 +148,20 @@ class Feed < ApplicationRecord
         sleep(WAITING_SEC_FOR_FEED)
         e = Entry.first_or_create_by_feedlr(entry, self)
         puts "Fetch tracks of #{e.url}"
-        playlist = e.fetch_playlist
-        playlist.create_tracks.each do |track|
+        playtified_entry = e.playlistify
+        playtified_entry.create_tracks.each do |track|
           puts "  Create track #{track.provider} #{track.identifier}"
           new_tracks << track
         end
-        if playlist.visual_url.present?
+        if playtified_entry.visual_url.present?
           e.visual = {
-            url: playlist.visual_url,
+            url: playtified_entry.visual_url,
             processor: "pink-spider-v1"
           }.to_json
         end
         e.save
         new_entries << e
-        puts "Update entry visual with #{playlist.visual_url}"
+        puts "Update entry visual with #{playtified_entry.visual_url}"
         if self.lastUpdated.nil? || self.lastUpdated < e.published
           self.lastUpdated = e.published
         end
