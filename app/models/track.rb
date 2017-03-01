@@ -22,7 +22,7 @@ class Track < ApplicationRecord
       response  = RestClient.get api_url, params: params, :accept => :json
       return nil if response.code != 200
       hash      = JSON.parse(response)
-      url       = hash["permalink_url"]
+      hash["permalink_url"]
     end
   end
 
@@ -74,7 +74,7 @@ class Track < ApplicationRecord
   end
 
   def to_query
-    query = {
+    {
               id: id,
         provider: provider,
       identifier: identifier,
