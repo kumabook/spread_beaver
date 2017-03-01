@@ -31,9 +31,9 @@ RSpec.describe "Streams api", type: :request, autodoc: true do
                           created_at: 1.days.ago
       }
       (0...ITEM_NUM).to_a.each { |n|
-        Like.create! user: @user,
+        TrackLike.create! user: @user,
                      track: @subscribed.entries[0].tracks[n]
-        Like.create! user: @user,
+        TrackLike.create! user: @user,
                      track: @feed.entries[0].tracks[n]
       }
     end

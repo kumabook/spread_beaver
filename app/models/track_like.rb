@@ -1,4 +1,4 @@
-class Like < ApplicationRecord
+class TrackLike < ApplicationRecord
   belongs_to :user
   belongs_to :track, counter_cache: :like_count, touch: true
 

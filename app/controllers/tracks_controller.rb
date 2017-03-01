@@ -10,9 +10,9 @@ class TracksController < ApplicationController
     else
       @tracks = Track.order('created_at DESC').page(params[:page])
     end
-    my_likes = Like.where(user_id: current_user.id,
+    my_likes = TrackLike.where(user_id: current_user.id,
                          track_id: @tracks.map { |t| t.id })
-    count = Like.where(track_id: @tracks.map { |t| t.id })
+    count = TrackLike.where(track_id: @tracks.map { |t| t.id })
                 .group(:track_id).count('track_id')
     @likes_dic = @tracks.inject({}) do |h, t|
       h[t] = {

@@ -1,8 +1,8 @@
 class Track < ApplicationRecord
   has_many :entry_tracks, dependent: :destroy
   has_many :entries     , through: :entry_tracks
-  has_many :likes       , dependent: :destroy
-  has_many :users       , through: :likes
+  has_many :track_likes , dependent: :destroy
+  has_many :users       , through: :track_likes
 
   scope :detail,  ->        { eager_load(:users).eager_load(:entries) }
   scope :latest,  -> (time) { where("created_at > ?", time).order('created_at DESC') }
@@ -98,7 +98,7 @@ class Track < ApplicationRecord
 
   def self.popular_tracks_within_period(from: nil, to: nil, page: 1, per_page: nil)
     raise ArgumentError, "Parameter must be not nil" if from.nil? || to.nil?
-    user_count_hash = Like.period(from, to).user_count
+    user_count_hash = TrackLike.period(from, to).user_count
     total_count     = user_count_hash.keys.count
     start_index     = [0, page - 1].max * per_page
     end_index       = [total_count - 1, start_index + per_page - 1].min

@@ -9,8 +9,8 @@ class User < ApplicationRecord
   has_many :saved_entries, dependent: :destroy
   has_many :read_entries , dependent: :destroy
   has_many :tags         , dependent: :destroy
-  has_many :likes        , dependent: :destroy
-  has_many :tracks       , through: :likes
+  has_many :track_likes  , dependent: :destroy
+  has_many :tracks       , through: :track_likes
   authenticates_with_sorcery!
 
   validates :password, length: { minimum: 3 }, if: -> { new_record? || changes["password"] }

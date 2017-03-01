@@ -5,8 +5,8 @@ RSpec.describe "Tracks api", :type => :request, autodoc: true do
     setup()
     login()
     @feeds = (0...ITEM_NUM).to_a.map { FactoryGirl.create(:feed) }
-    @like = Like.create!(track: @feeds[0].entries[0].tracks[0],
-                          user: @user)
+    @like = TrackLike.create!(track: @feeds[0].entries[0].tracks[0],
+                              user: @user)
   end
 
   it "shows a track by id" do

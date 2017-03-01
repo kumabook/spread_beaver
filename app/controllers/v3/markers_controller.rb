@@ -44,15 +44,15 @@ class V3::MarkersController < V3::ApiController
       case @action
       when 'markAsLiked'
         @ids.each do |id|
-          @like = Like.new(user: current_resource_owner,
-                                 track_id: id)
+          @like = TrackLike.new(user: current_resource_owner,
+                                track_id: id)
           @like.save
         end
         render json: {}, status: 200
         return
       when 'markAsUnliked'
         @ids.each do |id|
-          @like = Like.find_by(user: current_resource_owner,
+          @like = TrackLike.find_by(user: current_resource_owner,
                                track_id: id)
           @like.destroy if @like.present?
         end
