@@ -57,35 +57,4 @@ class Track < ApplicationRecord
     hash.delete('users')
     hash
   end
-
-  def as_detail_json
-    hash = as_content_json
-    hash['likers']     = [] # hash['users'] TODO
-    hash['entries']    = entries.map { |e| e.as_json }
-    hash
-  end
-
-  def to_json(options = {})
-    super(options.merge({ except: [:crypted_password, :salt] }))
-      .merge({
-               likesCount:   like_count,
-               entriesCount: entries_count,
-             })
-  end
-
-  def to_query
-    {
-              id: id,
-        provider: provider,
-      identifier: identifier,
-           title: title,
-    }.to_query
-  end
-
-  def as_enclosure
-    {
-      href: "track/#{id}?#{to_query}",
-      type: "application/json",
-    }
-  end
 end
