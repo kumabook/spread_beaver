@@ -8,7 +8,6 @@ gem 'rails_12factor', group: :production
 gem 'rails-controller-testing'
 gem 'sass-rails'
 gem 'uglifier'
-gem 'coffee-rails'
 gem 'jquery-rails'
 gem 'twitter-bootstrap-rails'
 gem 'therubyracer'
