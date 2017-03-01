@@ -3,7 +3,7 @@ ruby '2.3.3'
 
 gem 'coveralls', require: false
 
-gem 'rails', '5.0.0'
+gem 'rails', '5.0.1'
 gem 'rails_12factor', group: :production
 gem 'rails-controller-testing'
 gem 'sass-rails'
@@ -18,7 +18,7 @@ gem 'puma'
 
 gem 'pg'
 gem 'doorkeeper'
-gem 'sorcery'
+gem 'sorcery', '0.10.2'
 gem 'slim-rails'
 gem 'feedlr'
 gem 'kaminari'
