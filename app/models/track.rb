@@ -1,8 +1,7 @@
 class Track < ApplicationRecord
+  include Likable
   has_many :entry_tracks, dependent: :destroy
   has_many :entries     , through: :entry_tracks
-  has_many :track_likes , dependent: :destroy
-  has_many :users       , through: :track_likes
 
   scope :detail,  ->        { eager_load(:users).eager_load(:entries) }
   scope :latest,  -> (time) { where("created_at > ?", time).order('created_at DESC') }
