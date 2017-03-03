@@ -1,14 +1,13 @@
 # coding: utf-8
 
 FactoryGirl.define do
-  factory :entry_track, class: EntryTrack do
-    entry_id 'entry'
-    track_id 1
+  factory :entry_track, class: EntryEnclosure do
+    entry_id       nil
+    enclosure_id   nil
+    enclosure_type Track.name
   end
 
   factory :track, class: Track do
-    sequence(:identifier) { |n| "track#{n}" }
-    sequence(:title) { |n| "track #{n}" }
     sequence(:created_at) { |n|
       if n % TRACK_PER_ENTRY == 0
         1.days.ago
@@ -16,7 +15,6 @@ FactoryGirl.define do
         5.days.ago
       end
     }
-    provider "YouTube"
   end
 
   factory :entry, class: Entry do
@@ -50,7 +48,7 @@ FactoryGirl.define do
     after(:create) do |e|
       TRACK_PER_ENTRY.times {
         t = create(:track)
-        entry_track = create(:entry_track, entry: e, track: t)
+        create(:entry_track, entry: e, enclosure: t)
       }
     end
   end
