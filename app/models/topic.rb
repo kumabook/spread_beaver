@@ -1,3 +1,5 @@
+require('paginated_array')
+
 class Topic < ApplicationRecord
   include Escapable
   include Stream
@@ -20,7 +22,7 @@ class Topic < ApplicationRecord
   def entries_of_mix(page: 1, per_page: nil, query: Mix::Query.new())
     entries = Entry.topic(self).latest(query.since)
     items   = Mix::mix_up_and_paginate(entries, query.entries_per_feed, page, per_page)
-    PaginatedEntryArray.new(items, entries.count)
+    PaginatedArray.new(items, entries.count)
   end
 
   def self.topics

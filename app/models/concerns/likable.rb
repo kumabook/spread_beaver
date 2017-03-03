@@ -1,3 +1,5 @@
+require('paginated_array')
+
 module Likable
   extend ActiveSupport::Concern
   def self.included(base)

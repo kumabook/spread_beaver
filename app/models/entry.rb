@@ -1,13 +1,6 @@
 # coding: utf-8
 require('pink_spider')
-
-class PaginatedEntryArray < Array
-  attr_reader(:total_count)
-  def initialize(array, total_count)
-    super(array)
-    @total_count = total_count
-  end
-end
+require('paginated_array')
 
 class PlaylistifiedEntry
   attr_reader( :id, :url, :title, :descriptions,
@@ -218,7 +211,7 @@ class Entry < ApplicationRecord
     sorted_entries = sorted_hashes.map {|h|
       entries.select { |e| e.id == h[:id] }.first
     }
-    PaginatedEntryArray.new(sorted_entries, total_count)
+    PaginatedArray.new(sorted_entries, total_count)
   end
 
   def playlistify(force: false)

@@ -1,3 +1,5 @@
+require('paginated_array')
+
 module Mix
   class Query
     attr_reader(:since, :entries_per_feed)
@@ -39,7 +41,7 @@ module Mix
       [items.to_a, items.total_count || items.count]
     end
 
-    PaginatedEntryArray.new(items, count)
+    PaginatedArray.new(items, count)
   end
 
   def delete_cache_mix_entries

@@ -1,3 +1,5 @@
+require('paginated_array')
+
 module Stream
   extend ActiveSupport::Concern
 
@@ -25,7 +27,7 @@ module Stream
       [items.to_a, items.total_count || items.count]
     end
 
-    PaginatedEntryArray.new(items, count)
+    PaginatedArray.new(items, count)
   end
 
   def delete_cache_entries
