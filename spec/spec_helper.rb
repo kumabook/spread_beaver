@@ -1,5 +1,6 @@
 require 'factory_girl'
 require 'coveralls'
+require 'pink_spider'
 Coveralls.wear!('rails')
 
 RSpec.configure do |config|
@@ -24,6 +25,16 @@ RSpec.configure do |config|
   config.after(:all) do
     DatabaseCleaner.clean
     DatabaseCleaner[:redis].clean
+  end
+
+  config.before(:each) do
+    track_hash = {
+      "id"    =>  "track_id",
+      "url"   => "https://test.com",
+      "title" => "track_title"
+    }
+    allow_any_instance_of(PinkSpider).to receive(:fetch_track).and_return(track_hash)
+    allow_any_instance_of(PinkSpider).to receive(:fetch_tracks).and_return([track_hash])
   end
 
   config.include FactoryGirl::Syntax::Methods
