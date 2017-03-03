@@ -7,8 +7,8 @@ describe Track do
   before do
   end
 
-  it { expect(track.likes.count).to eq(track.like_count) }
-  it { expect(track.entry_tracks.count).to eq(track.entries_count) }
+  it { expect(track.likes.count).to eq(track.likes_count) }
+  it { expect(track.entries.count).to eq(track.entries_count) }
 
   context "when entry is deleted" do
     count = 0
@@ -16,6 +16,6 @@ describe Track do
       count = track.entries.count
       entries[0].destroy!
     end
-    it { expect(track.entry_tracks.count).to eq(count - 1) }
+    it { expect(track.entries.count).to eq(count - 1) }
   end
 end
