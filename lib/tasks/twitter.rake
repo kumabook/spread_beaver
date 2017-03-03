@@ -63,13 +63,11 @@ def get_popular_track_tweet
   end
 
   track = tracks[0]
-  title = Track.title(track.provider, track.identifier)
-  url   = Track.permalink_url(track.provider, track.identifier)
 
   if title.present? && url.present?
-    body  = "🎧[Today's Hot Track] #{title}"
+    body  = "🎧[Today's Hot Track] #{track.title}"
     body  = (body.length > 116) ? body[0..115].to_s : body
-    tweet = "#{body} #{url}"
+    tweet = "#{body} #{track.url}"
     tweet.chomp
   else
     puts "Not found title or url of track."
