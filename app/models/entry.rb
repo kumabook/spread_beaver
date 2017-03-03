@@ -77,8 +77,8 @@ class Entry < ApplicationRecord
   scope :topic,         ->    (topic) { feeds(topic.feeds) }
   scope :category,      -> (category) { feeds(category.subscriptions.map { |s| s.feed_id })}
   scope :issue,         ->          (j) { joins(:issues).where(issues: { id: j.id}).order('entry_issues.engagement DESC').with_content }
-  scope :saved,         ->     (user) { joins(:saved_entries).eager_load(:tracks).where(saved_entries: { user_id: user.id }) }
-  scope :read,          ->     (user) { joins(:read_entries).eager_load(:tracks).where(read_entries: { user_id: user.id }) }
+  scope :saved,         ->     (user) { joins(:saved_entries).where(saved_entries: { user_id: user.id }) }
+  scope :read,          ->     (user) { joins(:read_entries).where(read_entries: { user_id: user.id }) }
 
   JSON_ATTRS = ['content', 'categories', 'summary', 'alternate', 'origin', 'visual']
   WAITING_SEC_FOR_VISUAL = 0.5
