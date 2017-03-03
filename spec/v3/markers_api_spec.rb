@@ -8,8 +8,8 @@ RSpec.describe "Markers api", type: :request, autodoc: true do
       login()
       @feed = FactoryGirl.create(:feed)
       @feed.entries[0].tracks[0...MARKED_NUM].each { |track|
-        TrackLike.create! user: @user,
-                          track: track
+        EnclosureLike.create! user: @user,
+                              enclosure: track
       }
       @feed.entries[0...MARKED_NUM].each { |entry|
         SavedEntry.create! user: @user,
