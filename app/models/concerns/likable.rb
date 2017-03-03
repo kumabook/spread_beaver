@@ -13,12 +13,14 @@ module Likable
 
   module ClassMethods
     def likeClass
-      "#{self.name}Like".constantize
+      "#{table_name.singularize.capitalize}Like".constantize
     end
 
     def popular_items_within_period(from: nil, to: nil, page: 1, per_page: nil)
       raise ArgumentError, "Parameter must be not nil" if from.nil? || to.nil?
-      user_count_hash = self.likeClass.period(from, to).user_count
+      user_count_hash = self.likeClass
+                          .where(enclosure_type: self.name)
+                          .period(from, to).user_count
       total_count     = user_count_hash.keys.count
       start_index     = [0, page - 1].max * per_page
       end_index       = [total_count - 1, start_index + per_page - 1].min
