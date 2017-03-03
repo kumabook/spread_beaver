@@ -1,5 +1,5 @@
 class Enclosure < ApplicationRecord
-  attr_accessor :detail
+  attr_accessor :content
   include Likable
   has_many :entry_enclosures, dependent: :destroy
   has_many :entries         , through:   :entry_enclosures
@@ -12,6 +12,10 @@ class Enclosure < ApplicationRecord
     hash['likesCount']   = likes_count
     hash['entriesCount'] = entries_count
     hash.delete('users')
+    hash.delete('likes_count')
+    hash.delete('entries_count')
+    hash.merge! @content if !@content.nil?
+    hash['id'] = id
     hash
   end
 
