@@ -9,16 +9,19 @@ table.table.table-striped
       th id
       th provider
       th identifier
+      th title
       th likes
       th.col-md-2 actions
   tbody
     - @tracks.each do |track|
-      - my  = @likes_dic[track][:my]
-      - count = @likes_dic[track][:count]
+      - content = @contents.select {|d| d["id"] == track.id }.first
+      - my      = @likes_dic[track][:my]
+      - count   = @likes_dic[track][:count]
       tr
         td = link_to track.id, track_path(track)
-        td = track.provider
-        td = link_to track.identifier, Track.url(track.provider, track.identifier)
+        td = content["provider"]
+        td = link_to content["identifier"], track.url
+        td = "#{content["title"]}"
         td = "#{count || 0} likes"
         td
           - if my.nil?
@@ -27,9 +30,6 @@ table.table.table-striped
           - else
             = form_for :like, url: track_like_path(track), method: :delete do |f|
               = f.submit 'Unlike', class: 'btn btn-xs btn-primary'
-          = link_to 'Edit',
-                    edit_track_path(track),
-                    :class => 'btn btn-xs btn-primary'
           '
           = link_to 'Delete', track_path(track),
                     :method => :delete,
