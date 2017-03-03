@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161225010831) do
+ActiveRecord::Schema.define(version: 20170302131100) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -25,6 +25,28 @@ ActiveRecord::Schema.define(version: 20161225010831) do
     t.datetime "updated_at",  null: false
     t.index ["id"], name: "index_categories_on_id", unique: true, using: :btree
     t.index ["label"], name: "index_categories_on_label", unique: true, using: :btree
+  end
+
+  create_table "enclosure_likes", force: :cascade do |t|
+    t.uuid     "user_id",                          null: false
+    t.uuid     "enclosure_id",                     null: false
+    t.datetime "created_at",                       null: false
+    t.datetime "updated_at",                       null: false
+    t.string   "enclosure_type", default: "Track", null: false
+    t.index ["enclosure_type"], name: "index_enclosure_likes_on_enclosure_type", using: :btree
+    t.index ["user_id", "enclosure_id"], name: "index_enclosure_likes_on_user_id_and_enclosure_id", unique: true, using: :btree
+  end
+
+  create_table "enclosures", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string   "title"
+    t.string   "url"
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
+    t.integer  "likes_count",   default: 0,       null: false
+    t.integer  "entries_count", default: 0,       null: false
+    t.string   "type",          default: "Track", null: false
+    t.index ["id"], name: "index_enclosures_on_id", unique: true, using: :btree
+    t.index ["type"], name: "index_enclosures_on_type", using: :btree
   end
 
   create_table "entries", id: false, force: :cascade do |t|
@@ -57,6 +79,16 @@ ActiveRecord::Schema.define(version: 20161225010831) do
     t.index ["id"], name: "index_entries_on_id", unique: true, using: :btree
   end
 
+  create_table "entry_enclosures", force: :cascade do |t|
+    t.string   "entry_id",                         null: false
+    t.uuid     "enclosure_id",                     null: false
+    t.datetime "created_at",                       null: false
+    t.datetime "updated_at",                       null: false
+    t.string   "enclosure_type", default: "Track", null: false
+    t.index ["enclosure_type"], name: "index_entry_enclosures_on_enclosure_type", using: :btree
+    t.index ["entry_id", "enclosure_id"], name: "index_entry_enclosures_on_entry_id_and_enclosure_id", unique: true, using: :btree
+  end
+
   create_table "entry_issues", force: :cascade do |t|
     t.string   "entry_id",               null: false
     t.uuid     "issue_id",               null: false
@@ -79,14 +111,6 @@ ActiveRecord::Schema.define(version: 20161225010831) do
     t.string   "entry_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-  end
-
-  create_table "entry_tracks", force: :cascade do |t|
-    t.string   "entry_id",   null: false
-    t.uuid     "track_id",   null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["entry_id", "track_id"], name: "index_entry_tracks_on_entry_id_and_track_id", unique: true, using: :btree
   end
 
   create_table "feed_topics", force: :cascade do |t|
@@ -147,14 +171,6 @@ ActiveRecord::Schema.define(version: 20161225010831) do
     t.datetime "updated_at",  null: false
     t.index ["id"], name: "index_keywords_on_id", unique: true, using: :btree
     t.index ["label"], name: "index_keywords_on_label", unique: true, using: :btree
-  end
-
-  create_table "likes", force: :cascade do |t|
-    t.uuid     "user_id",    null: false
-    t.uuid     "track_id",   null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["user_id", "track_id"], name: "index_likes_on_user_id_and_track_id", unique: true, using: :btree
   end
 
   create_table "oauth_access_grants", force: :cascade do |t|
@@ -255,19 +271,6 @@ ActiveRecord::Schema.define(version: 20161225010831) do
     t.integer  "engagement",  default: 0, null: false
     t.index ["id"], name: "index_topics_on_id", unique: true, using: :btree
     t.index ["label"], name: "index_topics_on_label", unique: true, using: :btree
-  end
-
-  create_table "tracks", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
-    t.string   "identifier"
-    t.string   "provider"
-    t.string   "title"
-    t.string   "url"
-    t.datetime "created_at",                null: false
-    t.datetime "updated_at",                null: false
-    t.integer  "like_count",    default: 0, null: false
-    t.integer  "entries_count", default: 0, null: false
-    t.index ["id"], name: "index_tracks_on_id", unique: true, using: :btree
-    t.index ["provider", "identifier"], name: "index_tracks_on_provider_and_identifier", unique: true, using: :btree
   end
 
   create_table "users", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
