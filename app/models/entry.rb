@@ -31,7 +31,9 @@ class PlaylistifiedEntry
         puts "New track #{t['provider']} #{t['identifier']}}"
       end
       track.url = Track::url t['provider'], t['identifier']
-      EntryTrack.find_or_create_by entry: @entry, track: track do
+      EntryEnclosure.find_or_create_by entry:          @entry,
+                                       enclosure:      track,
+                                       enclosure_type: Track.name do
         puts "Add new track #{t['provider']} #{t['identifier']} " +
              "to entry #{@entry.id}"
       end
@@ -42,24 +44,28 @@ class PlaylistifiedEntry
 end
 
 class Entry < ApplicationRecord
-  belongs_to :feed        , touch: true
-  has_many :entry_tracks  , dependent: :destroy
-  has_many :saved_entries , dependent: :destroy
-  has_many :read_entries  , dependent: :destroy
-  has_many :entry_tags    , dependent: :destroy
-  has_many :entry_keywords, dependent: :destroy
-  has_many :entry_issues  , dependent: :destroy
-  has_many :keywords      , through: :entry_keywords
-  has_many :tags          , through: :entry_tags
-  has_many :issues        , through: :entry_issues
-  has_many :saved_users   , through: :saved_entries, source: :user
-  has_many :readers       , through: :read_entries , source: :user
-  has_many :tracks        , through: :entry_tracks
+  belongs_to :feed            , touch: true
+  belongs_to :entry_enclosures, polymorphic: true
+
+  has_many :entry_enclosures, dependent: :destroy
+  has_many :saved_entries   , dependent: :destroy
+  has_many :read_entries    , dependent: :destroy
+  has_many :entry_tags      , dependent: :destroy
+  has_many :entry_keywords  , dependent: :destroy
+  has_many :entry_issues    , dependent: :destroy
+  has_many :keywords        , through: :entry_keywords
+  has_many :tags            , through: :entry_tags
+  has_many :issues          , through: :entry_issues
+  has_many :saved_users     , through: :saved_entries   , source: :user
+  has_many :readers         , through: :read_entries    , source: :user
+  has_many :enclosures      , through: :entry_enclosures
+  has_many :tracks          , through: :entry_enclosures, source: :enclosure
+
   self.primary_key = :id
 
   before_save :normalize_visual
 
-  scope :with_content,  ->            { includes(:entry_tracks).eager_load(:tracks) }
+  scope :with_content,  ->            { includes(:entry_enclosures).eager_load(:tracks) }
   scope :with_detail,   ->            { eager_load(:saved_users).eager_load(:tracks).eager_load(:keywords) }
   scope :latest,        ->     (time) { where("published > ?", time).order('published DESC').with_content }
   scope :popular,       ->            { joins(:saved_users).order('saved_count DESC').with_content }
@@ -77,6 +83,10 @@ class Entry < ApplicationRecord
   JSON_ATTRS = ['content', 'categories', 'summary', 'alternate', 'origin', 'visual']
   WAITING_SEC_FOR_VISUAL = 0.5
   PER_PAGE = Kaminari::config::default_per_page
+
+  def entry_enclosure_type=(class_name)
+    super(class_name.constantize.base_class.to_s)
+  end
 
   def self.first_or_create_by_feedlr(entry, feed)
     en = Entry.find_or_create_by(id: entry.id) do |e|
