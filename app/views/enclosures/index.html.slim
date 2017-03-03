@@ -1,0 +1,47 @@
+- item_path_method = "#{@type.downcase}_path".to_sym
+- likes_path_method = "#{@type.downcase}_likes_path".to_sym
+- like_path_method = "#{@type.downcase}_like_path".to_sym
+- new_path_method  = "new_#{@type.downcase}_path".to_sym
+.page-header
+  h1
+    = @type.pluralize
+= link_to "New #{@type}", public_send(new_path_method), :class => 'btn btn-primary'
+br
+= paginate @enclosures
+table.table.table-striped
+  thead
+    tr
+      th id
+      th provider
+      th identifier
+      th title
+      th likes
+      th.col-md-2 actions
+  tbody
+    - @enclosures.each do |enclosure|
+      - item_path  = public_send item_path_method , enclosure
+      - likes_path = public_send likes_path_method, enclosure
+      - like_path  = public_send like_path_method, enclosure
+      - content    = @contents.select {|d| d["id"] == enclosure.id }.first
+      - my         = @likes_dic[enclosure][:my]
+      - count      = @likes_dic[enclosure][:count]
+      tr
+        td = link_to enclosure.id, item_path
+        td = content["provider"]
+        td = link_to content["identifier"], enclosure.url
+        td = "#{content["title"]}"
+        td = "#{count || 0} likes"
+        td
+          - if my.nil?
+            = form_for :like, url: likes_path, method: :post do |f|
+              = f.submit 'Like', class: 'btn btn-xs btn-primary'
+          - else
+            = form_for :like, url: like_path, method: :delete do |f|
+              = f.submit 'Unlike', class: 'btn btn-xs btn-primary'
+          '
+          = link_to 'Delete', item_path,
+                    :method => :delete,
+                    :data => { :confirm => t('.confirm',
+                               :default => t("helpers.links.confirm",
+                                             :default => 'Are you sure?')) },
+                    :class => 'btn btn-xs btn-danger'
