@@ -1,4 +1,5 @@
 # coding: utf-8
+require('pink_spider')
 
 class PaginatedEntryArray < Array
   attr_reader(:total_count)
@@ -211,11 +212,8 @@ class Entry < ApplicationRecord
   end
 
   def playlistify(force: false)
-    api_url = "http://pink-spider.herokuapp.com/playlistify"
-    params  = { url: url, force: force}
-    response = RestClient.get api_url, params: params, :accept => :json
-    return if response.code != 200
-    hash = JSON.parse(response)
+    hash = PinkSpider.new.playlistify url: url, force: force
+    return if hash.nil?
     PlaylistifiedEntry.new(hash['id'],
                  hash['url'],
                  hash['title'],
