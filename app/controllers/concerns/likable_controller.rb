@@ -4,14 +4,22 @@ module LikableController
     base.extend(ClassMethods)
   end
 
-  def modelClass
+  def model_class
     controller_name.classify.constantize
   end
 
+  def like_params
+    enclosure_id = params["#{model_class.name.downcase}_id"]
+    {
+      user_id:      current_user.id,
+      enclosure_id: enclosure_id
+    }
+  end
+
   def like
-    likeClass = modelClass.likeClass
+    like_class = model_class.like_class
     respond_to do |format|
-      @like = likeClass.new(like_params.merge(user_id: current_user.id))
+      @like = like_class.new(like_params)
       if @like.save
         format.html { redirect_to ({action: :index}), notice: 'Successfully liked.' }
         format.json { render :show, status: :created, location: @like }
@@ -23,9 +31,9 @@ module LikableController
   end
 
   def unlike
-    likeClass = modelClass.likeClass
+    like_class = model_class.like_class
     respond_to do |format|
-      @like = likeClass.find_by(like_params.merge(user_id: current_user.id))
+      @like = like_class.find_by like_params
       if @like.destroy
         format.html { redirect_to ({action: :index}), notice: 'Successfully unliked.' }
         format.json { head :no_content }
