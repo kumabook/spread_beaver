@@ -2,20 +2,16 @@ class PreferencesController < ApplicationController
   before_action :set_preference, only: [:show, :update, :edit, :destroy]
   before_action :set_user
 
-  # GET /preferences
-  # GET /preferences.json
   def index
-    @preferences = Preference.all
+    @preferences = Preference.where(user: @user)
   end
 
   # GET /preferences/new
   def new
-    @preference = Preference.new
+    @preference = Preference.new(user: @user)
   end
 
 
-  # POST /preferences
-  # POST /preferences.json
   def create
     @preference      = Preference.new(preference_params)
     @preference.user = @user
@@ -28,20 +24,20 @@ class PreferencesController < ApplicationController
     end
   end
 
-  # PATCH/PUT /preferences/1
-  # PATCH/PUT /preferences/1.json
+  def edit
+  end
+
   def update
     @preference = Preference.find(params[:id])
-
-    if @preference.update(preference_params)
-
-    else
-
+    respond_to do |format|
+      if @preference.update(preference_params)
+        format.html { redirect_to user_preferences_path(@user), notice: 'Preference was successfully updated.' }
+      else
+        format.html { render :edit }
+      end
     end
   end
 
-  # DELETE /preferences/1
-  # DELETE /preferences/1.json
   def destroy
     respond_to do |format|
       if @preference.destroy
