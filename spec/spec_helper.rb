@@ -1,7 +1,14 @@
 require 'factory_girl'
 require 'coveralls'
 require 'pink_spider'
+require 'simplecov'
+
 Coveralls.wear!('rails')
+SimpleCov.formatters = [
+  SimpleCov::Formatter::HTMLFormatter,
+  Coveralls::SimpleCov::Formatter
+]
+SimpleCov.start 'rails'
 
 RSpec.configure do |config|
   config.expect_with :rspec do |expectations|
