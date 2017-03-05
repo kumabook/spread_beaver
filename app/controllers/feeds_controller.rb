@@ -29,7 +29,8 @@ class FeedsController < ApplicationController
     @feed = Feed.find_or_create_with_ids(["feed/#{feed_params[:id]}"]).first
     respond_to do |format|
       if @feed.nil?
-        format.html { redirect_to new_feed_path, notice: 'The url is invalid' }
+        flash[:notice] = 'The url is invalid'
+        format.html { render :new }
         format.json { render json: @feed.errors, status: :unprocessable_entity }
       elsif @feed.save
         format.html { redirect_to feeds_path, notice: 'Feed was successfully created.' }
@@ -54,7 +55,7 @@ class FeedsController < ApplicationController
   end
 
   def update
-    topics = Topic.find(feed_params[:topics].select { |t| !t.blank? })
+    topics = Topic.find((feed_params[:topics] || []).select { |t| !t.blank? })
     @feed.update_attributes(feed_params.merge({topics: topics}))
     respond_to do |format|
       if @feed.save
