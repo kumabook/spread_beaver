@@ -24,7 +24,7 @@ Rails.application.routes.draw do
   resources :topics do
     resources :feeds, only: [:index]
   end
-  resources :subscriptions
+  resources :subscriptions, except: [:new]
   resources :categories do
     resources :subscriptions, only: [:index]
   end

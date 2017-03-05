@@ -12,13 +12,13 @@ class SubscriptionsController < ApplicationController
   end
 
   def create
-    @subscription = Subscription.new(subscription_params)
+    @subscription = Subscription.new(create_subscription_params)
     respond_to do |format|
       if @subscription.save
         format.html { redirect_to subscriptions_path, notice: 'Subscription was successfully created.' }
         format.json { render :show, status: :created, location: @subscription }
       else
-        format.html { render :new }
+        format.html { redirect_to subscriptions_path, notice: 'Failed to subscribe.' }
         format.json { render json: @subscription.errors, status: :unprocessable_entity }
       end
     end
@@ -28,7 +28,7 @@ class SubscriptionsController < ApplicationController
   end
 
   def update
-    categories = Category.find(subscription_params[:categories].select { |c| !c.blank? })
+    categories = Category.find((subscription_params[:categories] || []).select { |c| !c.blank? })
     @subscription.update_attributes(subscription_params.merge({categories: categories}))
     respond_to do |format|
       if @subscription.save
@@ -60,8 +60,12 @@ class SubscriptionsController < ApplicationController
     @category = Category.find_by(id: params[:category_id])
   end
 
+  def create_subscription_params
+    params.require(:subscription).permit(:user_id, :feed_id, acategories: [])
+  end
+
   def subscription_params
-    params.require(:subscription).permit(:user_id, :feed_id, categories: [])
+    params.permit(:subscription).permit(:user_id, :feed_id, categories: [])
   end
 
 end
