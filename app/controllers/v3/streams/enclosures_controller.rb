@@ -54,6 +54,8 @@ class V3::Streams::EnclosuresController < V3::ApiController
     case name
     when 'tracks'
       Track
+    when 'playlists'
+      Playlist
     else
       nil
     end
