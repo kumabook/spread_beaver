@@ -19,7 +19,8 @@ RSpec.configure do |config|
   config.include ApiMacros, :type => :request
 end
 
-PER_PAGE        = Kaminari::config::default_per_page
-TRACK_PER_ENTRY = Kaminari::config::default_per_page
-ENTRY_PER_FEED  = (Kaminari::config::default_per_page * 1.5).to_i
-ITEM_NUM        = 2
+PER_PAGE           = Kaminari::config::default_per_page
+TRACK_PER_ENTRY    = Kaminari::config::default_per_page
+PLAYLIST_PER_ENTRY = 1
+ENTRY_PER_FEED     = (Kaminari::config::default_per_page * 1.5).to_i
+ITEM_NUM           = 2

@@ -35,13 +35,13 @@ RSpec.configure do |config|
   end
 
   config.before(:each) do
-    track_hash = {
-      "id"    =>  "track_id",
+    item_hash = {
+      "id"    =>  "item_id",
       "url"   => "https://test.com",
-      "title" => "track_title"
+      "title" => "item_title"
     }
-    allow_any_instance_of(PinkSpider).to receive(:fetch_track).and_return(track_hash)
-    allow_any_instance_of(PinkSpider).to receive(:fetch_tracks).and_return([track_hash])
+    allow_any_instance_of(PinkSpider).to receive(:fetch_item).and_return(item_hash)
+    allow_any_instance_of(PinkSpider).to receive(:fetch_items).and_return([item_hash])
   end
 
   config.include FactoryGirl::Syntax::Methods

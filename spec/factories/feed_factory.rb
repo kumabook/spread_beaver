@@ -6,10 +6,25 @@ FactoryGirl.define do
     enclosure_id   nil
     enclosure_type Track.name
   end
+  factory :entry_playlist, class: EntryEnclosure do
+    entry_id       nil
+    enclosure_id   nil
+    enclosure_type Playlist.name
+  end
 
   factory :track, class: Track do
     sequence(:created_at) { |n|
       if n % TRACK_PER_ENTRY == 0
+        1.days.ago
+      else
+        5.days.ago
+      end
+    }
+  end
+
+  factory :playlist, class: Playlist do
+    sequence(:created_at) { |n|
+      if n % PLAYLIST_PER_ENTRY == 0
         1.days.ago
       else
         5.days.ago
@@ -49,6 +64,10 @@ FactoryGirl.define do
       TRACK_PER_ENTRY.times {
         t = create(:track)
         create(:entry_track, entry_id: e.id, enclosure_id: t.id)
+      }
+      PLAYLIST_PER_ENTRY.times {
+        p = create(:playlist)
+        create(:entry_playlist, entry_id: e.id, enclosure_id: p.id)
       }
     end
   end
