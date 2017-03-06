@@ -10,7 +10,7 @@ class V3::Streams::EnclosuresController < V3::ApiController
   DURATION_FOR_RANKING = Setting.duration_for_ranking.days
 
   def index
-    if @resource.nil? || @enclosureClass.nil?
+    if @resource.nil? || @enclosure_class.nil?
       render json: {message: "Not found" }, status: :not_found
       return
     end
@@ -18,26 +18,26 @@ class V3::Streams::EnclosuresController < V3::ApiController
     case @resource
     when :latest
       since   = @newer_than.present? ? @newer_than : DURATION.ago
-      @tracks = @enclosureClass.latest(since).page(@page).per(@per_page)
+      @items = @enclosure_class.latest(since).page(@page).per(@per_page)
     when :popular
       from    = @newer_than.present? ? @newer_than : DURATION_FOR_RANKING.ago
       to      = @older_than.present? ? @older_than : from + DURATION_FOR_RANKING
-      @tracks = @enclosureClass.popular_items_within_period(from:     from,
-                                                           to:       to,
-                                                           page:     @page,
-                                                           per_page: @per_page)
+      @items = @enclosure_class.popular_items_within_period(from:     from,
+                                                            to:       to,
+                                                            page:     @page,
+                                                            per_page: @per_page)
     when :liked
-      @tracks = Entry.page(@page)
-                     .per(@per_page)
-                     .liked(current_resource_owner.id)
+      @items = Entry.page(@page)
+                    .per(@per_page)
+                    .liked(current_resource_owner.id)
     else
       render json: {}, status: :not_found
       return
     end
 
     continuation = nil
-    if @tracks.respond_to?(:total_count)
-      if @tracks.total_count >= @per_page * @page + 1
+    if @items.respond_to?(:total_count)
+      if @items.total_count >= @per_page * @page + 1
         continuation = self.class::continuation(@page + 1, @per_page)
       end
     end
@@ -45,12 +45,12 @@ class V3::Streams::EnclosuresController < V3::ApiController
       direction: "ltr",
       continuation: continuation,
       alternate: [],
-      items: @tracks.map { |t| t.as_content_json }
+      items: @items.map { |t| t.as_content_json }
     }
     render json: h, status: 200
   end
 
-  def enclosureClass(name)
+  def enclosure_class(name)
     case name
     when 'tracks'
       Track
@@ -73,6 +73,6 @@ class V3::Streams::EnclosuresController < V3::ApiController
   end
 
   def set_enclosure_class
-    @enclosureClass = enclosureClass(params[:enclosures])
+    @enclosure_class = enclosure_class(params[:enclosures])
   end
 end

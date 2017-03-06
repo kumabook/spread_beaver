@@ -100,7 +100,13 @@ Rails.application.routes.draw do
       post '', action: :update, on: :member
     end
 
-    resources :tracks, only: [:show], constraints: uuid_options do
+    resources :tracks, controller: :enclosures, type: 'Track',
+                             only: [:show], constraints: uuid_options do
+      post '.mget', action: :list, on: :collection
+    end
+
+    resources :playlists, controller: :enclosures, type: 'Playlist',
+                                only: [:show], constraints: uuid_options do
       post '.mget', action: :list, on: :collection
     end
 
