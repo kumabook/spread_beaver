@@ -1,5 +1,6 @@
+- @feeds    = Feed.all
 - @keywords = Keyword.all
-- @tags = current_user.tags
+- @tags     = current_user.tags
 = form_for @entry, html: { class: "form form-horizontal entry" } do |f|
   .form-group
     = f.label :title, :class => 'control-label col-lg-2'
@@ -96,6 +97,11 @@
     .col-lg-10
       = f.text_field :updated, :class => 'form-control'
     = f.error_span(:updated)
+  .form-group
+    = f.label :feed, :class => 'control-label col-lg-2'
+    .col-lg-10
+      = f.collection_select(:feed_id, @feeds, :id, :title,
+          {selected: @entry.feed_id, include_blank: false, include_hidden: false})
   .form-group
     = f.label :keywords, :class => 'control-label col-lg-2'
     .col-lg-10

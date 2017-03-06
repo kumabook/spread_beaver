@@ -31,6 +31,9 @@ class EntriesController < ApplicationController
     @entries = [] if @entries.nil?
   end
 
+  def show
+  end
+
   def show_feedly
     client = Feedlr::Client.new
     @feedlr_entry = client.user_entry(@entry.id)
@@ -47,6 +50,7 @@ class EntriesController < ApplicationController
         format.html { redirect_to entries_path, notice: 'Entry was successfully created.' }
         format.json { render :show, status: :created, location: @entry }
       else
+        flash[:notice] = 'Failed to create'
         format.html { render :new }
         format.json { render json: @entry.errors, status: :unprocessable_entity }
       end
@@ -107,7 +111,28 @@ class EntriesController < ApplicationController
   end
 
   def entry_params
-    params.require(:entry).permit(:id, :title, :description, :website,
-                                  keywords: [], tags: [])
+    params.require(:entry).permit(:id,
+                                  :title,
+                                  :content,
+                                  :summary,
+                                  :author,
+                                  :alternate,
+                                  :origin,
+                                  :visual,
+                                  :categories,
+                                  :unread,
+                                  :engagement,
+                                  :actionTimestamp,
+                                  :enclosure,
+                                  :fingerprint,
+                                  :originId,
+                                  :sid,
+                                  :crawled,
+                                  :recrawled,
+                                  :published,
+                                  :updated,
+                                  :feed_id,
+                                  keywords: [],
+                                  tags: [])
   end
 end
