@@ -13,6 +13,8 @@ app = Doorkeeper::Application.find_or_create_by name: "ios",
 
 puts "Create ios app id: #{app.id}"
 
+Journal.find_or_create(label: highlight)
+
 feedIds = [
   "feed/http://pitchfork.com/rss/news",
   "feed/http://pitchfork.com/rss/reviews/best/albums",
