@@ -33,7 +33,8 @@ puts "Reset counter cache of entry.saved_count"
 puts "Reset counter cache of entry.read_count"
 
 Track.find_each do |track|
-  Track.reset_counters(track.id, :likes)
+  Track.reset_counters(track.id, :enclosure_likes)
   Track.reset_counters(track.id, :entries)
 end
 puts "Reset counter cache of track.likes_count"
+puts "Reset counter cache of track.entries_count"
