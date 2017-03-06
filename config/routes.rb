@@ -5,7 +5,9 @@ Rails.application.routes.draw do
   uuid_options       = { id: uuid_regex }
   root :to => 'feeds#index'
 
-  resources :user_sessions
+  resources :user_sessions, only: [:create]
+  get  'login',  to: 'user_sessions#new'    , :as => :login
+  post 'logout', to: 'user_sessions#destroy', :as => :logout
   resources :users do
     resources :entries, only: [:index], constraints: res_options
     resources :preferences, except: [:show]
@@ -45,9 +47,6 @@ Rails.application.routes.draw do
     resources :entry_issues, only: [:new, :edit, :update, :destory]
   end
   resources :entry_issues, only: [:create, :update, :destroy, :edit]
-
-  get  'login',  to: 'user_sessions#new'    , :as => :login
-  post 'logout', to: 'user_sessions#destroy', :as => :logout
 
   scope :v3 do
     use_doorkeeper
