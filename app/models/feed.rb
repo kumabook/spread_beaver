@@ -134,8 +134,9 @@ class Feed < ApplicationRecord
   end
 
   def fetch_latest_entries
-    new_entries = []
-    new_tracks  = []
+    new_entries   = []
+    new_tracks    = []
+    new_playlists = []
     client = Feedlr::Client.new(sandbox: false)
     puts "Fetch latest entries of #{id}"
     newer_than = crawled.present? ? crawled.to_time.to_i : nil
@@ -150,8 +151,12 @@ class Feed < ApplicationRecord
         puts "Fetch tracks of #{e.url}"
         playtified_entry = e.playlistify
         playtified_entry.create_tracks.each do |track|
-          puts "  Create track #{track.provider} #{track.identifier}"
+          puts "  Create track #{track.content['provider']} #{track.content['title']}"
           new_tracks << track
+        end
+        playtified_entry.create_playlists.each do |playlist|
+          puts "  Create playlist #{playlist.content['provider']} #{playlist.content['title']}"
+          new_playlists << playlist
         end
         if playtified_entry.visual_url.present?
           e.visual = {

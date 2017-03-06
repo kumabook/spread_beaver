@@ -48,7 +48,7 @@ FactoryGirl.define do
     after(:create) do |e|
       TRACK_PER_ENTRY.times {
         t = create(:track)
-        create(:entry_track, entry: e, enclosure: t)
+        create(:entry_track, entry_id: e.id, enclosure_id: t.id)
       }
     end
   end

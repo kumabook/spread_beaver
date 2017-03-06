@@ -7,7 +7,7 @@ class PlaylistifiedEntry
               :locale,
               :tracks,
               :entry)
-  def initialize(id, url, title, description, visual_url, locale, tracks, entry)
+  def initialize(id, url, title, description, visual_url, locale, tracks, playlists, entry)
     @id          = id
     @url         = url
     @title       = title
@@ -15,25 +15,31 @@ class PlaylistifiedEntry
     @visual_url  = visual_url
     @locale      = locale
     @tracks      = tracks
+    @playlists   = playlists
     @entry       = entry
   end
 
-  def create_tracks
-    tracks = @tracks.map do |t|
-      track = Track.find_or_create_by(id: t['id'],
-                                      provider: t['provider'],
-                                      identifier: t['identifier']) do
-        puts "New track #{t['provider']} #{t['identifier']}}"
+  def create_enclosures(items, type)
+    models = items.map do |i|
+      model = Enclosure.find_or_create_by(id: i['id'], type: type) do
+        puts "New enclosure #{i['provider']} #{i['identifier']}}"
       end
-      track.url = Track::url t['provider'], t['identifier']
       EntryEnclosure.find_or_create_by entry:          @entry,
-                                       enclosure:      track,
-                                       enclosure_type: Track.name do
-        puts "Add new track #{t['provider']} #{t['identifier']} " +
-             "to entry #{@entry.id}"
+                                       enclosure:      model,
+                                       enclosure_type: type do
+        puts "Add new #{type} #{i['id']} to entry #{@entry.id}"
       end
-      track
+      model.content = i
+      model
     end
-    tracks
+    models
+  end
+
+  def create_tracks
+    create_enclosures(@tracks, Track.name)
+  end
+
+  def create_playlists
+    create_enclosures(@playlists, Playlist.name)
   end
 end

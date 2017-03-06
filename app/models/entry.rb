@@ -19,14 +19,21 @@ class Entry < ApplicationRecord
   has_many :saved_users     , through: :saved_entries   , source: :user
   has_many :readers         , through: :read_entries    , source: :user
   has_many :enclosures      , through: :entry_enclosures
-  has_many :tracks          , through: :entry_enclosures, source: :enclosure
+  has_many :tracks          , through: :entry_enclosures, source: :enclosure, source_type: 'Track'
+  has_many :playlists       , through: :entry_enclosures, source: :enclosure, source_type: 'Playlist'
 
   self.primary_key = :id
 
   before_save :normalize_visual
 
-  scope :with_content,  ->            { includes(:entry_enclosures).eager_load(:tracks) }
-  scope :with_detail,   ->            { eager_load(:saved_users).eager_load(:tracks).eager_load(:keywords) }
+  scope :with_content,  -> {
+    includes(:entry_enclosures).eager_load(:tracks, :playlists)
+  }
+  scope :with_detail,   -> {
+    eager_load(:saved_users)
+      .includes(:entry_enclosures)
+      .eager_load(:tracks, :playlists, :keywords)
+  }
   scope :latest,        ->     (time) { where("published > ?", time).order('published DESC').with_content }
   scope :popular,       ->            { joins(:saved_users).order('saved_count DESC').with_content }
   scope :subscriptions, ->       (ss) { where(feed: ss.map { |s| s.feed_id }).order('published DESC').with_content }
@@ -190,7 +197,9 @@ class Entry < ApplicationRecord
                            hash['description'],
                            hash['visual_url'],
                            hash['locale'],
-                           hash['tracks'], self)
+                           hash['tracks'],
+                           hash['playlists'],
+                           self)
   end
 
   def as_json(options = {})
@@ -212,7 +221,7 @@ class Entry < ApplicationRecord
     hash               = as_json
     hash['engagement'] = saved_count
     hash['tags']       = nil
-    hash['enclosure']  = tracks.map { |t| t.as_enclosure }
+    hash['enclosure']  = tracks.to_a.concat(playlists.to_a).map { |t| t.as_enclosure }
     hash
   end
 

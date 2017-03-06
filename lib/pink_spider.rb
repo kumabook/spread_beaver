@@ -15,17 +15,35 @@ class PinkSpider
     JSON.parse(response)
   end
 
-  def fetch_track(track_id)
-    response = RestClient.get "#{base_url}/v1/tracks/#{track_id}",
+  def fetch_track(id)
+    fetch_item(id, Track.name)
+  end
+
+  def fetch_tracks(ids)
+    fetch_items(ids, Track.name)
+  end
+
+  def fetch_playlist(id)
+    fetch_item(id, Playlist.name)
+  end
+
+  def fetch_playlists(ids)
+    fetch_items(ids, Playlist.name)
+  end
+
+  def fetch_item(id, type)
+    resource_name = type.pluralize.downcase
+    response = RestClient.get "#{base_url}/v1/#{resource_name}/#{id}",
                               accept: :json
     return if response.code != 200
     JSON.parse(response)
   end
 
-  def fetch_tracks(track_ids)
-    return [] if track_ids.blank?
-    response = RestClient.post "#{base_url}/v1/tracks/.mget",
-                               track_ids.to_json,
+  def fetch_items(ids, type)
+    return [] if ids.blank?
+    resource_name = type.pluralize.downcase
+    response = RestClient.post "#{base_url}/v1/#{resource_name}/.mget",
+                               ids.to_json,
                                {content_type: :json, accept: :json}
     return if response.code != 200
     JSON.parse(response)

@@ -14,7 +14,8 @@ Rails.application.routes.draw do
   end
   resources :entries do
     get 'feedly', action: :show_feedly, on: :member
-    resources :tracks, only: :index
+    resources :tracks   , controller: :enclosures, type: 'Track'   , only: :index
+    resources :playlists, controller: :enclosures, type: 'Playlist', only: :index
   end
   resources :saved_entries, only: [:create, :destroy]
   resources :read_entries , only: [:create, :destroy]
@@ -31,6 +32,10 @@ Rails.application.routes.draw do
     resources :subscriptions, only: [:index]
   end
   resources :tracks, controller: :enclosures, type: 'Track', except: [:edit, :update] do
+    post   'like'  , to: :like  , as: :likes
+    delete 'unlike', to: :unlike, as: :like
+  end
+  resources :playlists, controller: :enclosures, type: 'Playlist', except: [:edit, :update] do
     post   'like'  , to: :like  , as: :likes
     delete 'unlike', to: :unlike, as: :like
   end
