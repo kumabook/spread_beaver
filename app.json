@@ -22,7 +22,11 @@
     "LATEST_ENTRIES_PER_FEED": "1",
     "DURATION_FOR_COMMON_STREAM": "4",
     "DURATION_FOR_RANKING": "2",
-    "FEEDLY_TARGET": "production"
+    "FEEDLY_TARGET": "production",
+    "PINK_SPIDER_URL": {
+      "description": "url to pink-spider server",
+      "value": "http://pink-spider.herokuapp.com"
+    },
   },
   "formation": {
     "web": {
@@ -33,6 +37,7 @@
   "image": "heroku/ruby",
   "addons": [
     "heroku-postgresql",
+    "heroku-redis",
     "scheduler:standard"
   ],
   "buildpacks": [
