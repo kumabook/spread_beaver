@@ -45,4 +45,8 @@ class PlaylistifiedEntry
   def create_playlists
     create_enclosures(@playlists, Playlist.name)
   end
+
+  def create_albums
+    create_enclosures(@albums, Album.name)
+  end
 end

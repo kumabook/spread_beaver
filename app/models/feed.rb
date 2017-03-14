@@ -137,12 +137,21 @@ class Feed < ApplicationRecord
     new_entries   = []
     new_tracks    = []
     new_playlists = []
+    new_albums    = []
     client = Feedlr::Client.new(sandbox: false)
     puts "Fetch latest entries of #{id}"
     newer_than = crawled.present? ? crawled.to_time.to_i : nil
     cursor = client.stream_entries_contents(id, newerThan: newer_than)
 
-    return { feed: self, entries: [], tracks: [] } if cursor.items.nil?
+    if cursor.items.nil?
+      return {
+        feed:      self,
+        entries:   [],
+        tracks:    [],
+        playlists: [],
+        albums:    [],
+      }
+    end
 
     cursor.items.each do |entry|
       begin
@@ -157,6 +166,10 @@ class Feed < ApplicationRecord
         playtified_entry.create_playlists.each do |playlist|
           puts "  Create playlist #{playlist.content['provider']} #{playlist.content['title']}"
           new_playlists << playlist
+        end
+        playtified_entry.create_albums.each do |album|
+          puts "  Create album #{album.content['provider']} #{album.content['title']}"
+          new_albums << album
         end
         if playtified_entry.visual_url.present?
           e.visual = {
@@ -177,7 +190,13 @@ class Feed < ApplicationRecord
     end
     self.crawled = DateTime.now
     save
-    { feed: self, entries: new_entries, tracks: new_tracks }
+    {
+      feed:      self,
+      entries:   new_entries,
+      tracks:    new_tracks,
+      playlists: new_playlists,
+      albums:    new_albums,
+    }
   end
 
   def as_json(options = {})
