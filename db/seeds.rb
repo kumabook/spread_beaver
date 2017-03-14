@@ -13,7 +13,8 @@ app = Doorkeeper::Application.find_or_create_by name: "ios",
 
 puts "Create ios app id: #{app.id}"
 
-Journal.find_or_create(label: highlight)
+Journal.first_or_create(label: 'highlight')
+puts "Create default journal hightlight"
 
 feedIds = [
   "feed/http://pitchfork.com/rss/news",
