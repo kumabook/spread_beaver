@@ -6,8 +6,10 @@ class PlaylistifiedEntry
               :visual_url,
               :locale,
               :tracks,
+              :playlists,
+              :albums,
               :entry)
-  def initialize(id, url, title, description, visual_url, locale, tracks, playlists, entry)
+  def initialize(id, url, title, description, visual_url, locale, tracks, playlists, albums, entry)
     @id          = id
     @url         = url
     @title       = title
@@ -16,6 +18,7 @@ class PlaylistifiedEntry
     @locale      = locale
     @tracks      = tracks
     @playlists   = playlists
+    @albums      = albums
     @entry       = entry
   end
 
