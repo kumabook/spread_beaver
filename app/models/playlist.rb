@@ -1,7 +1,7 @@
 require 'pink_spider'
 class Playlist < Enclosure
   def get_content
-    PinkSpider.new.fetch_playlist(@id)
+    PinkSpider.new.fetch_playlist(id)
   end
 
   def fetch_content

@@ -1,7 +1,7 @@
 require 'pink_spider'
 class Track < Enclosure
   def get_content
-    PinkSpider.new.fetch_track(@id)
+    PinkSpider.new.fetch_track(id)
   end
 
   def fetch_content
