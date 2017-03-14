@@ -40,7 +40,22 @@ class V3::MarkersController < V3::ApiController
         return
       end
     when 'tracks'
-      @ids = params[:trackIds] if params[:trackIds].present?
+      mark_enclosures(:trackIds)
+    when 'playlists'
+      mark_enclosures(:playlistIds)
+    when 'albums'
+      mark_enclosures(:albumIds)
+    when 'feeds'
+      @ids = params[:feedIds] if params[:feedIds].present?
+    when 'categories'
+      @ids = params[:categoryIds] if params[:categoryIds].present?
+    when 'tags'
+      @ids = params[:tags]
+    end
+  end
+
+  def mark_enclosures(ids_key)
+      @ids = params[ids_key] if params[ids_key].present?
       case @action
       when 'markAsLiked'
         @ids.each do |id|
@@ -59,12 +74,5 @@ class V3::MarkersController < V3::ApiController
         render json: {}, status: 200
         return
       end
-    when 'feeds'
-      @ids = params[:feedIds] if params[:feedIds].present?
-    when 'categories'
-      @ids = params[:categoryIds] if params[:categoryIds].present?
-    when 'tags'
-      @ids = params[:tags]
-    end
   end
 end
