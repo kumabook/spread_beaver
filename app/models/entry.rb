@@ -223,7 +223,9 @@ class Entry < ApplicationRecord
     hash               = as_json
     hash['engagement'] = saved_count
     hash['tags']       = nil
-    hash['enclosure']  = tracks.to_a.concat(playlists.to_a).map { |t| t.as_enclosure }
+    hash['enclosure']  = [tracks, playlists, albums].flat_map do |items|
+      items.map { |item| item.as_enclosure }
+    end
     hash
   end
 
