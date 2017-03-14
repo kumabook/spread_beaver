@@ -27,7 +27,7 @@ class V3::Streams::EnclosuresController < V3::ApiController
                                                             page:     @page,
                                                             per_page: @per_page)
     when :liked
-      @items = Entry.page(@page)
+      @items = @enclosure_class.page(@page)
                     .per(@per_page)
                     .liked(current_resource_owner.id)
     else

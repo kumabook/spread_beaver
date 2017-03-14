@@ -32,7 +32,7 @@ class Enclosure < ApplicationRecord
 
   def as_enclosure
     {
-      href: "typica://v3/#{self.class.table_name}/#{id}?#{to_query}",
+      href: "typica://v3/#{self.class.name.downcase.pluralize}/#{id}?#{to_query}",
       type: "application/json",
     }
   end
