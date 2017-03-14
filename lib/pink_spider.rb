@@ -31,6 +31,14 @@ class PinkSpider
     fetch_items(ids, Playlist.name)
   end
 
+  def fetch_album(id)
+    fetch_item(id, Album.name)
+  end
+
+  def fetch_albums(ids)
+    fetch_items(ids, Album.name)
+  end
+
   def fetch_item(id, type)
     resource_name = type.pluralize.downcase
     response = RestClient.get "#{base_url}/v1/#{resource_name}/#{id}",
