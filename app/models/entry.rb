@@ -21,6 +21,7 @@ class Entry < ApplicationRecord
   has_many :enclosures      , through: :entry_enclosures
   has_many :tracks          , through: :entry_enclosures, source: :enclosure, source_type: 'Track'
   has_many :playlists       , through: :entry_enclosures, source: :enclosure, source_type: 'Playlist'
+  has_many :albums          , through: :entry_enclosures, source: :enclosure, source_type: 'Album'
 
   self.primary_key = :id
 
@@ -199,6 +200,7 @@ class Entry < ApplicationRecord
                            hash['locale'],
                            hash['tracks'],
                            hash['playlists'],
+                           hash['albums'],
                            self)
   end
 
