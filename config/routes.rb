@@ -15,6 +15,7 @@ Rails.application.routes.draw do
   resources :entries do
     get 'feedly', action: :show_feedly, on: :member
     resources :tracks   , controller: :enclosures, type: 'Track'   , only: :index
+    resources :albums   , controller: :enclosures, type: 'Album'   , only: :index
     resources :playlists, controller: :enclosures, type: 'Playlist', only: :index
   end
   resources :saved_entries, only: [:create, :destroy]
@@ -32,6 +33,10 @@ Rails.application.routes.draw do
     resources :subscriptions, only: [:index]
   end
   resources :tracks, controller: :enclosures, type: 'Track', except: [:edit, :update] do
+    post   'like'  , to: :like  , as: :likes
+    delete 'unlike', to: :unlike, as: :like
+  end
+  resources :albums, controller: :enclosures, type: 'Album', except: [:edit, :update] do
     post   'like'  , to: :like  , as: :likes
     delete 'unlike', to: :unlike, as: :like
   end
@@ -101,6 +106,11 @@ Rails.application.routes.draw do
     end
 
     resources :tracks, controller: :enclosures, type: 'Track',
+                             only: [:show], constraints: uuid_options do
+      post '.mget', action: :list, on: :collection
+    end
+
+    resources :albums, controller: :enclosures, type: 'Album',
                              only: [:show], constraints: uuid_options do
       post '.mget', action: :list, on: :collection
     end
