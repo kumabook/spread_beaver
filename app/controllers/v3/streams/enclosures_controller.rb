@@ -63,13 +63,13 @@ class V3::Streams::EnclosuresController < V3::ApiController
 
   def set_global_resource
     str = CGI.unescape params[:id] if params[:id].present?
-    if str.match(/playlist\/global\.latest/)
+    if str.match(/tag\/global\.latest/) || str.match(/playlist\/global\.latest/)
       @resource = :latest
-    elsif str.match(/playlist\/global\.popular/)
+    elsif str.match(/tag\/global\.popular/) || str.match(/playlist\/global\.popular/)
       @resource = :popular
-    elsif str.match(/user\/.*\/playlist\/global\.all/)
+    elsif str.match(/user\/.*\/tag\/global\.all/) || str.match(/user\/.*\/playlist\/global\.all/)
       @resource = :all
-    elsif str.match(/user\/.*\/playlist\/global\.liked/)
+    elsif str.match(/user\/.*\/tag\/global\.liked/) || str.match(/user\/.*\/playlist\/global\.liked/)
       @resource = :liked
     end
   end

@@ -15,7 +15,7 @@ RSpec.describe "Playlist Stream api", type: :request, autodoc: true do
     end
 
     it "gets latest playlists with pagination" do
-      resource = CGI.escape "playlist/global.latest"
+      resource = CGI.escape "tag/global.latest"
       get "/v3/streams/#{resource}/playlists/contents",
           params: { newer_than: 3.days.ago.to_time.to_i * 1000 },
           headers: headers_for_login_user_api
@@ -32,7 +32,7 @@ RSpec.describe "Playlist Stream api", type: :request, autodoc: true do
     end
 
     it "gets popular playlists" do
-      resource = CGI.escape "playlist/global.popular"
+      resource = CGI.escape "tag/global.popular"
       get "/v3/streams/#{resource}/playlists/contents",
           params: {
             newer_than: 200.days.ago.to_time.to_i * 1000,
