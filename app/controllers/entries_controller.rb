@@ -20,7 +20,7 @@ class EntriesController < ApplicationController
                       .order('published DESC')
                       .page(params[:page])
     else
-      @entries = Entry.eager_load(:tracks)
+      @entries = Entry.with_content
                       .order('published DESC')
                       .page(params[:page])
     end

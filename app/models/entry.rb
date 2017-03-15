@@ -20,20 +20,21 @@ class Entry < ApplicationRecord
   has_many :readers         , through: :read_entries    , source: :user
   has_many :enclosures      , through: :entry_enclosures
   has_many :tracks          , through: :entry_enclosures, source: :enclosure, source_type: 'Track'
-  has_many :playlists       , through: :entry_enclosures, source: :enclosure, source_type: 'Playlist'
   has_many :albums          , through: :entry_enclosures, source: :enclosure, source_type: 'Album'
+  has_many :playlists       , through: :entry_enclosures, source: :enclosure, source_type: 'Playlist'
+
 
   self.primary_key = :id
 
   before_save :normalize_visual
 
   scope :with_content,  -> {
-    includes(:entry_enclosures).eager_load(:tracks, :playlists)
+    includes(:entry_enclosures).eager_load(:tracks, :albums, :playlists)
   }
   scope :with_detail,   -> {
     eager_load(:saved_users)
       .includes(:entry_enclosures)
-      .eager_load(:tracks, :playlists, :keywords)
+      .eager_load(:tracks, :albums, :playlists, :keywords)
   }
   scope :latest,        ->     (time) { where("published > ?", time).order('published DESC').with_content }
   scope :popular,       ->            { joins(:saved_users).order('saved_count DESC').with_content }
