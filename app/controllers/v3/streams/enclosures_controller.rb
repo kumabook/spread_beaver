@@ -56,6 +56,8 @@ class V3::Streams::EnclosuresController < V3::ApiController
       Track
     when 'playlists'
       Playlist
+    when 'albums'
+      Album
     else
       nil
     end
