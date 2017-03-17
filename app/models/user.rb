@@ -12,8 +12,15 @@ class User < ApplicationRecord
   has_many :read_entries    , dependent: :destroy
   has_many :tags            , dependent: :destroy
   has_many :liked_enclosures, dependent: :destroy
-  has_many :enclosures      , through:   :liked_enclosures
-  has_many :tracks          , through:   :liked_enclosures, source: :enclosure
+
+  has_many :liked_tracks    , through:   :liked_enclosures, source: :enclosure, source_type: Track.name
+  has_many :liked_albums    , through:   :liked_enclosures, source: :enclosure, source_type: Album.name
+  has_many :liked_playlists , through:   :liked_enclosures, source: :enclosure, source_type: Playlist.name
+
+  has_many :saved_tracks    , through:   :saved_enclosures, source: :enclosure, source_type: Track.name
+  has_many :saved_albums    , through:   :saved_enclosures, source: :enclosure, source_type: Album.name
+  has_many :saved_playlists , through:   :saved_enclosures, source: :enclosure, source_type: Playlist.name
+
   authenticates_with_sorcery!
 
   validates :password, length: { minimum: 3 }, if: -> { new_record? || changes["password"] }
