@@ -87,6 +87,21 @@ class V3::MarkersController < V3::ApiController
         @save.destroy if @save.present?
       end
       render json: {}, status: 200
+    when /markAsOpened|markAsPlayed/
+      @ids.each do |id|
+        @open = OpenedEnclosure.new(user:           current_resource_owner,
+                                    enclosure_id:   id,
+                                    enclosure_type: type)
+        @open.save
+      end
+      render json: {}, status: 200
+    when /markAsUnopened|markAsUnplayed/
+      @ids.each do |id|
+        @open = OpenedEnclosure.find_by(user:         current_resource_owner,
+                                        enclosure_id: id)
+        @open.destroy if @open.present?
+      end
+      render json: {}, status: 200
     end
   end
 end
