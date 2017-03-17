@@ -35,14 +35,20 @@ Rails.application.routes.draw do
   resources :tracks, controller: :enclosures, type: 'Track', except: [:edit, :update] do
     post   'like'  , to: :like  , as: :likes
     delete 'unlike', to: :unlike, as: :like
+    post   'save'  , to: :save  , as: :saves
+    delete 'unsave', to: :unsave, as: :save
   end
   resources :albums, controller: :enclosures, type: 'Album', except: [:edit, :update] do
     post   'like'  , to: :like  , as: :likes
     delete 'unlike', to: :unlike, as: :like
+    post   'save'  , to: :save  , as: :saves
+    delete 'unsave', to: :unsave, as: :save
   end
   resources :playlists, controller: :enclosures, type: 'Playlist', except: [:edit, :update] do
     post   'like'  , to: :like  , as: :likes
     delete 'unlike', to: :unlike, as: :like
+    post   'save'  , to: :save  , as: :saves
+    delete 'unsave', to: :unsave, as: :save
   end
   resources :keywords do
     resources :entries, only: [:index]

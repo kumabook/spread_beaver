@@ -1,6 +1,7 @@
 require('pink_spider')
 class EnclosuresController < ApplicationController
   include LikableController
+  include SavableController
   before_action :set_enclosure, only: [:show, :destroy]
   before_action :set_content  , only: [:show, :edit]
   before_action :set_entry    , only: [:index]
@@ -18,17 +19,8 @@ class EnclosuresController < ApplicationController
     end
     @contents = PinkSpider.new.public_send fetch_contents_method,
                                            @enclosures.map {|t| t.id }
-    my_likes = LikedEnclosure.where(user_id:      current_user.id,
-                                    enclosure_id: @enclosures.map { |t| t.id })
-    count = LikedEnclosure.where(enclosure_id: @enclosures.map { |t| t.id })
-              .group(:enclosure_id).count('enclosure_id')
-    @likes_dic = @enclosures.inject({}) do |h, t|
-      h[t] = {
-        my: my_likes.to_a.select {|l| t.id == l.enclosure_id }.first,
-        count: count.to_a.select {|c| t.id == c[0] }.map {|c| c[1] }.first,
-      }
-      h
-    end
+    @likes_hash = Enclosure.my_likes_hash(current_user, @enclosures)
+    @saves_hash = Enclosure.my_saves_hash(current_user, @enclosures)
   end
 
   def show
