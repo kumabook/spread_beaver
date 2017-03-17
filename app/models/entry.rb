@@ -4,11 +4,11 @@ require('paginated_array')
 require('playlistified_entry')
 
 class Entry < ApplicationRecord
+  include Savable
   belongs_to :feed            , touch: true
   belongs_to :entry_enclosures, polymorphic: true
 
   has_many :entry_enclosures, dependent: :destroy
-  has_many :saved_entries   , dependent: :destroy
   has_many :read_entries    , dependent: :destroy
   has_many :entry_tags      , dependent: :destroy
   has_many :entry_keywords  , dependent: :destroy
@@ -16,7 +16,6 @@ class Entry < ApplicationRecord
   has_many :keywords        , through: :entry_keywords
   has_many :tags            , through: :entry_tags
   has_many :issues          , through: :entry_issues
-  has_many :saved_users     , through: :saved_entries   , source: :user
   has_many :readers         , through: :read_entries    , source: :user
   has_many :enclosures      , through: :entry_enclosures
   has_many :tracks          , through: :entry_enclosures, source: :enclosure, source_type: 'Track'
@@ -46,7 +45,6 @@ class Entry < ApplicationRecord
   scope :topic,         ->    (topic) { feeds(topic.feeds) }
   scope :category,      -> (category) { feeds(category.subscriptions.map { |s| s.feed_id })}
   scope :issue,         ->          (j) { joins(:issues).where(issues: { id: j.id}).order('entry_issues.engagement DESC').with_content }
-  scope :saved,         ->     (user) { joins(:saved_entries).where(saved_entries: { user_id: user.id }) }
   scope :read,          ->     (user) { joins(:read_entries).where(read_entries: { user_id: user.id }) }
 
   JSON_ATTRS = ['content', 'categories', 'summary', 'alternate', 'origin', 'visual']
