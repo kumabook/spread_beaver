@@ -71,6 +71,20 @@ class V3::MarkersController < V3::ApiController
         @like.destroy if @like.present?
       end
       render json: {}, status: 200
+    when 'markAsSaved'
+      @ids.each do |id|
+        @save = SavedEnclosure.new(user:         current_resource_owner,
+                                   enclosure_id: id)
+        @save.save
+      end
+      render json: {}, status: 200
+    when 'markAsUnsaved'
+      @ids.each do |id|
+        @save = SavedEnclosure.find_by(user:         current_resource_owner,
+                                       enclosure_id: id)
+        @save.destroy if @save.present?
+      end
+      render json: {}, status: 200
     end
   end
 end
