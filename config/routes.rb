@@ -17,8 +17,12 @@ Rails.application.routes.draw do
     resources :tracks   , controller: :enclosures, type: 'Track'   , only: :index
     resources :albums   , controller: :enclosures, type: 'Album'   , only: :index
     resources :playlists, controller: :enclosures, type: 'Playlist', only: :index
+
+    post   'like'  , to: :like  , as: :likes
+    delete 'unlike', to: :unlike, as: :like
+    post   'save'  , to: :save  , as: :saves
+    delete 'unsave', to: :unsave, as: :save
   end
-  resources :saved_entries, only: [:create, :destroy]
   resources :read_entries , only: [:create, :destroy]
   resources :feeds, constraints: res_options, shallow: true do
     get 'feedly', action: :show_feedly, on: :member

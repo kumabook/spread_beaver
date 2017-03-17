@@ -1,4 +1,7 @@
 class EntriesController < ApplicationController
+  include LikableController
+  include SavableController
+
   before_action :set_entry    , only: [:show, :show_feedly, :edit, :update, :destroy]
   before_action :set_feed     , only: [:index]
   before_action :set_keyword  , only: [:index]
