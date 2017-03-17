@@ -17,5 +17,11 @@ module Openable
     def open_class
       "Opened#{table_name.singularize.capitalize}".constantize
     end
+
+    def hot_items_within_period(from: nil, to: nil, page: 1, per_page: nil)
+      self.best_items_within_period(clazz: self.open_class,
+                                    from: from, to: to,
+                                    page: page, per_page: per_page)
+    end
   end
 end
