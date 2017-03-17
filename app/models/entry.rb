@@ -18,9 +18,9 @@ class Entry < ApplicationRecord
   has_many :issues          , through: :entry_issues
   has_many :readers         , through: :read_entries    , source: :user
   has_many :enclosures      , through: :entry_enclosures
-  has_many :tracks          , through: :entry_enclosures, source: :enclosure, source_type: 'Track'
-  has_many :albums          , through: :entry_enclosures, source: :enclosure, source_type: 'Album'
-  has_many :playlists       , through: :entry_enclosures, source: :enclosure, source_type: 'Playlist'
+  has_many :tracks          , through: :entry_enclosures, source: :enclosure, source_type: Track.name
+  has_many :albums          , through: :entry_enclosures, source: :enclosure, source_type: Album.name
+  has_many :playlists       , through: :entry_enclosures, source: :enclosure, source_type: Playlist.name
 
 
   self.primary_key = :id
