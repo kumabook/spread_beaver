@@ -19,9 +19,8 @@ module LikableController
   end
 
   def like
-    like_class = model_class.like_class
     respond_to do |format|
-      @like = like_class.new(like_params)
+      @like = model_class.like_class.new(like_params)
       if @like.save
         format.html { redirect_to ({action: :index}), notice: 'Successfully liked.' }
         format.json { render :show, status: :created, location: @like }
@@ -33,9 +32,8 @@ module LikableController
   end
 
   def unlike
-    like_class = model_class.like_class
     respond_to do |format|
-      @like = like_class.find_by like_params
+      @like = model_class.like_class.find_by like_params
       if @like.destroy
         format.html { redirect_to ({action: :index}), notice: 'Successfully unliked.' }
         format.json { head :no_content }

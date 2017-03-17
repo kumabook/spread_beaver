@@ -19,9 +19,8 @@ module SavableController
   end
 
   def save
-    save_class = model_class.save_class
     respond_to do |format|
-      @save = save_class.new(save_params)
+      @save = model_class.save_class.new(save_params)
       if @save.save
         format.html { redirect_to ({action: :index}), notice: 'Successfully saved.' }
         format.json { render :show, status: :created, location: @save }
@@ -33,9 +32,8 @@ module SavableController
   end
 
   def unsave
-    save_class = model_class.save_class
     respond_to do |format|
-      @save = save_class.find_by save_params
+      @save = model_class.save_class.find_by save_params
       if @save.destroy
         format.html { redirect_to ({action: :index}), notice: 'Successfully unsaved.' }
         format.json { head :no_content }
