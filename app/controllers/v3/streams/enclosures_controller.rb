@@ -57,19 +57,6 @@ class V3::Streams::EnclosuresController < V3::ApiController
     render json: h, status: 200
   end
 
-  def enclosure_class(name)
-    case name
-    when 'tracks'
-      Track
-    when 'playlists'
-      Playlist
-    when 'albums'
-      Album
-    else
-      nil
-    end
-  end
-
   def set_global_resource
     str = CGI.unescape params[:id] if params[:id].present?
     if str.match(/tag\/global\.latest/) || str.match(/playlist\/global\.latest/)
@@ -86,6 +73,13 @@ class V3::Streams::EnclosuresController < V3::ApiController
   end
 
   def set_enclosure_class
-    @enclosure_class = enclosure_class(params[:enclosures])
+    case params[:enclosures]
+    when 'tracks'
+      @enclosure_class = Track
+    when 'playlists'
+      @enclosure_class = Playlist
+    when 'albums'
+      @enclosure_class = Album
+    end
   end
 end
