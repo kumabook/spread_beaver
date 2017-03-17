@@ -8,6 +8,7 @@ class User < ApplicationRecord
   has_many :preferences     , dependent: :destroy
   has_many :subscriptions   , dependent: :destroy
   has_many :categories      , dependent: :destroy
+  has_many :liked_entries   , dependent: :destroy
   has_many :saved_entries   , dependent: :destroy
   has_many :read_entries    , dependent: :destroy
   has_many :tags            , dependent: :destroy

@@ -4,7 +4,9 @@ require('paginated_array')
 require('playlistified_entry')
 
 class Entry < ApplicationRecord
+  include Likable
   include Savable
+
   belongs_to :feed            , touch: true
   belongs_to :entry_enclosures, polymorphic: true
 
