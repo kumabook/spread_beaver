@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170302131100) do
+ActiveRecord::Schema.define(version: 20170317013214) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -35,6 +35,7 @@ ActiveRecord::Schema.define(version: 20170302131100) do
     t.integer  "likes_count",   default: 0,       null: false
     t.integer  "entries_count", default: 0,       null: false
     t.string   "type",          default: "Track", null: false
+    t.integer  "saved_count"
     t.index ["id"], name: "index_enclosures_on_id", unique: true, using: :btree
     t.index ["type"], name: "index_enclosures_on_type", using: :btree
   end
@@ -225,6 +226,15 @@ ActiveRecord::Schema.define(version: 20170302131100) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id", "entry_id"], name: "index_read_entries_on_user_id_and_entry_id", unique: true, using: :btree
+  end
+
+  create_table "saved_enclosures", force: :cascade do |t|
+    t.uuid     "user_id",        null: false
+    t.string   "enclosure_id",   null: false
+    t.string   "enclosure_type", null: false
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+    t.index ["user_id", "enclosure_id"], name: "index_saved_enclosures_on_user_id_and_enclosure_id", unique: true, using: :btree
   end
 
   create_table "saved_entries", force: :cascade do |t|
