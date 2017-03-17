@@ -46,7 +46,9 @@ describe EnclosuresController, type: :controller do
 
   describe '#unlike' do
     before do
-      like = LikedEnclosure.create!(enclosure_id: track.id, user_id: user.id)
+      like = LikedEnclosure.create!(user_id:        user.id,
+                                    enclosure_id:   track.id,
+                                    enclosure_type: Track.name)
       delete :unlike, params: {
                type:     'Track',
                id:       like.id,
@@ -56,4 +58,57 @@ describe EnclosuresController, type: :controller do
     it { expect(response).to redirect_to tracks_url }
     it { expect(LikedEnclosure.find_by(enclosure_id: track.id, user_id: user.id)).to be_nil }
   end
+
+  describe '#save' do
+    before do
+      post :save, params: {
+             type:     'Track',
+             track_id: track.id,
+           }
+    end
+    it { expect(response).to redirect_to tracks_url }
+    it { expect(SavedEnclosure.find_by(enclosure_id: track.id, user_id: user.id)).not_to be_nil }
+  end
+
+  describe '#unsave' do
+    before do
+      save = SavedEnclosure.create!(user_id:        user.id,
+                                    enclosure_id:   track.id,
+                                    enclosure_type: Track.name)
+      delete :unsave, params: {
+               type:     'Track',
+               id:       save.id,
+               track_id: track.id,
+             }
+    end
+    it { expect(response).to redirect_to tracks_url }
+    it { expect(SavedEnclosure.find_by(enclosure_id: track.id, user_id: user.id)).to be_nil }
+  end
+
+  describe '#open' do
+    before do
+      post :open, params: {
+             type:     'Track',
+             track_id: track.id,
+           }
+    end
+    it { expect(response).to redirect_to tracks_url }
+    it { expect(OpenedEnclosure.find_by(enclosure_id: track.id, user_id: user.id)).not_to be_nil }
+  end
+
+  describe '#unopen' do
+    before do
+      open = OpenedEnclosure.create!(user_id:      user.id,
+                                     enclosure_id: track.id,
+                                     enclosure_type: Track.name)
+      delete :unopen, params: {
+               type:     'Track',
+               id:       open.id,
+               track_id: track.id,
+             }
+    end
+    it { expect(response).to redirect_to tracks_url }
+    it { expect(OpenedEnclosure.find_by(enclosure_id: track.id, user_id: user.id)).to be_nil }
+  end
+
 end
