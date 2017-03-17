@@ -14,8 +14,6 @@ class Enclosure < ApplicationRecord
     hash['likesCount']   = likes_count
     hash['entriesCount'] = entries_count
     hash.delete('users')
-    hash.delete('likes_count')
-    hash.delete('entries_count')
     hash.merge! @content if !@content.nil?
     hash['id'] = id
     hash
