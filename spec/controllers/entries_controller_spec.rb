@@ -120,4 +120,36 @@ describe EntriesController, type: :controller do
       it { expect(response).to redirect_to entries_url }
     end
   end
+
+  describe "#like" do
+    before { post :like, params: { entry_id: entry.id }}
+    it { expect(response).to redirect_to entries_url }
+    it { expect(LikedEntry.find_by(entry_id: entry.id, user_id: user.id)).not_to be_nil }
+  end
+
+  describe "#unlike" do
+    before do
+      like = LikedEntry.create!(user_id:  user.id,
+                                entry_id: entry.id)
+      delete :unlike, params: { id: like.id, entry_id: entry.id }
+    end
+    it { expect(response).to redirect_to entries_url }
+    it { expect(LikedEntry.find_by(entry_id: entry.id, user_id: user.id)).to be_nil }
+  end
+
+  describe "#save" do
+    before { post :save, params: { entry_id: entry.id }}
+    it { expect(response).to redirect_to entries_url }
+    it { expect(SavedEntry.find_by(entry_id: entry.id, user_id: user.id)).not_to be_nil }
+  end
+
+  describe "#unsave" do
+    before do
+      like = SavedEntry.create!(user_id:  user.id,
+                                entry_id: entry.id)
+      delete :unsave, params: { id: like.id, entry_id: entry.id }
+    end
+    it { expect(response).to redirect_to entries_url }
+    it { expect(SavedEntry.find_by(entry_id: entry.id, user_id: user.id)).to be_nil }
+  end
 end
