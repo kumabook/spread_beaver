@@ -1,6 +1,8 @@
 class Enclosure < ApplicationRecord
   attr_accessor :content
   include Likable
+  include Savable
+
   has_many :entry_enclosures, dependent: :destroy
   has_many :entries         , through:   :entry_enclosures
 
