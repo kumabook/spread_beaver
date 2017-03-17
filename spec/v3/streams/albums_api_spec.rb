@@ -7,10 +7,15 @@ RSpec.describe "Album Stream api", type: :request, autodoc: true do
       login()
       @feed    = FactoryGirl.create(:feed)
       (0...ITEM_NUM).to_a.each { |n|
+        d = (n * 150).days.ago
         LikedEnclosure.create! user:           @user,
                                enclosure:      @feed.entries[0].albums[n],
                                enclosure_type: Album.name,
-                               created_at:     1.days.ago
+                               created_at:     d
+        OpenedEnclosure.create! user:           @user,
+                                enclosure:      @feed.entries[0].albums[n],
+                                enclosure_type: Album.name,
+                                created_at:     d
       }
     end
 
@@ -40,7 +45,20 @@ RSpec.describe "Album Stream api", type: :request, autodoc: true do
           },
           headers: headers_for_login_user_api
       result = JSON.parse @response.body
-      expect(result['items'].count).to eq(2)
+      expect(result['items'].count).to eq(1)
+      expect(result['continuation']).to be_nil
+    end
+
+    it "gets hot albums" do
+      resource = CGI.escape "tag/global.hot"
+      get "/v3/streams/#{resource}/albums/contents",
+          params: {
+            newer_than: 200.days.ago.to_time.to_i * 1000,
+            older_than: Time.now.to_i * 1000
+          },
+          headers: headers_for_login_user_api
+      result = JSON.parse @response.body
+      expect(result['items'].count).to eq(1)
       expect(result['continuation']).to be_nil
     end
 
