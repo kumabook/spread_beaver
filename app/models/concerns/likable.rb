@@ -18,10 +18,14 @@ module Likable
       "Liked#{table_name.singularize.capitalize}".constantize
     end
 
+    def user_likes_hash(user, items)
+      marks_hash_of_user(like_class, user, items)
+    end
+
     def popular_items_within_period(from: nil, to: nil, page: 1, per_page: nil)
-      self.best_items_within_period(clazz: self.like_class,
-                                    from: from, to: to,
-                                    page: page, per_page: per_page)
+      best_items_within_period(clazz: self.like_class,
+                               from: from, to: to,
+                               page: page, per_page: per_page)
     end
   end
 end

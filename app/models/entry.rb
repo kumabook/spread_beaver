@@ -157,16 +157,18 @@ class Entry < ApplicationRecord
   end
 
   def self.popular_entries_within_period(from: nil, to: nil, page: 0, per_page: PER_PAGE)
-    best_entries_within_period(from: from, to: to, clazz: SavedEntry,
+    best_entries_within_period(clazz: SavedEntry,
+                               from: from, to: to,
                                per_page: per_page, page: page)
   end
 
   def self.hot_entries_within_period(from: nil, to: nil, page: 0, per_page: PER_PAGE)
-    best_entries_within_period(from: from, to: to, clazz: ReadEntry,
+    best_entries_within_period(clazz: ReadEntry,
+                               from: from, to: to,
                                page: page, per_page: per_page)
   end
 
-  def self.best_entries_within_period(from: nil, to: nil, clazz: nil, page: 1, per_page: PER_PAGE)
+  def self.best_entries_within_period(clazz: nil, from: nil, to: nil, page: 1, per_page: PER_PAGE)
     raise ArgumentError, "Parameter must be not nil" if from.nil? || to.nil? || clazz.nil?
     user_count_hash = clazz.period(from, to).user_count
     total_count     = user_count_hash.keys.count

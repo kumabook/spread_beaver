@@ -20,9 +20,9 @@ class EnclosuresController < ApplicationController
     end
     @contents = PinkSpider.new.public_send fetch_contents_method,
                                            @enclosures.map {|t| t.id }
-    @likes_hash = Enclosure.my_likes_hash(current_user, @enclosures)
-    @saves_hash = Enclosure.my_saves_hash(current_user, @enclosures)
-    @opens_hash = Enclosure.my_opens_hash(current_user, @enclosures)
+    @likes_hash = Enclosure.user_likes_hash(current_user, @enclosures)
+    @saves_hash = Enclosure.user_saves_hash(current_user, @enclosures)
+    @opens_hash = Enclosure.user_opens_hash(current_user, @enclosures)
   end
 
   def show

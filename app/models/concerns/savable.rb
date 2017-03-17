@@ -16,5 +16,9 @@ module Savable
     def save_class
       "Saved#{table_name.singularize.capitalize}".constantize
     end
+
+    def user_saves_hash(user, items)
+      marks_hash_of_user(save_class, user, items)
+    end
   end
 end
