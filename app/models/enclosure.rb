@@ -39,6 +39,20 @@ class Enclosure < ApplicationRecord
     end
   end
 
+  def self.my_opens_hash(user, enclosures)
+    my_opens = OpenedEnclosure.where(user_id:      user.id,
+                                     enclosure_id: enclosures.map { |t| t.id })
+    count = OpenedEnclosure.where(enclosure_id: enclosures.map { |t| t.id })
+              .group(:enclosure_id).count('enclosure_id')
+    enclosures.inject({}) do |h, t|
+      h[t] = {
+        my: my_opens.to_a.select {|l| t.id == l.enclosure_id }.first,
+        count: count.to_a.select {|c| t.id == c[0] }.map {|c| c[1] }.first,
+      }
+      h
+    end
+  end
+
   def as_content_json
     hash = as_json
     hash['likesCount']   = likes_count

@@ -3,6 +3,8 @@
 - like_path_method = "#{@type.downcase}_like_path".to_sym
 - saves_path_method = "#{@type.downcase}_saves_path".to_sym
 - save_path_method = "#{@type.downcase}_save_path".to_sym
+- opens_path_method = "#{@type.downcase}_opens_path".to_sym
+- open_path_method = "#{@type.downcase}_open_path".to_sym
 - new_path_method  = "new_#{@type.downcase}_path".to_sym
 .page-header
   h1
@@ -19,6 +21,7 @@ table.table.table-striped
       th title
       th likes
       th saves
+      th opens
       th.col-md-2 actions
   tbody
     - @enclosures.each do |enclosure|
@@ -27,11 +30,15 @@ table.table.table-striped
       - like_path   = public_send like_path_method , enclosure
       - saves_path  = public_send saves_path_method, enclosure
       - save_path   = public_send save_path_method , enclosure
+      - opens_path  = public_send opens_path_method, enclosure
+      - open_path   = public_send open_path_method , enclosure
       - content     = @contents.select {|d| d["id"] == enclosure.id }.first
       - my_likes    = @likes_hash[enclosure][:my]
       - likes_count = @likes_hash[enclosure][:count]
       - my_saves    = @saves_hash[enclosure][:my]
       - saves_count = @saves_hash[enclosure][:count]
+      - my_opens    = @opens_hash[enclosure][:my]
+      - opens_count = @opens_hash[enclosure][:count]
       tr
         td = link_to enclosure.id, item_path
         td = content["provider"]
@@ -39,6 +46,7 @@ table.table.table-striped
         td = "#{content["title"]}"
         td = "#{likes_count || 0} likes"
         td = "#{saves_count || 0} saves"
+        td = "#{opens_count || 0} opens"
         td
           - if my_likes.nil?
             = form_for :like, url: likes_path, method: :post do |f|
@@ -52,6 +60,13 @@ table.table.table-striped
           - else
             = form_for :save, url: save_path, method: :delete do |f|
               = f.submit 'Unsave', class: 'btn btn-xs btn-success'
+          - if my_opens.nil?
+            = form_for :open, url: opens_path, method: :post do |f|
+              = f.submit 'Open', class: 'btn btn-xs btn-info'
+          - else
+            = form_for :save, url: open_path, method: :delete do |f|
+              = f.submit 'Unopen', class: 'btn btn-xs btn-info'
+
           '
           = link_to 'Delete', item_path,
                     :method => :delete,

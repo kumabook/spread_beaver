@@ -2,6 +2,7 @@ require('pink_spider')
 class EnclosuresController < ApplicationController
   include LikableController
   include SavableController
+  include OpenableController
   before_action :set_enclosure, only: [:show, :destroy]
   before_action :set_content  , only: [:show, :edit]
   before_action :set_entry    , only: [:index]
@@ -21,6 +22,7 @@ class EnclosuresController < ApplicationController
                                            @enclosures.map {|t| t.id }
     @likes_hash = Enclosure.my_likes_hash(current_user, @enclosures)
     @saves_hash = Enclosure.my_saves_hash(current_user, @enclosures)
+    @opens_hash = Enclosure.my_opens_hash(current_user, @enclosures)
   end
 
   def show
