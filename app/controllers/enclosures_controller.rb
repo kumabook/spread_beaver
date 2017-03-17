@@ -92,6 +92,16 @@ class EnclosuresController < ApplicationController
       @entry = Entry.find(params[:entry_id]) if params[:entry_id].present?
     end
 
+    def user_item_params
+      target_id  = params["#{model_class.name.downcase}_id"]
+      target_key = "#{model_class.table_name.singularize}_id".to_sym
+      {
+        :user_id        => current_user.id,
+        target_key      => target_id,
+        :enclosure_type => model_class.name
+      }
+    end
+
     def enclosure_params
       params.require(type.underscore.to_sym).permit(:id)
     end

@@ -8,19 +8,9 @@ module SavableController
     controller_name.classify.constantize
   end
 
-  def save_params
-    target_id  = params["#{model_class.name.downcase}_id"]
-    target_key = "#{model_class.table_name.singularize}_id".to_sym
-    {
-      :user_id        => current_user.id,
-      target_key      => target_id,
-      :enclosure_type => model_class.name
-    }
-  end
-
   def save
     respond_to do |format|
-      @save = model_class.save_class.new(save_params)
+      @save = model_class.save_class.new(user_item_params)
       if @save.save
         format.html { redirect_to ({action: :index}), notice: 'Successfully saved.' }
         format.json { render :show, status: :created, location: @save }
@@ -33,7 +23,7 @@ module SavableController
 
   def unsave
     respond_to do |format|
-      @save = model_class.save_class.find_by save_params
+      @save = model_class.save_class.find_by(user_item_params)
       if @save.destroy
         format.html { redirect_to ({action: :index}), notice: 'Successfully unsaved.' }
         format.json { head :no_content }

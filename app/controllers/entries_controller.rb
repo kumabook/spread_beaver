@@ -110,6 +110,15 @@ class EntriesController < ApplicationController
     @tag = Tag.find_by(id: params[:tag_id])
   end
 
+  def user_item_params
+    target_id  = params["#{model_class.name.downcase}_id"]
+    target_key = "#{model_class.table_name.singularize}_id".to_sym
+    {
+      :user_id   => current_user.id,
+      target_key => target_id,
+    }
+  end
+
   def entry_params
     params.require(:entry).permit(:id,
                                   :title,
