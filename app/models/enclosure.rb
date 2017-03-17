@@ -18,6 +18,13 @@ class Enclosure < ApplicationRecord
     PinkSpider.new.public_send("fetch_#{name.downcase.pluralize}".to_sym, ids)
   end
 
+  def self.set_contents(enclosures)
+    contents = fetch_contents(enclosures.map {|t| t.id })
+    enclosures.each do |e|
+      e.content = contents.select {|c| c["id"] == e.id }.first
+    end
+  end
+
   def self.set_marks(user, enclosures)
     liked_hash  = Enclosure.user_liked_hash(user , enclosures)
     saved_hash  = Enclosure.user_saved_hash(user , enclosures)
