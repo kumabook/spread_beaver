@@ -10,6 +10,14 @@ class Enclosure < ApplicationRecord
   scope :latest, -> (time) { where("created_at > ?", time).order('created_at DESC') }
   scope :detail, ->        { eager_load(:users).eager_load(:entries) }
 
+  def self.fetch_content(id)
+    PinkSpider.new.public_send("fetch_#{name.downcase}".to_sym, id)
+  end
+
+  def self.fetch_contents(ids)
+    PinkSpider.new.public_send("fetch_#{name.downcase.pluralize}".to_sym, ids)
+  end
+
   def self.set_marks(user, enclosures)
     liked_hash  = Enclosure.user_liked_hash(user , enclosures)
     saved_hash  = Enclosure.user_saved_hash(user , enclosures)

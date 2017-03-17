@@ -81,21 +81,12 @@ class EnclosuresController < ApplicationController
       self.public_send "#{type.downcase.pluralize}_path".to_sym, enclosure
     end
 
-    def fetch_content_method
-      "fetch_#{type.downcase}".to_sym
-    end
-
-    def fetch_contents_method
-      "fetch_#{type.downcase.pluralize}".to_sym
-    end
-
     def set_enclosure
       @enclosure = enclosure_class.find(params[:id])
     end
 
     def set_content
-      @content           = PinkSpider.new.public_send fetch_content_method,
-                                                      @enclosure.id
+      @content           = @enclosure_class.fetch_content(@enclosure.id)
       @enclosure.content = @content
     end
 
