@@ -1,11 +1,8 @@
 class V3::EnclosuresController < V3::ApiController
   before_action :doorkeeper_authorize!
-  before_action :set_enclosure,  only: [:show]
-  before_action :set_enclosures, only: [:list]
-
-  def model_class
-    enclosure_class
-  end
+  before_action :set_enclosure_class, only: [:show, :list]
+  before_action :set_enclosure      , only: [:show]
+  before_action :set_enclosures     , only: [:list]
 
   def show
     if @enclosure.present?
@@ -26,35 +23,23 @@ class V3::EnclosuresController < V3::ApiController
   end
 
   private
-    def type
-      params[:type]
-    end
-
-    def enclosure_class
-      type.constantize
-    end
-
-    def fetch_contents_method
-      "fetch_#{type.downcase.pluralize}".to_sym
-    end
-
-    def fetch_content_method
-      "fetch_#{type.downcase}".to_sym
-    end
-
     def set_enclosure
-      @enclosure = enclosure_class.detail.find(params[:id])
-      @content           = PinkSpider.new.public_send fetch_content_method,
-                                                      @enclosure.id
-      @enclosure.content = @content
+      @enclosure         = @enclosure_class.detail.find(params[:id])
+      @enclosure_class.set_contents([@enclosure])
+      if current_resource_owner.present?
+        @enclosure_class.set_marks(current_resource_owner, [@enclosure])
+      end
     end
 
     def set_enclosures
-      @enclosures = enclosure_class.detail.find(params['_json'])
-      @contents = PinkSpider.new.public_send fetch_contents_method,
-                                             @enclosures.map {|t| t.id }
-      @enclosures.each do |e|
-        e.content = @contents.select {|c| c["id"] == e.id }.first
+      @enclosures = @enclosure_class.detail.find(params['_json'])
+      @enclosure_class.set_contents(@enclosures)
+      if current_resource_owner.present?
+        @enclosure_class.set_marks(current_resource_owner, @enclosures)
       end
+    end
+
+    def set_enclosure_class
+      @enclosure_class = params[:type].constantize
     end
 end

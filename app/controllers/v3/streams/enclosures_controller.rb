@@ -48,6 +48,10 @@ class V3::Streams::EnclosuresController < V3::ApiController
         continuation = self.class::continuation(@page + 1, @per_page)
       end
     end
+    if current_resource_owner.present?
+      @enclosure_class.set_marks(current_resource_owner, @items)
+    end
+    @enclosure_class.set_contents(@items)
     h = {
       direction: "ltr",
       continuation: continuation,

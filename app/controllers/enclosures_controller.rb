@@ -20,11 +20,9 @@ class EnclosuresController < ApplicationController
     else
       @enclosures = enclosure_class.order('created_at DESC').page(params[:page])
     end
-    @contents = PinkSpider.new.public_send fetch_contents_method,
-                                           @enclosures.map {|t| t.id }
-    @likes_hash = Enclosure.user_likes_hash(current_user, @enclosures)
-    @saves_hash = Enclosure.user_saves_hash(current_user, @enclosures)
-    @opens_hash = Enclosure.user_opens_hash(current_user, @enclosures)
+
+    enclosure_class.set_marks(current_user, @enclosures) if current_user.present?
+    enclosure_class.set_contents(@enclosures)
   end
 
   def show
