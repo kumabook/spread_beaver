@@ -5,8 +5,9 @@ RSpec.describe "Albums  api", :type => :request, autodoc: true do
     setup()
     login()
     @feeds = (0...ITEM_NUM).to_a.map { FactoryGirl.create(:feed) }
-    @like = LikedEnclosure.create!(enclosure: @feeds[0].entries[0].albums[0],
-                                   user: @user)
+    @like = LikedEnclosure.create!(user:           @user,
+                                   enclosure:      @feeds[0].entries[0].albums[0],
+                                   enclosure_type: Album.name)
   end
 
   it "shows a album by id" do
@@ -17,7 +18,7 @@ RSpec.describe "Albums  api", :type => :request, autodoc: true do
     expect(album['id']).to eq(id)
     expect(album['entries']).not_to be_nil()
     expect(album['likers']).not_to be_nil()
-    expect(album['likesCount']).not_to be_nil()
+    expect(album['likesCount']).to eq(1)
     expect(album['entriesCount']).not_to be_nil()
   end
 

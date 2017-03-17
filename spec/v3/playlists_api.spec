@@ -5,8 +5,9 @@ RSpec.describe "Playlists api", :type => :request, autodoc: true do
     setup()
     login()
     @feeds = (0...ITEM_NUM).to_a.map { FactoryGirl.create(:feed) }
-    @like = LikedEnclosure.create!(enclosure: @feeds[0].entries[0].playlists[0],
-                                   user: @user)
+    @like = LikedEnclosure.create!(user:           @user,
+                                   enclosure:      @feeds[0].entries[0].playlists[0],
+                                   enclosure_type: Playlist.name)
   end
 
   it "shows a playlist by id" do
@@ -17,7 +18,7 @@ RSpec.describe "Playlists api", :type => :request, autodoc: true do
     expect(playlist['id']).to eq(id)
     expect(playlist['entries']).not_to be_nil()
     expect(playlist['likers']).not_to be_nil()
-    expect(playlist['likesCount']).not_to be_nil()
+    expect(playlist['likesCount']).to eq(1)
     expect(playlist['entriesCount']).not_to be_nil()
   end
 
