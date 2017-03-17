@@ -3,6 +3,8 @@ require('paginated_array')
 module Savable
   extend ActiveSupport::Concern
   def self.included(base)
+    attr_accessor :is_saved
+
     saves = "saved_#{base.table_name}".to_sym
     base.has_many saves, dependent: :destroy
     base.has_many :saved_users, through: saves, source: :user
@@ -17,7 +19,7 @@ module Savable
       "Saved#{table_name.singularize.capitalize}".constantize
     end
 
-    def user_saves_hash(user, items)
+    def user_saved_hash(user, items)
       marks_hash_of_user(save_class, user, items)
     end
   end

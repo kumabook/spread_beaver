@@ -3,6 +3,8 @@ require('paginated_array')
 module Likable
   extend ActiveSupport::Concern
   def self.included(base)
+    attr_accessor :is_liked
+
     likes = "liked_#{base.table_name.singularize}".to_sym
     base.has_many likes, dependent: :destroy
     base.has_many :users, through: likes
@@ -18,7 +20,7 @@ module Likable
       "Liked#{table_name.singularize.capitalize}".constantize
     end
 
-    def user_likes_hash(user, items)
+    def user_liked_hash(user, items)
       marks_hash_of_user(like_class, user, items)
     end
 

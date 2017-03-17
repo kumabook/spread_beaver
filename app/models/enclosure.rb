@@ -10,16 +10,22 @@ class Enclosure < ApplicationRecord
   scope :latest, -> (time) { where("created_at > ?", time).order('created_at DESC') }
   scope :detail, ->        { eager_load(:users).eager_load(:entries) }
 
+  def self.set_marks(user, enclosures)
+    liked_hash  = Enclosure.user_liked_hash(user , enclosures)
+    saved_hash  = Enclosure.user_saved_hash(user , enclosures)
+    opened_hash = Enclosure.user_opened_hash(user, enclosures)
+    enclosures.each do |e|
+      e.is_liked  = liked_hash[e]
+      e.is_saved  = saved_hash[e]
+      e.is_opened = opened_hash[e]
+    end
+  end
+
   def self.marks_hash_of_user(clazz, user, enclosures)
-    marks       = clazz.where(user_id:      user.id,
-                             enclosure_id: enclosures.map { |e| e.id })
-    user_counts = clazz.where(enclosure_id: enclosures.map { |e| e.id })
-              .group(:enclosure_id).count('enclosure_id')
+    marks = clazz.where(user_id:      user.id,
+                        enclosure_id: enclosures.map { |e| e.id })
     enclosures.inject({}) do |h, e|
-      h[e] = {
-        is_mine:    marks.to_a.select {|l| e.id == l.enclosure_id }.first.present?,
-        user_count: user_counts.to_a.select {|c| e.id == c[0] }.map {|c| c[1] }.first,
-      }
+      h[e] = marks.to_a.select {|l| e.id == l.enclosure_id }.first.present?
       h
     end
   end
