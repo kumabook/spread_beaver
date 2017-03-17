@@ -31,10 +31,10 @@ RSpec.describe "Streams api", type: :request, autodoc: true do
                           created_at: 1.days.ago
       }
       (0...ITEM_NUM).to_a.each { |n|
-        EnclosureLike.create! user: @user,
-                              enclosure: @subscribed.entries[0].tracks[n]
-        EnclosureLike.create! user: @user,
-                              enclosure: @feed.entries[0].tracks[n]
+        LikedEnclosure.create! user: @user,
+                               enclosure: @subscribed.entries[0].tracks[n]
+        LikedEnclosure.create! user: @user,
+                               enclosure: @feed.entries[0].tracks[n]
       }
     end
 

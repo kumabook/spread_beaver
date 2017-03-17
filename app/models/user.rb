@@ -3,17 +3,17 @@ class User < ApplicationRecord
   include Stream
   MEMBER = 'Member'
   ADMIN  = 'Admin'
-  belongs_to :enclosure_likes, polymorphic: true
+  belongs_to :liked_enclosures, polymorphic: true
 
-  has_many :preferences    , dependent: :destroy
-  has_many :subscriptions  , dependent: :destroy
-  has_many :categories     , dependent: :destroy
-  has_many :saved_entries  , dependent: :destroy
-  has_many :read_entries   , dependent: :destroy
-  has_many :tags           , dependent: :destroy
-  has_many :enclosure_likes, dependent: :destroy
-  has_many :enclosures     , through:   :enclosure_likes
-  has_many :tracks         , through:   :enclosure_likes, source: :enclosure
+  has_many :preferences     , dependent: :destroy
+  has_many :subscriptions   , dependent: :destroy
+  has_many :categories      , dependent: :destroy
+  has_many :saved_entries   , dependent: :destroy
+  has_many :read_entries    , dependent: :destroy
+  has_many :tags            , dependent: :destroy
+  has_many :liked_enclosures, dependent: :destroy
+  has_many :enclosures      , through:   :liked_enclosures
+  has_many :tracks          , through:   :liked_enclosures, source: :enclosure
   authenticates_with_sorcery!
 
   validates :password, length: { minimum: 3 }, if: -> { new_record? || changes["password"] }

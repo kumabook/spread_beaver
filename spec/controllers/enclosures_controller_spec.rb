@@ -41,12 +41,12 @@ describe EnclosuresController, type: :controller do
            }
     end
     it { expect(response).to redirect_to tracks_url }
-    it { expect(EnclosureLike.find_by(enclosure_id: track.id, user_id: user.id)).not_to be_nil }
+    it { expect(LikedEnclosure.find_by(enclosure_id: track.id, user_id: user.id)).not_to be_nil }
   end
 
   describe '#unlike' do
     before do
-      like = EnclosureLike.create!(enclosure_id: track.id, user_id: user.id)
+      like = LikedEnclosure.create!(enclosure_id: track.id, user_id: user.id)
       delete :unlike, params: {
                type:     'Track',
                id:       like.id,
@@ -54,6 +54,6 @@ describe EnclosuresController, type: :controller do
              }
     end
     it { expect(response).to redirect_to tracks_url }
-    it { expect(EnclosureLike.find_by(enclosure_id: track.id, user_id: user.id)).to be_nil }
+    it { expect(LikedEnclosure.find_by(enclosure_id: track.id, user_id: user.id)).to be_nil }
   end
 end

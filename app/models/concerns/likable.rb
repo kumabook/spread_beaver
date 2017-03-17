@@ -3,7 +3,7 @@ require('paginated_array')
 module Likable
   extend ActiveSupport::Concern
   def self.included(base)
-    likes = "#{base.table_name.singularize}_likes".to_sym
+    likes = "liked_#{base.table_name.singularize}".to_sym
     base.has_many likes, dependent: :destroy
     base.has_many :users, through: likes
     base.alias_attribute :likes, likes
@@ -15,7 +15,7 @@ module Likable
 
   module ClassMethods
     def like_class
-      "#{table_name.singularize.capitalize}Like".constantize
+      "Liked#{table_name.singularize.capitalize}".constantize
     end
 
     def popular_items_within_period(from: nil, to: nil, page: 1, per_page: nil)

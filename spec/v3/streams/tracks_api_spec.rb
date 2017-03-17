@@ -7,10 +7,10 @@ RSpec.describe "Track Stream api", type: :request, autodoc: true do
       login()
       @feed    = FactoryGirl.create(:feed)
       (0...ITEM_NUM).to_a.each { |n|
-        EnclosureLike.create! user:           @user,
-                              enclosure:      @feed.entries[0].tracks[n],
-                              enclosure_type: Track.name,
-                              created_at:     1.days.ago
+        LikedEnclosure.create! user:           @user,
+                               enclosure:      @feed.entries[0].tracks[n],
+                               enclosure_type: Track.name,
+                               created_at:     1.days.ago
       }
     end
 

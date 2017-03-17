@@ -18,9 +18,9 @@ class EnclosuresController < ApplicationController
     end
     @contents = PinkSpider.new.public_send fetch_contents_method,
                                            @enclosures.map {|t| t.id }
-    my_likes = EnclosureLike.where(user_id:      current_user.id,
-                                   enclosure_id: @enclosures.map { |t| t.id })
-    count = EnclosureLike.where(enclosure_id: @enclosures.map { |t| t.id })
+    my_likes = LikedEnclosure.where(user_id:      current_user.id,
+                                    enclosure_id: @enclosures.map { |t| t.id })
+    count = LikedEnclosure.where(enclosure_id: @enclosures.map { |t| t.id })
               .group(:enclosure_id).count('enclosure_id')
     @likes_dic = @enclosures.inject({}) do |h, t|
       h[t] = {

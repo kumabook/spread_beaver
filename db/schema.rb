@@ -27,16 +27,6 @@ ActiveRecord::Schema.define(version: 20170302131100) do
     t.index ["label"], name: "index_categories_on_label", unique: true, using: :btree
   end
 
-  create_table "enclosure_likes", force: :cascade do |t|
-    t.uuid     "user_id",                          null: false
-    t.uuid     "enclosure_id",                     null: false
-    t.datetime "created_at",                       null: false
-    t.datetime "updated_at",                       null: false
-    t.string   "enclosure_type", default: "Track", null: false
-    t.index ["enclosure_type"], name: "index_enclosure_likes_on_enclosure_type", using: :btree
-    t.index ["user_id", "enclosure_id"], name: "index_enclosure_likes_on_user_id_and_enclosure_id", unique: true, using: :btree
-  end
-
   create_table "enclosures", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.string   "title"
     t.string   "url"
@@ -171,6 +161,16 @@ ActiveRecord::Schema.define(version: 20170302131100) do
     t.datetime "updated_at",  null: false
     t.index ["id"], name: "index_keywords_on_id", unique: true, using: :btree
     t.index ["label"], name: "index_keywords_on_label", unique: true, using: :btree
+  end
+
+  create_table "liked_enclosures", force: :cascade do |t|
+    t.uuid     "user_id",                          null: false
+    t.uuid     "enclosure_id",                     null: false
+    t.datetime "created_at",                       null: false
+    t.datetime "updated_at",                       null: false
+    t.string   "enclosure_type", default: "Track", null: false
+    t.index ["enclosure_type"], name: "index_liked_enclosures_on_enclosure_type", using: :btree
+    t.index ["user_id", "enclosure_id"], name: "index_liked_enclosures_on_user_id_and_enclosure_id", unique: true, using: :btree
   end
 
   create_table "oauth_access_grants", force: :cascade do |t|
