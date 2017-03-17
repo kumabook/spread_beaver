@@ -14,7 +14,9 @@ class EnclosuresController < ApplicationController
 
   def index
     if @entry.present?
-      @enclosures = @entry.public_send(index_method).page(params[:page])
+      @enclosures = @entry.public_send(index_method)
+                          .order('created_at DESC')
+                          .page(params[:page])
     else
       @enclosures = enclosure_class.order('created_at DESC').page(params[:page])
     end
