@@ -9,10 +9,12 @@ module LikableController
   end
 
   def like_params
-    enclosure_id = params["#{model_class.name.downcase}_id"]
+    target_id  = params["#{model_class.name.downcase}_id"]
+    target_key = "#{model_class.table_name.singularize}_id".to_sym
     {
-      user_id:      current_user.id,
-      enclosure_id: enclosure_id
+      :user_id        => current_user.id,
+      target_key      => target_id,
+      :enclosure_type => model_class.name
     }
   end
 

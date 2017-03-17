@@ -8,11 +8,11 @@ class V3::MarkersController < V3::ApiController
     when 'entries'
       mark_entries
     when 'tracks'
-      mark_enclosures(:trackIds)
+      mark_enclosures(:trackIds, Track.name)
     when 'playlists'
-      mark_enclosures(:playlistIds)
+      mark_enclosures(:playlistIds, Playlist.name)
     when 'albums'
-      mark_enclosures(:albumIds)
+      mark_enclosures(:albumIds, Album.name)
     when 'feeds'
       @ids = params[:feedIds] if params[:feedIds].present?
     when 'categories'
@@ -54,13 +54,14 @@ class V3::MarkersController < V3::ApiController
     end
   end
 
-  def mark_enclosures(ids_key)
+  def mark_enclosures(ids_key, type)
     @ids = params[ids_key] if params[ids_key].present?
     case @action
     when 'markAsLiked'
       @ids.each do |id|
-        @like = LikedEnclosure.new(user:         current_resource_owner,
-                                   enclosure_id: id)
+        @like = LikedEnclosure.new(user:           current_resource_owner,
+                                   enclosure_id:   id,
+                                   enclosure_type: type)
         @like.save
       end
       render json: {}, status: 200
@@ -73,8 +74,9 @@ class V3::MarkersController < V3::ApiController
       render json: {}, status: 200
     when 'markAsSaved'
       @ids.each do |id|
-        @save = SavedEnclosure.new(user:         current_resource_owner,
-                                   enclosure_id: id)
+        @save = SavedEnclosure.new(user:           current_resource_owner,
+                                   enclosure_id:   id,
+                                   enclosure_type: type)
         @save.save
       end
       render json: {}, status: 200
