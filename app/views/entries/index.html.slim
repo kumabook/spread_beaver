@@ -43,18 +43,30 @@ table.table.table-striped
           = link_to "#{entry.playlists.size} playlists", entry_playlists_path(entry), class: 'btn btn-xs btn-primary'
         td
           = render partial: "user_entry_button",
-                    locals: { url: '/saved_entries',
-                            label: 'Mark as Save',
-                   labelForRemove: 'Mark as Unsave',
-                            entry: entry,
-                     user_entries: @saved_entries }
-          - user_entry = @saved_entries.select {|ue| ue.entry_id == entry.id }.first
+                    locals: { mark: :like,
+                        create_url: entry_likes_path(entry),
+                        delete_url: entry_like_path(entry),
+                             label: 'Mark as Like',
+                    labelForRemove: 'Mark as Unlike',
+                             entry: entry,
+                      user_entries: @liked_entries }
           = render partial: "user_entry_button",
-                    locals: { url: '/read_entries',
-                            label: 'Mark as Read',
-                   labelForRemove: 'Mark as Unread',
-                            entry: entry,
-                     user_entries: @read_entries}
+                    locals: { mark: :save,
+                        create_url: entry_saves_path(entry),
+                        delete_url: entry_save_path(entry),
+                             label: 'Mark as Save',
+                    labelForRemove: 'Mark as Unsave',
+                             entry: entry,
+                      user_entries: @saved_entries }
+          - user_entry = @read_entries.select {|ue| ue.entry_id == entry.id }.first
+          = render partial: "user_entry_button",
+                    locals: { mark: :user_entry,
+                        create_url: '/read_entries',
+                        delete_url: "/read_entries/#{user_entry&.id}",
+                             label: 'Mark as Read',
+                    labelForRemove: 'Mark as Unread',
+                             entry: entry,
+                      user_entries: @read_entries}
           = link_to 'Edit', edit_entry_path(entry), class: 'btn btn-xs btn-primary'
           '
           = link_to 'Destroy', entry, data: {:confirm => 'Are you sure?'},
