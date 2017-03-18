@@ -5,7 +5,7 @@ module Likable
   def self.included(base)
     attr_accessor :is_liked
 
-    likes = "liked_#{base.table_name.singularize}".to_sym
+    likes = "liked_#{base.table_name}".to_sym
     base.has_many likes, dependent: :destroy
     base.has_many :users, through: likes
     base.alias_attribute :likes, likes
