@@ -10,6 +10,22 @@ class Enclosure < ApplicationRecord
   scope :latest, -> (time) { where("created_at > ?", time).order('created_at DESC') }
   scope :detail, ->        { eager_load([:likers, :openers]).eager_load(:entries) }
 
+  def self.create_items_of(entry, items)
+    models = items.map do |i|
+      model = find_or_create_by(id: i['id']) do
+        logger.info("New enclosure #{i['provider']} #{i['identifier']}")
+      end
+      EntryEnclosure.find_or_create_by(entry:          entry,
+                                       enclosure:      model,
+                                       enclosure_type: name) do
+        logger.info("Add new #{name} #{i['id']} to entry #{entry.id}")
+      end
+      model.content = i
+      model
+    end
+    models
+  end
+
   def self.fetch_content(id)
     PinkSpider.new.public_send("fetch_#{name.downcase}".to_sym, id)
   end

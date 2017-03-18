@@ -17,7 +17,7 @@ task :recrawl => :environment do
       puts "Update visual of entry #{entry.id} with #{playlistified_entry.visual_url}"
       entry.save
     end
-    playlistified_entry.create_tracks
+    Track.create_items_of(entry, playlistified_entry.tracks)
   end
 
   puts "Finish recrawling."

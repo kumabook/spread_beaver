@@ -1,3 +1,8 @@
+require 'rest_client'
+require 'json'
+require 'active_support'
+require 'active_support/core_ext'
+
 class PinkSpider
   attr_reader(:base_url)
   def initialize(url = nil)
@@ -16,44 +21,42 @@ class PinkSpider
   end
 
   def fetch_track(id)
-    fetch_item(id, Track.name)
+    fetch_item(id, 'tracks')
   end
 
   def fetch_tracks(ids)
-    fetch_items(ids, Track.name)
+    fetch_items(ids, 'tracks')
   end
 
   def fetch_playlist(id)
-    fetch_item(id, Playlist.name)
+    fetch_item(id, 'playlists')
   end
 
   def fetch_playlists(ids)
-    fetch_items(ids, Playlist.name)
+    fetch_items(ids, 'playlists')
   end
 
   def fetch_album(id)
-    fetch_item(id, Album.name)
+    fetch_item(id, 'albums')
   end
 
   def fetch_albums(ids)
-    fetch_items(ids, Album.name)
+    fetch_items(ids, 'albums')
   end
 
-  def fetch_item(id, type)
-    resource_name = type.pluralize.downcase
+  def fetch_item(id, resource_name)
     response = RestClient.get "#{base_url}/v1/#{resource_name}/#{id}",
                               accept: :json
     return if response.code != 200
-    JSON.parse(response)
+    JSON.parse(response.body)
   end
 
-  def fetch_items(ids, type)
+  def fetch_items(ids, resource_name)
     return [] if ids.blank?
-    resource_name = type.pluralize.downcase
     response = RestClient.post "#{base_url}/v1/#{resource_name}/.mget",
                                ids.to_json,
                                {content_type: :json, accept: :json}
     return if response.code != 200
-    JSON.parse(response)
+    JSON.parse(response.body)
   end
 end

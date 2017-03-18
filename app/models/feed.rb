@@ -159,16 +159,16 @@ class Feed < ApplicationRecord
         e = Entry.first_or_create_by_feedlr(entry, self)
         puts "Fetch tracks of #{e.url}"
         playtified_entry = e.playlistify
-        playtified_entry.create_tracks.each do |track|
-          puts "  Create track #{track.content['provider']} #{track.content['title']}"
+        Track.create_items_of(e, playtified_entry.tracks).each do |track|
+          logger.info("  Create track #{track.content['provider']} #{track.content['title']}")
           new_tracks << track
         end
-        playtified_entry.create_playlists.each do |playlist|
-          puts "  Create playlist #{playlist.content['provider']} #{playlist.content['title']}"
+        Playlist.create_items_of(e, playtified_entry.playlists).each do |playlist|
+          logger.info("  Create playlist #{playlist.content['provider']} #{playlist.content['title']}")
           new_playlists << playlist
         end
-        playtified_entry.create_albums.each do |album|
-          puts "  Create album #{album.content['provider']} #{album.content['title']}"
+        Album.create_items_of(e, playtified_entry.albums).each do |album|
+          logger.info("  Create album #{album.content['provider']} #{album.content['title']}")
           new_albums << album
         end
         if playtified_entry.visual_url.present?
