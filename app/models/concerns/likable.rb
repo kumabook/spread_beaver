@@ -7,11 +7,10 @@ module Likable
 
     likes = "liked_#{base.table_name}".to_sym
     base.has_many likes, dependent: :destroy
-    base.has_many :users, through: likes
-    base.alias_attribute :likes, likes
+    base.has_many :likers, through: likes, source: :user
 
     base.scope :popular, ->        { joins(:users).order('liked_count DESC') }
-    base.scope :liked,   -> (user) { joins(:users).where(users: { id: user.id }) }
+    base.scope :liked,   -> (user) { joins(:likers).where(users: { id: user.id }) }
     base.extend(ClassMethods)
   end
 

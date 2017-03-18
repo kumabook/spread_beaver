@@ -7,11 +7,10 @@ module Openable
 
     opens = "opened_#{base.table_name}".to_sym
     base.has_many opens, dependent: :destroy
-    base.has_many :opened_users, through: opens, source: :user
-    base.alias_attribute :opens, opens
+    base.has_many :openers, through: opens, source: :user
 
     base.scope :hot,    ->        { joins(:users).order('opened_count DESC') }
-    base.scope :opened, -> (user) { joins(opens).where(opens => { user_id: user.id }) }
+    base.scope :opened, -> (user) { joins(:openers).where(users: { id: user.id }) }
     base.extend(ClassMethods)
   end
 

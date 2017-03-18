@@ -78,7 +78,7 @@ RSpec.describe "Markers api", type: :request, autodoc: true do
     end
 
     it "marks tracks as liked" do
-      count = Track.joins(:users).where(users: { id: @user.id }).count
+      count = Track.joins(:likers).where(users: { id: @user.id }).count
       post "/v3/markers",
            params: {
              type: 'tracks',
@@ -87,12 +87,12 @@ RSpec.describe "Markers api", type: :request, autodoc: true do
            },
            headers: headers_for_login_user
       expect(@response.status).to eq(200)
-      after_count = Track.joins(:users).where(users: { id: @user.id }).count
+      after_count = Track.joins(:likers).where(users: { id: @user.id }).count
       expect(after_count).to eq(count + 1)
     end
 
     it "marks tracks as unliked" do
-      count = Track.joins(:users).where(users: { id: @user.id }).count
+      count = Track.joins(:likers).where(users: { id: @user.id }).count
       post "/v3/markers",
            params: {
              type: 'tracks',
@@ -101,7 +101,7 @@ RSpec.describe "Markers api", type: :request, autodoc: true do
            },
            headers: headers_for_login_user
       expect(@response.status).to eq(200)
-      after_count = Track.joins(:users).where(users: { id: @user.id }).count
+      after_count = Track.joins(:likers).where(users: { id: @user.id }).count
       expect(after_count).to eq(count - 1)
     end
   end
