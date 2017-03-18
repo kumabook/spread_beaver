@@ -12,7 +12,7 @@ Doorkeeper.configure do
   end
 
   admin_authenticator do
-    if current_user.admin?
+    if current_user.present? && current_user.admin?
       current_user
     else
       redirect_to(login_url)
