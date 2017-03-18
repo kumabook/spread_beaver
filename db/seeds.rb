@@ -21,14 +21,18 @@ puts "Create ios app id: #{app.id}"
 Journal.first_or_create(label: 'highlight')
 puts "Create default journal hightlight"
 
+news_topic = Topic.first_or_create(label: 'news')
+
 feedIds = [
   "feed/http://pitchfork.com/rss/news",
   "feed/http://pitchfork.com/rss/reviews/best/albums",
   "feed/http://pitchfork.com/rss/reviews/best/tracks",
+  'feed/http://spincoaster.com/feed'
 ]
 
 Feed.find_or_create_with_ids(feedIds).each do |f|
   puts "Create feed(id: #{f.id})"
+  f.topics = [news_topic]
 end
 
 Entry.find_each do |entry|
