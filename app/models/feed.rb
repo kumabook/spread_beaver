@@ -119,15 +119,15 @@ class Feed < ApplicationRecord
 
   def update_visuals_with_feedlr(feed, force=false)
     if feed.visualUrl.present? && (self.visualUrl.blank? || force)
-      puts "Update visualUrl of #{feed.id}: #{feed.visualUrl}"
+      logger.info("Update visualUrl of #{feed.id}: #{feed.visualUrl}")
       self.visualUrl = feed.visualUrl
     end
     if feed.coverUrl.present? && (self.coverUrl.blank? || force)
-      puts "Update coverUrl of #{feed.id}: #{feed.coverUrl}"
+      logger.info("Update coverUrl of #{feed.id}: #{feed.coverUrl}")
       self.coverUrl = feed.coverUrl
     end
     if feed.iconUrl.present? && (self.iconUrl.blank? || force)
-      puts "Update iconUrl of #{feed.id}: #{feed.iconUrl}"
+      logger.info("Update iconUrl of #{feed.id}: #{feed.iconUrl}")
       self.iconUrl = feed.iconUrl
     end
     save
@@ -139,7 +139,7 @@ class Feed < ApplicationRecord
     new_playlists = []
     new_albums    = []
     client = Feedlr::Client.new(sandbox: false)
-    puts "Fetch latest entries of #{id}"
+    logger.info("Fetch latest entries of #{id}")
     newer_than = crawled.present? ? crawled.to_time.to_i : nil
     cursor = client.stream_entries_contents(id, newerThan: newer_than)
 
@@ -157,7 +157,7 @@ class Feed < ApplicationRecord
       begin
         sleep(WAITING_SEC_FOR_FEED)
         e = Entry.first_or_create_by_feedlr(entry, self)
-        puts "Fetch tracks of #{e.url}"
+        logger.info("Fetch tracks of #{e.url}")
         playtified_entry = e.playlistify
         Track.create_items_of(e, playtified_entry.tracks).each do |track|
           logger.info("  Create track #{track.content['provider']} #{track.content['title']}")
@@ -179,13 +179,13 @@ class Feed < ApplicationRecord
         end
         e.save
         new_entries << e
-        puts "Update entry visual with #{playtified_entry.visual_url}"
+        logger.info("Update entry visual with #{playtified_entry.visual_url}")
         if self.lastUpdated.nil? || self.lastUpdated < e.published
           self.lastUpdated = e.published
         end
       rescue => err
-        puts "Failed to fetch #{e.url}  #{err}"
-        puts err.backtrace
+        logger.error("Failed to fetch #{e.url}  #{err}")
+        logger.error(err.backtrace)
       end
     end
     self.crawled = DateTime.now

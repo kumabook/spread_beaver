@@ -13,7 +13,7 @@ class Issue < ApplicationRecord
     entries = topic.entries_of_mix
                    .select { |entry| entry.has_visual? }
     if entries.empty?
-      puts "Failed to create journal because there is no entry"
+      logger.info("Failed to create journal because there is no entry")
     end
     entries.each_with_index do |entry, i|
       ej = EntryIssue.find_or_create_by(entry_id: entry.id,
@@ -25,7 +25,7 @@ class Issue < ApplicationRecord
     first_ej    = EntryIssue.find_or_create_by(entry_id: first_entry.id,
                                                issue_id: id)
     first_ej.update_attributes(engagement: (entries.count + 1) * 10)
-    puts "Add #{entries.count} entries to Create daily issue: #{label} #{journal.label}"
+    logger.info("Add #{entries.count} entries to Create daily issue: #{label} #{journal.label}")
   end
 
   def entries_of_stream(page: 1, per_page: nil, since: nil)

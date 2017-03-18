@@ -112,7 +112,7 @@ class Entry < ApplicationRecord
         visual       = feedlr_entry&.visual
         visual_url   = visual.url if visual.present?
         if !entry.has_visual? && visual_url.present? && visual_url != "none"
-          puts "Update the visual of #{entry.url} with #{visual_url}"
+          logger.info("Update the visual of #{entry.url} with #{visual_url}")
           entry.visual = visual.to_json
           entry.save
         end
@@ -138,7 +138,7 @@ class Entry < ApplicationRecord
     return if self.visual.nil?
     v = JSON.load(self.visual)
     if v.blank? || v['url'].blank? || v['url'] == "none"
-      puts "Clear the visual of #{self.url}"
+      logger.info("Clear the visual of #{self.url}")
       self.visual = nil
     end
   end
