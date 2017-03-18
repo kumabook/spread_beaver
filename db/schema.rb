@@ -223,7 +223,7 @@ ActiveRecord::Schema.define(version: 20170317151616) do
 
   create_table "opened_enclosures", force: :cascade do |t|
     t.uuid     "user_id",        null: false
-    t.string   "enclosure_id",   null: false
+    t.uuid     "enclosure_id",   null: false
     t.string   "enclosure_type", null: false
     t.datetime "created_at",     null: false
     t.datetime "updated_at",     null: false
@@ -249,7 +249,7 @@ ActiveRecord::Schema.define(version: 20170317151616) do
 
   create_table "saved_enclosures", force: :cascade do |t|
     t.uuid     "user_id",        null: false
-    t.string   "enclosure_id",   null: false
+    t.uuid     "enclosure_id",   null: false
     t.string   "enclosure_type", null: false
     t.datetime "created_at",     null: false
     t.datetime "updated_at",     null: false
