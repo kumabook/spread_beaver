@@ -22,6 +22,8 @@ Rails.application.routes.draw do
     delete 'unlike', to: :unlike, as: :like
     post   'save'  , to: :save  , as: :saves
     delete 'unsave', to: :unsave, as: :save
+    post   'read'  , to: :read  , as: :reads
+    delete 'unread', to: :unread, as: :read
   end
   resources :read_entries , only: [:create, :destroy]
   resources :feeds, constraints: res_options, shallow: true do

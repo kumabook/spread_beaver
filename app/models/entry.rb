@@ -192,6 +192,10 @@ class Entry < ApplicationRecord
     PaginatedArray.new(sorted_entries, total_count)
   end
 
+  def self.open_class
+    ReadEntry
+  end
+
   def playlistify(force: false)
     hash = PinkSpider.new.playlistify url: url, force: force
     return if hash.nil?

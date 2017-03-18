@@ -58,11 +58,10 @@ table.table.table-striped
                     labelForRemove: 'Mark as Unsave',
                              entry: entry,
                       user_entries: @saved_entries }
-          - user_entry = @read_entries.select {|ue| ue.entry_id == entry.id }.first
           = render partial: "user_entry_button",
                     locals: { mark: :user_entry,
-                        create_url: '/read_entries',
-                        delete_url: "/read_entries/#{user_entry&.id}",
+                        create_url: entry_reads_path(entry),
+                        delete_url: entry_read_path(entry),
                              label: 'Mark as Read',
                     labelForRemove: 'Mark as Unread',
                              entry: entry,

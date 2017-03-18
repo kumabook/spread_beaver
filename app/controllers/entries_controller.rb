@@ -1,6 +1,7 @@
 class EntriesController < ApplicationController
   include LikableController
   include SavableController
+  include OpenableController
 
   before_action :set_entry    , only: [:show, :show_feedly, :edit, :update, :destroy]
   before_action :set_feed     , only: [:index]
@@ -37,6 +38,14 @@ class EntriesController < ApplicationController
   end
 
   def show
+  end
+
+  def read
+    open
+  end
+
+  def unread
+    unopen
   end
 
   def show_feedly
