@@ -11,12 +11,41 @@ class V3::StreamsController < V3::ApiController
   before_action :set_category       , only: [:index]
   before_action :set_need_visual    , only: [:index]
   before_action :set_page           , only: [:index]
+  before_action :set_entries        , only: [:index]
 
   LATEST_ENTRIES_PER_FEED = Setting.latest_entries_per_feed
   DURATION                = Setting.duration_for_common_stream.days
   DURATION_FOR_RANKING    = Setting.duration_for_ranking.days
 
   def index
+    continuation = nil
+    if @entries.respond_to?(:total_count)
+      if @entries.total_count >= @per_page * @page + 1
+        continuation = self.class.continuation(@page + 1, @per_page)
+      end
+    end
+    # TODO: currently visual is json string,
+    # so we cannot check if the entry has visual or not.
+    # Visual table should be created and check with where clause
+    if @need_visual
+      @entries = @entries.select { |entry| entry.has_visual? }
+    end
+    h = {
+      direction: "ltr",
+      continuation: continuation,
+      alternate: [],
+      items: @entries.map { |en| en.as_content_json }
+    }
+    if @feed.present?
+      h[:updated] = @feed.updated_at.to_time.to_i * 1000
+      h[:title]   = @feed.title
+    end
+    render json: h, status: 200
+  end
+
+  private
+
+  def set_entries
     if @resource.present?
       case @resource
       when :latest
@@ -67,36 +96,11 @@ class V3::StreamsController < V3::ApiController
       @issue   = @journal.current_issue
       @entries = @issue.stream_entries(page: @page, per_page: @per_page)
     end
-    continuation = nil
     if @entries.nil?
       render json: {message: "Not found" }, status: 404
       return
     end
-    if @entries.respond_to?(:total_count)
-      if @entries.total_count >= @per_page * @page + 1
-        continuation = self.class.continuation(@page + 1, @per_page)
-      end
-    end
-    # TODO: currently visual is json string,
-    # so we cannot check if the entry has visual or not.
-    # Visual table should be created and check with where clause
-    if @need_visual
-      @entries = @entries.select { |entry| entry.has_visual? }
-    end
-    h = {
-      direction: "ltr",
-      continuation: continuation,
-      alternate: [],
-      items: @entries.map { |en| en.as_content_json }
-    }
-    if @feed.present?
-      h[:updated] = @feed.updated_at.to_time.to_i * 1000
-      h[:title]   = @feed.title
-    end
-    render json: h, status: 200
   end
-
-  private
 
   def set_stream_id
     @stream_id = CGI.unescape params[:id] if params[:id].present?
