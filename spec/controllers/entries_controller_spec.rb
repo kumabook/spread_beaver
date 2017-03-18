@@ -152,4 +152,20 @@ describe EntriesController, type: :controller do
     it { expect(response).to redirect_to entries_url }
     it { expect(SavedEntry.find_by(entry_id: entry.id, user_id: user.id)).to be_nil }
   end
+
+  describe "#read" do
+    before { post :read, params: { entry_id: entry.id }}
+    it { expect(response).to redirect_to entries_url }
+    it { expect(ReadEntry.find_by(entry_id: entry.id, user_id: user.id)).not_to be_nil }
+  end
+
+  describe "#unread" do
+    before do
+      like = ReadEntry.create!(user_id:  user.id,
+                                entry_id: entry.id)
+      delete :unread, params: { id: like.id, entry_id: entry.id }
+    end
+    it { expect(response).to redirect_to entries_url }
+    it { expect(ReadEntry.find_by(entry_id: entry.id, user_id: user.id)).to be_nil }
+  end
 end
