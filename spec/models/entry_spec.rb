@@ -75,7 +75,6 @@ describe Entry do
   end
 
   context "Entry.popular_entries_within_period" do
-    feed_num = 5
     before(:each) do
       DatabaseCleaner.start
       user     = FactoryGirl.create(:member)
