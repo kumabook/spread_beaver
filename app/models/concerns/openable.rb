@@ -10,8 +10,8 @@ module Openable
     base.has_many :opened_users, through: opens, source: :user
     base.alias_attribute :opens, opens
 
-    base.scope :most_open, ->        { eager_load(:users).order('opened_count DESC') }
-    base.scope :opened,    ->  (uid) { eager_load(:users).where(users: { id: uid }) }
+    base.scope :hot,    ->        { joins(:users).order('opened_count DESC') }
+    base.scope :opened, -> (user) { joins(opens).where(opens => { user_id: user.id }) }
     base.extend(ClassMethods)
   end
 

@@ -35,8 +35,16 @@ class V3::Streams::EnclosuresController < V3::ApiController
                                                              per_page: @per_page)
     when :liked
       @items = @enclosure_class.page(@page)
-                    .per(@per_page)
-                    .liked(current_resource_owner.id)
+                               .per(@per_page)
+                               .liked(@user)
+    when :saved
+      @items = @enclosure_class.page(@page)
+                               .per(@per_page)
+                               .saved(@user)
+    when :opened
+      @items = @enclosure_class.page(@page)
+                               .per(@per_page)
+                               .opened(@user)
     else
       render json: {}, status: :not_found
       return
@@ -63,16 +71,24 @@ class V3::Streams::EnclosuresController < V3::ApiController
 
   def set_global_resource
     str = CGI.unescape params[:id] if params[:id].present?
-    if str.match(/tag\/global\.latest/) || str.match(/playlist\/global\.latest/)
+    if str.match(/(tag|playlist)\/global\.latest/)
       @resource = :latest
-    elsif str.match(/tag\/global\.hot/) || str.match(/playlist\/global\.hot/)
+    elsif str.match(/(tag|playlist)\/global\.hot/)
       @resource = :hot
-    elsif str.match(/tag\/global\.popular/) || str.match(/playlist\/global\.popular/)
+    elsif str.match(/(tag|playlist)\/global\.popular/)
       @resource = :popular
-    elsif str.match(/user\/.*\/tag\/global\.all/) || str.match(/user\/.*\/playlist\/global\.all/)
+    elsif match_data = str.match(/user\/(.*)\/(tag|playlist)\/global\.all/)
       @resource = :all
-    elsif str.match(/user\/.*\/tag\/global\.liked/) || str.match(/user\/.*\/playlist\/global\.liked/)
+      @user     = User.find(match_data[1])
+    elsif match_data = str.match(/user\/(.*)\/(tag|playlist)\/global\.liked/)
       @resource = :liked
+      @user     = User.find(match_data[1])
+    elsif match_data = str.match(/user\/(.*)\/(tag|playlist)\/global\.saved/)
+      @resource = :saved
+      @user     = User.find(match_data[1])
+    elsif match_data = str.match(/user\/(.*)\/(tag|playlist)\/global\.opened/)
+      @resource = :opened
+      @user     = User.find(match_data[1])
     end
   end
 

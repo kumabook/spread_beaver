@@ -10,8 +10,8 @@ module Likable
     base.has_many :users, through: likes
     base.alias_attribute :likes, likes
 
-    base.scope :popular, ->        { eager_load(:users).order('saved_count DESC') }
-    base.scope :liked,   ->  (uid) { eager_load(:users).where(users: { id: uid }) }
+    base.scope :popular, ->        { joins(:users).order('liked_count DESC') }
+    base.scope :liked,   -> (user) { joins(:users).where(users: { id: user.id }) }
     base.extend(ClassMethods)
   end
 

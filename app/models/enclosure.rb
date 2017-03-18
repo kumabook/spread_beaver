@@ -26,8 +26,8 @@ class Enclosure < ApplicationRecord
   end
 
   def self.set_marks(user, enclosures)
-    liked_hash  = Enclosure.user_liked_hash(user , enclosures)
-    saved_hash  = Enclosure.user_saved_hash(user , enclosures)
+    liked_hash  = Enclosure.user_liked_hash( user, enclosures)
+    saved_hash  = Enclosure.user_saved_hash( user, enclosures)
     opened_hash = Enclosure.user_opened_hash(user, enclosures)
     enclosures.each do |e|
       e.is_liked  = liked_hash[e]

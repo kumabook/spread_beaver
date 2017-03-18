@@ -71,10 +71,18 @@ class V3::StreamsController < V3::ApiController
                                                        to:       to,
                                                        page:     @page,
                                                        per_page: @per_page)
+      when :liked
+        @entries = Entry.page(@page)
+                        .per(@per_page)
+                        .liked(@user)
       when :saved
         @entries = Entry.page(@page)
                         .per(@per_page)
-                        .saved(current_resource_owner)
+                        .saved(@user)
+      when :read
+        @entries = Entry.page(@page)
+                        .per(@per_page)
+                        .read(@user)
       else
         render json: {}, status: :not_found
         return
@@ -149,10 +157,18 @@ class V3::StreamsController < V3::ApiController
       @resource = :hot
     elsif @stream_id.match(/tag\/global\.popular/)
       @resource = :popular
-    elsif @stream_id.match(/user\/.*\/category\/global\.all/)
+    elsif match_data = @stream_id.match(/user\/(.*)\/category\/global\.all/)
       @resource = :all
-    elsif @stream_id.match(/user\/.*\/tag\/global\.saved/)
+      @user     = User.find(match_data[1])
+    elsif match_data = @stream_id.match(/user\/(.*)\/tag\/global\.liked/)
+      @resource = :liked
+      @user     = User.find(match_data[1])
+    elsif match_data = @stream_id.match(/user\/(.*)\/tag\/global\.saved/)
       @resource = :saved
+      @user     = User.find(match_data[1])
+    elsif match_data = @stream_id.match(/user\/(.*)\/tag\/global\.read/)
+      @resource = :read
+      @user     = User.find(match_data[1])
     end
   end
 
