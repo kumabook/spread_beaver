@@ -8,6 +8,10 @@ RSpec.describe "Album Stream api", type: :request, autodoc: true do
       @feed    = FactoryGirl.create(:feed)
       (0...ITEM_NUM).to_a.each { |n|
         d = (n * 150).days.ago
+        SavedEnclosure.create! user:           @user,
+                               enclosure:      @feed.entries[0].albums[n],
+                               enclosure_type: Album.name,
+                               created_at:     d
         LikedEnclosure.create! user:           @user,
                                enclosure:      @feed.entries[0].albums[n],
                                enclosure_type: Album.name,
@@ -59,6 +63,33 @@ RSpec.describe "Album Stream api", type: :request, autodoc: true do
           headers: headers_for_login_user_api
       result = JSON.parse @response.body
       expect(result['items'].count).to eq(1)
+      expect(result['continuation']).to be_nil
+    end
+
+    it "gets liked albums" do
+      resource = CGI.escape "user/#{@user.id}/tag/global.liked"
+      get "/v3/streams/#{resource}/albums/contents",
+          headers: headers_for_login_user_api
+      result = JSON.parse @response.body
+      expect(result['items'].count).to eq(ITEM_NUM)
+      expect(result['continuation']).to be_nil
+    end
+
+    it "gets saved albums" do
+      resource = CGI.escape "user/#{@user.id}/tag/global.saved"
+      get "/v3/streams/#{resource}/albums/contents",
+          headers: headers_for_login_user_api
+      result = JSON.parse @response.body
+      expect(result['items'].count).to eq(ITEM_NUM)
+      expect(result['continuation']).to be_nil
+    end
+
+    it "gets opened albums" do
+      resource = CGI.escape "user/#{@user.id}/tag/global.opened"
+      get "/v3/streams/#{resource}/albums/contents",
+          headers: headers_for_login_user_api
+      result = JSON.parse @response.body
+      expect(result['items'].count).to eq(ITEM_NUM)
       expect(result['continuation']).to be_nil
     end
 

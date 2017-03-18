@@ -21,6 +21,11 @@ RSpec.describe "Streams api", type: :request, autodoc: true do
                                   entries: @feed.entries
       @keyword.update! entries: @feed.entries
       (0...ITEM_NUM).to_a.each { |n|
+        LikedEntry.create! user: @user,
+                           entry: @feed.entries[n],
+                           created_at: 1.days.ago
+      }
+      (0...ITEM_NUM).to_a.each { |n|
         SavedEntry.create! user: @user,
                            entry: @feed.entries[n],
                            created_at: 1.days.ago
@@ -70,6 +75,24 @@ RSpec.describe "Streams api", type: :request, autodoc: true do
 
     it "gets saved entries" do
       resource = CGI.escape "user/#{@user.id}/tag/global.saved"
+      get "/v3/streams/#{resource}/contents",
+          headers: headers_for_login_user_api
+      result = JSON.parse @response.body
+      expect(result['items'].count).to eq(ITEM_NUM)
+      expect(result['continuation']).to be_nil
+    end
+
+    it "gets liked entries" do
+      resource = CGI.escape "user/#{@user.id}/tag/global.liked"
+      get "/v3/streams/#{resource}/contents",
+          headers: headers_for_login_user_api
+      result = JSON.parse @response.body
+      expect(result['items'].count).to eq(ITEM_NUM)
+      expect(result['continuation']).to be_nil
+    end
+
+    it "gets read entries" do
+      resource = CGI.escape "user/#{@user.id}/tag/global.read"
       get "/v3/streams/#{resource}/contents",
           headers: headers_for_login_user_api
       result = JSON.parse @response.body
