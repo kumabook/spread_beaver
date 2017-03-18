@@ -1,12 +1,17 @@
 require 'rest-client'
 
-user = User.first_or_create(email: 'admin@example.com',
-                             type: User::ADMIN,
-                         password: 'admin',
-                         password_confirmation: 'admin')
-
-puts "Create admin user as id: #{user.id}"
-
+admin = User.find_or_create_by(email: 'admin@example.com', type: Admin.name) do |user|
+  user.password              = 'admin'
+  user.password_confirmation = 'admin'
+  user.save!
+end
+puts "Create admin user as id: #{admin.id}"
+test_user = User.find_or_create_by(email: 'test_member@example.com', type: Member.name) do |user|
+  user.password              = 'test_memeber'
+  user.password_confirmation = 'test_memeber'
+  user.save!
+end
+puts "Create test member as id: #{test_user.id}"
 
 app = Doorkeeper::Application.find_or_create_by name: "ios",
                                                 redirect_uri: "urn:ietf:wg:oauth:2.0:oob"
