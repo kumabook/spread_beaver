@@ -77,18 +77,18 @@ class V3::Streams::EnclosuresController < V3::ApiController
       @resource = :hot
     elsif str.match(/(tag|playlist)\/global\.popular/)
       @resource = :popular
-    elsif match_data = str.match(/user\/(.*)\/(tag|playlist)\/global\.all/)
+    elsif str.match(/user\/(.*)\/(tag|playlist)\/global\.all/)
       @resource = :all
-      @user     = User.find(match_data[1])
-    elsif match_data = str.match(/user\/(.*)\/(tag|playlist)\/global\.liked/)
+      @user     = User.find($1)
+    elsif str.match(/user\/(.*)\/(tag|playlist)\/global\.liked/)
       @resource = :liked
-      @user     = User.find(match_data[1])
-    elsif match_data = str.match(/user\/(.*)\/(tag|playlist)\/global\.saved/)
+      @user     = User.find($1)
+    elsif str.match(/user\/(.*)\/(tag|playlist)\/global\.saved/)
       @resource = :saved
-      @user     = User.find(match_data[1])
-    elsif match_data = str.match(/user\/(.*)\/(tag|playlist)\/global\.opened/)
+      @user     = User.find($1)
+    elsif str.match(/user\/(.*)\/(tag|playlist)\/global\.opened/)
       @resource = :opened
-      @user     = User.find(match_data[1])
+      @user     = User.find($1)
     end
   end
 
