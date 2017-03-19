@@ -2,11 +2,11 @@ FactoryGirl.define do
   factory :normal_entry, class: Entry do
     sequence(:id) { |n| "entry#{n}" }
     sequence(:title) { |n| "entry #{n}" }
-    content         "{\"content\":\"\"}"
+    content         ({content: ""}).to_json()
     summary         "null"
     author          nil
     alternate       "[]"
-    origin          "{}"
+    origin          ({streamId: "http://example.com/rss"}).to_json()
     visual          '{"url": "http://test.jpg"}'
     categories      "null"
     unread          true

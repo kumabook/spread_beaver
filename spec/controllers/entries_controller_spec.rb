@@ -12,7 +12,7 @@ describe EntriesController, type: :controller do
       author:          {},
 
       alternate:       {},
-      origin:          {},
+      origin:          { 'streamId': 'feed/http://exmpale.com/rss'},
       visual:          {},
       categories:      {},
       unread:          true,

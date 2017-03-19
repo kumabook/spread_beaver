@@ -29,6 +29,7 @@ class FeedsController < ApplicationController
     @feed = Feed.find_or_create_with_ids(["feed/#{feed_params[:id]}"]).first
     respond_to do |format|
       if @feed.nil?
+        @feed = Feed.new
         flash[:notice] = 'The url is invalid'
         format.html { render :new }
         format.json { render json: @feed.errors, status: :unprocessable_entity }

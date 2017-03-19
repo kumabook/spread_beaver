@@ -14,6 +14,7 @@ RSpec.configure do |config|
   config.use_transactional_fixtures = true
   config.infer_spec_type_from_file_location!
 
+  config.render_views
   config.filter_rails_from_backtrace!
   config.include Sorcery::TestHelpers::Rails::Controller, type: :controller
   config.include ApiMacros, :type => :request
