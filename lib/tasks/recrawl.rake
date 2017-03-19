@@ -4,7 +4,7 @@ task :recrawl => :environment do
 
   Entry.find_each do |entry|
     begin
-      playlistified_entry = entry.playtified_entry(force: true)
+      playlistified_entry = entry.playlistify(force: true)
     rescue
       Rails.logger.info("Entry #{entry.id} no longer exist")
       next
