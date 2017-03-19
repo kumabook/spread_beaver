@@ -3,7 +3,7 @@ require 'slack'
 
 desc "Crawl sites of feeds and collect latest entries"
 task :crawl => :environment do
-  puts "Start crawling with feedly api..."
+  Rails.logger.info("Start crawling with feedly api...")
   notify_slack "Start crawling with feedly api..."
   results = Feed.fetch_all_latest_entries
   message = "Successfully crawling\n"
@@ -12,9 +12,9 @@ task :crawl => :environment do
   }.map { |f|
     "Create #{f[:entries].count} entries and #{f[:tracks].count} tracks from #{f[:feed].id}" }.join("\n")
 
-  puts "Finish crawling."
+  Rails.logger.info("Finish crawling.")
 
-  puts "Clearing cache entries..."
+  Rails.logger.info("Clearing cache entries...")
   Topic.all.each do |topic|
     topic.delete_cache_entries
     topic.delete_cache_mix_entries
@@ -23,10 +23,10 @@ task :crawl => :environment do
 
   notify_slack message
 
-  puts "Updating entry visual..."
+  Rails.logger.info("Updating entry visual...")
   Entry.update_visuals
-  puts "Updated entry visual."
-  puts "Finish!"
+  Rails.logger.info("Updated entry visual.")
+  Rails.logger.info("Finish!")
 end
 
 desc "Create latest entries as daily top keyword"
