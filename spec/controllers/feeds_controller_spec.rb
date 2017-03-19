@@ -7,7 +7,7 @@ describe FeedsController, type: :controller do
   let! (:feed2 ) { Feed.create!(id: "feed/http://test2.com/rss", title: "feed") }
   let! (:topic ) { Topic.create!(label: "topic", description: "desc")}
   let  (:new_id) { "http://new.com/rss" }
-  let  (:feedly_feed) { FeedlrHelper::feed(new_id) }
+  let  (:feedly_feed) { FeedlrHelper::feed("feed/#{new_id}") }
 
   before(:each) do
     login_user user

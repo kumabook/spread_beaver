@@ -4,10 +4,10 @@ require 'feedlr_helper'
 
 describe Entry do
   it "is created by feeldr entry" do
-    feedId = 'feed/http://test.com/rss'
-    entry  = FeedlrHelper::entry(feedId)
-    feed   = Feed.first_or_create(id: feedId)
-    e      = Entry.first_or_create_by_feedlr(entry, feed)
+    feed_id = 'feed/http://test.com/rss'
+    entry   = FeedlrHelper::entry(feed_id)
+    feed    = Feed.first_or_create(id: feed_id)
+    e       = Entry.first_or_create_by_feedlr(entry, feed)
     expect(e).not_to be_nil()
     expect(e.published).not_to be_nil()
     expect(e.crawled).not_to be_nil()

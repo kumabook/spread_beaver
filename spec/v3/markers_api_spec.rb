@@ -7,10 +7,6 @@ RSpec.describe "Markers api", type: :request, autodoc: true do
       setup()
       login()
       @feed = FactoryGirl.create(:feed)
-      @feed.entries[0].tracks[0...MARKED_NUM].each { |track|
-        LikedEnclosure.create! user: @user,
-                               enclosure: track
-      }
       @feed.entries[0...MARKED_NUM].each { |entry|
         SavedEntry.create! user: @user,
                            entry: entry
@@ -18,6 +14,21 @@ RSpec.describe "Markers api", type: :request, autodoc: true do
       @feed.entries[0...MARKED_NUM].each { |entry|
         ReadEntry.create! user: @user,
                           entry: entry
+      }
+      @feed.entries[0].tracks[0...MARKED_NUM].each { |track|
+        LikedEnclosure.create!(user:           @user,
+                               enclosure:      track,
+                               enclosure_type: Track.name)
+      }
+      @feed.entries[0].tracks[0...MARKED_NUM].each { |track|
+        SavedEnclosure.create!(user:           @user,
+                               enclosure:      track,
+                               enclosure_type: Track.name)
+      }
+      @feed.entries[0].tracks[0...MARKED_NUM].each { |track|
+        OpenedEnclosure.create!(user:           @user,
+                                enclosure:      track,
+                                enclosure_type: Track.name)
       }
     end
 
@@ -102,6 +113,62 @@ RSpec.describe "Markers api", type: :request, autodoc: true do
            headers: headers_for_login_user
       expect(@response.status).to eq(200)
       after_count = Track.joins(:likers).where(users: { id: @user.id }).count
+      expect(after_count).to eq(count - 1)
+    end
+
+    it "marks tracks as saved" do
+      count = Track.joins(:saved_users).where(users: { id: @user.id }).count
+      post "/v3/markers",
+           params: {
+             type: 'tracks',
+             action: 'markAsSaved',
+             trackIds: [@feed.entries[0].tracks[MARKED_NUM + 1].id]
+           },
+           headers: headers_for_login_user
+      expect(@response.status).to eq(200)
+      after_count = Track.joins(:saved_users).where(users: { id: @user.id }).count
+      expect(after_count).to eq(count + 1)
+    end
+
+    it "marks tracks as unsaved" do
+      count = Track.joins(:saved_users).where(users: { id: @user.id }).count
+      post "/v3/markers",
+           params: {
+             type: 'tracks',
+             action: 'markAsUnsaved',
+             trackIds: [@feed.entries[0].tracks[0].id]
+           },
+           headers: headers_for_login_user
+      expect(@response.status).to eq(200)
+      after_count = Track.joins(:saved_users).where(users: { id: @user.id }).count
+      expect(after_count).to eq(count - 1)
+    end
+
+    it "marks tracks as opened" do
+      count = Track.joins(:openers).where(users: { id: @user.id }).count
+      post "/v3/markers",
+           params: {
+             type: 'tracks',
+             action: 'markAsOpened',
+             trackIds: [@feed.entries[0].tracks[MARKED_NUM + 1].id]
+           },
+           headers: headers_for_login_user
+      expect(@response.status).to eq(200)
+      after_count = Track.joins(:openers).where(users: { id: @user.id }).count
+      expect(after_count).to eq(count + 1)
+    end
+
+    it "marks tracks as unopened" do
+      count = Track.joins(:openers).where(users: { id: @user.id }).count
+      post "/v3/markers",
+           params: {
+             type: 'tracks',
+             action: 'markAsUnopened',
+             trackIds: [@feed.entries[0].tracks[0].id]
+           },
+           headers: headers_for_login_user
+      expect(@response.status).to eq(200)
+      after_count = Track.joins(:openers).where(users: { id: @user.id }).count
       expect(after_count).to eq(count - 1)
     end
   end

@@ -6,6 +6,10 @@ module PinkSpiderMacros
     album    = PinkSpiderHelper::album_hash
     playlist = PinkSpiderHelper::playlist_hash
 
+    allow_any_instance_of(PinkSpider).to receive(:playlistify) do
+      PinkSpiderHelper.entry_hash
+    end
+
     allow_any_instance_of(PinkSpider).to receive(:fetch_track) do |this, id|
       track["id"] = id
       track
