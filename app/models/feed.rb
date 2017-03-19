@@ -88,9 +88,9 @@ class Feed < ApplicationRecord
     end
   end
 
-  def self.find_or_create_with_ids(feedIds)
-    client = Feedlr::Client.new
-    feeds = client.feeds(feedIds)
+  def self.find_or_create_with_ids(feed_ids)
+    client = Feedlr::Client.new(sandbox: false)
+    feeds = client.feeds(feed_ids)
     return [] if feeds.nil?
     feeds.map do |feed|
       Feed.first_or_create_by_feedlr(feed)
