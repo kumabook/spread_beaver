@@ -10,7 +10,7 @@ describe 'rake task crawl' do
     Rake::Task.define_task(:environment)
   end
 
-  before(:each) do
+  before do
     allow_any_instance_of(Feedlr::Client).to receive(:feeds) do |this, ids|
       ids.map {|id| FeedlrHelper::feed(id) }
     end
@@ -29,6 +29,22 @@ describe 'rake task crawl' do
 
   describe 'crawl' do
     let(:task) { 'crawl' }
+    it 'is succeed.' do
+      expect(@rake[task].invoke).to be_truthy
+    end
+  end
+
+  describe 'create_daily_issue' do
+    before do
+      FactoryGirl.create(:feed)
+      Journal.create!(label: 'highlight')
+      topic       = Topic.create!(label: 'highlight')
+      feed        = Feed.first
+      feed.topics = [topic]
+      feed.save!
+    end
+
+    let(:task) { 'create_daily_issue' }
     it 'is succeed.' do
       expect(@rake[task].invoke).to be_truthy
     end
