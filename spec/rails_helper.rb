@@ -17,6 +17,10 @@ RSpec.configure do |config|
   config.filter_rails_from_backtrace!
   config.include Sorcery::TestHelpers::Rails::Controller, type: :controller
   config.include ApiMacros, :type => :request
+  config.include PinkSpiderMacros
+  config.before(:each) do
+    mock_up_pink_spider
+  end
 end
 
 PER_PAGE           = Kaminari::config::default_per_page
