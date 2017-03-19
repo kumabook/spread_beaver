@@ -1,7 +1,14 @@
+require 'securerandom'
+
 class FeedlrHelper
-  def self.feed(url)
+  def self.cursor
     Hashie::Mash.new(
-      id:     "feed/#{url}",
+      items: [entry(SecureRandom.uuid)]
+    )
+  end
+  def self.feed(id)
+    Hashie::Mash.new(
+      id:     id,
       title: 'title',
       description: '',
       website:     '',
@@ -37,7 +44,7 @@ class FeedlrHelper
     visual.url         = "http://test.com/1/img.jpg"
 
     entry                = Feedlr::Base.new()
-    entry.alternate      = alternate
+    entry.alternate      = [alternate]
     entry.content        = content
     entry.crawled        = 1458303643798
     entry.engagement     = 143
