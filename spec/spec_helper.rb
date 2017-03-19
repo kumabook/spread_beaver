@@ -1,6 +1,5 @@
 require 'factory_girl'
 require 'coveralls'
-require 'pink_spider'
 require 'simplecov'
 
 Coveralls.wear!('rails')
@@ -18,22 +17,5 @@ RSpec.configure do |config|
   config.mock_with :rspec do |mocks|
     mocks.verify_partial_doubles = true
   end
-
-  config.before(:suite) do
-    DatabaseCleaner.strategy = :truncation
-    FactoryGirl.find_definitions
-  end
-
-  config.before(:all) do
-    DatabaseCleaner.start
-    DatabaseCleaner[:redis].start
-  end
-
-  config.after(:all) do
-    DatabaseCleaner.clean
-    DatabaseCleaner[:redis].clean
-  end
-
-  config.include FactoryGirl::Syntax::Methods
 end
 
