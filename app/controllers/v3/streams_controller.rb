@@ -157,18 +157,18 @@ class V3::StreamsController < V3::ApiController
       @resource = :hot
     elsif @stream_id.match(/tag\/global\.popular/)
       @resource = :popular
-    elsif match_data = @stream_id.match(/user\/(.*)\/category\/global\.all/)
+    elsif @stream_id.match(/user\/(.*)\/category\/global\.all/)
       @resource = :all
-      @user     = User.find(match_data[1])
-    elsif match_data = @stream_id.match(/user\/(.*)\/tag\/global\.liked/)
+      @user     = User.find($1)
+    elsif @stream_id.match(/user\/(.*)\/tag\/global\.liked/)
       @resource = :liked
-      @user     = User.find(match_data[1])
-    elsif match_data = @stream_id.match(/user\/(.*)\/tag\/global\.saved/)
+      @user     = User.find($1)
+    elsif @stream_id.match(/user\/(.*)\/tag\/global\.saved/)
       @resource = :saved
-      @user     = User.find(match_data[1])
-    elsif match_data = @stream_id.match(/user\/(.*)\/tag\/global\.read/)
+      @user     = User.find($1)
+    elsif @stream_id.match(/user\/(.*)\/tag\/global\.read/)
       @resource = :read
-      @user     = User.find(match_data[1])
+      @user     = User.find($1)
     end
   end
 
