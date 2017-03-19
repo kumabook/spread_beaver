@@ -2,6 +2,7 @@
 class V3::Streams::EnclosuresController < V3::ApiController
   include Pagination
   before_action :doorkeeper_authorize!
+  before_action :set_stream_id      , only: [:index]
   before_action :set_global_resource, only: [:index]
   before_action :set_enclosure_class, only: [:index]
   before_action :set_page           , only: [:index]
@@ -69,24 +70,28 @@ class V3::Streams::EnclosuresController < V3::ApiController
     render json: h, status: 200
   end
 
+  def set_stream_id
+    @stream_id = CGI.unescape params[:id] if params[:id].present?
+  end
+
   def set_global_resource
-    str = CGI.unescape params[:id] if params[:id].present?
-    if str.match(/(tag|playlist)\/global\.latest/)
+    case @stream_id
+    when /(tag|playlist)\/global\.latest/
       @resource = :latest
-    elsif str.match(/(tag|playlist)\/global\.hot/)
+    when /(tag|playlist)\/global\.hot/
       @resource = :hot
-    elsif str.match(/(tag|playlist)\/global\.popular/)
+    when /(tag|playlist)\/global\.popular/
       @resource = :popular
-    elsif str.match(/user\/(.*)\/(tag|playlist)\/global\.all/)
+    when /user\/(.*)\/(tag|playlist)\/global\.all/
       @resource = :all
       @user     = User.find($1)
-    elsif str.match(/user\/(.*)\/(tag|playlist)\/global\.liked/)
+    when /user\/(.*)\/(tag|playlist)\/global\.liked/
       @resource = :liked
       @user     = User.find($1)
-    elsif str.match(/user\/(.*)\/(tag|playlist)\/global\.saved/)
+    when /user\/(.*)\/(tag|playlist)\/global\.saved/
       @resource = :saved
       @user     = User.find($1)
-    elsif str.match(/user\/(.*)\/(tag|playlist)\/global\.opened/)
+    when /user\/(.*)\/(tag|playlist)\/global\.opened/
       @resource = :opened
       @user     = User.find($1)
     end

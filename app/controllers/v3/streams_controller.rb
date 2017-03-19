@@ -151,22 +151,23 @@ class V3::StreamsController < V3::ApiController
   end
 
   def set_global_resource
-    if @stream_id.match(/tag\/global\.latest/)
+    case @stream_id
+    when /tag\/global\.latest/
       @resource = :latest
-    elsif @stream_id.match(/tag\/global\.hot/)
+    when /tag\/global\.hot/
       @resource = :hot
-    elsif @stream_id.match(/tag\/global\.popular/)
+    when /tag\/global\.popular/
       @resource = :popular
-    elsif @stream_id.match(/user\/(.*)\/category\/global\.all/)
+    when /user\/(.*)\/category\/global\.all/
       @resource = :all
       @user     = User.find($1)
-    elsif @stream_id.match(/user\/(.*)\/tag\/global\.liked/)
+    when /user\/(.*)\/tag\/global\.liked/
       @resource = :liked
       @user     = User.find($1)
-    elsif @stream_id.match(/user\/(.*)\/tag\/global\.saved/)
+    when /user\/(.*)\/tag\/global\.saved/
       @resource = :saved
       @user     = User.find($1)
-    elsif @stream_id.match(/user\/(.*)\/tag\/global\.read/)
+    when /user\/(.*)\/tag\/global\.read/
       @resource = :read
       @user     = User.find($1)
     end
