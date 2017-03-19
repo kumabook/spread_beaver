@@ -1,28 +1,13 @@
 require 'rails_helper'
+require 'feedlr_helper'
 
 describe FeedsController, type: :controller do
   let  (:user  ) { FactoryGirl.create(:admin) }
-  let  (:feed  ) { Feed.create!(id: "feed/http://test.com/rss" , title: "feed") }
-  let  (:feed2 ) { Feed.create!(id: "feed/http://test2.com/rss", title: "feed") }
+  let! (:feed  ) { Feed.create!(id: "feed/http://test.com/rss" , title: "feed") }
+  let! (:feed2 ) { Feed.create!(id: "feed/http://test2.com/rss", title: "feed") }
   let! (:topic ) { Topic.create!(label: "topic", description: "desc")}
   let  (:new_id) { "http://new.com/rss" }
-  let  (:feedly_feed) {
-    Hashie::Mash.new(
-      id:     "feed/#{new_id}",
-      title: 'title',
-      description: '',
-      website:     '',
-      visualUrl:   '',
-      coverUrl:    '',
-      iconUrl:     '',
-      language:    '',
-      partial:     '',
-      coverColor:  '',
-      contentType: '',
-      subscribers: 10,
-      velocity:    10
-    )
-  }
+  let  (:feedly_feed) { FeedlrHelper::feed(new_id) }
 
   before(:each) do
     login_user user
