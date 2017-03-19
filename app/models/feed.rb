@@ -118,17 +118,12 @@ class Feed < ApplicationRecord
   end
 
   def update_visuals_with_feedlr(feed, force=false)
-    if feed.visualUrl.present? && (self.visualUrl.blank? || force)
-      logger.info("Update visualUrl of #{feed.id}: #{feed.visualUrl}")
-      self.visualUrl = feed.visualUrl
-    end
-    if feed.coverUrl.present? && (self.coverUrl.blank? || force)
-      logger.info("Update coverUrl of #{feed.id}: #{feed.coverUrl}")
-      self.coverUrl = feed.coverUrl
-    end
-    if feed.iconUrl.present? && (self.iconUrl.blank? || force)
-      logger.info("Update iconUrl of #{feed.id}: #{feed.iconUrl}")
-      self.iconUrl = feed.iconUrl
+    ["visualUrl", "coverUrl", "iconUrl"].each do |url_method|
+      url = feed.public_send(url_method)
+      if url.present? && (self.public_send(url_method.to_sym).blank? || force)
+        logger.info("Update #{url_method} of #{feed.id}: #{url}")
+        self.public_send("#{url_method}=".to_sym, feed.visualUrl)
+      end
     end
     save
   end
