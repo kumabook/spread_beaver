@@ -9,6 +9,6 @@ class CreateOpenedEnclosures < ActiveRecord::Migration[5.0]
     end
     add_index :opened_enclosures, [:user_id, :enclosure_id], unique: true
 
-    add_column :enclosures, :opened_count, :integer
+    add_column :enclosures, :opened_count, :integer, null: false, default: 0
   end
 end
