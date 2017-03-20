@@ -167,8 +167,8 @@ class Feed < ApplicationRecord
            items:     Album.create_items_of(e, playtified_entry.albums),
            new_items: new_albums
          }].each do |hash|
-          hash.items.each do |item|
-            logger.info("  Create #{type} #{item.content['provider']} #{item.content['title']}")
+          hash[:items].each do |item|
+            logger.info("  Create #{hash[:type]} #{item.content['provider']} #{item.content['title']}")
             hash[:new_items] << item
           end
         end
