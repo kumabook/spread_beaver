@@ -102,7 +102,7 @@ class V3::StreamsController < V3::ApiController
       @entries = @category.stream_entries(page: @page, per_page: @per_page)
     elsif @journal.present?
       @issue   = @journal.current_issue
-      @entries = @issue.stream_entries(page: @page, per_page: @per_page)
+      @entries = @issue.stream_entries(page: @page, per_page: @per_page) if @issue.present?
     end
     if @entries.nil?
       render json: {message: "Not found" }, status: 404
