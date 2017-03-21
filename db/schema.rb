@@ -35,8 +35,8 @@ ActiveRecord::Schema.define(version: 20170317151616) do
     t.integer  "likes_count",   default: 0,       null: false
     t.integer  "entries_count", default: 0,       null: false
     t.string   "type",          default: "Track", null: false
-    t.integer  "saved_count"
-    t.integer  "opened_count"
+    t.integer  "saved_count",   default: 0,       null: false
+    t.integer  "opened_count",  default: 0,       null: false
     t.index ["id"], name: "index_enclosures_on_id", unique: true, using: :btree
     t.index ["type"], name: "index_enclosures_on_type", using: :btree
   end
@@ -68,7 +68,7 @@ ActiveRecord::Schema.define(version: 20170317151616) do
     t.string   "feed_id",                     null: false
     t.integer  "saved_count",     default: 0, null: false
     t.integer  "read_count",      default: 0, null: false
-    t.integer  "likes_count"
+    t.integer  "likes_count",     default: 0, null: false
     t.index ["id"], name: "index_entries_on_id", unique: true, using: :btree
   end
 
