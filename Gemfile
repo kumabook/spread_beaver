@@ -23,6 +23,7 @@ gem 'feedlr'
 gem 'kaminari'
 gem 'active_model_serializers'
 gem 'twitter'
+gem 'encrypted_strings'
 
 gem 'redis-rails'
 gem 'rest-client'

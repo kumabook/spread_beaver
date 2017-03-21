@@ -79,6 +79,7 @@ GEM
     dotenv-rails (2.2.0)
       dotenv (= 2.2.0)
       railties (>= 3.2, < 5.1)
+    encrypted_strings (0.3.3)
     equalizer (0.0.11)
     erubis (2.7.0)
     execjs (2.7.0)
@@ -341,6 +342,7 @@ DEPENDENCIES
   database_cleaner
   doorkeeper
   dotenv-rails
+  encrypted_strings
   factory_girl
   feedlr
   jbuilder
