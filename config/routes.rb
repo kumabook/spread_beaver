@@ -80,6 +80,15 @@ Rails.application.routes.draw do
     use_doorkeeper
   end
 
+  namespace :spotify do
+    resources :tokens, only: [] do
+      collection do
+        post 'swap'   , action: :swap
+        post 'refresh', action: :refresh
+      end
+    end
+  end
+
   namespace :v3 do
     resources :profile, only: [] do
       collection do
