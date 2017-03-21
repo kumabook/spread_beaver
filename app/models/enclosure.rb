@@ -8,7 +8,7 @@ class Enclosure < ApplicationRecord
   has_many :entries         , through:   :entry_enclosures
 
   scope :latest, -> (time) { where("created_at > ?", time).order('created_at DESC') }
-  scope :detail, ->        { eager_load([:likers, :openers]).eager_load(:entries) }
+  scope :detail, ->        { includes([:likers, :openers]).eager_load(:entries) }
 
   def self.create_items_of(entry, items)
     models = items.map do |i|
