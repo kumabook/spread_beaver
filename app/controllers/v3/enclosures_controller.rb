@@ -24,7 +24,7 @@ class V3::EnclosuresController < V3::ApiController
 
   private
     def set_enclosure
-      @enclosure         = @enclosure_class.detail.find(params[:id])
+      @enclosure = @enclosure_class.detail.find(params[:id])
       @enclosure_class.set_contents([@enclosure])
       if current_resource_owner.present?
         @enclosure_class.set_marks(current_resource_owner, [@enclosure])
