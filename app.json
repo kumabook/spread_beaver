@@ -26,6 +26,22 @@
     "PINK_SPIDER_URL": {
       "description": "url to pink-spider server",
       "value": "http://pink-spider.herokuapp.com"
+    },
+    "SLACK_URL": {
+      "description": "slack incoming webhook url",
+      "value": null
+    },
+    "SPOTIFY_CLIENT_ID": {
+      "description": "spotify web api client id",
+      "value": "xxxx"
+    },
+    "SPOTIFY_CLIENT_SECRET": {
+      "description": "spotify web api client secret",
+      "value": "xxxx"
+    },
+    "SPOTIFY_CALLBACK": {
+      "description": "spotify web api client callback URL",
+      "value": "http://localhost"
     }
   },
   "formation": {
