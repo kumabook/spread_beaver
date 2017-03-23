@@ -93,5 +93,15 @@ RSpec.describe "Track Stream api", type: :request, autodoc: true do
       expect(result['continuation']).to be_nil
     end
 
+    context "legacy_user" do
+      it "gets only legacy tracks" do
+        resource = CGI.escape "user/#{@user.id}/playlist/global.liked"
+        get "/v3/streams/#{resource}/tracks/contents",
+            headers: headers_for_legacy_login_user_api
+        result = JSON.parse @response.body
+        expect(result['items'].count).to eq(0)
+        expect(result['continuation']).to be_nil
+      end
+    end
   end
 end

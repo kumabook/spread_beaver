@@ -26,7 +26,16 @@ module ApiMacros
     {
       Authorization: "Bearer #{@token['access_token']}",
       CONTENT_TYPE:  "application/json",
-      ACCEPT:        "application/json"
+      ACCEPT:        "application/json",
+      "X-Api-Version": "1"
+    }
+  end
+
+  def headers_for_legacy_login_user_api
+    {
+      Authorization: "Bearer #{@token['access_token']}",
+      CONTENT_TYPE:  "application/json",
+      ACCEPT:        "application/json",
     }
   end
 

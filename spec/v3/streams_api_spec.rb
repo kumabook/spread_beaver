@@ -58,6 +58,7 @@ RSpec.describe "Streams api", type: :request, autodoc: true do
           headers: headers_for_login_user_api
       result = JSON.parse @response.body
       expect(result['items'].count).to eq(ENTRY_PER_FEED - PER_PAGE)
+      expect(result['items'][0]['enclosure'].count).to eq(12)
       expect(result['continuation']).to be_nil
     end
 
@@ -189,6 +190,17 @@ RSpec.describe "Streams api", type: :request, autodoc: true do
       result['items'].each { |item|
         expect(Entry.find(item['id']).feed).to eq(@subscription.feed)
       }
+    end
+
+    context "legacy_user" do
+      it "gets entries that includes only legacy tracks" do
+        get "/v3/streams/#{@feed.escape.id}/contents",
+            headers: headers_for_legacy_login_user_api
+        result = JSON.parse @response.body
+        expect(result['items'].count).to eq(PER_PAGE)
+        expect(result['items'][0]['enclosure'].count).to eq(0)
+        expect(result['continuation']).not_to be_nil
+      end
     end
   end
 end
