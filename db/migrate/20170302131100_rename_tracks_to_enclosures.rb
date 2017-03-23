@@ -13,6 +13,7 @@ class RenameTracksToEnclosures < ActiveRecord::Migration[5.0]
     add_index :entry_enclosures, :enclosure_type
 
     rename_column :enclosures, :like_count, :likes_count
+    remove_column :enclosures, :title     , :string
     remove_column :enclosures, :provider  , :string
     remove_column :enclosures, :identifier, :string
 
