@@ -38,7 +38,7 @@ class Entry < ApplicationRecord
       .eager_load(:tracks, :albums, :playlists, :keywords)
   }
   scope :latest,        ->     (time) { where("published > ?", time).order('published DESC').with_content }
-  scope :popular,       ->            { joins(:saved_users).order('saved_count DESC').with_content }
+  scope :hot,           ->            { joins(:saved_users).order('read_count DESC').with_content }
   scope :subscriptions, ->       (ss) { where(feed: ss.map { |s| s.feed_id }).order('published DESC').with_content }
   scope :feed,          ->     (feed) { where(feed: feed).order('published DESC').with_content }
   scope :feeds,         ->    (feeds) { where(feed: feeds).order('published DESC').with_content }
