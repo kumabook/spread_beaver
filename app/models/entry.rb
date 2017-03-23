@@ -120,6 +120,17 @@ class Entry < ApplicationRecord
     end
   end
 
+  def self.set_contents_of_enclosures(entries)
+    track_items    = entries.flat_map {|e| e.tracks }
+    album_items    = entries.flat_map {|e| e.albums }
+    playlist_items = entries.flat_map {|e| e.playlists }
+    {
+      tracks:    Track.set_contents(track_items),
+      albums:    Album.set_contents(album_items),
+      playlists: Playlist.set_contents(playlist_items),
+    }
+  end
+
   def url
     items = JSON.load(alternate)
     items.present? && items[0]['href']

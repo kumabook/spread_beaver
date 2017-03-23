@@ -30,6 +30,7 @@ class V3::StreamsController < V3::ApiController
     if @need_visual
       @entries = @entries.select { |entry| entry.has_visual? }
     end
+    Entry.set_contents_of_enclosures(@entries)
     h = {
       direction: "ltr",
       continuation: continuation,

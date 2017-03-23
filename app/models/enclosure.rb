@@ -36,10 +36,12 @@ class Enclosure < ApplicationRecord
   end
 
   def self.set_contents(enclosures)
+    return enclosures if enclosures.blank?
     contents = fetch_contents(enclosures.map {|t| t.id })
     enclosures.each do |e|
       e.content = contents.select {|c| c["id"] == e.id }.first
     end
+    enclosures
   end
 
   def self.set_marks(user, enclosures)
