@@ -1,4 +1,5 @@
 class Enclosure < ApplicationRecord
+  LEGACY_PROVIDERS = ["YouTube", "SoundCloud"]
   attr_accessor :content
   include Likable
   include Savable
@@ -82,6 +83,10 @@ class Enclosure < ApplicationRecord
       items.select { |t| t.id == h[:id] }.first
     }
     PaginatedArray.new(sorted_items, total_count)
+  end
+
+  def legacy?
+    type == Track.name && @content && LEGACY_PROVIDERS.include?(@content['provider'])
   end
 
   def as_content_json
