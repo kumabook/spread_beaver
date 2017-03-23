@@ -61,6 +61,9 @@ class V3::Streams::EnclosuresController < V3::ApiController
       @enclosure_class.set_marks(current_resource_owner, @items)
     end
     @enclosure_class.set_contents(@items)
+    if api_version == 0
+      @items = @items.select {|i| i.legacy? }
+    end
     h = {
       direction: "ltr",
       continuation: continuation,
