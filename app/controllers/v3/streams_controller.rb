@@ -31,11 +31,12 @@ class V3::StreamsController < V3::ApiController
       @entries = @entries.select { |entry| entry.has_visual? }
     end
     Entry.set_contents_of_enclosures(@entries)
+    only_legacy = api_version == 0
     h = {
       direction: "ltr",
       continuation: continuation,
       alternate: [],
-      items: @entries.map { |en| en.as_content_json }
+      items: @entries.map { |en| en.as_content_json(only_legacy: only_legacy) }
     }
     if @feed.present?
       h[:updated] = @feed.updated_at.to_time.to_i * 1000

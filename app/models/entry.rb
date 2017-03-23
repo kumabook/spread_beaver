@@ -237,12 +237,13 @@ class Entry < ApplicationRecord
     h
   end
 
-  def as_content_json
+  def as_content_json(only_legacy: false)
     hash               = as_json
     hash['engagement'] = saved_count
     hash['tags']       = nil
     hash['enclosure']  = [tracks, playlists, albums].flat_map do |items|
-      items.map { |item| item.as_enclosure }
+      items.select {|item| !only_legacy || item.legacy? }
+           .map { |item| item.as_enclosure }
     end
     hash
   end
