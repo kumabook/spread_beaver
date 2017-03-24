@@ -178,24 +178,67 @@ RSpec.describe "Markers api", type: :request, autodoc: true do
     context "markAsPlayed" do
       before do
         entries[0].tracks = tracks
-        entries[0].tracks[0...MARKED_NUM].each { |track|
-          PlayedEnclosure.create!(user:           @user,
-                                  enclosure:      track,
-                                  enclosure_type: Track.name)
-        }
       end
-      it "marks tracks as played" do
-        count = Track.played(@user).count
-        post "/v3/markers",
-             params: {
-               type: 'tracks',
-               action: 'markAsPlayed',
-               trackIds: [entries[0].tracks[MARKED_NUM + 1].id]
-             },
-             headers: headers_for_login_user
-        expect(@response.status).to eq(200)
-        after_count = Track.played(@user).count
-        expect(after_count).to eq(count + 1)
+      context "first play" do
+        it "marks tracks as played" do
+          count = Track.played(@user).count
+          post "/v3/markers",
+               params: {
+                 type: 'tracks',
+                 action: 'markAsPlayed',
+                 trackIds: [entries[0].tracks[0].id]
+               },
+               headers: headers_for_login_user
+          expect(@response.status).to eq(200)
+          after_count = Track.played(@user).count
+          expect(after_count).to eq(count + 1)
+        end
+      end
+      context "recent play" do
+        before do
+          entries[0].tracks[0...MARKED_NUM].each { |track|
+            PlayedEnclosure.create!(user:           @user,
+                                    enclosure:      track,
+                                    enclosure_type: Track.name)
+          }
+        end
+        it "marks tracks as played" do
+          count = Track.played(@user).count
+          post "/v3/markers",
+               params: {
+                 type: 'tracks',
+                 action: 'markAsPlayed',
+                 trackIds: [entries[0].tracks[0].id]
+               },
+               headers: headers_for_login_user
+          expect(@response.status).to eq(200)
+          after_count = Track.played(@user).count
+          expect(after_count).to eq(count)
+        end
+      end
+      context "old play" do
+        before do
+          entries[0].tracks[0...MARKED_NUM].each { |track|
+            PlayedEnclosure.create!(user:           @user,
+                                    enclosure:      track,
+                                    enclosure_type: Track.name,
+                                    created_at:     1.day.ago,
+                                    updated_at:     1.day.ago)
+          }
+        end
+        it "marks tracks as played" do
+          count = Track.played(@user).count
+          post "/v3/markers",
+               params: {
+                 type: 'tracks',
+                 action: 'markAsPlayed',
+                 trackIds: [entries[0].tracks[0].id]
+               },
+               headers: headers_for_login_user
+          expect(@response.status).to eq(200)
+          after_count = Track.played(@user).count
+          expect(after_count).to eq(count + 1)
+        end
       end
     end
   end
