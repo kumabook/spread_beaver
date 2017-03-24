@@ -2,7 +2,7 @@ require('pink_spider')
 class EnclosuresController < ApplicationController
   include LikableController
   include SavableController
-  include OpenableController
+  include PlayableController
   before_action :set_enclosure, only: [:show, :destroy]
   before_action :set_content  , only: [:show, :edit]
   before_action :set_entry    , only: [:index]
