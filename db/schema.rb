@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170317151616) do
+ActiveRecord::Schema.define(version: 20170324014556) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -35,7 +35,7 @@ ActiveRecord::Schema.define(version: 20170317151616) do
     t.integer  "entries_count", default: 0,       null: false
     t.string   "type",          default: "Track", null: false
     t.integer  "saved_count",   default: 0,       null: false
-    t.integer  "opened_count",  default: 0,       null: false
+    t.integer  "play_count",    default: 0,       null: false
     t.index ["id"], name: "index_enclosures_on_id", unique: true, using: :btree
     t.index ["type"], name: "index_enclosures_on_type", using: :btree
   end
@@ -220,13 +220,13 @@ ActiveRecord::Schema.define(version: 20170317151616) do
     t.index ["uid"], name: "index_oauth_applications_on_uid", unique: true, using: :btree
   end
 
-  create_table "opened_enclosures", force: :cascade do |t|
+  create_table "played_enclosures", force: :cascade do |t|
     t.uuid     "user_id",        null: false
     t.uuid     "enclosure_id",   null: false
     t.string   "enclosure_type", null: false
     t.datetime "created_at",     null: false
     t.datetime "updated_at",     null: false
-    t.index ["user_id", "enclosure_id"], name: "index_opened_enclosures_on_user_id_and_enclosure_id", unique: true, using: :btree
+    t.index ["user_id", "enclosure_id"], name: "index_played_enclosures_on_user_id_and_enclosure_id", using: :btree
   end
 
   create_table "preferences", force: :cascade do |t|
