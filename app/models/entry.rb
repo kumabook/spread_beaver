@@ -159,26 +159,20 @@ class Entry < ApplicationRecord
     visual_url.present? && visual_url != 'none'
   end
 
-  def self.latest_entries(since: 3.days.ago,
-                          entries_per_feed: 3,
-                          page: 1, per_page: nil)
+  def self.latest_items(since: 3.days.ago,
+                        entries_per_feed: 3,
+                        page: 1, per_page: nil)
     entries = Entry.latest(since)
     Mix::mix_up_and_paginate(entries, entries_per_feed, page, per_page)
   end
 
-  def self.popular_entries_within_period(from: nil, to: nil, page: 0, per_page: PER_PAGE)
-    best_entries_within_period(clazz: SavedEntry,
+  def self.popular_items_within_period(from: nil, to: nil, page: 0, per_page: PER_PAGE)
+    best_items_within_period(clazz: SavedEntry,
                                from: from, to: to,
                                per_page: per_page, page: page)
   end
 
-  def self.hot_entries_within_period(from: nil, to: nil, page: 0, per_page: PER_PAGE)
-    best_entries_within_period(clazz: ReadEntry,
-                               from: from, to: to,
-                               page: page, per_page: per_page)
-  end
-
-  def self.best_entries_within_period(clazz: nil, from: nil, to: nil, page: 1, per_page: PER_PAGE)
+  def self.best_items_within_period(clazz: nil, from: nil, to: nil, page: 1, per_page: PER_PAGE)
     raise ArgumentError, "Parameter must be not nil" if from.nil? || to.nil? || clazz.nil?
     user_count_hash = clazz.period(from, to).user_count
     total_count     = user_count_hash.keys.count

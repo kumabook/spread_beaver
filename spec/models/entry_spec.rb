@@ -13,7 +13,7 @@ describe Entry do
     expect(e.crawled).not_to be_nil()
   end
 
-  context "Entry.latest_entries" do
+  context "::latest_items" do
     feed_num = 5
     before(:each) do
       DatabaseCleaner.start
@@ -29,13 +29,13 @@ describe Entry do
       DatabaseCleaner.clean
     end
     it "showes first N entries since specified time" do
-      top_of_last_3_days = Entry.latest_entries(entries_per_feed: 1, since: 3.days.ago)
+      top_of_last_3_days = Entry.latest_items(entries_per_feed: 1, since: 3.days.ago)
       expect(top_of_last_3_days.count).to eq(feed_num)
 
-      top_of_last_1_days = Entry.latest_entries(entries_per_feed: 1, since: 1.days.ago)
+      top_of_last_1_days = Entry.latest_items(entries_per_feed: 1, since: 1.days.ago)
       expect(top_of_last_1_days.count).to eq(0)
 
-      top3_of_last_3_days = Entry.latest_entries(entries_per_feed: 3, since: 3.days.ago)
+      top3_of_last_3_days = Entry.latest_items(entries_per_feed: 3, since: 3.days.ago)
       expect(top3_of_last_3_days.count).to eq(3 * feed_num)
       expect(top3_of_last_3_days[0].feed_id).not_to eq(top3_of_last_3_days[1].feed_id)
       expect(top3_of_last_3_days[0].feed_id).not_to eq(top3_of_last_3_days[2].feed_id)
@@ -43,7 +43,7 @@ describe Entry do
     end
   end
 
-  context "Entry.popular_entries_within_period" do
+  context "::popular_items_within_period" do
     before(:each) do
       DatabaseCleaner.start
       user     = FactoryGirl.create(:member)
@@ -67,13 +67,13 @@ describe Entry do
     end
 
     it "showes popular entries within a certain time period" do
-      all = Entry.popular_entries_within_period(from: 5.years.ago, to: Time.now)
+      all = Entry.popular_items_within_period(from: 5.years.ago, to: Time.now)
       expect(all.count).to eq(ITEM_NUM * 2)
 
-      latest_popular = Entry.popular_entries_within_period(from: 10.days.ago, to: Time.now)
+      latest_popular = Entry.popular_items_within_period(from: 10.days.ago, to: Time.now)
       expect(latest_popular.count).to eq(ITEM_NUM)
 
-      latest_popular = Entry.popular_entries_within_period(from: 1.years.ago, to: 20.days.ago)
+      latest_popular = Entry.popular_items_within_period(from: 1.years.ago, to: 20.days.ago)
       expect(latest_popular.count).to eq(ITEM_NUM)
     end
   end

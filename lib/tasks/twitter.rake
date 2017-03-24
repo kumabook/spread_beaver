@@ -30,7 +30,7 @@ def get_hot_entry_tweet
   duration = Setting.duration_for_ranking.days
   from     = duration.ago
   to       = from + duration
-  entries = Entry.hot_entries_within_period(from: from, to: to)
+  entries = Entry.hot_items_within_period(from: from, to: to)
 
   if entries.blank?
     puts "Not found hot entries."

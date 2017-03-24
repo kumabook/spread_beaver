@@ -52,24 +52,24 @@ class V3::StreamsController < V3::ApiController
       case @resource
       when :latest
         since    = @newer_than.present? ? @newer_than : DURATION.ago
-        @entries = Entry.latest_entries(entries_per_feed: LATEST_ENTRIES_PER_FEED,
-                                                   since: since,
-                                                    page: @page,
-                                                per_page: @per_page)
+        @entries = Entry.latest_items(entries_per_feed: LATEST_ENTRIES_PER_FEED,
+                                      since:            since,
+                                      page:             @page,
+                                      per_page:         @per_page)
       when :all
         @entries = current_resource_owner.stream_entries(page:     @page,
                                                          per_page: @per_page)
       when :hot
         from     = @newer_than.present? ? @newer_than : DURATION_FOR_RANKING.ago
         to       = @older_than.present? ? @older_than : from + DURATION_FOR_RANKING
-        @entries = Entry.hot_entries_within_period(from:     from,
+        @entries = Entry.hot_items_within_period(from:     from,
                                                    to:       to,
                                                    page:     @page,
                                                    per_page: @per_page)
       when :popular
         from     = @newer_than.present? ? @newer_than : DURATION_FOR_RANKING.ago
         to       = @older_than.present? ? @older_than : from + DURATION_FOR_RANKING
-        @entries = Entry.popular_entries_within_period(from:     from,
+        @entries = Entry.popular_items_within_period(from:     from,
                                                        to:       to,
                                                        page:     @page,
                                                        per_page: @per_page)
