@@ -3,13 +3,13 @@ class Enclosure < ApplicationRecord
   attr_accessor :content
   include Likable
   include Savable
-  include Openable
+  include Playable
 
   has_many :entry_enclosures, dependent: :destroy
   has_many :entries         , through:   :entry_enclosures
 
   scope :latest, -> (time) { where("created_at > ?", time).order('created_at DESC') }
-  scope :detail, ->        { includes([:likers, :openers]).eager_load(:entries) }
+  scope :detail, ->        { includes([:likers]).eager_load(:entries) }
 
   def self.create_items_of(entry, items)
     models = items.map do |i|
@@ -47,11 +47,11 @@ class Enclosure < ApplicationRecord
   def self.set_marks(user, enclosures)
     liked_hash  = Enclosure.user_liked_hash( user, enclosures)
     saved_hash  = Enclosure.user_saved_hash( user, enclosures)
-    opened_hash = Enclosure.user_opened_hash(user, enclosures)
+    played_hash = Enclosure.user_played_hash(user, enclosures)
     enclosures.each do |e|
       e.is_liked  = liked_hash[e]
       e.is_saved  = saved_hash[e]
-      e.is_opened = opened_hash[e]
+      e.is_played = played_hash[e]
     end
   end
 
@@ -102,8 +102,8 @@ class Enclosure < ApplicationRecord
     if !is_saved.nil?
       hash['is_saved'] = is_saved
     end
-    if !is_opened.nil?
-      hash['is_opened'] = is_opened
+    if !is_played.nil?
+      hash['is_played'] = is_played
     end
     hash.merge! @content if !@content.nil?
     hash['id'] = id
