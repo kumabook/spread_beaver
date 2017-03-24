@@ -42,10 +42,10 @@ class V3::Streams::EnclosuresController < V3::ApiController
       @items = @enclosure_class.page(@page)
                                .per(@per_page)
                                .saved(@user)
-    when :opened
+    when :played
       @items = @enclosure_class.page(@page)
                                .per(@per_page)
-                               .opened(@user)
+                               .played(@user)
     else
       render json: {}, status: :not_found
       return
@@ -94,8 +94,8 @@ class V3::Streams::EnclosuresController < V3::ApiController
     when /user\/(.*)\/(tag|playlist)\/global\.saved/
       @resource = :saved
       @user     = User.find($1)
-    when /user\/(.*)\/(tag|playlist)\/global\.opened/
-      @resource = :opened
+    when /user\/(.*)\/(tag|playlist)\/global\.played/
+      @resource = :played
       @user     = User.find($1)
     end
   end

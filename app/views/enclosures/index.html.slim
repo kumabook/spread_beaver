@@ -3,8 +3,7 @@
 - like_path_method = "#{@type.downcase}_like_path".to_sym
 - saves_path_method = "#{@type.downcase}_saves_path".to_sym
 - save_path_method = "#{@type.downcase}_save_path".to_sym
-- opens_path_method = "#{@type.downcase}_opens_path".to_sym
-- open_path_method = "#{@type.downcase}_open_path".to_sym
+- plays_path_method = "#{@type.downcase}_plays_path".to_sym
 - new_path_method  = "new_#{@type.downcase}_path".to_sym
 .page-header
   h1
@@ -21,7 +20,7 @@ table.table.table-striped
       th title
       th likes
       th saves
-      th opens
+      th plays
       th.col-md-1 actions
   tbody
     - @enclosures.each do |enclosure|
@@ -30,8 +29,7 @@ table.table.table-striped
       - like_path   = public_send like_path_method , enclosure
       - saves_path  = public_send saves_path_method, enclosure
       - save_path   = public_send save_path_method , enclosure
-      - opens_path  = public_send opens_path_method, enclosure
-      - open_path   = public_send open_path_method , enclosure
+      - plays_path  = public_send plays_path_method, enclosure
       - content     = enclosure.content
       tr
         td = link_to enclosure.id, item_path
@@ -40,7 +38,7 @@ table.table.table-striped
         td = "#{content["title"]}"
         td = "#{enclosure.likes_count || 0} likes"
         td = "#{enclosure.saved_count || 0} saves"
-        td = "#{enclosure.opened_count || 0} opens"
+        td = "#{enclosure.play_count  || 0} plays"
         td
           - if enclosure.is_liked
             = form_for :like, url: like_path, method: :delete do |f|
@@ -54,12 +52,8 @@ table.table.table-striped
           - else
             = form_for :save, url: saves_path, method: :post do |f|
               = f.submit 'Save', class: 'btn btn-xs btn-success'
-          - if enclosure.is_opened
-            = form_for :save, url: open_path, method: :delete do |f|
-              = f.submit 'Unopen', class: 'btn btn-xs btn-info'
-          - else
-            = form_for :open, url: opens_path, method: :post do |f|
-              = f.submit 'Open', class: 'btn btn-xs btn-info'
+          = form_for :play, url: plays_path, method: :post do |f|
+            = f.submit 'Play', class: 'btn btn-xs btn-info'
           = link_to 'Delete', item_path,
                     :method => :delete,
                     :data => { :confirm => t('.confirm',

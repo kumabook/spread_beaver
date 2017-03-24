@@ -16,7 +16,7 @@ RSpec.describe "Track Stream api", type: :request, autodoc: true do
                                enclosure:      @feed.entries[0].tracks[n],
                                enclosure_type: Track.name,
                                created_at:     d
-        OpenedEnclosure.create! user:           @user,
+        PlayedEnclosure.create! user:           @user,
                                 enclosure:      @feed.entries[0].tracks[n],
                                 enclosure_type: Track.name,
                                 created_at:     d
@@ -84,8 +84,8 @@ RSpec.describe "Track Stream api", type: :request, autodoc: true do
       expect(result['continuation']).to be_nil
     end
 
-    it "gets opened tracks" do
-      resource = CGI.escape "user/#{@user.id}/playlist/global.opened"
+    it "gets played tracks" do
+      resource = CGI.escape "user/#{@user.id}/playlist/global.played"
       get "/v3/streams/#{resource}/tracks/contents",
           headers: headers_for_login_user_api
       result = JSON.parse @response.body

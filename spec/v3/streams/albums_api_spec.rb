@@ -16,7 +16,7 @@ RSpec.describe "Album Stream api", type: :request, autodoc: true do
                                enclosure:      @feed.entries[0].albums[n],
                                enclosure_type: Album.name,
                                created_at:     d
-        OpenedEnclosure.create! user:           @user,
+        PlayedEnclosure.create! user:           @user,
                                 enclosure:      @feed.entries[0].albums[n],
                                 enclosure_type: Album.name,
                                 created_at:     d
@@ -84,8 +84,8 @@ RSpec.describe "Album Stream api", type: :request, autodoc: true do
       expect(result['continuation']).to be_nil
     end
 
-    it "gets opened albums" do
-      resource = CGI.escape "user/#{@user.id}/tag/global.opened"
+    it "gets played albums" do
+      resource = CGI.escape "user/#{@user.id}/tag/global.played"
       get "/v3/streams/#{resource}/albums/contents",
           headers: headers_for_login_user_api
       result = JSON.parse @response.body

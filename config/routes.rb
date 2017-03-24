@@ -43,24 +43,21 @@ Rails.application.routes.draw do
     delete 'unlike', to: :unlike, as: :like
     post   'save'  , to: :save  , as: :saves
     delete 'unsave', to: :unsave, as: :save
-    post   'open'  , to: :open  , as: :opens
-    delete 'unopen', to: :unopen, as: :open
+    post   'play'  , to: :play  , as: :plays
   end
   resources :albums, controller: :enclosures, type: 'Album', except: [:edit, :update] do
     post   'like'  , to: :like  , as: :likes
     delete 'unlike', to: :unlike, as: :like
     post   'save'  , to: :save  , as: :saves
     delete 'unsave', to: :unsave, as: :save
-    post   'open'  , to: :open  , as: :opens
-    delete 'unopen', to: :unopen, as: :open
+    post   'play'  , to: :play  , as: :plays
   end
   resources :playlists, controller: :enclosures, type: 'Playlist', except: [:edit, :update] do
     post   'like'  , to: :like  , as: :likes
     delete 'unlike', to: :unlike, as: :like
     post   'save'  , to: :save  , as: :saves
     delete 'unsave', to: :unsave, as: :save
-    post   'open'  , to: :open  , as: :opens
-    delete 'unopen', to: :unopen, as: :open
+    post   'play'  , to: :play  , as: :plays
   end
   resources :keywords do
     resources :entries, only: [:index]

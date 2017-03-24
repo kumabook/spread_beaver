@@ -26,7 +26,7 @@ RSpec.describe "Markers api", type: :request, autodoc: true do
                                enclosure_type: Track.name)
       }
       @feed.entries[0].tracks[0...MARKED_NUM].each { |track|
-        OpenedEnclosure.create!(user:           @user,
+        PlayedEnclosure.create!(user:           @user,
                                 enclosure:      track,
                                 enclosure_type: Track.name)
       }
@@ -89,7 +89,7 @@ RSpec.describe "Markers api", type: :request, autodoc: true do
     end
 
     it "marks tracks as liked" do
-      count = Track.joins(:likers).where(users: { id: @user.id }).count
+      count = Track.liked(@user).count
       post "/v3/markers",
            params: {
              type: 'tracks',
@@ -98,12 +98,12 @@ RSpec.describe "Markers api", type: :request, autodoc: true do
            },
            headers: headers_for_login_user
       expect(@response.status).to eq(200)
-      after_count = Track.joins(:likers).where(users: { id: @user.id }).count
+      after_count = Track.liked(@user).count
       expect(after_count).to eq(count + 1)
     end
 
     it "marks tracks as unliked" do
-      count = Track.joins(:likers).where(users: { id: @user.id }).count
+      count = Track.liked(@user).count
       post "/v3/markers",
            params: {
              type: 'tracks',
@@ -112,7 +112,7 @@ RSpec.describe "Markers api", type: :request, autodoc: true do
            },
            headers: headers_for_login_user
       expect(@response.status).to eq(200)
-      after_count = Track.joins(:likers).where(users: { id: @user.id }).count
+      after_count = Track.liked(@user).count
       expect(after_count).to eq(count - 1)
     end
 
@@ -131,7 +131,7 @@ RSpec.describe "Markers api", type: :request, autodoc: true do
     end
 
     it "marks tracks as unsaved" do
-      count = Track.joins(:saved_users).where(users: { id: @user.id }).count
+      count = Track.saved(@user).count
       post "/v3/markers",
            params: {
              type: 'tracks',
@@ -140,36 +140,22 @@ RSpec.describe "Markers api", type: :request, autodoc: true do
            },
            headers: headers_for_login_user
       expect(@response.status).to eq(200)
-      after_count = Track.joins(:saved_users).where(users: { id: @user.id }).count
+      after_count = Track.saved(@user).count
       expect(after_count).to eq(count - 1)
     end
 
-    it "marks tracks as opened" do
-      count = Track.joins(:openers).where(users: { id: @user.id }).count
+    it "marks tracks as played" do
+      count = Track.played(@user).count
       post "/v3/markers",
            params: {
              type: 'tracks',
-             action: 'markAsOpened',
+             action: 'markAsPlayed',
              trackIds: [@feed.entries[0].tracks[MARKED_NUM + 1].id]
            },
            headers: headers_for_login_user
       expect(@response.status).to eq(200)
-      after_count = Track.joins(:openers).where(users: { id: @user.id }).count
+      after_count = Track.played(@user).count
       expect(after_count).to eq(count + 1)
-    end
-
-    it "marks tracks as unopened" do
-      count = Track.joins(:openers).where(users: { id: @user.id }).count
-      post "/v3/markers",
-           params: {
-             type: 'tracks',
-             action: 'markAsUnopened',
-             trackIds: [@feed.entries[0].tracks[0].id]
-           },
-           headers: headers_for_login_user
-      expect(@response.status).to eq(200)
-      after_count = Track.joins(:openers).where(users: { id: @user.id }).count
-      expect(after_count).to eq(count - 1)
     end
   end
 end

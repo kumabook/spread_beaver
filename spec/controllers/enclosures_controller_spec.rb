@@ -85,30 +85,14 @@ describe EnclosuresController, type: :controller do
     it { expect(SavedEnclosure.find_by(enclosure_id: track.id, user_id: user.id)).to be_nil }
   end
 
-  describe '#open' do
+  describe '#play' do
     before do
-      post :open, params: {
+      post :play, params: {
              type:     'Track',
              track_id: track.id,
            }
     end
     it { expect(response).to redirect_to tracks_url }
-    it { expect(OpenedEnclosure.find_by(enclosure_id: track.id, user_id: user.id)).not_to be_nil }
+    it { expect(PlayedEnclosure.find_by(enclosure_id: track.id, user_id: user.id)).not_to be_nil }
   end
-
-  describe '#unopen' do
-    before do
-      open = OpenedEnclosure.create!(user_id:      user.id,
-                                     enclosure_id: track.id,
-                                     enclosure_type: Track.name)
-      delete :unopen, params: {
-               type:     'Track',
-               id:       open.id,
-               track_id: track.id,
-             }
-    end
-    it { expect(response).to redirect_to tracks_url }
-    it { expect(OpenedEnclosure.find_by(enclosure_id: track.id, user_id: user.id)).to be_nil }
-  end
-
 end
