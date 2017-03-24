@@ -6,19 +6,18 @@ require('playlistified_entry')
 class Entry < ApplicationRecord
   include Likable
   include Savable
+  include Readable
 
   belongs_to :feed            , touch: true
   belongs_to :entry_enclosures, polymorphic: true
 
   has_many :entry_enclosures, dependent: :destroy
-  has_many :read_entries    , dependent: :destroy
   has_many :entry_tags      , dependent: :destroy
   has_many :entry_keywords  , dependent: :destroy
   has_many :entry_issues    , dependent: :destroy
   has_many :keywords        , through: :entry_keywords
   has_many :tags            , through: :entry_tags
   has_many :issues          , through: :entry_issues
-  has_many :readers         , through: :read_entries    , source: :user
   has_many :enclosures      , through: :entry_enclosures
   has_many :tracks          , through: :entry_enclosures, source: :enclosure, source_type: Track.name
   has_many :albums          , through: :entry_enclosures, source: :enclosure, source_type: Album.name
@@ -38,7 +37,6 @@ class Entry < ApplicationRecord
       .eager_load(:tracks, :albums, :playlists, :keywords)
   }
   scope :latest,        ->     (time) { where("published > ?", time).order('published DESC').with_content }
-  scope :hot,           ->            { joins(:saved_users).order('read_count DESC').with_content }
   scope :subscriptions, ->       (ss) { where(feed: ss.map { |s| s.feed_id }).order('published DESC').with_content }
   scope :feed,          ->     (feed) { where(feed: feed).order('published DESC').with_content }
   scope :feeds,         ->    (feeds) { where(feed: feeds).order('published DESC').with_content }
@@ -47,7 +45,6 @@ class Entry < ApplicationRecord
   scope :topic,         ->    (topic) { feeds(topic.feeds) }
   scope :category,      -> (category) { feeds(category.subscriptions.map { |s| s.feed_id })}
   scope :issue,         ->          (j) { joins(:issues).where(issues: { id: j.id}).order('entry_issues.engagement DESC').with_content }
-  scope :read,          ->     (user) { joins(:read_entries).where(read_entries: { user_id: user.id }) }
 
   JSON_ATTRS = ['content', 'categories', 'summary', 'alternate', 'origin', 'visual']
   WAITING_SEC_FOR_VISUAL = 0.5
@@ -201,10 +198,6 @@ class Entry < ApplicationRecord
       entries.select { |e| e.id == h[:id] }.first
     }
     PaginatedArray.new(sorted_entries, total_count)
-  end
-
-  def self.open_class
-    ReadEntry
   end
 
   def playlistify(force: false)
