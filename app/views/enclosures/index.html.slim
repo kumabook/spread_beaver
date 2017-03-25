@@ -34,7 +34,7 @@ table.table.table-striped
       tr
         td = link_to enclosure.id, item_path
         td = content["provider"]
-        td = link_to content["identifier"], enclosure.url
+        td = link_to content["identifier"], enclosure.content["url"]
         td = "#{content["title"]}"
         td = "#{enclosure.likes_count || 0} likes"
         td = "#{enclosure.saved_count || 0} saves"
