@@ -93,6 +93,7 @@ class V3::MarkersController < V3::ApiController
                         .period(1.day.ago, Time.now)
                         .where(user: current_resource_owner,
                                enclosure_id: id)
+                        .limit(1)
                         .first
         if recent_play.nil?
           @play = PlayedEnclosure.new(user:           current_resource_owner,
