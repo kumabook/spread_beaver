@@ -28,7 +28,6 @@ ActiveRecord::Schema.define(version: 20170324014556) do
   end
 
   create_table "enclosures", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
-    t.string   "url"
     t.datetime "created_at",                      null: false
     t.datetime "updated_at",                      null: false
     t.integer  "likes_count",   default: 0,       null: false

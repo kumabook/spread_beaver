@@ -14,6 +14,7 @@ class RenameTracksToEnclosures < ActiveRecord::Migration[5.0]
 
     rename_column :enclosures, :like_count, :likes_count
     remove_column :enclosures, :title     , :string
+    remove_column :enclosures, :url       , :string
     remove_column :enclosures, :provider  , :string
     remove_column :enclosures, :identifier, :string
 
