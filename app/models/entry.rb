@@ -174,19 +174,11 @@ class Entry < ApplicationRecord
 
   def self.best_items_within_period(clazz: nil, period: nil, page: 1, per_page: PER_PAGE)
     raise ArgumentError, "Parameter must be not nil" if period.nil? || clazz.nil?
-    user_count_hash = clazz.period(period.begin, period.end).user_count
-    total_count     = user_count_hash.keys.count
-    start_index     = [0, page - 1].max * per_page
-    end_index       = [total_count - 1, start_index + per_page - 1].min
-    sorted_hashes   = user_count_hash.keys.map { |id|
-      {
-                id: id,
-        user_count: user_count_hash[id]
-      }
-    }.sort_by { |hash|
-      hash[:user_count]
-    }.reverse.slice(start_index..end_index)
-
+    count_hash  = clazz.period(period.begin, period.end).user_count
+    total_count = count_hash.keys.count
+    sorted_hashes = PaginatedArray::sort_and_paginate_count_hash(count_hash,
+                                                                 page: page,
+                                                                 per_page: per_page)
     entries = Entry.with_content.find(sorted_hashes.map {|h| h[:id] })
     sorted_entries = sorted_hashes.map {|h|
       entries.select { |e| e.id == h[:id] }.first

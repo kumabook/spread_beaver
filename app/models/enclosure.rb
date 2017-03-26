@@ -75,18 +75,12 @@ class Enclosure < ApplicationRecord
   def self.best_items_within_period(clazz: nil, count_method: :user_count, period: nil, page: 1, per_page: nil)
     raise ArgumentError, "Parameter must be not nil" if period.nil?
     count_hash = clazz.where(enclosure_type: self.name)
-                           .period(period.begin, period.end).public_send(count_method)
-    total_count     = count_hash.keys.count
-    start_index     = [0, page - 1].max * per_page
-    end_index       = [total_count - 1, start_index + per_page - 1].min
-    sorted_hashes   = count_hash.keys.map {|id|
-      {
-        id:         id,
-        count: count_hash[id]
-      }
-    }.sort_by { |hash|
-      hash[:count]
-    }.reverse.slice(start_index..end_index)
+                      .period(period.begin, period.end)
+                      .public_send(count_method)
+    total_count   = count_hash.keys.count
+    sorted_hashes = PaginatedArray::sort_and_paginate_count_hash(count_hash,
+                                                                 page: page,
+                                                                 per_page: per_page)
     items = self.eager_load(:entries)
               .find(sorted_hashes.map {|h| h[:id] })
     sorted_items = sorted_hashes.map {|h|
