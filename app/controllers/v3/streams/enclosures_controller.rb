@@ -22,24 +22,15 @@ class V3::Streams::EnclosuresController < V3::ApiController
     when :hot
       from   = @newer_than.present? ? @newer_than : DURATION_FOR_RANKING.ago
       to     = @older_than.present? ? @older_than : Time.now
-      @items = @enclosure_class.hot_items_within_period(from:     from,
-                                                        to:       to,
-                                                        page:     @page,
-                                                        per_page: @per_page)
+      @items = @enclosure_class.hot_items_within_period(period: from..to, page: @page, per_page: @per_page)
     when :popular
       from    = @newer_than.present? ? @newer_than : DURATION_FOR_RANKING.ago
       to      = @older_than.present? ? @older_than : Time.now
-      @items  = @enclosure_class.popular_items_within_period(from:     from,
-                                                             to:       to,
-                                                             page:     @page,
-                                                             per_page: @per_page)
+      @items  = @enclosure_class.popular_items_within_period(period: from..to, page: @page, per_page: @per_page)
     when :featured
       from    = @newer_than.present? ? @newer_than : DURATION_FOR_RANKING.ago
       to      = @older_than.present? ? @older_than : Time.now
-      @items  = @enclosure_class.most_featured_items_within_period(from:     from,
-                                                                   to:       to,
-                                                                   page:     @page,
-                                                                   per_page: @per_page)
+      @items  = @enclosure_class.most_featured_items_within_period(period: from..to, page: @page, per_page: @per_page)
     when :liked
       @items = @enclosure_class.page(@page)
                                .per(@per_page)

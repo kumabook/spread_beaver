@@ -65,17 +65,17 @@ class Enclosure < ApplicationRecord
   end
 
 
-  def self.most_featured_items_within_period(from: nil, to: nil, page: 1, per_page: nil)
+  def self.most_featured_items_within_period(period: nil, page: 1, per_page: nil)
     best_items_within_period(clazz: EntryEnclosure,
                              count_method: :entry_count,
-                             from: from, to: to,
+                             period: period,
                              page: page, per_page: per_page)
   end
 
-  def self.best_items_within_period(clazz: nil, count_method: :user_count, from: nil, to: nil, page: 1, per_page: nil)
-    raise ArgumentError, "Parameter must be not nil" if from.nil? || to.nil?
+  def self.best_items_within_period(clazz: nil, count_method: :user_count, period: nil, page: 1, per_page: nil)
+    raise ArgumentError, "Parameter must be not nil" if period.nil?
     count_hash = clazz.where(enclosure_type: self.name)
-                           .period(from, to).public_send(count_method)
+                           .period(period.begin, period.end).public_send(count_method)
     total_count     = count_hash.keys.count
     start_index     = [0, page - 1].max * per_page
     end_index       = [total_count - 1, start_index + per_page - 1].min

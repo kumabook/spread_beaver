@@ -62,17 +62,11 @@ class V3::StreamsController < V3::ApiController
       when :hot
         from     = @newer_than.present? ? @newer_than : DURATION_FOR_RANKING.ago
         to       = @older_than.present? ? @older_than : from + DURATION_FOR_RANKING
-        @entries = Entry.hot_items_within_period(from:     from,
-                                                   to:       to,
-                                                   page:     @page,
-                                                   per_page: @per_page)
+        @entries = Entry.hot_items_within_period(period: from..to, page: @page, per_page: @per_page)
       when :popular
         from     = @newer_than.present? ? @newer_than : DURATION_FOR_RANKING.ago
         to       = @older_than.present? ? @older_than : from + DURATION_FOR_RANKING
-        @entries = Entry.popular_items_within_period(from:     from,
-                                                       to:       to,
-                                                       page:     @page,
-                                                       per_page: @per_page)
+        @entries = Entry.popular_items_within_period(period: from..to, page: @page, per_page: @per_page)
       when :liked
         @entries = Entry.page(@page)
                         .per(@per_page)

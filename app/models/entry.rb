@@ -166,15 +166,15 @@ class Entry < ApplicationRecord
     Mix::mix_up_and_paginate(entries, entries_per_feed, page, per_page)
   end
 
-  def self.popular_items_within_period(from: nil, to: nil, page: 0, per_page: PER_PAGE)
+  def self.popular_items_within_period(period: nil, page: 0, per_page: PER_PAGE)
     best_items_within_period(clazz: SavedEntry,
-                               from: from, to: to,
-                               per_page: per_page, page: page)
+                             period: period,
+                             per_page: per_page, page: page)
   end
 
-  def self.best_items_within_period(clazz: nil, from: nil, to: nil, page: 1, per_page: PER_PAGE)
-    raise ArgumentError, "Parameter must be not nil" if from.nil? || to.nil? || clazz.nil?
-    user_count_hash = clazz.period(from, to).user_count
+  def self.best_items_within_period(clazz: nil, period: nil, page: 1, per_page: PER_PAGE)
+    raise ArgumentError, "Parameter must be not nil" if period.nil? || clazz.nil?
+    user_count_hash = clazz.period(period.begin, period.end).user_count
     total_count     = user_count_hash.keys.count
     start_index     = [0, page - 1].max * per_page
     end_index       = [total_count - 1, start_index + per_page - 1].min

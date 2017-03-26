@@ -46,8 +46,7 @@ describe Enclosure do
     end
 
     it "should return most featured entries during specified period" do
-      old_items = Track.most_featured_items_within_period(from:     10.days.ago,
-                                                          to:       Time.now,
+      old_items = Track.most_featured_items_within_period(period:   10.days.ago..Time.now,
                                                           page:     1,
                                                           per_page: 10)
       expect(old_items.count).to eq(4)
@@ -56,8 +55,7 @@ describe Enclosure do
       expect(old_items[2]).to eq(tracks[2])
       expect(old_items[3]).to eq(tracks[1])
 
-      items     = Track.most_featured_items_within_period(from:     3.days.ago,
-                                                          to:       Time.now,
+      items     = Track.most_featured_items_within_period(period:   3.days.ago..Time.now,
                                                           page:     1,
                                                           per_page: 10)
       expect(items.count).to eq(2)

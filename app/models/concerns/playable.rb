@@ -22,9 +22,9 @@ module Playable
       marks_hash_of_user(play_class, user, items)
     end
 
-    def hot_items_within_period(from: nil, to: nil, page: 1, per_page: nil)
+    def hot_items_within_period(period: nil, page: 1, per_page: nil)
       best_items_within_period(clazz: self.play_class,
-                               from: from, to: to,
+                               period: period,
                                page: page, per_page: per_page)
     end
   end
