@@ -66,6 +66,19 @@ RSpec.describe "Track Stream api", type: :request, autodoc: true do
       expect(result['continuation']).to be_nil
     end
 
+    it "gets featured tracks" do
+      resource = CGI.escape "playlist/global.featured"
+      get "/v3/streams/#{resource}/tracks/contents",
+          params: {
+            newer_than: 200.days.ago.to_time.to_i * 1000,
+            older_than: Time.now.to_i * 1000
+          },
+          headers: headers_for_login_user_api
+      result = JSON.parse @response.body
+      expect(result['items'].count).to eq(PER_PAGE)
+      expect(result['continuation']).not_to be_nil
+    end
+
     it "gets liked tracks" do
       resource = CGI.escape "user/#{@user.id}/playlist/global.liked"
       get "/v3/streams/#{resource}/tracks/contents",
