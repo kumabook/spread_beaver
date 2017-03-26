@@ -38,6 +38,7 @@ group :development, :test do
   gem "autodoc", group: :test
   gem 'database_cleaner'
   gem 'factory_girl'
+  gem 'factory_girl_rails'
   gem "bullet"
 end
 

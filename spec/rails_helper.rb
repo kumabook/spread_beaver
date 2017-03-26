@@ -30,7 +30,6 @@ RSpec.configure do |config|
 
   config.before(:suite) do
     DatabaseCleaner.strategy = :transaction
-    FactoryGirl.find_definitions
   end
 
   config.before(:all) do
