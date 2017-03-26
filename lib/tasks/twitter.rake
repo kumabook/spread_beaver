@@ -30,7 +30,7 @@ def get_hot_entry_tweet
   duration = Setting.duration_for_ranking.days
   from     = duration.ago
   to       = from + duration
-  entries = Entry.hot_items_within_period(from: from, to: to)
+  entries = Entry.hot_items_within_period(from..to)
 
   if entries.blank?
     puts "Not found hot entries."
@@ -55,7 +55,7 @@ def get_popular_track_tweet
   duration = Setting.duration_for_ranking.days
   from     = duration.ago
   to       = from + duration
-  tracks   = Track.popular_items_within_period(from: from, to: to, page: 1, per_page: 1)
+  tracks   = Track.popular_items_within_period(from..to, page: 1, per_page: 1)
 
   if tracks.blank?
     puts "Not found popular tracks."
