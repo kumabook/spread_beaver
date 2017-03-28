@@ -13,7 +13,20 @@ describe Entry do
     expect(e.crawled).not_to be_nil()
   end
 
-  context "::latest_items" do
+  describe "::set_count_of_enclosures" do
+    let (:feed) { FactoryGirl.create(:feed) }
+    before do
+      Entry::set_count_of_enclosures(feed.entries)
+    end
+    it {
+      expect(feed.entries[0].count_of            ).not_to be_nil
+      expect(feed.entries[0].count_of[:tracks]   ).to eq(TRACK_PER_ENTRY)
+      expect(feed.entries[0].count_of[:albums]   ).to eq(ALBUM_PER_ENTRY)
+      expect(feed.entries[0].count_of[:playlists]).to eq(PLAYLIST_PER_ENTRY)
+    }
+  end
+
+  describe "::latest_items" do
     feed_num = 5
     before(:each) do
       DatabaseCleaner.start
@@ -43,7 +56,7 @@ describe Entry do
     end
   end
 
-  context "::popular_items_within_period" do
+  describe "::popular_items_within_period" do
     before(:each) do
       DatabaseCleaner.start
       user     = FactoryGirl.create(:member)
