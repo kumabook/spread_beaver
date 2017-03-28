@@ -29,7 +29,6 @@ describe Entry do
   describe "::latest_items" do
     feed_num = 5
     before(:each) do
-      DatabaseCleaner.start
       feeds = (0..feed_num-1).map { |i| FactoryGirl.create(:feed) }
       feeds.each do |f|
         f.entries.each do |e|
@@ -37,9 +36,6 @@ describe Entry do
           e.save!
         end
       end
-    end
-    after(:each) do
-      DatabaseCleaner.clean
     end
     it "showes first N entries since specified time" do
       top_of_last_3_days = Entry.latest_items(entries_per_feed: 1, since: 3.days.ago)
@@ -58,7 +54,6 @@ describe Entry do
 
   describe "::popular_items_within_period" do
     before(:each) do
-      DatabaseCleaner.start
       user     = FactoryGirl.create(:member)
       feed     = FactoryGirl.create(:feed)
       old_feed = FactoryGirl.create(:feed)
@@ -74,9 +69,6 @@ describe Entry do
                            created_at: n.months.ago,
                            updated_at: n.months.ago
       }
-    end
-    after(:each) do
-      DatabaseCleaner.clean
     end
 
     it "showes popular entries within a certain time period" do
