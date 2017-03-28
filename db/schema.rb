@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170324014556) do
+ActiveRecord::Schema.define(version: 20170328042443) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -67,7 +67,12 @@ ActiveRecord::Schema.define(version: 20170324014556) do
     t.integer  "saved_count",     default: 0, null: false
     t.integer  "read_count",      default: 0, null: false
     t.integer  "likes_count",     default: 0, null: false
+    t.index ["crawled"], name: "index_entries_on_crawled", using: :btree
+    t.index ["feed_id"], name: "index_entries_on_feed_id", using: :btree
     t.index ["id"], name: "index_entries_on_id", unique: true, using: :btree
+    t.index ["published"], name: "index_entries_on_published", using: :btree
+    t.index ["recrawled"], name: "index_entries_on_recrawled", using: :btree
+    t.index ["updated"], name: "index_entries_on_updated", using: :btree
   end
 
   create_table "entry_enclosures", force: :cascade do |t|
