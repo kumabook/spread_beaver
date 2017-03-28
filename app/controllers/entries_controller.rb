@@ -11,15 +11,15 @@ class EntriesController < ApplicationController
 
   def index
     if @keyword.present?
-      @entries = @keyword.entries.eager_load(:tracks)
+      @entries = @keyword.entries.with_content
                          .order('published DESC')
                          .page(params[:page])
     elsif @tag.present?
-      @entries = @tag.entries.eager_load(:tracks)
+      @entries = @tag.entries.with_content
                      .order('published DESC')
                      .page(params[:page])
     elsif @feed.present?
-      @entries = Entry.eager_load(:tracks)
+      @entries = Entry.with_content
                       .where(feed_id: @feed.id)
                       .order('published DESC')
                       .page(params[:page])

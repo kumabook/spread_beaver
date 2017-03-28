@@ -9,7 +9,6 @@ class Entry < ApplicationRecord
   include Readable
 
   belongs_to :feed            , touch: true
-  belongs_to :entry_enclosures, polymorphic: true
 
   has_many :entry_enclosures, dependent: :destroy
   has_many :entry_tags      , dependent: :destroy
@@ -18,7 +17,6 @@ class Entry < ApplicationRecord
   has_many :keywords        , through: :entry_keywords
   has_many :tags            , through: :entry_tags
   has_many :issues          , through: :entry_issues
-  has_many :enclosures      , through: :entry_enclosures
   has_many :tracks          , through: :entry_enclosures, source: :enclosure, source_type: Track.name
   has_many :albums          , through: :entry_enclosures, source: :enclosure, source_type: Album.name
   has_many :playlists       , through: :entry_enclosures, source: :enclosure, source_type: Playlist.name
@@ -27,14 +25,11 @@ class Entry < ApplicationRecord
   self.primary_key = :id
 
   before_save :normalize_visual
-
   scope :with_content,  -> {
-    includes(:entry_enclosures).eager_load(:tracks, :albums, :playlists)
+    preload(:tracks, :albums, :playlists)
   }
-  scope :with_detail,   -> {
-    eager_load(:saved_users)
-      .includes(:entry_enclosures)
-      .eager_load(:tracks, :albums, :playlists, :keywords)
+  scope :with_detail, -> {
+    with_content().eager_load(:keywords)
   }
   scope :latest,        ->     (time) { where("published > ?", time).order('published DESC').with_content }
   scope :subscriptions, ->       (ss) { where(feed: ss.map { |s| s.feed_id }).order('published DESC').with_content }
@@ -229,7 +224,7 @@ class Entry < ApplicationRecord
 
   def as_detail_json
     hash             = as_content_json
-    hash['tags']     = saved_users.map  { |u| u.as_user_tag }
+    hash['tags']     = []
     hash['keywords'] = keywords.map { |k| k.label }
     hash
   end
