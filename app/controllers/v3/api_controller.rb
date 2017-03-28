@@ -24,7 +24,11 @@ class V3::ApiController < ActionController::API
 
 #  protect_from_forgery with: :null_session
   def current_resource_owner
-    User.find(doorkeeper_token.resource_owner_id) if doorkeeper_token
+    if doorkeeper_token
+      User.find(doorkeeper_token.resource_owner_id)
+    else
+      current_user
+    end
   end
 
   def api_version
