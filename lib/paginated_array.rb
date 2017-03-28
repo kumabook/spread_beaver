@@ -11,7 +11,7 @@ class PaginatedArray < Array
     end_index       = [total_count - 1, start_index + per_page - 1].min
     count_hash.keys.map {|id|
       {
-        id:         id,
+        id:    id,
         count: count_hash[id]
       }
     }.sort_by { |hash|
