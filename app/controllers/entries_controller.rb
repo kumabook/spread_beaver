@@ -11,23 +11,22 @@ class EntriesController < ApplicationController
 
   def index
     if @keyword.present?
-      @entries = @keyword.entries.with_content
+      @entries = @keyword.entries
                          .order('published DESC')
                          .page(params[:page])
     elsif @tag.present?
-      @entries = @tag.entries.with_content
+      @entries = @tag.entries
                      .order('published DESC')
                      .page(params[:page])
     elsif @feed.present?
-      @entries = Entry.with_content
-                      .where(feed_id: @feed.id)
+      @entries = Entry.where(feed_id: @feed.id)
                       .order('published DESC')
                       .page(params[:page])
     else
-      @entries = Entry.with_content
-                      .order('published DESC')
+      @entries = Entry.order('published DESC')
                       .page(params[:page])
     end
+    Entry.set_count_of_enclosures(@entries)
     @liked_entries = LikedEntry.where(user_id: current_user.id,
                                       entry_id: @entries.map { |e| e.id })
     @saved_entries = SavedEntry.where(user_id: current_user.id,

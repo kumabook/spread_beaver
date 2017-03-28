@@ -8,6 +8,8 @@ class Entry < ApplicationRecord
   include Savable
   include Readable
 
+  attr_accessor :count_of
+
   belongs_to :feed            , touch: true
 
   has_many :entry_enclosures, dependent: :destroy
@@ -109,6 +111,21 @@ class Entry < ApplicationRecord
           entry.save
         end
       end
+    end
+  end
+
+  def self.set_count_of_enclosures(entries)
+    count_hashes = [Track.name, Album.name, Playlist.name].inject({}) do |hash, type|
+      hash[type] = EntryEnclosure.where(entry_id:       entries.map {|e| e.id},
+                                        enclosure_type: type).enclosure_count
+      hash
+    end
+    entries.each do |e|
+      e.count_of = {
+        tracks:    count_hashes[   Track.name][e.id],
+        albums:    count_hashes[   Album.name][e.id],
+        playlists: count_hashes[Playlist.name][e.id],
+      }
     end
   end
 
