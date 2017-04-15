@@ -8,7 +8,9 @@ module Readable
     reads = "read_#{base.table_name}".to_sym
     base.has_many reads, dependent: :destroy
     base.scope :hot , ->      { joins(:users).order('read_count DESC') }
-    base.scope :read, -> (user) { joins(reads).where(reads => { user_id: user.id }) }
+    base.scope :read, -> (user) {
+      joins(reads).where(reads => { user_id: user.id }).order("#{reads}.created_at DESC")
+    }
     base.extend(ClassMethods)
   end
 

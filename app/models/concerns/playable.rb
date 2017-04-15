@@ -9,7 +9,9 @@ module Playable
     base.has_many plays, dependent: :destroy
 
     base.scope :hot,    ->        { joins(:users).order('play_count DESC') }
-    base.scope :played, -> (user) { joins(plays).where(plays => { user_id: user.id }) }
+    base.scope :played, -> (user) {
+      joins(plays).where(plays => { user_id: user.id }).order("#{plays}.created_at DESC")
+    }
     base.extend(ClassMethods)
   end
 

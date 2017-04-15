@@ -9,7 +9,9 @@ module Savable
     base.has_many saves, dependent: :destroy
     base.has_many :saved_users, through: saves, source: :user
 
-    base.scope :saved, ->  (user) { joins(:saved_users).where(users: { id: user.id }) }
+    base.scope :saved, ->  (user) {
+      joins(:saved_users).where(users: { id: user.id }).order("#{saves}.created_at DESC")
+    }
     base.extend(ClassMethods)
   end
 
