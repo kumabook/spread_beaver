@@ -25,6 +25,20 @@ class V3::MarkersController < V3::ApiController
   def mark_entries
     @ids = params[:entryIds] if params[:entryIds].present?
     case @action
+    when 'markAsLiked'
+      @ids.each do |id|
+        @like = LikedEntry.new(user:     current_resource_owner,
+                               entry_id: id)
+        @like.save
+      end
+      render json: {}, status: 200
+    when 'markAsUnliked'
+      @ids.each do |id|
+        @like = LikedEntry.find_by(user:     current_resource_owner,
+                                   entry_id: id)
+        @like.destroy if @like.present?
+      end
+      render json: {}, status: 200
     when 'markAsSaved'
       @ids.each do |id|
         @saved_entry = SavedEntry.create(user: current_resource_owner,
