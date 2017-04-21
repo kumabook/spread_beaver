@@ -9,7 +9,7 @@ module Likable
     base.has_many likes, dependent: :destroy
     base.has_many :likers, through: likes, source: :user
 
-    base.scope :popular, ->        { joins(:users).order('liked_count DESC') }
+    base.scope :popular, ->        { joins(:users).order('likes_count DESC') }
     base.scope :liked,   -> (user) {
       joins(:likers).where(users: { id: user.id }).order("#{likes}.created_at DESC")
     }
