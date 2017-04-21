@@ -64,7 +64,6 @@ class Enclosure < ApplicationRecord
     end
   end
 
-
   def self.most_featured_items_within_period(period: nil, page: 1, per_page: nil)
     best_items_within_period(clazz: EntryEnclosure,
                              count_method: :entry_count,

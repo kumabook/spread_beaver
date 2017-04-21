@@ -114,6 +114,27 @@ class Entry < ApplicationRecord
     end
   end
 
+  def self.set_marks(user, entries)
+    liked_hash  = Entry.user_liked_hash(user, entries)
+    saved_hash  = Entry.user_saved_hash(user, entries)
+    read_hash   = Entry.user_read_hash( user, entries)
+    entries.each do |e|
+      e.is_liked  = liked_hash[e]
+      e.is_saved  = saved_hash[e]
+      e.unread    = !read_hash[e]
+    end
+  end
+
+  def self.marks_hash_of_user(clazz, user, entries)
+    marks = clazz.where(user_id:  user.id,
+                        entry_id: entries.map { |e| e.id })
+    entries.inject({}) do |h, e|
+      h[e] = marks.to_a.select {|l| e.id == l.entry_id }.first.present?
+      h
+    end
+  end
+
+
   def self.set_count_of_enclosures(entries)
     count_hashes = [Track.name, Album.name, Playlist.name].inject({}) do |hash, type|
       hash[type] = EntryEnclosure.where(entry_id:       entries.map {|e| e.id},
@@ -236,6 +257,31 @@ class Entry < ApplicationRecord
       items.select {|item| !only_legacy || item.legacy? }
            .map { |item| item.as_enclosure }
     end
+
+    if !is_liked.nil?
+      hash['is_liked'] = is_liked
+    end
+
+    if !is_saved.nil?
+      hash['is_saved'] = is_saved
+    end
+
+    if !is_read.nil?
+      hash['unread'] = !is_read
+    end
+
+    if !likes_count.nil?
+      hash['likes_count'] = likes_count
+    end
+
+    if !saved_count.nil?
+      hash['saved_count'] = saved_count
+    end
+
+    if !read_count.nil?
+      hash['read_count'] = read_count
+    end
+
     hash
   end
 

@@ -33,6 +33,9 @@ class V3::StreamsController < V3::ApiController
       @entries = @entries.select { |entry| entry.has_visual? }
     end
     Entry.set_contents_of_enclosures(@entries)
+    if current_resource_owner.present?
+      Entry.set_marks(current_resource_owner, @entries)
+    end
     only_legacy = api_version == 0
     h = {
       direction: "ltr",
