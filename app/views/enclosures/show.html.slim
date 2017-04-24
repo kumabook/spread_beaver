@@ -7,9 +7,19 @@ p
   br
   = @enclosure.id
 
+p
+  strong created_at
+  br
+  = @enclosure.created_at
+
+p
+  strong updated_at
+  br
+  = @enclosure.updated_at
+
 - content = @enclosure.as_content_json
 - content.keys.each do |key|
-  - next if key == "id"
+  - next if ["id", "created_at", "updated_at"].include?(key)
   p
     strong
       = key
