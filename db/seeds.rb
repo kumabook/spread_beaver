@@ -18,7 +18,7 @@ app = Doorkeeper::Application.find_or_create_by name: "ios",
 
 puts "Create ios app id: #{app.id}"
 
-Journal.first_or_create(label: 'highlight')
+Journal.where(label: 'highlight').first_or_create
 puts "Create default journal hightlight"
 
 news_topic = Topic.first_or_create(label: 'news')
