@@ -19,7 +19,7 @@ class EntryIssuesController < ApplicationController
                     notice: @entry_issue.errors.full_messages)
       end
     rescue ActiveRecord::RecordNotUnique => e
-      redirect_to new_issue_entry_issue_path(@entry_issue.issue_id, notice: e.message)
+      redirect_to new_issue_entry_issue_path(@entry_issue.issue_id), notice: e.message
     end
   end
 
