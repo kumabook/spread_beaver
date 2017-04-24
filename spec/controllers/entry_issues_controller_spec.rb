@@ -19,8 +19,6 @@ describe EntryIssuesController, type: :controller do
   describe 'POST create' do
     before do
       post :create, params: {
-             issue_id: issue.id,
-             entry_id: entry.id,
              entry_issue: {
                issue_id: issue.id,
                entry_id: entry.id,

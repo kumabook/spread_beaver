@@ -49,15 +49,17 @@ class EntryIssuesController < ApplicationController
       if @entry_issue.present?
         @entry = @entry_issue.entry
       else
-        @entry = Entry.find(params[:entry_id])
+        @entry = Entry.find(entry_issue_params[:entry_id])
       end
     end
 
     def set_issue
       if @entry_issue.present?
         @issue = @entry_issue.issue
-      else
+      elsif params[:issue_id].present?
         @issue = Issue.find(params[:issue_id])
+      else
+        @issue = Issue.find(entry_issue_params[:issue_id])
       end
     end
 
