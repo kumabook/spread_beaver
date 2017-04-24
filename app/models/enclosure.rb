@@ -16,6 +16,7 @@ class Enclosure < ApplicationRecord
       model = find_or_create_by(id: i['id']) do
         logger.info("New enclosure #{i['provider']} #{i['identifier']}")
       end
+      model.update(created_at: i['published_at'] || entry.published)
       EntryEnclosure.find_or_create_by(entry_id:       entry.id,
                                        enclosure_id:   model.id,
                                        enclosure_type: name) do
