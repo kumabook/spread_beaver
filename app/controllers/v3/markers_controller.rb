@@ -27,9 +27,11 @@ class V3::MarkersController < V3::ApiController
     case @action
     when 'markAsLiked'
       @ids.each do |id|
-        @like = LikedEntry.new(user:     current_resource_owner,
-                               entry_id: id)
-        @like.save
+        begin
+          @like = LikedEntry.create(user:     current_resource_owner,
+                                    entry_id: id)
+        rescue ActiveRecord::RecordNotUnique
+        end
       end
       render json: {}, status: 200
     when 'markAsUnliked'
@@ -41,8 +43,11 @@ class V3::MarkersController < V3::ApiController
       render json: {}, status: 200
     when 'markAsSaved'
       @ids.each do |id|
-        @saved_entry = SavedEntry.create(user: current_resource_owner,
-                                         entry_id: id)
+        begin
+          @saved_entry = SavedEntry.create(user: current_resource_owner,
+                                           entry_id: id)
+        rescue ActiveRecord::RecordNotUnique
+        end
       end
       render json: {}, status: 200
     when 'markAsUnsaved'
@@ -54,8 +59,11 @@ class V3::MarkersController < V3::ApiController
       render json: {}, status: 200
     when 'markAsRead'
       @ids.each do |id|
-        @read_entry = ReadEntry.create(user: current_resource_owner,
-                                       entry_id: id)
+        begin
+          @read_entry = ReadEntry.create(user: current_resource_owner,
+                                         entry_id: id)
+        rescue ActiveRecord::RecordNotUnique
+        end
       end
       render json: {}, status: 200
     when 'keepUnread'
@@ -73,10 +81,12 @@ class V3::MarkersController < V3::ApiController
     case @action
     when 'markAsLiked'
       @ids.each do |id|
-        @like = LikedEnclosure.new(user:           current_resource_owner,
-                                   enclosure_id:   id,
-                                   enclosure_type: type)
-        @like.save
+        begin
+          @like = LikedEnclosure.create(user:           current_resource_owner,
+                                        enclosure_id:   id,
+                                        enclosure_type: type)
+        rescue ActiveRecord::RecordNotUnique
+        end
       end
       render json: {}, status: 200
     when 'markAsUnliked'
@@ -88,10 +98,12 @@ class V3::MarkersController < V3::ApiController
       render json: {}, status: 200
     when 'markAsSaved'
       @ids.each do |id|
-        @save = SavedEnclosure.new(user:           current_resource_owner,
-                                   enclosure_id:   id,
-                                   enclosure_type: type)
-        @save.save
+        begin
+          @save = SavedEnclosure.create(user:           current_resource_owner,
+                                        enclosure_id:   id,
+                                        enclosure_type: type)
+        rescue ActiveRecord::RecordNotUnique
+        end
       end
       render json: {}, status: 200
     when 'markAsUnsaved'
