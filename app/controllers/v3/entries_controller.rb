@@ -36,6 +36,7 @@ class V3::EntriesController < V3::ApiController
     Entry.set_contents_of_enclosures(@entries)
     if current_resource_owner.present?
       Entry.set_marks(current_resource_owner, @entries)
+      Entry.set_marks_of_enclosures(current_resource_owner, @entries)
     end
   end
 

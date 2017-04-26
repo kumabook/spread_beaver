@@ -184,6 +184,17 @@ class Entry < ApplicationRecord
     }
   end
 
+  def self.set_marks_of_enclosures(user, entries)
+    track_items    = entries.flat_map {|e| e.tracks }
+    album_items    = entries.flat_map {|e| e.albums }
+    playlist_items = entries.flat_map {|e| e.playlists }
+    {
+      tracks:    Track.set_marks(   user, track_items),
+      albums:    Album.set_marks(   user, album_items),
+      playlists: Playlist.set_marks(user, playlist_items),
+    }
+  end
+
   def url
     items = JSON.load(alternate)
     items.present? && items[0]['href']
