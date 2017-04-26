@@ -8,11 +8,11 @@ class V3::MarkersController < V3::ApiController
     when 'entries'
       mark_entries
     when 'tracks'
-      mark_enclosures(:trackIds, Track.name)
+      mark_enclosures(:trackIds, Track.name) if params[:trackIds].present?
     when 'playlists'
-      mark_enclosures(:playlistIds, Playlist.name)
+      mark_enclosures(:playlistIds, Playlist.name) if params[:playlistIds].present?
     when 'albums'
-      mark_enclosures(:albumIds, Album.name)
+      mark_enclosures(:albumIds, Album.name) if params[:albumIds].present?
     when 'feeds'
       @ids = params[:feedIds] if params[:feedIds].present?
     when 'categories'
