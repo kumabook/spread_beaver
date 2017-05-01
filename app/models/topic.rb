@@ -25,6 +25,10 @@ class Topic < ApplicationRecord
     PaginatedArray.new(items, entries.count)
   end
 
+  def mix_newer_than
+    Time.at(Time.now.to_i - mix_duration)
+  end
+
   def self.topics
     Rails.cache.fetch("topics") {
       Topic.order("engagement DESC").all.to_a

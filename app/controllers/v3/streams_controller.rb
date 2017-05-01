@@ -97,7 +97,7 @@ class V3::StreamsController < V3::ApiController
       @entries = @tag.stream_entries(page: @page, per_page: @per_page)
     elsif @topic.present?
       # TODO: Replace this with  mixes api
-      since    = @newer_than.present? ? @newer_than : DURATION.ago
+      since    = @newer_than.present? ? @newer_than : @topic.mix_newer_than
       q        = Mix::Query.new(since, LATEST_ENTRIES_PER_FEED)
       @entries = @topic.mix_entries(page: @page, per_page: @per_page, query: q)
     elsif @category.present?
