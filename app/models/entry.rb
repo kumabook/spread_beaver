@@ -87,24 +87,28 @@ class Entry < ApplicationRecord
   def self.update_enclosures(period: 1.month.ago..Time.now)
     Entry.where("created_at >= ?", period.begin)
          .where("created_at <= ?", period.end).find_each do |entry|
-      begin
-        playlistified_entry = entry.playlistify(force: true)
-      rescue
-        Rails.logger.info("Entry #{entry.id} no longer exist")
-        next
-      end
-      if playlistified_entry.visual_url.present?
-        entry.visual = {
-          url: playlistified_entry.visual_url,
-          processor: "pink-spider-v1"
-        }.to_json
-        Rails.logger.info("Update visual of entry #{entry.id} with #{playlistified_entry.visual_url}")
-        entry.save
-      end
-      Track.create_items_of(   entry, playlistified_entry.tracks)
-      Playlist.create_items_of(entry, playlistified_entry.playlists)
-      Album.create_items_of(   entry, playlistified_entry.albums)
+      self.update_enclosures_of(entry)
     end
+  end
+
+  def self.update_enclosures_of(entry)
+    begin
+      playlistified_entry = entry.playlistify(force: true)
+    rescue
+      Rails.logger.info("Entry #{entry.id} no longer exist")
+      return
+    end
+    if playlistified_entry.visual_url.present?
+      entry.visual = {
+        url: playlistified_entry.visual_url,
+        processor: "pink-spider-v1"
+      }.to_json
+      Rails.logger.info("Update visual of entry #{entry.id} with #{playlistified_entry.visual_url}")
+      entry.save
+    end
+    Track.create_items_of(   entry, playlistified_entry.tracks)
+    Playlist.create_items_of(entry, playlistified_entry.playlists)
+    Album.create_items_of(   entry, playlistified_entry.albums)
   end
 
   def self.update_visuals(max: 50)
