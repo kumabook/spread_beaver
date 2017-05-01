@@ -22,6 +22,11 @@
       = f.number_field :engagement, :class => 'form-control', :step => 1
     = f.error_span(:engagement)
   .form-group
+    = f.label :mix_duration, :class => 'control-label col-lg-2'
+    .col-lg-10
+      = f.number_field :mix_duration, :class => 'form-control', :step => 1
+    = f.error_span(:mix_duration)
+  .form-group
     .col-lg-offset-2.col-lg-10
       = f.submit nil, :class => 'btn btn-primary'
       '
