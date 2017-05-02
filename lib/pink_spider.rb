@@ -28,6 +28,10 @@ class PinkSpider
     fetch_items(ids, 'tracks')
   end
 
+  def create_track(params)
+    create_item('tracks', params)
+  end
+
   def fetch_playlist(id)
     fetch_item(id, 'playlists')
   end
@@ -36,12 +40,20 @@ class PinkSpider
     fetch_items(ids, 'playlists')
   end
 
+  def create_playlist(params)
+    create_item('playlists', params)
+  end
+
   def fetch_album(id)
     fetch_item(id, 'albums')
   end
 
   def fetch_albums(ids)
     fetch_items(ids, 'albums')
+  end
+
+  def create_album(params)
+    create_item('albums', params)
   end
 
   def fetch_item(id, resource_name)
@@ -56,6 +68,14 @@ class PinkSpider
     response = RestClient.post "#{base_url}/v1/#{resource_name}/.mget",
                                ids.to_json,
                                {content_type: :json, accept: :json}
+    return if response.code != 200
+    JSON.parse(response.body)
+  end
+
+  def create_item(resource_name, params)
+    response = RestClient.post "#{base_url}/v1/#{resource_name}",
+                               params,
+                               accept: :json
     return if response.code != 200
     JSON.parse(response.body)
   end
