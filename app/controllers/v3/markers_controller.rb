@@ -20,6 +20,7 @@ class V3::MarkersController < V3::ApiController
     when 'tags'
       @ids = params[:tags]
     end
+    @ids = @ids.select {|id| id.present? }
   end
 
   def mark_entries
