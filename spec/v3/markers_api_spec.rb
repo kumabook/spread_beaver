@@ -241,5 +241,20 @@ RSpec.describe "Markers api", type: :request, autodoc: true do
         end
       end
     end
+    context "ignore empty string" do
+      it "marks tracks as played" do
+        count = Track.played(@user).count
+        post "/v3/markers",
+             params: {
+               type: 'tracks',
+               action: 'markAsPlayed',
+               trackIds: [""]
+             },
+             headers: headers_for_login_user
+        expect(@response.status).to eq(200)
+        after_count = Track.played(@user).count
+        expect(after_count).to eq(count)
+      end
+    end
   end
 end
