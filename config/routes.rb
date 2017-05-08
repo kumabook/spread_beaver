@@ -14,6 +14,7 @@ Rails.application.routes.draw do
   end
   resources :entries do
     get 'feedly', action: :show_feedly, on: :member
+    get 'crawl' , action: :crawl      , on: :member
     resources :tracks   , controller: :enclosures, type: 'Track'   , only: :index
     resources :albums   , controller: :enclosures, type: 'Album'   , only: :index
     resources :playlists, controller: :enclosures, type: 'Playlist', only: :index

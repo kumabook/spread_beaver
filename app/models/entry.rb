@@ -84,31 +84,31 @@ class Entry < ApplicationRecord
     en
   end
 
-  def self.update_enclosures(period: 1.month.ago..Time.now)
+  def self.crawl(period: 1.month.ago..Time.now)
     Entry.where("created_at >= ?", period.begin)
          .where("created_at <= ?", period.end).find_each do |entry|
-      self.update_enclosures_of(entry)
+      entry.crawl
     end
   end
 
-  def self.update_enclosures_of(entry)
+  def crawl
     begin
-      playlistified_entry = entry.playlistify(force: true)
+      playlistified_entry = playlistify(force: true)
     rescue
-      Rails.logger.info("Entry #{entry.id} no longer exist")
+      Rails.logger.info("Entry #{id} no longer exist")
       return
     end
     if playlistified_entry.visual_url.present?
-      entry.visual = {
+      self.visual = {
         url: playlistified_entry.visual_url,
         processor: "pink-spider-v1"
       }.to_json
-      Rails.logger.info("Update visual of entry #{entry.id} with #{playlistified_entry.visual_url}")
-      entry.save
+      Rails.logger.info("Update visual of entry #{id} with #{playlistified_entry.visual_url}")
+      save
     end
-    Track.create_items_of(   entry, playlistified_entry.tracks)
-    Playlist.create_items_of(entry, playlistified_entry.playlists)
-    Album.create_items_of(   entry, playlistified_entry.albums)
+    Track.create_items_of(   self, playlistified_entry.tracks)
+    Playlist.create_items_of(self, playlistified_entry.playlists)
+    Album.create_items_of(   self, playlistified_entry.albums)
   end
 
   def self.update_visuals(max: 50)

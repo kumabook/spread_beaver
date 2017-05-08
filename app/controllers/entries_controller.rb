@@ -3,7 +3,7 @@ class EntriesController < ApplicationController
   include SavableController
   include ReadableController
 
-  before_action :set_entry    , only: [:show, :show_feedly, :edit, :update, :destroy]
+  before_action :set_entry    , only: [:show, :show_feedly, :crawl, :edit, :update, :destroy]
   before_action :set_feed     , only: [:index]
   before_action :set_keyword  , only: [:index]
   before_action :set_tag      , only: [:index]
@@ -42,6 +42,15 @@ class EntriesController < ApplicationController
   def show_feedly
     client = Feedlr::Client.new
     @feedlr_entry = client.user_entry(@entry.id)
+  end
+
+  def crawl
+    @entry.crawl
+    respond_to do |format|
+      format.html {
+        redirect_to entry_path(@entry), notice: 'Entry was successfully crawled.'
+      }
+    end
   end
 
   def new
