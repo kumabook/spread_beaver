@@ -1,3 +1,5 @@
+- btn_class = 'btn btn btn-success'
+- btn_xs_class = 'btn btn-xs btn-primary'
 .page-header
   h1 Entry
 table.table.table-striped
@@ -81,7 +83,20 @@ table.table.table-striped
         - @entry.tags.each do |t|
           = link_to(t.label, tag_entries_path(t))
           = raw('&nbsp');
-
+    tr
+      td tracks
+      '
+      td
+        = link_to "#{@entry.count_of[:tracks]} tracks", entry_tracks_path(@entry), class: btn_xs_class
+    tr
+      td albums
+      '
+      td
+        = link_to "#{@entry.count_of[:albums]} albums", entry_albums_path(@entry), class: btn_xs_class
+    tr
+      td playlists
+      td
+        = link_to "#{@entry.count_of[:playlists]} playlists", entry_playlists_path(@entry), class: btn_xs_class
 = link_to t('.edit', :default => t("helpers.links.edit")),
             edit_entry_path(@entry),
            :class => 'btn btn-primary'
@@ -95,3 +110,9 @@ table.table.table-striped
 = link_to 'Crawl',
             crawl_entry_path(@entry),
            :class => 'btn btn-info'
+'
+= link_to "Add track", new_entry_track_path(@entry), class: btn_class
+'
+= link_to "Add album", new_entry_album_path(@entry), class: btn_class
+'
+= link_to "Add playlist", new_entry_playlist_path(@entry), class: btn_class

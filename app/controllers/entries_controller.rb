@@ -37,6 +37,7 @@ class EntriesController < ApplicationController
   end
 
   def show
+    Entry.set_count_of_enclosures([@entry])
   end
 
   def show_feedly
