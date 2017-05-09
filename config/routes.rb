@@ -19,6 +19,10 @@ Rails.application.routes.draw do
     resources :albums   , controller: :enclosures, type: 'Album'   , only: :index
     resources :playlists, controller: :enclosures, type: 'Playlist', only: :index
 
+    resources :tracks   , controller: :entry_enclosures, type: 'Track'   , only: [:new, :create, :destroy]
+    resources :albums   , controller: :entry_enclosures, type: 'Album'   , only: [:new, :create, :destroy]
+    resources :playlists, controller: :entry_enclosures, type: 'Playlist', only: [:new, :create, :destroy]
+
     post   'like'  , to: :like  , as: :likes
     delete 'unlike', to: :unlike, as: :like
     post   'save'  , to: :save  , as: :saves
