@@ -85,7 +85,7 @@ See [Feedly Cloud API document](https://developer.feedly.com/v3/)
 
 ### Running locally
 
-- Install ruby and postgres
+- Install ruby and postgres and redis
 - Run  `bundle install`
 - Create `config/database.yml` from `config.database.yml.dist` and change it if need
 - Run `rake db:create`
