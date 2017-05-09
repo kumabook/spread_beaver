@@ -33,13 +33,12 @@ class EnclosuresController < ApplicationController
   end
 
   def create
-    @enclosure = enclosure_class.new(enclosure_params)
-
+    @enclosure = enclosure_class.create_with_pink_spider(enclosure_params.to_h)
     respond_to do |format|
       if @enclosure.save
         format.html {
           redirect_to index_path,
-                      notice: "#{enclosure_class.name} was successfully created."
+                      notice: "#{enclosure_class.name} #{@enclosure.id} was successfully created."
         }
       else
         format.html { render :new }
@@ -103,7 +102,11 @@ class EnclosuresController < ApplicationController
     end
 
     def enclosure_params
-      params.require(type.underscore.to_sym).permit(:id)
+      params.require(type.underscore.to_sym).permit(:id,
+                                                    :identifier,
+                                                    :provider,
+                                                    :owner_id,
+                                                    :url)
     end
 
     def set_view_params

@@ -1,3 +1,67 @@
+- model             = @type.downcase.to_sym
+- index_path_method = "#{@type.downcase.pluralize}_path".to_sym
+- create_path       = public_send index_path_method
+- providers         = ['YouTube', 'SoundCloud', 'AppleMusic', 'Spotify']
 .page-header
-  h1 New Track
-= render :partial => "form"
+  h1
+    = "New #{@enclosure.class.name}"
+
+= form_tag(create_path, method: "post")
+  table.table.table-striped
+    tbody
+      tr
+        td
+          = label_tag :provider, 'provider'
+        td
+          = select model, :provider, options_for_select(providers)
+      tr
+        td
+          = label_tag :identifier, 'identifer'
+        td
+          = text_field model, :identifier
+      tr
+        td
+          = label_tag :owner_id, 'owner_id'
+        td
+          = text_field model, :owner_id
+      tr
+        td
+          = label_tag :url, 'url'
+        td
+          = text_field model, :url
+
+  = submit_tag("new", class: 'btn btn-primary')
+
+javascript:
+  var provider   = document.getElementById("#{model}_provider");
+  var identifier = document.getElementById("#{model}_identifier");
+  var ownerId    = document.getElementById("#{model}_owner_id");
+  var url        = document.getElementById("#{model}_url");
+  var optionaltextFields = [ownerId, url];
+  function updateTextFields() {
+    for (var i = 0; i < optionaltextFields.length; i++) {
+      optionaltextFields[i].value = '';
+    }
+    switch (provider.value) {
+      case 'YouTube':
+        ownerId.disabled = true;
+        url.disabled = true;
+        break;
+      case 'SoundCloud':
+        ownerId.disabled = true;
+        url.disabled = true;
+        break;
+      case 'Spotify':
+        ownerId.disabled = false;
+        url.disabled = true;
+        break;
+      case 'AppleMusic':
+        ownerId.disabled = true;
+        url.disabled = false;
+        break;
+    }
+  }
+  provider.addEventListener('change', function() {
+    updateTextFields();
+  });
+  updateTextFields();
