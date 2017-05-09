@@ -21,16 +21,19 @@ describe EnclosuresController, type: :controller do
   end
 
   describe '#create' do
+    count = 0
     before do
+      count = Track.count
       post :create, params: {
              type: 'Track',
              track: {
-               id: uuid
+               provider: "YouTube",
+               identifier: "abcdefg"
              }
            }
     end
     it { expect(response).to redirect_to tracks_url }
-    it { expect(Track.find_by(id: uuid)).not_to be_nil }
+    it { expect(Track.count).to eq(count + 1) }
   end
 
   describe '#like' do

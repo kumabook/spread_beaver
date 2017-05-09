@@ -20,6 +20,9 @@ module PinkSpiderMacros
         track.clone
       }
     end
+    allow_any_instance_of(PinkSpider).to receive(:create_track) do |this|
+      PinkSpiderHelper::track_hash
+    end
 
     allow_any_instance_of(PinkSpider).to receive(:fetch_album) do |this, id|
       album["id"] = id
@@ -31,6 +34,9 @@ module PinkSpiderMacros
         album.clone
       }
     end
+    allow_any_instance_of(PinkSpider).to receive(:create_album) do |this|
+      PinkSpiderHelper::album_hash
+    end
 
     allow_any_instance_of(PinkSpider).to receive(:fetch_playlist) do |this, id|
       playlist["id"] = id
@@ -41,6 +47,9 @@ module PinkSpiderMacros
         playlist["id"] = id
         playlist.clone
       }
+    end
+    allow_any_instance_of(PinkSpider).to receive(:create_playlist) do |this|
+      PinkSpiderHelper::playlist_hash
     end
   end
 end
