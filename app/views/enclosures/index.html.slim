@@ -38,8 +38,6 @@ table.table.table-striped
       - saves_path      = public_send saves_path_method, enclosure
       - save_path       = public_send save_path_method , enclosure
       - plays_path      = public_send plays_path_method, enclosure
-      - if @entry.present?
-        - entry_item_path = public_send entry_item_path_method, @entry, enclosure
       - content         = enclosure.content
       - next if content.nil?
       tr
@@ -66,7 +64,7 @@ table.table.table-striped
           = form_for :play, url: plays_path, method: :post do |f|
             = f.submit 'Play', class: 'btn btn-xs btn-info'
           - if @entry.present?
-            = link_to 'Remove', entry_item_path,
+            = link_to 'Remove', public_send(entry_item_path_method, @entry, enclosure),
                     :method => :delete,
                     :class => 'btn btn-xs btn-primary'
           - else
