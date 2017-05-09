@@ -36,6 +36,14 @@ describe EnclosuresController, type: :controller do
     it { expect(Track.count).to eq(count + 1) }
   end
 
+  describe '#destroy' do
+    before {
+      delete :destroy, params: { id: track.id, type: Track.name }
+    }
+    it { expect(response).to redirect_to tracks_url }
+    it { expect(Track.find_by(id: track.id)).to be_nil }
+  end
+
   describe '#like' do
     before do
       post :like, params: {
