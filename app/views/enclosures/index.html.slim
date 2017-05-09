@@ -31,6 +31,7 @@ table.table.table-striped
       - save_path   = public_send save_path_method , enclosure
       - plays_path  = public_send plays_path_method, enclosure
       - content     = enclosure.content
+      - next if content.nil?
       tr
         td = link_to enclosure.id, item_path
         td = content["provider"]
