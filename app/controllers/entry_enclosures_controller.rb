@@ -14,8 +14,8 @@ class EntryEnclosuresController < ApplicationController
       if @entry_enclosure.save
         redirect_to(entry_path(@entry_enclosure.entry))
       else
-        redirect_to(entry_path(@entry_enclosure.entry),
-                    notice: @entry_enclosure.errors.full_messages)
+        redirect_to new_entry_enclosure_path(@entry),
+                    notice: @entry_enclosure.errors.full_messages
       end
     rescue ActiveRecord::RecordNotUnique => e
       redirect_to new_entry_enclosure_path(@entry), notice: e.message
