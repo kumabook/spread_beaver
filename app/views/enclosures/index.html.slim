@@ -5,10 +5,18 @@
 - save_path_method = "#{@type.downcase}_save_path".to_sym
 - plays_path_method = "#{@type.downcase}_plays_path".to_sym
 - new_path_method  = "new_#{@type.downcase}_path".to_sym
+- entry_item_path_method = "entry_#{@type.downcase}_path".to_sym
+- new_entry_item_path_method = "new_entry_#{@type.downcase}_path".to_sym
 .page-header
   h1
-    = @type.pluralize
-= link_to "New #{@type}", public_send(new_path_method), :class => 'btn btn-primary'
+    - if @entry.present?
+      = "#{@type.pluralize} of #{@entry.title}"
+    - else
+      = "#{@type.pluralize}"
+- if @entry.present?
+  = link_to "Add #{@type}", public_send(new_entry_item_path_method), :class => 'btn btn-primary'
+- else
+  = link_to "New #{@type}", public_send(new_path_method), :class => 'btn btn-primary'
 br
 = paginate @enclosures
 table.table.table-striped
@@ -24,13 +32,15 @@ table.table.table-striped
       th.col-md-1 actions
   tbody
     - @enclosures.each do |enclosure|
-      - item_path   = public_send item_path_method , enclosure
-      - likes_path  = public_send likes_path_method, enclosure
-      - like_path   = public_send like_path_method , enclosure
-      - saves_path  = public_send saves_path_method, enclosure
-      - save_path   = public_send save_path_method , enclosure
-      - plays_path  = public_send plays_path_method, enclosure
-      - content     = enclosure.content
+      - item_path       = public_send item_path_method , enclosure
+      - likes_path      = public_send likes_path_method, enclosure
+      - like_path       = public_send like_path_method , enclosure
+      - saves_path      = public_send saves_path_method, enclosure
+      - save_path       = public_send save_path_method , enclosure
+      - plays_path      = public_send plays_path_method, enclosure
+      - if @entry.present?
+        - entry_item_path = public_send entry_item_path_method, @entry, enclosure
+      - content         = enclosure.content
       - next if content.nil?
       tr
         td = link_to enclosure.id, item_path
@@ -55,9 +65,14 @@ table.table.table-striped
               = f.submit 'Save', class: 'btn btn-xs btn-success'
           = form_for :play, url: plays_path, method: :post do |f|
             = f.submit 'Play', class: 'btn btn-xs btn-info'
-          = link_to 'Delete', item_path,
+          - if @entry.present?
+            = link_to 'Remove', entry_item_path,
                     :method => :delete,
-                    :data => { :confirm => t('.confirm',
-                               :default => t("helpers.links.confirm",
-                                             :default => 'Are you sure?')) },
-                    :class => 'btn btn-xs btn-danger'
+                    :class => 'btn btn-xs btn-primary'
+          - else
+            = link_to 'Delete', item_path,
+                      :method => :delete,
+                      :data => { :confirm => t('.confirm',
+                                 :default => t("helpers.links.confirm",
+                                               :default => 'Are you sure?')) },
+                      :class => 'btn btn-xs btn-danger'
