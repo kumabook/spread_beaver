@@ -75,7 +75,7 @@ class EnclosuresController < ApplicationController
     end
 
     def item_path(enclosure)
-      self.public_send "#{type.downcase.pluralize}_path".to_sym, enclosure
+      self.public_send "#{type.downcase}_path".to_sym, enclosure
     end
 
     def set_enclosure
@@ -112,6 +112,6 @@ class EnclosuresController < ApplicationController
     def set_view_params
       @type       = type
       @index_path = index_path
-      @item_path  = item_path @enclosure
+      @item_path  = item_path @enclosure if @enclosure.present?
     end
 end
