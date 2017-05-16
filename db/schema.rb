@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170501003217) do
+ActiveRecord::Schema.define(version: 20170514130008) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -25,6 +25,16 @@ ActiveRecord::Schema.define(version: 20170501003217) do
     t.datetime "updated_at",  null: false
     t.index ["id"], name: "index_categories_on_id", unique: true, using: :btree
     t.index ["label"], name: "index_categories_on_label", unique: true, using: :btree
+  end
+
+  create_table "enclosure_issues", force: :cascade do |t|
+    t.string   "enclosure_type",             null: false
+    t.uuid     "enclosure_id",               null: false
+    t.uuid     "issue_id",                   null: false
+    t.integer  "engagement",     default: 0, null: false
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
+    t.index ["enclosure_id", "issue_id"], name: "index_enclosure_issues_on_enclosure_id_and_issue_id", unique: true, using: :btree
   end
 
   create_table "enclosures", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -250,6 +260,15 @@ ActiveRecord::Schema.define(version: 20170501003217) do
     t.index ["user_id", "entry_id"], name: "index_read_entries_on_user_id_and_entry_id", unique: true, using: :btree
   end
 
+  create_table "resources", force: :cascade do |t|
+    t.string   "wall_id",                   null: false
+    t.string   "resource_id",               null: false
+    t.integer  "resource_type",             null: false
+    t.integer  "engagement",    default: 0, null: false
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
+  end
+
   create_table "saved_enclosures", force: :cascade do |t|
     t.uuid     "user_id",        null: false
     t.uuid     "enclosure_id",   null: false
@@ -315,6 +334,13 @@ ActiveRecord::Schema.define(version: 20170501003217) do
     t.string   "type"
     t.index ["email"], name: "index_users_on_email", unique: true, using: :btree
     t.index ["id"], name: "index_users_on_id", unique: true, using: :btree
+  end
+
+  create_table "walls", force: :cascade do |t|
+    t.string   "label"
+    t.string   "description"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
   end
 
 end
