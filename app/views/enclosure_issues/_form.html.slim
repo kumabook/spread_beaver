@@ -1,0 +1,31 @@
+= form_for @enclosure_issue, html: { class: "form form-horizontal enclosure_issue" } do |f|
+  - if @enclosure_issue.errors.any?
+    #error_explanation
+      h2 = "#{pluralize(@enclosure_issue.errors.count, "error")} prohibited this issue from being saved:"
+      ul
+        - @enclosure_issue.errors.full_messages.each do |message|
+          li = message
+
+  .form-group
+    = f.label :issue_id, :class => 'control-label col-lg-2'
+    .col-lg-10
+      = f.text_field :issue_id, :class => 'form-control'
+    = f.error_span(:issue_id)
+
+  .form-group
+    = f.label :enclosure_id, :class => 'control-label col-lg-2'
+    .col-lg-10
+      = f.text_field :enclosure_id, :class => 'form-control'
+    = f.error_span(:enclosure_id)
+  = f.hidden_field :enclosure_type, :class => 'form-control'
+
+  .form-group
+    = f.label :engagement, :class => 'control-label col-lg-2'
+    .col-lg-10
+      = f.number_field :engagement, :class => 'form-control'
+    = f.error_span(:engagement)
+  .form-group
+    .col-lg-offset-2.col-lg-10
+      = f.submit nil, :class => 'btn btn-primary'
+      '
+      = link_to t('.cancel', :default => t("helpers.links.cancel")), edit_journal_issue_path(@journal, @issue), :class => 'btn'
