@@ -7,6 +7,7 @@ class EntriesController < ApplicationController
   before_action :set_feed     , only: [:index]
   before_action :set_keyword  , only: [:index]
   before_action :set_tag      , only: [:index]
+  before_action :set_issue    , only: [:index]
   before_action :require_admin, only: [:new, :create, :destroy, :update]
 
   def index
@@ -22,6 +23,12 @@ class EntriesController < ApplicationController
       @entries = Entry.where(feed_id: @feed.id)
                       .order('published DESC')
                       .page(params[:page])
+    elsif @issue.present?
+      @entry_issues = @issue.entry_issues
+                            .order('engagement DESC')
+                            .page(params[:page])
+      @entries = @issue.entries
+                   .page(params[:page])
     else
       @entries = Entry.order('published DESC')
                       .page(params[:page])
@@ -123,6 +130,10 @@ class EntriesController < ApplicationController
 
   def set_tag
     @tag = Tag.find_by(id: params[:tag_id])
+  end
+
+  def set_issue
+    @issue = Issue.find_by(id: params[:issue_id])
   end
 
   def user_item_params
