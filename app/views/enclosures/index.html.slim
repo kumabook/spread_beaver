@@ -11,10 +11,14 @@
   h1
     - if @entry.present?
       = "#{@type.pluralize} of #{@entry.title}"
+    - elsif @issue.present?
+      = "#{@type.pluralize} of #{@issue.journal.label} #{@issue.label}"
     - else
       = "#{@type.pluralize}"
 - if @entry.present?
   = link_to "Add #{@type}", public_send(new_entry_item_path_method), :class => 'btn btn-primary'
+- elsif @issue.present?
+  = link_to "Add #{@type}", new_issue_enclosure_issue_path(type: @type), :class => 'btn btn-primary'
 - else
   = link_to "New #{@type}", public_send(new_path_method), :class => 'btn btn-primary'
 br
@@ -22,6 +26,8 @@ br
 table.table.table-striped
   thead
     tr
+      - if @issue.present?
+        th engagement
       th id
       th provider
       th identifier
@@ -38,36 +44,44 @@ table.table.table-striped
       - saves_path      = public_send saves_path_method, enclosure
       - save_path       = public_send save_path_method , enclosure
       - plays_path      = public_send plays_path_method, enclosure
-      - content         = enclosure.content
-      - next if content.nil?
+      - content         = enclosure.content || {}
+      - if @issue.present?
+        - enclosure_issue = @enclosure_issues.select {|ei| ei.enclosure_id == enclosure.id }.first
       tr
+        - if @issue.present?
+          td = enclosure_issue.engagement
         td = link_to enclosure.id, item_path
         td = content["provider"]
-        td = link_to content["identifier"], enclosure.content["url"]
+        td = link_to content["identifier"], content["url"]
         td = "#{content["title"]}"
         td = "#{enclosure.likes_count || 0} likes"
         td = "#{enclosure.saved_count || 0} saves"
         td = "#{enclosure.play_count  || 0} plays"
         td
-          - if enclosure.is_liked
-            = form_for :like, url: like_path, method: :delete do |f|
-              = f.submit 'Unlike', class: 'btn btn-xs btn-primary'
-          - else
-            = form_for :like, url: likes_path, method: :post do |f|
-              = f.submit 'Like', class: 'btn btn-xs btn-primary'
-          - if enclosure.is_saved
-            = form_for :save, url: save_path, method: :delete do |f|
-              = f.submit 'Unsave', class: 'btn btn-xs btn-success'
-          - else
-            = form_for :save, url: saves_path, method: :post do |f|
-              = f.submit 'Save', class: 'btn btn-xs btn-success'
-          = form_for :play, url: plays_path, method: :post do |f|
-            = f.submit 'Play', class: 'btn btn-xs btn-info'
           - if @entry.present?
             = link_to 'Remove', public_send(entry_item_path_method, @entry, enclosure),
                     :method => :delete,
                     :class => 'btn btn-xs btn-primary'
+          - elsif @issue.present?
+            = link_to 'Edit', edit_enclosure_issue_path(enclosure_issue), :class => 'btn btn-xs btn-primary'
+            = link_to 'Remove', enclosure_issue_path(enclosure_issue),
+                    :method => :delete,
+                    :class => 'btn btn-xs btn-primary'
           - else
+            - if enclosure.is_liked
+              = form_for :like, url: like_path, method: :delete do |f|
+                = f.submit 'Unlike', class: 'btn btn-xs btn-primary'
+            - else
+              = form_for :like, url: likes_path, method: :post do |f|
+                = f.submit 'Like', class: 'btn btn-xs btn-primary'
+            - if enclosure.is_saved
+              = form_for :save, url: save_path, method: :delete do |f|
+                = f.submit 'Unsave', class: 'btn btn-xs btn-success'
+            - else
+              = form_for :save, url: saves_path, method: :post do |f|
+                = f.submit 'Save', class: 'btn btn-xs btn-success'
+            = form_for :play, url: plays_path, method: :post do |f|
+              = f.submit 'Play', class: 'btn btn-xs btn-info'
             = link_to 'Delete', item_path,
                       :method => :delete,
                       :data => { :confirm => t('.confirm',

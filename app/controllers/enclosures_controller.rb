@@ -6,6 +6,7 @@ class EnclosuresController < ApplicationController
   before_action :set_enclosure, only: [:show, :destroy]
   before_action :set_content  , only: [:show, :edit]
   before_action :set_entry    , only: [:index]
+  before_action :set_issue    , only: [:index]
   before_action :set_view_params
 
   def model_class
@@ -16,6 +17,13 @@ class EnclosuresController < ApplicationController
     if @entry.present?
       @enclosures = @entry.public_send(index_method)
                           .order('created_at DESC')
+                          .page(params[:page])
+    elsif @issue.present?
+      @enclosure_issues = @issue.enclosure_issues
+                            .order('engagement DESC')
+                            .page(params[:page])
+      @enclosures = @issue.public_send(index_method)
+                          .order('engagement DESC')
                           .page(params[:page])
     else
       @enclosures = enclosure_class.order('created_at DESC').page(params[:page])
@@ -89,6 +97,10 @@ class EnclosuresController < ApplicationController
 
     def set_entry
       @entry = Entry.find(params[:entry_id]) if params[:entry_id].present?
+    end
+
+    def set_issue
+      @issue = Issue.find(params[:issue_id]) if params[:issue_id].present?
     end
 
     def user_item_params
