@@ -6,16 +6,23 @@
       = "Entries of tag/#{@tag.label}"
     - elsif @feed.present?
       = "Entries of #{@feed.title}"
+    - elsif @issue.present?
+      = "Entries of #{@issue.journal.label}: #{@issue.label}"
     - else
       = "Entries"
 
-= link_to 'New Entry', new_entry_path, class: 'btn btn-primary'
+- if @issue.present?
+  = link_to 'Add Entry', new_issue_entry_issue_path(@issue), class: 'btn btn-primary'
+- else
+  = link_to 'New Entry', new_entry_path, class: 'btn btn-primary'
 br
 
 = paginate @entries
 table.table.table-striped
   thead
     tr
+      - if @issue.present?
+        th engagement
       th visual
       th title
       td feeds
@@ -27,7 +34,11 @@ table.table.table-striped
   tbody
     - @entries.each do |entry|
       - path = feed_path(CGI.escape entry.origin_hash['streamId'])
+      - if @issue.present?
+        - entry_issue = @entry_issues.select {|ei| ei.entry_id == entry.id }.first
       tr
+        - if @issue.present?
+          td = entry_issue.engagement
         td = thumbnail_image_link(entry)
         td = link_to entry.title&.truncate(50), entry.url
         td = link_to entry.origin_hash['title'], path
@@ -41,34 +52,40 @@ table.table.table-striped
           = link_to 'crawl', crawl_entry_path(entry), class: 'btn btn-xs btn-primary'
           br
           = link_to "#{entry.count_of[:tracks]} tracks", entry_tracks_path(entry), class: 'btn btn-xs btn-primary'
-          = link_to "#{entry.count_of[:albums]} albums", entry_albums_path(entry), class: 'btn btn-xs btn-primary'
+          = link_to "#{entry.count_of[:albums]} albums", entry_albums_path(entry), class: 'btn btn-xs btpn-primary'
           = link_to "#{entry.count_of[:playlists]} playlists", entry_playlists_path(entry), class: 'btn btn-xs btn-primary'
         td
-          = render partial: "user_entry_button",
-                    locals: { mark: :like,
-                        create_url: entry_likes_path(entry),
-                        delete_url: entry_like_path(entry),
-                             label: 'Mark as Like',
-                    labelForRemove: 'Mark as Unlike',
-                             entry: entry,
-                      user_entries: @liked_entries }
-          = render partial: "user_entry_button",
-                    locals: { mark: :save,
-                        create_url: entry_saves_path(entry),
-                        delete_url: entry_save_path(entry),
-                             label: 'Mark as Save',
-                    labelForRemove: 'Mark as Unsave',
-                             entry: entry,
-                      user_entries: @saved_entries }
-          = render partial: "user_entry_button",
-                    locals: { mark: :user_entry,
-                        create_url: entry_reads_path(entry),
-                        delete_url: entry_read_path(entry),
-                             label: 'Mark as Read',
-                    labelForRemove: 'Mark as Unread',
-                             entry: entry,
-                      user_entries: @read_entries}
-          = link_to 'Edit', edit_entry_path(entry), class: 'btn btn-xs btn-primary'
-          '
-          = link_to 'Destroy', entry, data: {:confirm => 'Are you sure?'},
-                    :method => :delete, class: 'btn btn-xs btn-primary'
+          - if @issue.present?
+            = link_to 'Edit', edit_entry_issue_path(entry), class: 'btn btn-xs btn-primary'
+            '
+            = link_to 'Remove', entry_issue_path(entry_issue), data: {:confirm => 'Are you sure?'},
+                      :method => :delete, class: 'btn btn-xs btn-primary'
+          - else
+            = render partial: "user_entry_button",
+                      locals: { mark: :like,
+                          create_url: entry_likes_path(entry),
+                          delete_url: entry_like_path(entry),
+                               label: 'Mark as Like',
+                      labelForRemove: 'Mark as Unlike',
+                               entry: entry,
+                        user_entries: @liked_entries }
+            = render partial: "user_entry_button",
+                      locals: { mark: :save,
+                          create_url: entry_saves_path(entry),
+                          delete_url: entry_save_path(entry),
+                               label: 'Mark as Save',
+                      labelForRemove: 'Mark as Unsave',
+                               entry: entry,
+                        user_entries: @saved_entries }
+            = render partial: "user_entry_button",
+                      locals: { mark: :user_entry,
+                          create_url: entry_reads_path(entry),
+                          delete_url: entry_read_path(entry),
+                               label: 'Mark as Read',
+                      labelForRemove: 'Mark as Unread',
+                               entry: entry,
+                        user_entries: @read_entries}
+            = link_to 'Edit', edit_entry_path(entry), class: 'btn btn-xs btn-primary'
+            '
+            = link_to 'Destroy', entry, data: {:confirm => 'Are you sure?'},
+                      :method => :delete, class: 'btn btn-xs btn-primary'
