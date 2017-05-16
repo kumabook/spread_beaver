@@ -16,7 +16,7 @@ table.table.table-striped
   tbody
     - @journals.each do |journal|
       tr
-        td = journal.id.truncate(20)
+        td = journal.stream_id
         td = journal.label
         td = journal.description
         td = link_to 'Issues', journal_issues_path(journal), class: 'btn btn-xs btn-primary'
