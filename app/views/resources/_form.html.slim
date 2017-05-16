@@ -1,12 +1,12 @@
 = form_for @resource, url: @resource, html: { class: "form form-horizontal resource" } do |f|
   - if @resource.errors.any?
     #error_explanation
-      h2 = "#{pluralize(@resource.errors.count, "error")} prohibited this resource collection from being saved:"
+      h2 = "#{pluralize(@resource.errors.count, "error")} prohibited this wall from being saved:"
       ul
         - @resource.errors.full_messages.each do |message|
           li = message
   .form-group
-    = f.hidden_field :collection_id, value: @resource.collection_id
+    = f.hidden_field :wall_id, value: @resource.wall_id
   .form-group
     = f.label 'resource id', :class => 'control-label col-lg-2'
     .col-lg-10
@@ -27,4 +27,4 @@
     .col-lg-offset-2.col-lg-10
       = f.submit nil, :class => 'btn btn-primary'
       '
-      = link_to t('.cancel', :default => t("helpers.links.cancel")), edit_resource_collection_path(@resource_collection), :class => 'btn'
+      = link_to t('.cancel', :default => t("helpers.links.cancel")), edit_wall_path(@wall), :class => 'btn'
