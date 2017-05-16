@@ -3,8 +3,15 @@ class Issue < ApplicationRecord
   include Stream
 
   enum state: { draft: 0, published: 1 }
-  has_many :entry_issues, ->{order("entry_issues.engagement DESC")}, dependent: :destroy
-  has_many :entries, through: :entry_issues
+
+  has_many :entry_issues    , ->{order("entry_issues.engagement DESC")}    , dependent: :destroy
+  has_many :enclosure_issues, ->{order("enclosure_issues.engagement DESC")}, dependent: :destroy
+  has_many :entries         , through: :entry_issues
+  has_many :enclosures      , through: :enclosure_issues
+  has_many :tracks          , through: :enclosure_issues, source: :enclosure, source_type: Track.name
+  has_many :albums          , through: :enclosure_issues, source: :enclosure, source_type: Album.name
+  has_many :playlists       , through: :enclosure_issues, source: :enclosure, source_type: Playlist.name
+
   belongs_to :journal
 
   self.primary_key = :id

@@ -8,6 +8,9 @@ class Enclosure < ApplicationRecord
   has_many :entry_enclosures, dependent: :destroy
   has_many :entries         , through:   :entry_enclosures
 
+  has_many :enclosure_issues, dependent: :destroy
+  has_many :issues          , through: :enclosure_issues
+
   scope :latest, -> (time) { where("created_at > ?", time).order('created_at DESC') }
   scope :detail, ->        { includes([:likers]).eager_load(:entries) }
 
