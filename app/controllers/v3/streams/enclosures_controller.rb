@@ -4,6 +4,7 @@ class V3::Streams::EnclosuresController < V3::ApiController
   before_action :doorkeeper_authorize!
   before_action :set_stream_id      , only: [:index]
   before_action :set_global_resource, only: [:index]
+  before_action :set_journal        , only: [:index]
   before_action :set_enclosure_class, only: [:index]
   before_action :set_page           , only: [:index]
 
@@ -72,6 +73,12 @@ class V3::Streams::EnclosuresController < V3::ApiController
 
   def set_stream_id
     @stream_id = CGI.unescape params[:id] if params[:id].present?
+  end
+
+  def set_journal
+    if params[:id].present? && @stream_id.match(/journal\/.*/)
+      @journal = Journal.find_by(stream_id: @stream_id)
+    end
   end
 
   def set_global_resource
