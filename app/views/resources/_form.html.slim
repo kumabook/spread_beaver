@@ -1,0 +1,30 @@
+= form_for @resource, url: @resource, html: { class: "form form-horizontal resource" } do |f|
+  - if @resource.errors.any?
+    #error_explanation
+      h2 = "#{pluralize(@resource.errors.count, "error")} prohibited this resource collection from being saved:"
+      ul
+        - @resource.errors.full_messages.each do |message|
+          li = message
+  .form-group
+    = f.hidden_field :collection_id, value: @resource.collection_id
+  .form-group
+    = f.label 'resource id', :class => 'control-label col-lg-2'
+    .col-lg-10
+      = f.text_field :resource_id, :class => 'form-control'
+    = f.error_span(:resource_id)
+  .form-group
+    = f.label :resource_type, :class => 'control-label col-lg-2'
+    .col-lg-10
+      = f.select :resource_type, Resource.resource_types.keys.to_a, {}, class: 'form-control'
+    = f.error_span(:resource_type)
+
+  .form-group
+    = f.label :engagement, :class => 'control-label col-lg-2'
+    .col-lg-10
+      = f.number_field :engagement, :class => 'form-control'
+    = f.error_span(:engagement)
+  .form-group
+    .col-lg-offset-2.col-lg-10
+      = f.submit nil, :class => 'btn btn-primary'
+      '
+      = link_to t('.cancel', :default => t("helpers.links.cancel")), edit_resource_collection_path(@resource_collection), :class => 'btn'
