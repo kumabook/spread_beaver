@@ -13,6 +13,11 @@ class Enclosure < ApplicationRecord
 
   scope :latest, -> (time) { where("created_at > ?", time).order('created_at DESC') }
   scope :detail, ->        { includes([:likers]).eager_load(:entries) }
+  scope :issue , -> (issue) {
+    joins(:enclosure_issues)
+      .where(enclosure_issues: { issue: issue })
+      .order('engagement DESC')
+  }
 
   def self.create_items_of(entry, items)
     models = items.map do |i|
