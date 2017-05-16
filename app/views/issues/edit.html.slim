@@ -2,43 +2,13 @@
   h1.title Edit Issue
   = render :partial => "form"
 
-  h2.title Entries
+  h2 Contents
 
-  = link_to 'New', new_issue_entry_issue_path(@issue), class: 'btn btn-primary'
   br
-
-  table.table.table-striped
-    thead
-      tr
-        th engagment
-        th visual
-        th title
-        th feeds
-        th published
-        th crawled
-        th links
-        th actions
-
-    tbody
-      = paginate @issue_entries
-      - @issue_entries.each do |issue_entry|
-        - entry = issue_entry.entry
-        - path  = feed_path(CGI.escape entry.origin_hash['streamId'])
-        tr
-          td = issue_entry.engagement
-          td = thumbnail_image_link(entry)
-          td = link_to entry.title&.truncate(50), entry.url
-          td = link_to entry.origin_hash['title'], path
-          td = entry.published
-          td = entry.crawled
-          td
-            = link_to 'Detail', entry_path(entry), class: 'btn btn-xs btn-primary'
-            '
-            = link_to 'Feedly', feedly_entry_path(entry), class: 'btn btn-xs btn-primary'
-            br
-            = link_to "#{entry.tracks.size} tracks", entry_tracks_path(entry), class: 'btn btn-xs btn-primary'
-          td
-            = link_to 'Edit', edit_entry_issue_path(issue_entry), class: 'btn btn-xs btn-primary'
-            '
-            = link_to 'Remove', issue_entry, data: {:confirm => 'Are you sure?'},
-                       :method => :delete, class: 'btn btn-xs btn-primary'
+  = link_to 'Edit Entries'  , issue_entries_path(@issue), class: 'btn btn-primary'
+  '
+  = link_to 'Edit Tracks'   , issue_tracks_path(@issue), class: 'btn btn-primary'
+  '
+  = link_to 'Edit Albums'   , issue_albums_path(@issue), class: 'btn btn-primary'
+  '
+  = link_to 'Edit Playlists', issue_playlists_path(@issue), class: 'btn btn-primary'
