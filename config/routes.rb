@@ -116,6 +116,12 @@ Rails.application.routes.draw do
 
     post '/markers' => 'markers#mark'
 
+    resources :walls, only: [], constraints: res_options do
+      member do
+        get '', action: :show
+      end
+    end
+
     resources :streams, only: [], constraints: res_options do
       member do
         get 'ids',      action: :index
