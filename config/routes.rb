@@ -70,6 +70,10 @@ Rails.application.routes.draw do
   resources :tags do
     resources :entries, only: [:index]
   end
+  resources :walls do
+    resources :resources, only: [:new]
+  end
+  resources :resources,  only: [:create, :edit, :update, :destroy]
   resources :journals do
     resources :issues
   end
