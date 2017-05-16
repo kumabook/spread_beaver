@@ -74,9 +74,16 @@ Rails.application.routes.draw do
     resources :issues
   end
   resources :issues, only: []  do
-    resources :entry_issues, only: [:new, :edit, :update, :destory]
+    resources :entry_issues, only: [:new]
+    resources :entries     , only: [:index]
+
+    resources :enclosure_issues, only: [:new]
+    resources :tracks   , controller: :enclosures, type: 'Track'   , only: :index
+    resources :albums   , controller: :enclosures, type: 'Album'   , only: :index
+    resources :playlists, controller: :enclosures, type: 'Playlist', only: :index
   end
-  resources :entry_issues, only: [:create, :update, :destroy, :edit]
+  resources :entry_issues    , only: [:create, :edit, :update, :destroy]
+  resources :enclosure_issues, only: [:create, :edit, :update, :destroy]
 
   scope :v3 do
     use_doorkeeper
