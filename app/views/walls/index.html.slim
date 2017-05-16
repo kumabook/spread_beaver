@@ -1,0 +1,27 @@
+.page-header
+  h1.title Walls
+
+= link_to 'New Wall', new_wall_path, class: 'btn btn-primary'
+
+br
+= paginate @walls
+table.table.table-striped
+  thead
+    tr
+      th.col-md-2 id
+      th          label
+      th          description
+      th          actions
+  tbody
+    - @walls.each do |wall|
+      tr
+        td = wall.id
+        td = wall.label
+        td = wall.description
+        td
+          = link_to 'Edit', edit_wall_path(wall), class: 'btn btn-xs btn-primary'
+          '
+          = link_to 'Destroy', wall,
+                    data: {:confirm => 'Are you sure?'},
+                    :method => :delete,
+                    class: 'btn btn-xs btn-primary'

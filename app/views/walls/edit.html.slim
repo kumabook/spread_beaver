@@ -1,0 +1,30 @@
+.page-header
+  h1.title Edit Wall
+  = render :partial => "form"
+
+  h2.title Walls
+
+  = link_to 'New', new_wall_resource_path(@wall), class: 'btn btn-primary'
+  br
+  table.table.table-striped
+    thead
+      tr
+        th resource_id
+        th engagment
+        th type
+        th stream
+        th actions
+
+    tbody
+      = paginate @resources
+      - @resources.each do |item|
+        tr
+          td = item.resource_id
+          td = item.engagement
+          td = item.resource_type
+          td = item.stream&.to_json
+          td
+            = link_to 'Edit', edit_resource_path(item), class: 'btn btn-xs btn-primary'
+            '
+            = link_to 'Remove', item, data: {:confirm => 'Are you sure?'},
+                       :method => :delete, class: 'btn btn-xs btn-primary'

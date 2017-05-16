@@ -1,0 +1,23 @@
+= form_for @wall, html: { class: "form form-horizontal wall" } do |f|
+  - if @wall.errors.any?
+    #error_explanation
+      h2 = "#{pluralize(@wall.errors.count, "error")} prohibited this collection from being saved:"
+      ul
+        - @wall.errors.full_messages.each do |message|
+          li = message
+
+  .form-group
+    = f.label :label, :class => 'control-label col-lg-2'
+    .col-lg-10
+      = f.text_field :label, :class => 'form-control'
+    = f.error_span(:label)
+  .form-group
+    = f.label :description, :class => 'control-label col-lg-2'
+    .col-lg-10
+      = f.text_area :description, :class => 'form-control'
+    = f.error_span(:description)
+  .form-group
+    .col-lg-offset-2.col-lg-10
+      = f.submit nil, :class => 'btn btn-primary'
+      '
+      = link_to t('.cancel', :default => t("helpers.links.cancel")), walls_path, :class => 'btn'
