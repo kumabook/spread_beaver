@@ -5,19 +5,19 @@ describe Resource do
   let (:user) { FactoryGirl.create(:default) }
   let (:wall) { Wall.create!(label: "ios/news", description: "news") }
 
-  describe "#stream_type" do
-    it { expect(res("journal/ハイライト").stream_type).to eq(:journal) }
-    it { expect(res("topic/ブログ").stream_type).to eq(:topic) }
-    it { expect(res("feed/http://www.rss.co.jp/feed/").stream_type).to eq(:feed) }
-    it { expect(res("keyword/rock").stream_type).to eq(:keyword) }
-    it { expect(res("user/#{user.id}/tag/rock").stream_type).to eq(:tag) }
-    it { expect(res("user/#{user.id}/category/rock").stream_type).to eq(:category) }
-    it { expect(res("tag/global.latest").stream_type).to eq(:latest) }
-    it { expect(res("tag/global.hot").stream_type).to eq(:hot) }
-    it { expect(res("tag/global.popular").stream_type).to eq(:popular) }
+  describe "#item_type" do
+    it { expect(res("journal/ハイライト").item_type).to eq(:journal) }
+    it { expect(res("topic/ブログ").item_type).to eq(:topic) }
+    it { expect(res("feed/http://www.rss.co.jp/feed/").item_type).to eq(:feed) }
+    it { expect(res("keyword/rock").item_type).to eq(:keyword) }
+    it { expect(res("user/#{user.id}/tag/rock").item_type).to eq(:tag) }
+    it { expect(res("user/#{user.id}/category/rock").item_type).to eq(:category) }
+    it { expect(res("tag/global.latest").item_type).to eq(:latest) }
+    it { expect(res("tag/global.hot").item_type).to eq(:hot) }
+    it { expect(res("tag/global.popular").item_type).to eq(:popular) }
   end
 
-  describe "::set_streams" do
+  describe "::set_item_of_stream_resources" do
     resources = []
     before do
       Journal.create!(label: "ハイライト")
@@ -36,11 +36,12 @@ describe Resource do
       res("tag/global.hot")
       res("tag/global.popular")
       resources = Wall.find(wall.id).resources
-      Resource::set_streams(resources)
+      Resource::set_item_of_stream_resources(resources)
     end
     it do
       resources.each do |r|
-        expect(r.stream).not_to be_nil
+        expect(r.item).not_to be_nil
+        expect(r.item_type).not_to be_nil
       end
     end
   end

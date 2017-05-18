@@ -9,22 +9,24 @@
   table.table.table-striped
     thead
       tr
-        th resource_id
         th engagment
-        th type
-        th stream
+        th resource_id
+        th resource_type
+        th item_type
+        th item
         th actions
 
     tbody
       = paginate @resources
-      - @resources.each do |item|
+      - @resources.each do |resource|
         tr
-          td = item.resource_id
-          td = item.engagement
-          td = item.resource_type
-          td = item.stream&.to_json
+          td = resource.engagement
+          td = resource.resource_id
+          td = resource.resource_type
+          td = resource.item_type
+          td = resource.item&.to_json
           td
-            = link_to 'Edit', edit_resource_path(item), class: 'btn btn-xs btn-primary'
+            = link_to 'Edit', edit_resource_path(resource), class: 'btn btn-xs btn-primary'
             '
-            = link_to 'Remove', item, data: {:confirm => 'Are you sure?'},
+            = link_to 'Remove', resource, data: {:confirm => 'Are you sure?'},
                        :method => :delete, class: 'btn btn-xs btn-primary'

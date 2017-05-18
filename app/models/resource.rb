@@ -1,6 +1,6 @@
 class Resource < ApplicationRecord
   belongs_to :wall, class_name: Wall
-  attr_accessor :stream
+  attr_accessor :item
 
   enum resource_type: {
          stream:          0,
@@ -14,59 +14,47 @@ class Resource < ApplicationRecord
          custom:          8
        }
 
-  def self.set_streams(items)
-    hash = items.reduce({}) do |h, i|
-      h[i.stream_type] = [] if h[i.stream_type].nil?
-      h[i.stream_type].push i
+  def as_json(options = {})
+    h = super(options)
+    h["item_type"] = self.item_type
+    h["item"]      = self.item
+    h
+  end
+
+  def item_type
+    item_type
+  end
+
+  def self.set_item_of_stream_resources(resources)
+    hash = resources.reduce({}) do |h, i|
+      h[i.item_type] = [] if h[i.item_type].nil?
+      h[i.item_type].push i
       h
     end
-    if hash[:journal].present?
-      Journal.where(stream_id: hash[:journal].map {|i| i.stream_id }).each {|j|
-        hash[:journal].select {|i| i.stream_id == j.stream_id }.each {|i| i.stream = j }
-      }
-    end
-    if hash[:topic].present?
-      Topic.where(id: hash[:topic].map {|i| i.stream_id }).each {|t|
-        hash[:topic].select {|i| i.stream_id == t.id }.each {|i| i.stream = t }
-      }
-    end
-    if hash[:feed].present?
-      Feed.where(id: hash[:feed].map {|i| i.stream_id }).each {|f|
-        hash[:feed].select {|i| i.stream_id == f.id }.each {|i| i.stream = f }
-      }
-    end
-    if hash[:keyword].present?
-      Keyword.where(id: hash[:keyword].map {|i| i.stream_id }).each {|k|
-        hash[:keyword].select {|i| i.stream_id == k.id }.each {|i| i.stream = k }
-      }
-    end
-    if hash[:tag].present?
-      Tag.where(id: hash[:tag].map {|i| i.stream_id }).each {|t|
-        hash[:tag].select {|i| i.stream_id == t.id }.each {|i| i.stream = t }
-      }
-    end
-    if hash[:latest].present?
-      hash[:latest].each do |i|
-        i.stream = {
-          id:    i.stream_id,
-          label: 'latest',
-        }
+    [{ clazz: Journal , type: :journal },
+     { clazz: Topic   , type: :topic },
+     { clazz: Feed    , type: :feed },
+     { clazz: Keyword , type: :keyword },
+     { clazz: Tag     , type: :tag },
+     { clazz: Category, type: :category }].each do |h|
+      type = h[:type]
+      clazz = h[:clazz]
+      if hash[type].present?
+        clazz.stream_id(hash[type].map {|r| r.stream_id }).each do |v|
+          hash[type].select {|r| r.stream_id == v.stream_id }.each do |r|
+            r.item = v
+          end
+        end
       end
     end
-    if hash[:hot].present?
-      hash[:hot].each do |i|
-        i.stream = {
-          id:    i.stream_id,
-          label: 'hot',
-        }
-      end
-    end
-    if hash[:popular].present?
-      hash[:popular].each do |i|
-        i.stream = {
-          id:    i.stream_id,
-          label: 'popular',
-        }
+    [:latest, :hot, :popular].each do |name|
+      if hash[name].present?
+        hash[name].each do |r|
+          r.item = {
+            id:    r.stream_id,
+            label: name.to_s,
+          }
+        end
       end
     end
   end
@@ -75,7 +63,7 @@ class Resource < ApplicationRecord
     resource_id
   end
 
-  def stream_type
+  def item_type
     case resource_id
     when /journal\/.*/
       return :journal
