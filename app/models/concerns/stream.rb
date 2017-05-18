@@ -7,6 +7,10 @@ module Stream
     after_touch   :delete_cache_entries
     after_update  :delete_cache_entries
     after_destroy :delete_cache_entries
+
+    scope :stream_id, ->  (stream_id) {
+      where(id: stream_id)
+    }
   end
 
   def stream_id
