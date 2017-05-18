@@ -7,6 +7,7 @@ RSpec.describe "Wall api", :type => :request, autodoc: true do
     wall = Wall.create!(label: "ios/news",
                         description: "ios news tab")
     (0...5).each do |i|
+      Journal.create!(label: "journal/#{i}", description: "desc")
       Resource.create!(wall_id:       wall.id,
                        engagement:    i,
                        resource_id:   "journal/#{i}",
@@ -17,7 +18,7 @@ RSpec.describe "Wall api", :type => :request, autodoc: true do
   it "get resources of a specified collection" do
     get "/v3/walls/#{CGI.escape("ios/news")}",
         headers: headers_for_login_user_api
-    resources = JSON.parse @response.body
-    expect(resources['resources'].count).to eq(5)
+    wall = JSON.parse @response.body
+    expect(wall['resources'].count).to eq(5)
   end
 end
