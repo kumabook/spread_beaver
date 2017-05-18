@@ -14,6 +14,7 @@ class FeedsController < ApplicationController
   end
 
   def show
+    render action: "show", formats: :html
   end
 
   def show_feedly
