@@ -2,19 +2,18 @@ require('paginated_array')
 
 module Readable
   extend ActiveSupport::Concern
-  def self.included(base)
+  included do
     attr_accessor :is_read
 
-    reads = "read_#{base.table_name}".to_sym
-    base.has_many reads, dependent: :destroy
-    base.scope :hot , ->      { joins(:users).order('read_count DESC') }
-    base.scope :read, -> (user) {
+    reads = "read_#{table_name}".to_sym
+    has_many reads, dependent: :destroy
+    scope :hot , ->      { joins(:users).order('read_count DESC') }
+    scope :read, -> (user) {
       joins(reads).where(reads => { user_id: user.id }).order("#{reads}.created_at DESC")
     }
-    base.extend(ClassMethods)
   end
 
-  module ClassMethods
+  class_methods do
     def read_class
       "Read#{table_name.singularize.capitalize}".constantize
     end

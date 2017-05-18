@@ -2,20 +2,19 @@ require('paginated_array')
 
 module Savable
   extend ActiveSupport::Concern
-  def self.included(base)
+  included do
     attr_accessor :is_saved
 
-    saves = "saved_#{base.table_name}".to_sym
-    base.has_many saves, dependent: :destroy
-    base.has_many :saved_users, through: saves, source: :user
+    saves = "saved_#{table_name}".to_sym
+    has_many saves, dependent: :destroy
+    has_many :saved_users, through: saves, source: :user
 
-    base.scope :saved, ->  (user) {
+    scope :saved, ->  (user) {
       joins(:saved_users).where(users: { id: user.id }).order("#{saves}.created_at DESC")
     }
-    base.extend(ClassMethods)
   end
 
-  module ClassMethods
+  class_methods do
     def save_class
       "Saved#{table_name.singularize.capitalize}".constantize
     end

@@ -1,7 +1,6 @@
 module Escapable
   extend ActiveSupport::Concern
-  def self.included(base)
-    base.extend(ClassMethods)
+  included do
   end
 
   def escape
@@ -16,6 +15,6 @@ module Escapable
     clone
   end
 
-  module ClassMethods
+  class_methods do
   end
 end

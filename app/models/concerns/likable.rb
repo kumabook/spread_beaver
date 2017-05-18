@@ -2,21 +2,20 @@ require('paginated_array')
 
 module Likable
   extend ActiveSupport::Concern
-  def self.included(base)
+  included do
     attr_accessor :is_liked
 
-    likes = "liked_#{base.table_name}".to_sym
-    base.has_many likes, dependent: :destroy
-    base.has_many :likers, through: likes, source: :user
+    likes = "liked_#{table_name}".to_sym
+    has_many likes, dependent: :destroy
+    has_many :likers, through: likes, source: :user
 
-    base.scope :popular, ->        { joins(:users).order('likes_count DESC') }
-    base.scope :liked,   -> (user) {
+    scope :popular, ->        { joins(:users).order('likes_count DESC') }
+    scope :liked,   -> (user) {
       joins(:likers).where(users: { id: user.id }).order("#{likes}.created_at DESC")
     }
-    base.extend(ClassMethods)
   end
 
-  module ClassMethods
+  class_methods do
     def like_class
       "Liked#{table_name.singularize.capitalize}".constantize
     end

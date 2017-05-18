@@ -2,20 +2,19 @@ require('paginated_array')
 
 module Playable
   extend ActiveSupport::Concern
-  def self.included(base)
+  included do
     attr_accessor :is_played
 
-    plays = "played_#{base.table_name}".to_sym
-    base.has_many plays, dependent: :destroy
+    plays = "played_#{table_name}".to_sym
+    has_many plays, dependent: :destroy
 
-    base.scope :hot,    ->        { joins(:users).order('play_count DESC') }
-    base.scope :played, -> (user) {
+    scope :hot,    ->        { joins(:users).order('play_count DESC') }
+    scope :played, -> (user) {
       joins(plays).where(plays => { user_id: user.id }).order("#{plays}.created_at DESC")
     }
-    base.extend(ClassMethods)
   end
 
-  module ClassMethods
+  class_methods do
     def play_class
       "Played#{table_name.singularize.capitalize}".constantize
     end
