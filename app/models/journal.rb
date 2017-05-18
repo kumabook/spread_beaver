@@ -9,6 +9,12 @@ class Journal < ApplicationRecord
     where(stream_id: stream_id)
   }
 
+  def as_json(options = {})
+    h = super(options)
+    h["id"] = stream_id
+    h.delete("stream_id")
+    h
+  end
 
   def create_daily_issue(date=Time.now.tomorrow)
     date_str = "#{date.strftime('%Y%m%d')}"
