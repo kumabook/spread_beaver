@@ -21,10 +21,6 @@ class Resource < ApplicationRecord
     h
   end
 
-  def item_type
-    item_type
-  end
-
   def self.set_item_of_stream_resources(resources)
     hash = resources.reduce({}) do |h, i|
       h[i.item_type] = [] if h[i.item_type].nil?
