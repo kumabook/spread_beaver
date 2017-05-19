@@ -14,7 +14,7 @@ class FeedsController < ApplicationController
   end
 
   def show
-    render action: "show", formats: :html
+    render :show, formats: :html
   end
 
   def show_feedly
@@ -45,28 +45,20 @@ class FeedsController < ApplicationController
   end
 
   def destroy
-    respond_to do |format|
-      if @feed.destroy
-        format.html { redirect_to feeds_path, notice: 'Feed was successfully destroyed.' }
-        format.json { head :no_content }
-      else
-        format.html { redirect_to feeds_path, notice: @feed.errors }
-        format.json { render json: @feed.errors, status: :unprocessable_entity }
-      end
+    if @feed.destroy
+      redirect_to feeds_path, notice: 'Feed was successfully destroyed.'
+    else
+      redirect_to feeds_path, notice: @feed.errors
     end
   end
 
   def update
     topics = Topic.find((feed_params[:topics] || []).select { |t| !t.blank? })
     @feed.update_attributes(feed_params.merge({topics: topics}))
-    respond_to do |format|
-      if @feed.save
-        format.html { redirect_to feed_path(@feed.escape), notice: 'Feed was successfully updated.' }
-        format.json { render :show, status: :ok, location: @feed }
-      else
-        format.html { render :edit }
-        format.json { render json: @feed.errors, status: :unprocessable_entity }
-      end
+    if @feed.save
+      redirect_to feed_path(@feed.escape), notice: 'Feed was successfully updated.'
+    else
+      render :edit, formats: :html, notice: @feed.errors
     end
   end
 
