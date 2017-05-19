@@ -52,7 +52,7 @@ table.table.table-striped
           = link_to 'crawl', crawl_entry_path(entry), class: 'btn btn-xs btn-primary'
           br
           = link_to "#{entry.count_of[:tracks]} tracks", entry_tracks_path(entry), class: 'btn btn-xs btn-primary'
-          = link_to "#{entry.count_of[:albums]} albums", entry_albums_path(entry), class: 'btn btn-xs btpn-primary'
+          = link_to "#{entry.count_of[:albums]} albums", entry_albums_path(entry), class: 'btn btn-xs btn-primary'
           = link_to "#{entry.count_of[:playlists]} playlists", entry_playlists_path(entry), class: 'btn btn-xs btn-primary'
         td
           - if @issue.present?
