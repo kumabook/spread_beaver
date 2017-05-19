@@ -13,9 +13,9 @@ class EntryIssuesController < ApplicationController
     @entry_issue = EntryIssue.new(entry_issue_params)
     begin
       if @entry_issue.save
-        redirect_to(edit_journal_issue_path(@journal, @issue))
+        redirect_to(issue_entries_path(@issue))
       else
-        redirect_to(edit_journal_issue_path(@journal, @issue),
+        redirect_to(issue_entries_path(@issue),
                     notice: @entry_issue.errors.full_messages)
       end
     rescue ActiveRecord::RecordNotUnique => e
@@ -27,16 +27,16 @@ class EntryIssuesController < ApplicationController
     @entry_issue = EntryIssue.find(params[:id])
 
     if @entry_issue.update(entry_issue_params)
-      redirect_to edit_journal_issue_path(@journal, @issue)
+      redirect_to issue_entries_path(@issue)
     else
-      redirect_to(edit_journal_issue_path(@journal, @issue),
+      redirect_to(issue_entries_path(@issue),
                   notice: @entry_issue.errors.full_messages)
     end
   end
 
   def destroy
     @entry_issue.destroy
-    redirect_to edit_journal_issue_path(@journal, @issue)
+    redirect_to issue_entries_path(@issue)
   end
 
   private

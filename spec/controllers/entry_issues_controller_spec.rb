@@ -26,7 +26,7 @@ describe EntryIssuesController, type: :controller do
              }
            }
     end
-    it { expect(response).to redirect_to edit_journal_issue_url(journal, issue) }
+    it { expect(response).to redirect_to issue_entries_url(issue) }
     it { expect(EntryIssue.find_by(entry_id: entry.id, issue_id: issue.id)).not_to be_nil }
   end
 
@@ -47,7 +47,7 @@ describe EntryIssuesController, type: :controller do
         }
       }
     end
-    it { expect(response).to redirect_to edit_journal_issue_url(journal, issue) }
+    it { expect(response).to redirect_to issue_entries_url(issue) }
     it { expect(EntryIssue.find(entry_issue.id).engagement).to eq(200) }
   end
 end
