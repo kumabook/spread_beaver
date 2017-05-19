@@ -1,13 +1,19 @@
 .page-header
   h1
     - if @keyword.present?
-      = "Entries of keyword/#{@keyword.label}"
+      = "Entries of keyword/"
+      = link_to(@keyword.label, keyword_path(@keyowrd))
     - elsif @tag.present?
-      = "Entries of tag/#{@tag.label}"
+      = "Entries of tag/"
+      = link_to(@tag.label, tag_path(@tag))
     - elsif @feed.present?
-      = "Entries of #{@feed.title}"
+      = "Entries of feed/"
+      = link_to(@feed.title, feed_path(@feed.escape))
     - elsif @issue.present?
-      = "Entries of #{@issue.journal.label}: #{@issue.label}"
+      = "Entries of journal/"
+      = link_to(@issue.journal.label, journal_issues_path(@issue.journal))
+      = "/"
+      = link_to(@issue.label, edit_journal_issue_path(@issue.journal, @issue))
     - else
       = "Entries"
 

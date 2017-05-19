@@ -1,5 +1,6 @@
 .page-header
-  h1.title Issues
+  h1.title
+    = "Issues of #{@journal.label}"
 
 = link_to 'New issue', new_journal_issue_path, class: 'btn btn-primary'
 

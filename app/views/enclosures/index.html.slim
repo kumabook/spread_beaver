@@ -10,9 +10,13 @@
 .page-header
   h1
     - if @entry.present?
-      = "#{@type.pluralize} of #{@entry.title}"
+      = "#{@type.pluralize} of "
+      = link_to(@entry.title.truncate(20), entry_path(@entry))
     - elsif @issue.present?
-      = "#{@type.pluralize} of #{@issue.journal.label} #{@issue.label}"
+      = "#{@type.pluralize} of journal/"
+      = link_to(@issue.journal.label, journal_issues_path(@issue.journal))
+      = "/"
+      = link_to(@issue.label, edit_journal_issue_path(@issue.journal, @issue))
     - else
       = "#{@type.pluralize}"
 - if @entry.present?
