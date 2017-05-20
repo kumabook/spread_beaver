@@ -43,14 +43,12 @@ class Resource < ApplicationRecord
         end
       end
     end
-    [:latest, :hot, :popular].each do |name|
-      if hash[name].present?
-        hash[name].each do |r|
-          r.item = {
-            id:    r.stream_id,
-            label: name.to_s,
-          }
-        end
+    if hash[:global_tag].present?
+      hash[:global_tag].each do |r|
+        r.item = {
+          id:    r.stream_id,
+          label: r.global_tag_label,
+        }
       end
     end
   end
@@ -73,12 +71,13 @@ class Resource < ApplicationRecord
       return :tag
     when /user\/.*\/category\/.*/
       return :category
-    when /tag\/global\.latest/
-      return :latest
-    when /tag\/global\.hot/
-      return :hot
-    when /tag\/global\.popular/
-      return :popular
+    when /tag\/global\.(latest|hot|featured|popular)/
+      return :global_tag
     end
+  end
+
+  def global_tag_label
+    md = resource_id.match(/tag\/global\.(latest|hot|featured|popular)/)
+    md[1] if md.present?
   end
 end

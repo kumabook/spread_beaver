@@ -12,9 +12,17 @@ describe Resource do
     it { expect(res("keyword/rock").item_type).to eq(:keyword) }
     it { expect(res("user/#{user.id}/tag/rock").item_type).to eq(:tag) }
     it { expect(res("user/#{user.id}/category/rock").item_type).to eq(:category) }
-    it { expect(res("tag/global.latest").item_type).to eq(:latest) }
-    it { expect(res("tag/global.hot").item_type).to eq(:hot) }
-    it { expect(res("tag/global.popular").item_type).to eq(:popular) }
+    it { expect(res("tag/global.latest").item_type).to eq(:global_tag) }
+    it { expect(res("tag/global.hot").item_type).to eq(:global_tag) }
+    it { expect(res("tag/global.popular").item_type).to eq(:global_tag) }
+    it { expect(res("tag/global.featured").item_type).to eq(:global_tag) }
+  end
+
+  describe "#global_tag_label" do
+    it { expect(res("tag/global.latest").global_tag_label).to eq("latest") }
+    it { expect(res("tag/global.hot").global_tag_label).to eq("hot") }
+    it { expect(res("tag/global.popular").global_tag_label).to eq("popular") }
+    it { expect(res("tag/global.featured").global_tag_label).to eq("featured") }
   end
 
   describe "::set_item_of_stream_resources" do
@@ -35,6 +43,7 @@ describe Resource do
       res("tag/global.latest")
       res("tag/global.hot")
       res("tag/global.popular")
+      res("tag/global.featured")
       resources = Wall.find(wall.id).resources
       Resource::set_item_of_stream_resources(resources)
     end
