@@ -1,5 +1,6 @@
 class V3::ApiController < ActionController::API
   include ActionController::Serialization
+  include Sorcery::Controller
 
   rescue_from ActiveRecord::RecordNotFound  ,   with: :render_not_found
   rescue_from ActionController::RoutingError,   with: :render_not_found
