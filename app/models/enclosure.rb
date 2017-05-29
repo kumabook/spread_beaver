@@ -18,7 +18,9 @@ class Enclosure < ApplicationRecord
       .where(enclosure_issues: { issue: issue })
       .order('engagement DESC')
   }
-
+  scope :topic, -> (topic) {
+    joins(entries: {feed: :topics }).where(topics: { id: topic.id })
+  }
   def self.create_items_of(entry, items)
     models = items.map do |i|
       model = find_or_create_by(id: i['id']) do
