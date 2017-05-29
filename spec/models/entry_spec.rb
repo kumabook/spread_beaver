@@ -82,4 +82,19 @@ describe Entry do
       expect(latest_popular.count).to eq(ITEM_NUM)
     end
   end
+
+  describe "::topic" do
+    let (:japanese_feed) { FactoryGirl.create(:feed) }
+    let (:english_feed) { FactoryGirl.create(:feed) }
+    let! (:japanese_topic) {
+      Topic.create!(label: "japanese", description: "desc", feeds: [japanese_feed])
+    }
+    let! (:english_topic) {
+      Topic.create!(label: "english", description: "desc", feeds: [english_feed])
+    }
+
+    it { expect(Entry.all.count).to eq(ENTRY_PER_FEED * 2) }
+    it { expect(Entry.topic(japanese_topic).count).to eq(ENTRY_PER_FEED) }
+    it { expect(Entry.topic(english_topic).count).to eq(ENTRY_PER_FEED) }
+  end
 end
