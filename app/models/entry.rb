@@ -36,11 +36,10 @@ class Entry < ApplicationRecord
   scope :latest,        ->     (time) { where("published > ?", time).order('published DESC').with_content }
   scope :subscriptions, ->       (ss) { where(feed: ss.map { |s| s.feed_id }).order('published DESC').with_content }
   scope :feed,          ->     (feed) { where(feed: feed).order('published DESC').with_content }
-  scope :feeds,         ->    (feeds) { where(feed: feeds).order('published DESC').with_content }
   scope :keyword,       ->        (k) { joins(:keywords).where(keywords: { id: k.id}).order('published DESC').with_content }
   scope :tag,           ->        (t) { joins(:tags).where(tags: { id: t.id}).order('published DESC').with_content }
-  scope :topic,         ->    (topic) { feeds(topic.feeds) }
-  scope :category,      -> (category) { feeds(category.subscriptions.map { |s| s.feed_id })}
+  scope :topic,         ->    (topic) { joins(feed: :topics).where(topics: { id: topic.id }) }
+  scope :category,      -> (category) { joins(feed: { subscriptions: :categories }).where(categories: { id: category.id })}
   scope :issue,         ->          (j) { joins(:issues).where(issues: { id: j.id}).order('entry_issues.engagement DESC').with_content }
 
   JSON_ATTRS = ['content', 'categories', 'summary', 'alternate', 'origin', 'visual']
