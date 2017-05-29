@@ -31,7 +31,7 @@ class Topic < ApplicationRecord
 
   def self.topics
     Rails.cache.fetch("topics") {
-      Topic.order("engagement DESC").all.to_a
+      Topic.order("engagement DESC").where('engagement >= 0').to_a
     }
   end
 
