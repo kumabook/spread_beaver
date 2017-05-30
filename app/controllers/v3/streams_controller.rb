@@ -11,12 +11,7 @@ class V3::StreamsController < V3::ApiController
   DURATION_FOR_RANKING    = Setting.duration_for_ranking.days
 
   def index
-    continuation = nil
-    if @entries.respond_to?(:total_count)
-      if @entries.total_count >= @per_page * @page + 1
-        continuation = self.class.continuation(@page + 1, @per_page)
-      end
-    end
+    continuation = self.class.calculate_continuation(@entries, @page, @per_page)
     # TODO: currently visual is json string,
     # so we cannot check if the entry has visual or not.
     # Visual table should be created and check with where clause

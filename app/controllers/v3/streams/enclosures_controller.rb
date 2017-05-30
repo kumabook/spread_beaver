@@ -15,12 +15,7 @@ class V3::Streams::EnclosuresController < V3::ApiController
       return
     end
 
-    continuation = nil
-    if @items.respond_to?(:total_count)
-      if @items.total_count >= @per_page * @page + 1
-        continuation = self.class::continuation(@page + 1, @per_page)
-      end
-    end
+    continuation = self.class.calculate_continuation(@items, @page, @per_page)
     if current_resource_owner.present?
       @enclosure_class.set_marks(current_resource_owner, @items)
     end
