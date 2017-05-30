@@ -1,19 +1,10 @@
 class V3::StreamsController < V3::ApiController
   include Pagination
+  include V3::StreamsControllable
   if Rails.env.production?
     before_action :doorkeeper_authorize!
   end
-  before_action :set_stream_id      , only: [:index]
-  before_action :set_global_resource, only: [:index]
-  before_action :set_feed           , only: [:index]
-  before_action :set_keyword        , only: [:index]
-  before_action :set_tag            , only: [:index]
-  before_action :set_journal        , only: [:index]
-  before_action :set_topic          , only: [:index]
-  before_action :set_category       , only: [:index]
-  before_action :set_need_visual    , only: [:index]
-  before_action :set_page           , only: [:index]
-  before_action :set_entries        , only: [:index]
+  before_action :set_entries
 
   LATEST_ENTRIES_PER_FEED = Setting.latest_entries_per_feed
   DURATION                = Setting.duration_for_common_stream.days
@@ -109,79 +100,6 @@ class V3::StreamsController < V3::ApiController
     if @entries.nil?
       render json: {message: "Not found" }, status: 404
       return
-    end
-  end
-
-  def set_stream_id
-    @stream_id = CGI.unescape params[:id] if params[:id].present?
-  end
-
-  def set_feed
-    if params[:id].present? && @stream_id.match(/feed\/.*/)
-      @feed = Feed.find_by(id: @stream_id)
-    end
-  end
-
-  def set_keyword
-    if params[:id].present? && @stream_id.match(/keyword\/.*/)
-      @keyword = Keyword.find_by(id: @stream_id)
-    end
-  end
-
-  def set_tag
-    if params[:id].present? && @stream_id.match(/user\/.*\/tag\/.*/)
-      @tag = Tag.find_by(id: @stream_id)
-    end
-  end
-
-  def set_journal
-    if params[:id].present? && @stream_id.match(/journal\/.*/)
-      @journal = Journal.find_by(stream_id: @stream_id)
-    end
-  end
-
-  def set_topic
-    if params[:id].present? && @stream_id.match(/topic\/.*/)
-      @topic = Topic.eager_load(:feeds).find_by(id: @stream_id)
-    end
-  end
-
-  def set_category
-    if params[:id].present? && @stream_id.match(/user\/.*\/category\/.*/)
-      @category = Category.includes(:subscriptions).find_by(id: @stream_id)
-    end
-  end
-
-  def set_global_resource
-    case @stream_id
-    when /tag\/global\.latest/
-      @resource = :latest
-    when /tag\/global\.hot/
-      @resource = :hot
-    when /tag\/global\.popular/
-      @resource = :popular
-    when /user\/(.*)\/category\/global\.all/
-      @resource = :all
-      @user     = User.find($1)
-    when /user\/(.*)\/tag\/global\.liked/
-      @resource = :liked
-      @user     = User.find($1)
-    when /user\/(.*)\/tag\/global\.saved/
-      @resource = :saved
-      @user     = User.find($1)
-    when /user\/(.*)\/tag\/global\.read/
-      @resource = :read
-      @user     = User.find($1)
-    end
-  end
-
-  def set_need_visual
-    if @resource.present?
-      @need_visual = true
-    elsif @topic.present?
-      @need_visual = true
-    else
-      @need_visual = false
     end
   end
 end

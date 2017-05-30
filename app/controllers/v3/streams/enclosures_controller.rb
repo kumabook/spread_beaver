@@ -1,12 +1,9 @@
 # coding: utf-8
 class V3::Streams::EnclosuresController < V3::ApiController
   include Pagination
+  include V3::StreamsControllable
   before_action :doorkeeper_authorize!
-  before_action :set_stream_id      , only: [:index]
-  before_action :set_global_resource, only: [:index]
-  before_action :set_journal        , only: [:index]
   before_action :set_enclosure_class, only: [:index]
-  before_action :set_page           , only: [:index]
   before_action :set_items          , only: [:index]
 
   DURATION             = Setting.duration_for_common_stream.days
@@ -76,52 +73,6 @@ class V3::Streams::EnclosuresController < V3::ApiController
       @items = @enclosure_class.page(@page)
                                .per(@per_page)
                                .issue(@issue)
-    end
-  end
-
-  def set_stream_id
-    @stream_id = CGI.unescape params[:id] if params[:id].present?
-  end
-
-  def set_journal
-    if params[:id].present? && @stream_id.match(/journal\/.*/)
-      @journal = Journal.find_by(stream_id: @stream_id)
-    end
-  end
-
-  def set_global_resource
-    case @stream_id
-    when /(tag|playlist)\/global\.latest/
-      @resource = :latest
-    when /(tag|playlist)\/global\.hot/
-      @resource = :hot
-    when /(tag|playlist)\/global\.popular/
-      @resource = :popular
-    when /(tag|playlist)\/global\.featured/
-      @resource = :featured
-    when /user\/(.*)\/(tag|playlist)\/global\.all/
-      @resource = :all
-      @user     = User.find($1)
-    when /user\/(.*)\/(tag|playlist)\/global\.liked/
-      @resource = :liked
-      @user     = User.find($1)
-    when /user\/(.*)\/(tag|playlist)\/global\.saved/
-      @resource = :saved
-      @user     = User.find($1)
-    when /user\/(.*)\/(tag|playlist)\/global\.played/
-      @resource = :played
-      @user     = User.find($1)
-    end
-  end
-
-  def set_enclosure_class
-    case params[:enclosures]
-    when 'tracks'
-      @enclosure_class = Track
-    when 'playlists'
-      @enclosure_class = Playlist
-    when 'albums'
-      @enclosure_class = Album
     end
   end
 end
