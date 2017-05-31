@@ -60,11 +60,11 @@ describe Entry do
       old_user = FactoryGirl.create(:member)
       (0...ITEM_NUM).to_a.each { |i|
         n = i + 1
-        SavedEntry.create! user:       user,
+        LikedEntry.create! user:       user,
                            entry:      feed.entries[n],
                            created_at: n.days.ago,
                            updated_at: n.days.ago
-        SavedEntry.create! user:       old_user,
+        LikedEntry.create! user:       old_user,
                            entry:      old_feed.entries[n],
                            created_at: n.months.ago,
                            updated_at: n.months.ago
