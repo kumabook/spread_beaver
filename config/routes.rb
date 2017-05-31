@@ -132,6 +132,16 @@ Rails.application.routes.draw do
       end
     end
 
+    resources :mixes, only: [], constraints: res_options do
+      member do
+        get 'ids',      action: :index
+        get 'contents', action: :index
+
+        get ':enclosures/ids'      => 'mixes/enclosures#index'
+        get ':enclosures/contents' => 'mixes/enclosures#index'
+      end
+    end
+
     resources :feeds, only: [:show], constraints: res_options do
       post '.mget', action: :list, on: :collection
     end
