@@ -25,7 +25,9 @@ class Enclosure < ApplicationRecord
     where({ table_name.to_sym => { created_at:  period }})
   }
   scope :stream, -> (s) {
-    if s.kind_of?(Topic)
+    if s.kind_of?(Feed)
+      feed(s)
+    elsif s.kind_of?(Topic)
       topic(s)
     elsif s.kind_of?(Issue)
       issue(s)
