@@ -20,7 +20,7 @@ class V3::FeedsController < V3::ApiController
     if @feed.present?
       render json: @feed.to_json, status: 200
     else
-      render json: {}, status: :not_found
+      render_not_found
     end
   end
 
@@ -29,7 +29,7 @@ class V3::FeedsController < V3::ApiController
     if @feeds.present?
       render json: @feeds.to_json, status: 200
     else
-      render json: {}, status: :not_found
+      render_not_found
     end
   end
 

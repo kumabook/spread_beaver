@@ -7,7 +7,7 @@ class V3::EntriesController < V3::ApiController
     if @entry.present?
       render json: @entry.as_detail_json, status: 200
     else
-      render json: {}, status: :not_found
+      render_not_found
     end
   end
 
@@ -17,7 +17,7 @@ class V3::EntriesController < V3::ApiController
         e.as_detail_json
       }.to_json, status: 200
     else
-      render json: {}, status: :not_found
+      render_not_found
     end
   end
 

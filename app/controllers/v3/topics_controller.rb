@@ -18,7 +18,7 @@ class V3::TopicsController < V3::ApiController
 
   def destroy
     if @topic.nil?
-      render json: {}, status: :not_found
+      render_not_found
     elsif @topic.destroy
       render json: {}, status: 200
     else

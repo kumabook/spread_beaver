@@ -8,7 +8,7 @@ class V3::EnclosuresController < V3::ApiController
     if @enclosure.present?
       render json: @enclosure.as_detail_json, status: 200
     else
-      render json: {}, status: :not_found
+      render_not_found
     end
   end
 
@@ -18,7 +18,7 @@ class V3::EnclosuresController < V3::ApiController
         t.as_detail_json
       }.to_json, status: 200
     else
-      render json: {}, status: :not_found
+      render_not_found
     end
   end
 

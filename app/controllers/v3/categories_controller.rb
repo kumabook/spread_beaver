@@ -17,7 +17,7 @@ class V3::CategoriesController < V3::ApiController
   end
 
   def destroy
-    return render json: {}, status: :not_found if @category.nil?
+    return render_not_found if @category.nil?
     if @category.destroy
       render json: {}, status: 200
     else

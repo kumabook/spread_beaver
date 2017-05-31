@@ -72,7 +72,7 @@ class V3::StreamsController < V3::ApiController
                       .per(@per_page)
                       .read(@user)
       else
-        render json: {}, status: :not_found
+        render_not_found
         return
       end
     elsif @feed.present?
@@ -91,7 +91,7 @@ class V3::StreamsController < V3::ApiController
       @items = @issue.stream_entries(page: @page, per_page: @per_page) if @issue.present?
     end
     if @items.nil?
-      render json: {message: "Not found" }, status: 404
+      render_not_found
       return
     end
   end
