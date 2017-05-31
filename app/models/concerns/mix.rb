@@ -2,17 +2,27 @@ require('paginated_array')
 
 module Mix
   class Query
-    attr_reader(:since, :entries_per_feed)
-    def initialize(since = 3.days.ago, entries_per_feed = 3)
-      @since            = since
+    attr_reader(:period, :entries_per_feed, :type)
+    def initialize(period          = -Float::INFINITY..Float::INFINITY,
+                   type            = :hot,
+                   entries_per_feed: 3)
+      @period           = period
+      @type             = type
       @entries_per_feed = entries_per_feed
     end
     def cache_key
-      if @since.nil?
-        "entries_per_feed(#{entries_per_feed})"
-      else
-        "since-#{since.strftime("%Y%m%d")}-entries_per_feed(#{entries_per_feed})"
+      period_prefix = ""
+      if @period.present?
+        period_prefix = "#{time2key(period.begin)}-#{time2key(period.end)}-"
       end
+      "#{period_prefix}#{type}-entries_per_feed(#{entries_per_feed})"
+    end
+
+    private
+    def time2key(time)
+      return "inf" if time == Float::INFINITY
+      return "neg_inf" if time == -Float::INFINITY
+      return time.strftime("%Y%m%d")
     end
   end
   extend ActiveSupport::Concern
@@ -33,9 +43,9 @@ module Mix
 
   def mix_entries(page: 1, per_page: nil, query: nil)
     key = self.class.cache_key_of_entries_of_mix(stream_id,
-                                                 page: page,
+                                                 page:     page,
                                                  per_page: per_page,
-                                                 query: query)
+                                                 query:    query)
     items, count = Rails.cache.fetch(key) do
       items = entries_of_mix(page: page, per_page: per_page, query: query)
       [items.to_a, items.total_count || items.count]
@@ -53,13 +63,20 @@ module Mix
       "entries_of_#{stream_id}-page(#{page})-per_page(#{per_page})-query(#{query.cache_key})"
     end
 
+    def cache_key_of_enclosures_of_mix(clazz, stream_id, page: 1, per_page: nil, query: nil)
+      "#{clazz.name.pluralize}_of_#{stream_id}-page(#{page})-per_page(#{per_page})-query(#{query.cache_key})"
+    end
+
     def delete_cache_of_mix(stream_id)
-      Rails.cache.delete_matched("entries_of_mix_#{stream_id}-*")
+      Rails.cache.delete_matched("entries_of_#{stream_id}-*")
+      Rails.cache.delete_matched("#{Track.name.pluralize}_of_#{stream_id}-*")
+      Rails.cache.delete_matched("#{Album.name.pluralize}_of_#{stream_id}-*")
+      Rails.cache.delete_matched("#{Playlist.name.pluralize}_of_#{stream_id}-*")
     end
   end
 
   def self.mix_up_and_paginate(entries, entries_per_feed, page, per_page)
-    items = sort_one_by_one_by_feed(entries, entries_per_feed: entries_per_feed)
+    items = sort_one_by_one_by_feed(entries, entries_per_feed)
     if per_page.present?
       page   = 1 if page < 1
       offset = (page - 1) * per_page
@@ -69,7 +86,7 @@ module Mix
     end
   end
 
-  def self.sort_one_by_one_by_feed(entries, entries_per_feed: 3)
+  def self.sort_one_by_one_by_feed(entries, entries_per_feed)
     entries_list = entries.map { |entry| entry.feed_id }
                           .uniq
                           .map do |id|
