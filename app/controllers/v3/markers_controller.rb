@@ -118,7 +118,7 @@ class V3::MarkersController < V3::ApiController
     when /markAsPlayed/
       @ids.each do |id|
         recent_play = PlayedEnclosure
-                        .period(1.day.ago, Time.now)
+                        .period(1.day.ago..Time.now)
                         .where(user: current_resource_owner,
                                enclosure_id: id)
                         .limit(1)

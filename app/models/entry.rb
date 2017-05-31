@@ -41,6 +41,26 @@ class Entry < ApplicationRecord
   scope :topic,         ->    (topic) { joins(feed: :topics).where(topics: { id: topic.id }) }
   scope :category,      -> (category) { joins(feed: { subscriptions: :categories }).where(categories: { id: category.id })}
   scope :issue,         ->          (j) { joins(:issues).where(issues: { id: j.id}).order('entry_issues.engagement DESC').with_content }
+  scope :period, -> (period) {
+    where({ table_name.to_sym => { published:  period }})
+  }
+  scope :stream, -> (s) {
+    if s.kind_of?(Feed)
+      feed(s)
+    elsif s.kind_of?(Keyword)
+      keyword(s)
+    elsif s.kind_of?(Tag)
+      tag(s)
+    elsif s.kind_of?(Topic)
+      topic(s)
+    elsif s.kind_of?(Category)
+      category(s)
+    elsif s.kind_of?(Issue)
+      issue(s)
+    else
+      all
+    end
+  }
 
   JSON_ATTRS = ['content', 'categories', 'summary', 'alternate', 'origin', 'visual']
   WAITING_SEC_FOR_VISUAL = 0.5
@@ -236,16 +256,12 @@ class Entry < ApplicationRecord
     Mix::mix_up_and_paginate(entries, entries_per_feed, page, per_page)
   end
 
-  def self.popular_items_within_period(period: nil, page: 0, per_page: PER_PAGE)
-    best_items_within_period(clazz: SavedEntry,
-                             period: period,
-                             per_page: per_page, page: page)
-  end
-
-  def self.best_items_within_period(clazz: nil, period: nil, page: 1, per_page: PER_PAGE)
+  def self.best_items_within_period(clazz: nil, stream: nil, period: nil, page: 1, per_page: PER_PAGE)
     raise ArgumentError, "Parameter must be not nil" if period.nil? || clazz.nil?
-    count_hash  = clazz.period(period.begin, period.end).user_count
-    total_count = count_hash.keys.count
+    query         = clazz.period(period)
+    query         = query.stream(stream) if stream.present?
+    count_hash    = query.user_count
+    total_count   = count_hash.keys.count
     sorted_hashes = PaginatedArray::sort_and_paginate_count_hash(count_hash,
                                                                  page: page,
                                                                  per_page: per_page)

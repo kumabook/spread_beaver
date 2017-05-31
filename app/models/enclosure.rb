@@ -21,6 +21,19 @@ class Enclosure < ApplicationRecord
   scope :topic, -> (topic) {
     joins(entries: {feed: :topics }).where(topics: { id: topic.id })
   }
+  scope :period, -> (period) {
+    where({ table_name.to_sym => { created_at:  period }})
+  }
+  scope :stream, -> (s) {
+    if s.kind_of?(Topic)
+      topic(s)
+    elsif s.kind_of?(Issue)
+      issue(s)
+    else
+      all
+    end
+  }
+
   def self.create_items_of(entry, items)
     models = items.map do |i|
       model = find_or_create_by(id: i['id']) do
@@ -85,18 +98,20 @@ class Enclosure < ApplicationRecord
     end
   end
 
-  def self.most_featured_items_within_period(period: nil, page: 1, per_page: nil)
-    best_items_within_period(clazz: EntryEnclosure,
-                             count_method: :feed_count,
-                             period: period,
-                             page: page, per_page: per_page)
+  def self.most_featured_items_within_period(stream: nil, period: nil, page: 1, per_page: nil)
+    best_items(clazz:        EntryEnclosure,
+               count_method: :feed_count,
+               stream:     stream,
+               period:       period,
+               page:         page,
+               per_page:     per_page)
   end
 
-  def self.best_items_within_period(clazz: nil, count_method: :user_count, period: nil, page: 1, per_page: nil)
+  def self.best_items_within_period(clazz: nil, count_method: :user_count, stream: nil, period: nil, page: 1, per_page: nil)
     raise ArgumentError, "Parameter must be not nil" if period.nil?
-    count_hash = clazz.where(enclosure_type: self.name)
-                      .period(period.begin, period.end)
-                      .public_send(count_method)
+    query = clazz.where(enclosure_type: self.name).period(period)
+    query = query.stream(stream) if stream.present?
+    count_hash    = query.public_send(count_method)
     total_count   = count_hash.keys.count
     sorted_hashes = PaginatedArray::sort_and_paginate_count_hash(count_hash,
                                                                  page: page,
