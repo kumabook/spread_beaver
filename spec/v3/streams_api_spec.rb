@@ -202,5 +202,22 @@ RSpec.describe "Streams api", type: :request, autodoc: true do
         expect(result['continuation']).not_to be_nil
       end
     end
+
+    context "invalid stream_id" do
+      it "returns not_found" do
+        get "/v3/streams/#{CGI.escape("tag/global.invalid")}/contents",
+            headers: headers_for_login_user_api
+        expect(@response.status).to eq(404)
+      end
+    end
+  end
+
+  context "non login user" do
+    it "returns unauthroized" do
+      @feed = FactoryGirl.create(:feed)
+      get "/v3/streams/#{@feed.escape.id}/contents",
+          headers: {}
+      expect(@response.status).to eq(401)
+    end
   end
 end
