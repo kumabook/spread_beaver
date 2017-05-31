@@ -3,11 +3,11 @@ class V3::Mixes::EnclosuresController < V3::ApiController
   include Pagination
   include V3::StreamsControllable
   before_action :doorkeeper_authorize!
-  before_action :set_enclosure_class, only: [:index]
+  before_action :set_enclosure_class
   before_action :set_mix_type
   before_action :set_stream
   before_action :set_period
-  before_action :set_items          , only: [:index]
+  before_action :set_items
 
   DURATION             = Setting.duration_for_common_stream.days
   DURATION_FOR_RANKING = Setting.duration_for_ranking.days
@@ -23,15 +23,16 @@ class V3::Mixes::EnclosuresController < V3::ApiController
       @enclosure_class.set_marks(current_resource_owner, @items)
     end
     @enclosure_class.set_contents(@items)
-    if api_version == 0
-      @items = @items.select {|i| i.legacy? }
-    end
     h = {
       direction: "ltr",
       continuation: continuation,
       alternate: [],
       items: @items.map { |t| t.as_content_json }
     }
+    if @stream.present?
+      h[:updated] = @stream.updated_at.to_time.to_i * 1000
+    end
+    h[:title] = @title
     render json: h, status: 200
   end
 

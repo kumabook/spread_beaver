@@ -3,8 +3,9 @@ class V3::Streams::EnclosuresController < V3::ApiController
   include Pagination
   include V3::StreamsControllable
   before_action :doorkeeper_authorize!
-  before_action :set_enclosure_class, only: [:index]
-  before_action :set_items          , only: [:index]
+  before_action :set_enclosure_class
+  before_action :set_stream
+  before_action :set_items
 
   def index
     if @items.nil? || @enclosure_class.nil?
@@ -26,6 +27,10 @@ class V3::Streams::EnclosuresController < V3::ApiController
       alternate: [],
       items: @items.map { |t| t.as_content_json }
     }
+    if @stream.present?
+      h[:updated] = @stream.updated_at.to_time.to_i * 1000
+    end
+    h[:title] = @title
     render json: h, status: 200
   end
 

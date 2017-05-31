@@ -22,10 +22,10 @@ class V3::MixesController < V3::ApiController
       alternate:    [],
       items:        @items,
     }
-    if @feed.present?
-      h[:updated] = @feed.updated_at.to_time.to_i * 1000
-      h[:title]   = @feed.title
+    if @stream.present?
+      h[:updated] = @stream.updated_at.to_time.to_i * 1000
     end
+    h[:title] = @title
     render json: h, status: 200
   end
 

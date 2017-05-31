@@ -4,6 +4,7 @@ class V3::StreamsController < V3::ApiController
   if Rails.env.production?
     before_action :doorkeeper_authorize!
   end
+  before_action :set_stream
   before_action :set_items
 
   def index
@@ -26,10 +27,10 @@ class V3::StreamsController < V3::ApiController
       alternate: [],
       items: @items.map { |en| en.as_content_json(only_legacy: only_legacy) }
     }
-    if @feed.present?
-      h[:updated] = @feed.updated_at.to_time.to_i * 1000
-      h[:title]   = @feed.title
+    if @stream.present?
+      h[:updated] = @stream.updated_at.to_time.to_i * 1000
     end
+    h[:title] = @title
     render json: h, status: 200
   end
 

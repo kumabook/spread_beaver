@@ -31,36 +31,42 @@ module V3::StreamsControllable
   def set_feed
     if params[:id].present? && @stream_id.match(/feed\/.*/)
       @feed = Feed.find_by(id: @stream_id)
+      @title  = @feed&.title
     end
   end
 
   def set_keyword
     if params[:id].present? && @stream_id.match(/keyword\/.*/)
       @keyword = Keyword.find_by(id: @stream_id)
+      @title  = @keyword&.label
     end
   end
 
   def set_tag
     if params[:id].present? && @stream_id.match(/user\/.*\/tag\/.*/)
       @tag = Tag.find_by(id: @stream_id)
+      @title  = @tag&.label
     end
   end
 
   def set_journal
     if params[:id].present? && @stream_id.match(/journal\/.*/)
       @journal = Journal.find_by(stream_id: @stream_id)
+      @title  = @journal&.label
     end
   end
 
   def set_topic
     if params[:id].present? && @stream_id.match(/topic\/.*/)
       @topic = Topic.eager_load(:feeds).find_by(id: @stream_id)
+      @title  = @topic&.label
     end
   end
 
   def set_category
     if params[:id].present? && @stream_id.match(/user\/.*\/category\/.*/)
       @category = Category.includes(:subscriptions).find_by(id: @stream_id)
+      @title  = @category&.label
     end
   end
 
