@@ -18,7 +18,7 @@ module Stream
   end
 
   def entries_of_stream(page: 1, per_page: nil, newer_than: nil, since: nil)
-    [] # override subclass
+    Entry.page(page).per(per_page).ancestor(self)
   end
 
   def stream_entries(page: 1, per_page: nil, since: nil)
