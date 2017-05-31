@@ -1,4 +1,5 @@
 class EntryEnclosure < ApplicationRecord
+  include EntryMark
   belongs_to :entry
   belongs_to :enclosure, polymorphic: true, counter_cache: :entries_count, touch: true
 
@@ -9,9 +10,5 @@ class EntryEnclosure < ApplicationRecord
       .joins(:entry)
       .order('count_entries_feed_id DESC')
       .distinct.count('entries.feed_id')
-  }
-  scope :period, -> (from, to) {
-    where("entry_enclosures.created_at >= ?", from)
-      .where("entry_enclosures.created_at <= ?", to)
   }
 end
