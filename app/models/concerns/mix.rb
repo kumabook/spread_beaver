@@ -40,12 +40,12 @@ module Mix
   def entries_of_mix(page: 1, per_page: nil, period: nil, query: nil)
     case query.type
     when :hot
-      Entry.hot_items_within_period(ancestor: self,
+      Entry.hot_items_within_period(stream:   self,
                                     period:   query.period,
                                     page:     page,
                                     per_page: per_page)
     when :popular
-      Entry.popular_items_within_period(ancestor: self,
+      Entry.popular_items_within_period(stream:   self,
                                         period:   query.period,
                                         page:     page,
                                         per_page: per_page)
@@ -57,17 +57,17 @@ module Mix
   def enclosures_of_mix(clazz, page: 1, per_page: nil, period: nil, query: nil)
     case query.type
     when :hot
-      clazz.hot_items_within_period(ancestor: self,
+      clazz.hot_items_within_period(stream:   self,
                                     period:   query.period,
                                     page:     page,
                                     per_page: per_page)
     when :popular
-      clazz.popular_items_within_period(ancestor: self,
+      clazz.popular_items_within_period(stream:   self,
                                         period:   query.period,
                                         page:     page,
                                         per_page: per_page)
     when :featured
-      clazz.most_featured_items_within_period(ancestor: self,
+      clazz.most_featured_items_within_period(stream:   self,
                                               period:   query.period,
                                               page:     page,
                                               per_page: per_page)
