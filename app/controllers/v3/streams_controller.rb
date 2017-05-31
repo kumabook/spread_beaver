@@ -36,9 +36,8 @@ class V3::StreamsController < V3::ApiController
   private
 
   def set_items
-    conf                 = Rails.application.secrets
-    duration             = conf.duration_for_common_stream&.days || 5.days
-    duration_for_ranking = conf.duration_for_ranking&.days || 3.days
+    duration             = Setting.duration_for_common_stream&.days || 5.days
+    duration_for_ranking = Setting.duration_for_ranking&.days || 3.days
 
     if @resource.present?
       case @resource

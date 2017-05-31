@@ -15,7 +15,7 @@ class Topic < ApplicationRecord
   after_initialize :set_id, if: :new_record?
   before_save      :set_id
 
-  LATEST_ENTRIES_PER_FEED = Rails.application.secrets.latest_entries_per_feed || 3
+  LATEST_ENTRIES_PER_FEED = Setting.latest_entries_per_feed || 3
 
   def entries_of_stream(page: 1, per_page: nil, since: nil)
     entries = Entry.topic(self).latest(since)

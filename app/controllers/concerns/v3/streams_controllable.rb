@@ -112,4 +112,43 @@ module V3::StreamsControllable
       @enclosure_class = Album
     end
   end
+
+  def set_period
+    from     = @newer_than.present? ? @newer_than : -Float::INFINITY
+    to       = @older_than.present? ? @older_than : Float::INFINITY
+    @period  = from..to
+  end
+
+  def set_stream
+    if @feed.present?
+      @stream = @feed
+    elsif @keyword.present?
+      @stream = @keyword
+    elsif @tag.present?
+      @stream = @tag
+    elsif @topic.present?
+      @stream = @topic
+    elsif @category.present?
+      @stream = @category
+    elsif @journal.present?
+      @stream = @journal
+    end
+  end
+
+  def set_mix_type
+    case params[:type]
+    when 'hot'
+      @type = :hot
+    when 'popular'
+      @type = :popular
+    when 'featured'
+      @type = :featured
+    end
+  end
+
+  private
+
+  def entries_per_feed
+    Setting.latest_entries_per_feed || 3
+  end
 end

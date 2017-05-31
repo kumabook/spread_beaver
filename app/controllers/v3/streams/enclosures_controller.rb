@@ -6,9 +6,6 @@ class V3::Streams::EnclosuresController < V3::ApiController
   before_action :set_enclosure_class, only: [:index]
   before_action :set_items          , only: [:index]
 
-  DURATION             = Setting.duration_for_common_stream.days
-  DURATION_FOR_RANKING = Setting.duration_for_ranking.days
-
   def index
     if @items.nil? || @enclosure_class.nil?
       render json: {message: "Not found" }, status: :not_found
@@ -33,21 +30,24 @@ class V3::Streams::EnclosuresController < V3::ApiController
   end
 
   def set_items
+    duration             = Setting.duration_for_common_stream&.days || 5.days
+    duration_for_ranking = Setting.duration_for_ranking&.days || 3.days
+
     if @resource.present?
       case @resource
       when :latest
-        since   = @newer_than.present? ? @newer_than : DURATION.ago
+        since   = @newer_than.present? ? @newer_than : duration.ago
         @items = @enclosure_class.latest(since).page(@page).per(@per_page)
       when :hot
-        from   = @newer_than.present? ? @newer_than : DURATION_FOR_RANKING.ago
+        from   = @newer_than.present? ? @newer_than : duration_for_ranking.ago
         to     = @older_than.present? ? @older_than : Time.now
         @items = @enclosure_class.hot_items_within_period(period: from..to, page: @page, per_page: @per_page)
       when :popular
-        from    = @newer_than.present? ? @newer_than : DURATION_FOR_RANKING.ago
+        from    = @newer_than.present? ? @newer_than : duration_for_ranking.ago
         to      = @older_than.present? ? @older_than : Time.now
         @items  = @enclosure_class.popular_items_within_period(period: from..to, page: @page, per_page: @per_page)
       when :featured
-        from    = @newer_than.present? ? @newer_than : DURATION_FOR_RANKING.ago
+        from    = @newer_than.present? ? @newer_than : duration_for_ranking.ago
         to      = @older_than.present? ? @older_than : Time.now
         @items  = @enclosure_class.most_featured_items_within_period(period: from..to, page: @page, per_page: @per_page)
       when :liked
