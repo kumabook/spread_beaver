@@ -40,15 +40,15 @@ module Mix
   def entries_of_mix(page: 1, per_page: nil, period: nil, query: nil)
     case query.type
     when :hot
-      Entry.hot_items_within_period(stream:   self,
-                                    period:   query.period,
-                                    page:     page,
-                                    per_page: per_page)
+      Entry.hot_items(stream:   self,
+                      period:   query.period,
+                      page:     page,
+                      per_page: per_page)
     when :popular
-      Entry.popular_items_within_period(stream:   self,
-                                        period:   query.period,
-                                        page:     page,
-                                        per_page: per_page)
+      Entry.popular_items(stream:   self,
+                          period:   query.period,
+                          page:     page,
+                          per_page: per_page)
     when :featured
       # not support for entries
     end
@@ -57,20 +57,20 @@ module Mix
   def enclosures_of_mix(clazz, page: 1, per_page: nil, period: nil, query: nil)
     case query.type
     when :hot
-      clazz.hot_items_within_period(stream:   self,
-                                    period:   query.period,
-                                    page:     page,
-                                    per_page: per_page)
+      clazz.hot_items(stream:   self,
+                      period:   query.period,
+                      page:     page,
+                      per_page: per_page)
     when :popular
-      clazz.popular_items_within_period(stream:   self,
-                                        period:   query.period,
-                                        page:     page,
-                                        per_page: per_page)
+      clazz.popular_items(stream:   self,
+                          period:   query.period,
+                          page:     page,
+                          per_page: per_page)
     when :featured
-      clazz.most_featured_items_within_period(stream:   self,
-                                              period:   query.period,
-                                              page:     page,
-                                              per_page: per_page)
+      clazz.most_featured_items(stream:   self,
+                                period:   query.period,
+                                page:     page,
+                                per_page: per_page)
     end
   end
 

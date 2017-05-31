@@ -98,7 +98,7 @@ class Enclosure < ApplicationRecord
     end
   end
 
-  def self.most_featured_items_within_period(stream: nil, period: nil, page: 1, per_page: nil)
+  def self.most_featured_items(stream: nil, period: nil, page: 1, per_page: nil)
     best_items(clazz:        EntryEnclosure,
                count_method: :feed_count,
                stream:       stream,
@@ -107,7 +107,7 @@ class Enclosure < ApplicationRecord
                per_page:     per_page)
   end
 
-  def self.best_items_within_period(clazz: nil, count_method: :user_count, stream: nil, period: nil, page: 1, per_page: nil)
+  def self.best_items(clazz: nil, count_method: :user_count, stream: nil, period: nil, page: 1, per_page: nil)
     raise ArgumentError, "Parameter must be not nil" if period.nil?
     query = clazz.where(enclosure_type: self.name).period(period)
     query = query.stream(stream) if stream.present?

@@ -31,7 +31,7 @@ describe Enclosure do
     it { expect(Playlist.count).to eq(1) }
   end
 
-  describe "::most_featured_items_within_period" do
+  describe "::most_featured_items" do
     tracks = []
     before do
       feeds.each {|feed|
@@ -51,9 +51,9 @@ describe Enclosure do
     end
 
     it "should return most featured entries during specified period" do
-      old_items = Track.most_featured_items_within_period(period:   10.days.ago..Time.now,
-                                                          page:     1,
-                                                          per_page: 10)
+      old_items = Track.most_featured_items(period:   10.days.ago..Time.now,
+                                            page:     1,
+                                            per_page: 10)
       expect(old_items.count).to eq(5)
       expect(old_items[0]).to eq(tracks[4])
       expect(old_items[1]).to eq(tracks[3])
@@ -61,9 +61,9 @@ describe Enclosure do
       expect(old_items[3]).to eq(tracks[1])
       expect(old_items[4]).to eq(tracks[0])
 
-      items     = Track.most_featured_items_within_period(period:   3.days.ago..Time.now,
-                                                          page:     1,
-                                                          per_page: 10)
+      items     = Track.most_featured_items(period:   3.days.ago..Time.now,
+                                            page:     1,
+                                            per_page: 10)
       expect(items.count).to eq(3)
       expect(items[0]).to eq(tracks[2])
       expect(items[1]).to eq(tracks[1])
@@ -81,9 +81,9 @@ describe Enclosure do
         }
       end
       it "should calcurated by feed count (not entry count" do
-        old_items = Track.most_featured_items_within_period(period:   10.days.ago..Time.now,
-                                                            page:     1,
-                                                            per_page: 10)
+        old_items = Track.most_featured_items(period:   10.days.ago..Time.now,
+                                              page:     1,
+                                              per_page: 10)
         expect(old_items.count).to eq(5)
         expect(old_items[0].id).to eq(tracks[4].id)
         expect(old_items[1].id).to eq(tracks[3].id)

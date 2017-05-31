@@ -22,12 +22,12 @@ module Readable
       marks_hash_of_user(read_class, user, items)
     end
 
-    def hot_items_within_period(stream: nil, period: nil, page: 1, per_page: nil)
-      best_items_within_period(clazz:    self.read_class,
-                               stream:   stream,
-                               period:   period,
-                               page:     page,
-                               per_page: per_page)
+    def hot_items(stream: nil, period: nil, page: 1, per_page: nil)
+      best_items(clazz:    self.read_class,
+                 stream:   stream,
+                 period:   period,
+                 page:     page,
+                 per_page: per_page)
     end
   end
 end
