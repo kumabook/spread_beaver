@@ -37,8 +37,41 @@ module Mix
     id
   end
 
-  def entries_of_mix(page: 1, per_page: nil, newer_than: nil, query: nil)
-    [] # override subclass
+  def entries_of_mix(page: 1, per_page: nil, period: nil, query: nil)
+    case query.type
+    when :hot
+      Entry.hot_items_within_period(ancestor: self,
+                                    period:   query.period,
+                                    page:     page,
+                                    per_page: per_page)
+    when :popular
+      Entry.popular_items_within_period(ancestor: self,
+                                        period:   query.period,
+                                        page:     page,
+                                        per_page: per_page)
+    when :featured
+      # not support for entries
+    end
+  end
+
+  def enclosures_of_mix(clazz, page: 1, per_page: nil, period: nil, query: nil)
+    case query.type
+    when :hot
+      clazz.hot_items_within_period(ancestor: self,
+                                    period:   query.period,
+                                    page:     page,
+                                    per_page: per_page)
+    when :popular
+      clazz.popular_items_within_period(ancestor: self,
+                                        period:   query.period,
+                                        page:     page,
+                                        per_page: per_page)
+    when :featured
+      clazz.most_featured_items_within_period(ancestor: self,
+                                              period:   query.period,
+                                              page:     page,
+                                              per_page: per_page)
+    end
   end
 
   def mix_entries(page: 1, per_page: nil, query: nil)
@@ -51,6 +84,19 @@ module Mix
       [items.to_a, items.total_count || items.count]
     end
 
+    PaginatedArray.new(items, count)
+  end
+
+  def mix_enclosures(clazz, page: 1, per_page: nil, query: nil)
+    key = self.class.cache_key_of_enclosures_of_mix(clazz,
+                                                    stream_id,
+                                                    page:     page,
+                                                    per_page: per_page,
+                                                    query:    query)
+    items, count = Rails.cache.fetch(key) do
+      items = enclosures_of_mix(clazz, page: page, per_page: per_page, query: query)
+      [items.to_a, items.total_count || items.count]
+    end
     PaginatedArray.new(items, count)
   end
 
