@@ -7,10 +7,6 @@ class V3::ApiController < ActionController::API
   rescue_from ActionController::RoutingError,   with: :render_not_found
   rescue_from ActiveRecord::RecordNotUnique ,   with: :render_conflict
 
-  def render_forbidden
-    render json: {}, status: :forbidden
-  end
-
   def render_not_found
     render json: {}, status: :not_found
   end
