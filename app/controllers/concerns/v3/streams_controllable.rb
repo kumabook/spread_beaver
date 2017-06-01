@@ -149,6 +149,8 @@ module V3::StreamsControllable
       @type = :popular
     when 'featured'
       @type = :featured
+    else
+      @type = :hot
     end
   end
 
