@@ -11,7 +11,11 @@ class Resource < ApplicationRecord
          track:           5,
          album:           6,
          playlist:        7,
-         custom:          8
+         custom:          8,
+         mix:             9,
+         track_mix:      10,
+         album_mix:      11,
+         playlist_mix:   12,
        }
 
   def as_json(options = {})
