@@ -24,7 +24,83 @@
       = f.number_field :engagement, :class => 'form-control'
     = f.error_span(:engagement)
   .form-group
+    = f.label :options, :class => 'control-label col-lg-2'
+    .col-lg-10
+      = f.hidden_field :options, :class => 'form-control'
+    = f.error_span(:options)
+
+  div.row
+    span#period_label.control-label.col.col-lg-3 period
+    '
+    = select_tag 'period',  options_for_select(['', 'daily', 'weekly', 'monthly'])
+    br
+    br
+    span#mix_type_label.control-label.col.col-lg-3 mix_type
+    '
+    = select_tag 'mix_type',  options_for_select(['hot', 'popular', 'featured'])
+  br
+  .form-group
     .col-lg-offset-2.col-lg-10
       = f.submit nil, :class => 'btn btn-primary'
       '
       = link_to t('.cancel', :default => t("helpers.links.cancel")), edit_wall_path(@wall), :class => 'btn'
+
+javascript:
+  var resourceType = document.getElementById("resource_resource_type");
+  var options      = document.getElementById("resource_options");
+
+  var period       = document.getElementById("period");
+  var mixType      = document.getElementById("mix_type");
+
+  var periodLabel  = document.getElementById("period_label");
+  var mixTypeLabel = document.getElementById("mix_type_label");
+
+  var values = {};
+
+  function updateTextFields() {
+    values = {};
+    switch (resourceType.value) {
+      case 'stream':
+      case 'track_stream':
+      case 'album_stream':
+      case 'playlist_stream':
+        period.style.display       = '';
+        periodLabel.style.display  = '';
+        mixType.style.display      = 'none';
+        mixTypeLabel.style.display = 'none';
+        if (period.value) {
+          values.period = period.value;
+        }
+        break;
+      case 'mix':
+      case 'track_mix':
+      case 'album_mix':
+      case 'playlist_mix':
+        period.style.display       = '';
+        periodLabel.style.display  = '';
+        mixType.style.display      = '';
+        mixTypeLabel.style.display = '';
+        if (period.value) {
+          values.period = period.value;
+        }
+        values.type = mixType.value;
+        break;
+      default:
+        period.style.display       = 'none';
+        periodLabel.style.display  = 'none';
+        mixType.style.display      = 'none';
+        mixTypeLabel.style.display = 'none';
+        values = {};
+        break;
+    }
+    options.value = JSON.stringify(values);
+  }
+  function updateOptionValue() {
+    options.value = {
+    };
+  }
+  resourceType.addEventListener('change', updateTextFields);
+  period.addEventListener(      'change', updateTextFields);
+  mixType.addEventListener(     'change', updateTextFields);
+
+  updateTextFields()

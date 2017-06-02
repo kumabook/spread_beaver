@@ -66,6 +66,7 @@ class ResourcesController < ApplicationController
       params.require(:resource).permit(:resource_id,
                                        :resource_type,
                                        :engagement,
+                                       :options,
                                        :wall_id)
     end
 end

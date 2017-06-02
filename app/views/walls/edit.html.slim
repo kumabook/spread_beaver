@@ -14,6 +14,7 @@
         th resource_type
         th item_type
         th item
+        th options
         th actions
 
     tbody
@@ -25,6 +26,7 @@
           td = resource.resource_type
           td = resource.item_type
           td = resource.item&.to_json
+          td = resource.options
           td
             = link_to 'Edit', edit_resource_path(resource), class: 'btn btn-xs btn-primary'
             '
