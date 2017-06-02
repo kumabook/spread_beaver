@@ -22,6 +22,7 @@ class Resource < ApplicationRecord
     h = super(options)
     h["item_type"] = self.item_type
     h["item"]      = self.item
+    h["options"]   = JSON.load(self.options)
     h
   end
 
