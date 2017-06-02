@@ -34,9 +34,6 @@ class Enclosure < ApplicationRecord
     joins(entries: {feed: { subscriptions: :categories }})
       .where(categories: { id: category.id })
   }
-  scope :issue, -> (issue) {
-    joins(entries: :issues).where(issues: { id: issue.id })
-  }
   scope :period, -> (period) {
     where({ table_name.to_sym => { created_at:  period }})
   }
