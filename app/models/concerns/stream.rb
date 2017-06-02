@@ -38,6 +38,19 @@ module Stream
     PaginatedArray.new(items, count)
   end
 
+  def stream_enclosures(clazz, page: 1, per_page: nil, since: nil)
+    key = self.class.cache_key_of_enclosures_of_stream(clazz, stream_id,
+                                                       page: page,
+                                                       per_page: per_page,
+                                                       since: since)
+    items, count = Rails.cache.fetch(key) do
+      items = enclosures_of_stream(page: page, per_page: per_page, since: since)
+      [items.to_a, items.total_count || items.count]
+    end
+
+    PaginatedArray.new(items, count)
+  end
+
   def delete_cache_entries
     self.class.delete_cache_of_stream(stream_id)
   end
@@ -51,8 +64,19 @@ module Stream
       end
     end
 
+    def cache_key_of_enclosures_of_stream(clazz, stream_id, page: 1, per_page: nil, since: nil)
+      if since.nil?
+        "#{clazz.name.pluralize}_of_#{stream_id}-page(#{page})-per_page(#{per_page})}"
+      else
+        "#{clazz.name.pluralize}_of_#{stream_id}-page(#{page})-per_page(#{per_page})-since-#{since.strftime("%Y%m%d")}"
+      end
+    end
+
     def delete_cache_of_stream(stream_id)
       Rails.cache.delete_matched("entries_of_#{stream_id}-*")
+      Rails.cache.delete_matched("#{Track.name.pluralize}_of_#{stream_id}-*")
+      Rails.cache.delete_matched("#{Album.name.pluralize}_of_#{stream_id}-*")
+      Rails.cache.delete_matched("#{Playlist.name.pluralize}_of_#{stream_id}-*")
     end
   end
 end
