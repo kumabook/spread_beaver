@@ -7,13 +7,40 @@ module EnclosureMark
     scope :user_count, -> {
       group(:enclosure_id).order('count_user_id DESC').count('user_id')
     }
+    scope :feed, -> (feed) {
+      joins(enclosure: :entries).where(entries: { feed_id: feed.id })
+    }
+    scope :keyword, -> (keyword) {
+      joins(enclosure: { entries: :keywords })
+        .where(keywords: { id: keyword.id })
+    }
+    scope :tag, -> (tag) {
+      joins(enclosure: { entries: :tags }).where(tags: { id: tag.id })
+    }
     scope :topic,      -> (topic)    {
       joins(enclosure: { entries: { feed: :topics }})
-        .where(enclosures: { entries: { feed: { topics: { id: topic.id }}}})
+        .where(topics: { id: topic.id })
+    }
+    scope :category, -> (category) {
+      joins(enclosure: { entries: { feed: { subscriptions: :categories }}})
+        .where(categories: { id: category.id })
+    }
+    scope :issue, -> (issue) {
+      joins(enclosure: { entries: :issues }).where(issues: { id: issue.id })
     }
     scope :stream, -> (s) {
-      if s.kind_of?(Topic)
+      if s.kind_of?(Feed)
+        feed(s)
+      elsif s.kind_of?(Keyword)
+        keyword(s)
+      elsif s.kind_of?(Tag)
+        tag(s)
+      elsif s.kind_of?(Topic)
         topic(s)
+      elsif s.kind_of?(Category)
+        category(s)
+      elsif s.kind_of?(Issue)
+        issue(s)
       else
         all
       end

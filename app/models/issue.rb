@@ -1,6 +1,7 @@
 class Issue < ApplicationRecord
   include Escapable
   include Stream
+  include Mix
 
   enum state: { draft: 0, published: 1 }
 

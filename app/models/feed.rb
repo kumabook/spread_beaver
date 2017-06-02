@@ -1,6 +1,7 @@
 class Feed < ApplicationRecord
   include Escapable
   include Stream
+  include Mix
   after_touch   :touch_topics
   after_save    :delete_cache_of_search_results
   after_destroy :delete_cache_of_search_results

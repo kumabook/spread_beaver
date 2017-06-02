@@ -1,6 +1,7 @@
 class Category < ApplicationRecord
   include Escapable
   include Stream
+  include Mix
   has_many :subscription_categories, dependent: :destroy
   has_many :subscriptions          , through: :subscription_categories
 

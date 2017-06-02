@@ -1,6 +1,7 @@
 class Keyword < ApplicationRecord
   include Escapable
   include Stream
+  include Mix
   has_many :entry_keywords, dependent: :destroy
   has_many :entries       , through: :entry_keywords
 
