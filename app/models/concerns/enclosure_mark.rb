@@ -42,7 +42,7 @@ module EnclosureMark
       elsif s.kind_of?(Issue)
         issue(s)
       else
-        all
+        raise Exception.new("Unknown stream")
       end
     }
   end
