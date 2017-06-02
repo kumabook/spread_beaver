@@ -15,7 +15,9 @@ RSpec.describe "Track Mix api", type: :request, autodoc: true do
       @category      = Category.create!(label: "event", user: @user)
       @subscription.categories = [@category]
       @journal       = Journal.create!(label: "highlight")
-      @issue         = Issue.create!(label: "1", journal: @journal)
+      @issue         = Issue.create!(label: "1",
+                                     state: Issue.states[:published],
+                                journal_id: @journal.id)
       (0...ITEM_NUM).to_a.each { |n|
         LikedEnclosure.create! user:           @user,
                                enclosure:      @feed.entries[0].tracks[n],
@@ -143,6 +145,15 @@ RSpec.describe "Track Mix api", type: :request, autodoc: true do
     context "category" do
       before do
         get "/v3/mixes/#{@category.escape.id}/tracks/contents",
+            params: popular_params,
+            headers: headers_for_login_user_api
+      end
+      it { expect(@response.status).to eq(200) }
+    end
+
+    context "issue" do
+      before do
+        get "/v3/mixes/#{CGI.escape @journal.stream_id}/tracks/contents",
             params: popular_params,
             headers: headers_for_login_user_api
       end

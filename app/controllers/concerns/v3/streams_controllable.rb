@@ -137,7 +137,7 @@ module V3::StreamsControllable
     elsif @category.present?
       @stream = @category
     elsif @journal.present?
-      @stream = @journal
+      @stream = @journal.current_issue
     end
   end
 
