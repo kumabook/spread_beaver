@@ -8,6 +8,13 @@ RSpec.describe "Mixes api", type: :request, autodoc: true do
       @feed         = FactoryGirl.create(:feed)
       @topic        = FactoryGirl.create(:topic)
       @feed.topics  = [@topic]
+      @keyword      = Keyword.create!(label: "fujirock")
+      @tag          = Tag.create!(label: "fujirock", user: @user)
+      @subscription = Subscription.create!(feed: @feed, user: @user)
+      @category     = Category.create!(label: "event", user: @user)
+      @subscription.categories = [@category]
+      @journal      = Journal.create!(label: "highlight")
+      @issue        = Issue.create!(label: "1", journal: @journal)
       (0...ITEM_NUM).to_a.each { |n|
         LikedEntry.create! user: @user,
                            entry: @feed.entries[n],
@@ -75,5 +82,49 @@ RSpec.describe "Mixes api", type: :request, autodoc: true do
         expect(result['continuation']).to be_nil
       end
     end
+
+    context "feed" do
+      before do
+        get "/v3/mixes/#{@feed.escape.id}/contents",
+            params: popular_params,
+            headers: headers_for_login_user_api
+      end
+      it { expect(@response.status).to eq(200) }
+    end
+
+    context "keyword" do
+      before do
+        get "/v3/mixes/#{@keyword.escape.id}/contents",
+            params: popular_params,
+            headers: headers_for_login_user_api
+      end
+      it { expect(@response.status).to eq(200) }
+    end
+
+    context "tag" do
+      before do
+        get "/v3/mixes/#{@tag.escape.id}/contents",
+            params: popular_params,
+            headers: headers_for_login_user_api
+      end
+      it { expect(@response.status).to eq(200) }
+    end
+
+    context "category" do
+      before do
+        get "/v3/mixes/#{@category.escape.id}/contents",
+            params: popular_params,
+            headers: headers_for_login_user_api
+      end
+      it { expect(@response.status).to eq(200) }
+    end
+  end
+
+  def popular_params
+    {
+      type:      :popular,
+      newerThan: 200.days.ago.to_time.to_i * 1000,
+      olderThan: Time.now.to_i * 1000,
+    }
   end
 end
