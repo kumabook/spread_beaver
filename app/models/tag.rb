@@ -12,10 +12,6 @@ class Tag < ApplicationRecord
   after_initialize :set_id, if: :new_record?
   before_save      :set_id
 
-  def entries_of_stream(page: 1, per_page: nil, since: nil)
-    Entry.page(page).per(per_page).tag(self)
-  end
-
   private
   def set_id
     self.id = "user/#{user.id}/tag/#{label}"

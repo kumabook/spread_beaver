@@ -21,6 +21,10 @@ module Stream
     Entry.page(page).per(per_page).stream(self)
   end
 
+  def enclosures_of_stream(clazz, page: 1, per_page: nil, newer_than: nil, since: nil)
+    clazz.page(page).per(per_page).stream(self)
+  end
+
   def stream_entries(page: 1, per_page: nil, since: nil)
     key = self.class.cache_key_of_entries_of_stream(stream_id,
                                                     page: page,

@@ -68,11 +68,10 @@ class V3::Streams::EnclosuresController < V3::ApiController
                                  .per(@per_page)
                                  .played(@user)
       end
-    elsif @journal.present?
-      @issue = @journal.current_issue
+    elsif @stream.present?
       @items = @enclosure_class.page(@page)
                                .per(@per_page)
-                               .issue(@issue)
+                               .stream(@stream)
     end
   end
 end

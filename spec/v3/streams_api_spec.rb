@@ -20,6 +20,10 @@ RSpec.describe "Streams api", type: :request, autodoc: true do
                                   label: "tag",
                                   entries: @feed.entries
       @keyword.update! entries: @feed.entries
+      @journal      = Journal.create!(label: "highlight")
+      @issue        = Issue.create!(label: "1",
+                                    state: Issue.states[:published],
+                               journal_id: @journal.id)
       (0...ITEM_NUM).to_a.each { |n|
         LikedEntry.create! user: @user,
                            entry: @feed.entries[n],
@@ -209,6 +213,46 @@ RSpec.describe "Streams api", type: :request, autodoc: true do
             headers: headers_for_login_user_api
         expect(@response.status).to eq(404)
       end
+    end
+
+    context "feed" do
+      before do
+        get "/v3/streams/#{@feed.escape.id}/contents",
+            headers: headers_for_login_user_api
+      end
+      it { expect(@response.status).to eq(200) }
+    end
+
+    context "keyword" do
+      before do
+        get "/v3/streams/#{@keyword.escape.id}/contents",
+            headers: headers_for_login_user_api
+      end
+      it { expect(@response.status).to eq(200) }
+    end
+
+    context "tag" do
+      before do
+        get "/v3/streams/#{@tag.escape.id}/contents",
+            headers: headers_for_login_user_api
+      end
+      it { expect(@response.status).to eq(200) }
+    end
+
+    context "category" do
+      before do
+        get "/v3/streams/#{@category.escape.id}/contents",
+            headers: headers_for_login_user_api
+      end
+      it { expect(@response.status).to eq(200) }
+    end
+
+    context "issue" do
+      before do
+        get "/v3/streams/#{CGI.escape @journal.stream_id}/contents",
+            headers: headers_for_login_user_api
+      end
+      it { expect(@response.status).to eq(200) }
     end
   end
 
