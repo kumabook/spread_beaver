@@ -103,4 +103,10 @@ javascript:
   period.addEventListener(      'change', updateTextFields);
   mixType.addEventListener(     'change', updateTextFields);
 
-  updateTextFields()
+  try {
+    var v         = JSON.parse(options.value)
+    period.value  = v.period;
+    mixType.value = v.type;
+  } finally {
+    updateTextFields();
+  }
