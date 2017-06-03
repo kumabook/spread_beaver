@@ -22,7 +22,7 @@ module Stream
   end
 
   def enclosures_of_stream(clazz, page: 1, per_page: nil, since: nil)
-    clazz.page(page).per(per_page).stream(self)
+    clazz.page(page).per(per_page).stream(self).latest(since)
   end
 
   def stream_entries(page: 1, per_page: nil, since: nil)
