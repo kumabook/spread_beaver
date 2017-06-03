@@ -33,7 +33,13 @@ class Entry < ApplicationRecord
   scope :with_detail, -> {
     with_content().eager_load(:keywords)
   }
-  scope :latest,        ->     (time) { where("published > ?", time).order('published DESC').with_content }
+  scope :latest,        ->    (since) {
+    if since.nil?
+      order(published: :desc).with_content
+    else
+      where(published: since..Float::INFINITY).order(published: :desc).with_content
+    end
+  }
   scope :subscriptions, ->       (ss) { where(feed: ss.map { |s| s.feed_id }).order('published DESC').with_content }
   scope :feed,          ->     (feed) { where(feed: feed).order('published DESC').with_content }
   scope :keyword,       ->        (k) { joins(:keywords).where(keywords: { id: k.id}).order('published DESC').with_content }

@@ -11,7 +11,13 @@ class Enclosure < ApplicationRecord
   has_many :enclosure_issues, dependent: :destroy
   has_many :issues          , through: :enclosure_issues
 
-  scope :latest, -> (time) { where("created_at > ?", time).order('created_at DESC') }
+  scope :latest, -> (since) {
+    if since.nil?
+      order(created_at: :desc)
+    else
+      where(created_at: since..Float::INFINITY).order(created_at: :desc)
+    end
+  }
   scope :detail, ->        { includes([:likers]).eager_load(:entries) }
   scope :issue , -> (issue) {
     joins(:enclosure_issues)
