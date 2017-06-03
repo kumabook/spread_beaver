@@ -17,11 +17,11 @@ module Stream
     id
   end
 
-  def entries_of_stream(page: 1, per_page: nil, newer_than: nil, since: nil)
+  def entries_of_stream(page: 1, per_page: nil, since: nil)
     Entry.page(page).per(per_page).stream(self)
   end
 
-  def enclosures_of_stream(clazz, page: 1, per_page: nil, newer_than: nil, since: nil)
+  def enclosures_of_stream(clazz, page: 1, per_page: nil, since: nil)
     clazz.page(page).per(per_page).stream(self)
   end
 
