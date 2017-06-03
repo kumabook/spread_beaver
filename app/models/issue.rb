@@ -18,7 +18,7 @@ class Issue < ApplicationRecord
   self.primary_key = :id
 
   def create_daily_issue_of_topic(topic)
-    entries = topic.entries_of_stream
+    entries = topic.entries_of_stream(since: 1.days.ago)
                    .select { |entry| entry.has_visual? }
     if entries.empty?
       logger.info("Failed to create journal because there is no entry")
