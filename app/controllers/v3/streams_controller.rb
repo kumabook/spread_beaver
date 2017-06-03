@@ -82,8 +82,7 @@ class V3::StreamsController < V3::ApiController
     elsif @tag.present?
       @items = @tag.stream_entries(page: @page, per_page: @per_page)
     elsif @topic.present?
-      since  = @newer_than.present? ? @newer_than : @topic.mix_newer_than
-      @items = @topic.stream_entries(page: @page, per_page: @per_page, since: since)
+      @items = @topic.stream_entries(page: @page, per_page: @per_page, since: @newer_than)
     elsif @category.present?
       @items = @category.stream_entries(page: @page, per_page: @per_page)
     elsif @journal.present?

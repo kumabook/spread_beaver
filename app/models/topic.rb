@@ -18,11 +18,16 @@ class Topic < ApplicationRecord
   LATEST_ENTRIES_PER_FEED = Setting.latest_entries_per_feed || 3
 
   def entries_of_stream(page: 1, per_page: nil, since: nil)
-    entries = Entry.topic(self).latest(since)
-    items   = Mix::mix_up_and_paginate(entries,
-                                       LATEST_ENTRIES_PER_FEED,
-                                       page,
-                                       per_page)
+    entries = nil
+    if since.present?
+      entries = Entry.topic(self).latest(since)
+    else
+      entries = Entry.topic(self).latest(mix_newer_than)
+    end
+    items = Mix::mix_up_and_paginate(entries,
+                                     LATEST_ENTRIES_PER_FEED,
+                                     page,
+                                     per_page)
     PaginatedArray.new(items, entries.count)
   end
 
