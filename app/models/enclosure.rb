@@ -22,7 +22,7 @@ class Enclosure < ApplicationRecord
   scope :issue , -> (issue) {
     joins(:enclosure_issues)
       .where(enclosure_issues: { issue: issue })
-      .order('engagement DESC')
+      .order("enclosure_issues.engagement DESC")
   }
   scope :feed, -> (feed) {
     joins(:entries).where(entries: { feed_id: feed.id })
