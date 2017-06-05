@@ -6,7 +6,7 @@ class Enclosure < ApplicationRecord
   include Playable
 
   has_many :entry_enclosures, dependent: :destroy
-  has_many :entries         , through:   :entry_enclosures
+  has_many :entries, ->{order("entries.published DESC") }, through: :entry_enclosures
 
   has_many :enclosure_issues, dependent: :destroy
   has_many :issues          , through: :enclosure_issues
@@ -18,7 +18,7 @@ class Enclosure < ApplicationRecord
       where(created_at: since..Float::INFINITY).order(created_at: :desc)
     end
   }
-  scope :detail, ->        { includes([:likers]).eager_load(:entries) }
+  scope :detail, ->        { includes([:likers]).includes(:entries) }
   scope :issue , -> (issue) {
     joins(:enclosure_issues)
       .where(enclosure_issues: { issue: issue })
