@@ -211,8 +211,7 @@ class Feed < ApplicationRecord
     new_playlists = []
     new_albums    = []
     logger.info("Fetch latest entries of #{id}")
-    newer_than = lastUpdated.present? ? lastUpdated.to_time.to_i : nil
-    response = PinkSpider.new.fetch_entries_of_feed(self.url, newer_than)
+    response = PinkSpider.new.fetch_entries_of_feed(self.url, nil)
     items    = response["items"]
     if items.nil?
       return {
