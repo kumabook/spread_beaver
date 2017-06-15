@@ -21,6 +21,7 @@ task :crawl => :environment do
   end
   User.delete_cache_of_entries_of_all_user
 
+  Rails.logger.info message
   notify_slack message
 
   if Feed::USE_FEEDLR
