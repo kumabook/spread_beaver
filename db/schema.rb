@@ -76,6 +76,7 @@ ActiveRecord::Schema.define(version: 20170614050333) do
     t.index ["crawled"], name: "index_entries_on_crawled", using: :btree
     t.index ["feed_id"], name: "index_entries_on_feed_id", using: :btree
     t.index ["id"], name: "index_entries_on_id", unique: true, using: :btree
+    t.index ["originId"], name: "index_entries_on_originId", using: :btree
     t.index ["published"], name: "index_entries_on_published", using: :btree
     t.index ["recrawled"], name: "index_entries_on_recrawled", using: :btree
     t.index ["updated"], name: "index_entries_on_updated", using: :btree

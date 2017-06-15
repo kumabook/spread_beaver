@@ -4,5 +4,7 @@ class RemovePropsFromEntries < ActiveRecord::Migration[5.0]
     remove_column :entries, :actionTimestamp
     remove_column :entries, :sid
     remove_column :entries, :categories
+
+    add_index :entries, :originId
   end
 end
