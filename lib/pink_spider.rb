@@ -9,6 +9,37 @@ class PinkSpider
     @base_url = url || ENV["PINK_SPIDER_URL"] || 'http://localhost:8080'
   end
 
+  def create_feed(url)
+    response = RestClient.post "#{base_url}/v1/feeds",
+                               { url: url }.to_json,
+                               {content_type: :json, accept: :json}
+    return if response.code != 200
+    JSON.parse(response.body)
+  end
+
+  def fetch_feed(id)
+    response = RestClient.get "#{base_url}/v1/feeds/#{id}",
+                               accept: :json
+    return if response.code != 200
+    JSON.parse(response.body)
+  end
+
+  def fetch_feeds(ids)
+    response = RestClient.post "#{base_url}/v1/feeds/.mget",
+                               ids.to_json,
+                               {content_type: :json, accept: :json}
+    return if response.code != 200
+    JSON.parse(response.body)
+  end
+
+  def fetch_entries_of_feed(url, newer_than)
+    response = RestClient.get "#{base_url}/v1/entries",
+                              params: { feed_url: url, newer_than: newer_than },
+                              accept: :json
+    return if response.code != 200
+    JSON.parse(response.body)
+  end
+
   def playlistify(url: '', force: false)
     response = RestClient.get("#{base_url}/v1/playlistify",
                               params: {
