@@ -105,6 +105,42 @@ class Entry < ApplicationRecord
     en
   end
 
+  def self.first_or_create_by_pink_spider(entry, feed)
+    en = Entry.find_or_create_by(id: entry["id"]) do |e|
+      e.title       = entry["title"]
+      e.content     = { "content": entry["content"] }.to_json
+      e.summary     = { "content": entry["summary"] }.to_json
+      e.author      = entry["author"]
+
+      e.alternate   = entry["alternate"].to_json
+      e.origin      = {
+        htmlUrl:  feed.website,
+        streamId: feed.id,
+        title:    feed.title,
+      }.to_json
+      e.visual      = {
+        url: entry["visual_url"],
+        processor: "pink-spider-v1"
+      }.to_json
+
+      e.engagement  = 0
+      e.enclosure   = entry["enclosure"].to_json
+      e.fingerprint = entry["fingerprint"]
+      e.originId    = entry["origin_id"]
+
+      e.crawled     = DateTime.parse(entry["crawled"])
+      e.published   = DateTime.parse(entry["published"])
+      e.recrawled   = entry["recrawled"].present? ? DateTime.parse(entry["recrawled"]) : nil
+      e.updated     = entry["updated"].present?   ? DateTime.parse(entry["updated"]) : nil
+      e.feed        = feed
+      if entry["keywords"].present?
+        e.keywords  = entry["keywords"].uniq.map { |k| Keyword.find_or_create_by label: k }
+      end
+    end
+    en.save
+    en
+  end
+
   def self.crawl(period: 1.month.ago..Time.now)
     Entry.where("created_at >= ?", period.begin)
          .where("created_at <= ?", period.end).find_each do |entry|
