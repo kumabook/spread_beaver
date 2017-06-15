@@ -119,7 +119,7 @@ class Feed < ApplicationRecord
     Feed.update_visuals(feeds)
     result = feeds.map do |f|
       sleep(WAITING_SEC_FOR_FEED)
-      f.fetch_latest_entries
+      f.fetch_latest_entries_with_pink_spider
     end
     result
   end
