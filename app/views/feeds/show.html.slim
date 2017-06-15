@@ -53,6 +53,12 @@ table.table.table-striped
       td velocity
       td = @feed.velocity
     tr
+      td crawled
+      td = @feed.crawled
+    tr
+      td lastUpdated
+      td = @feed.lastUpdated
+    tr
       td topics
       td
         - @feed.topics.each do |t|
