@@ -97,13 +97,31 @@ class Feed < ApplicationRecord
     end
   end
 
+  def self.first_or_create_by_pink_spider(feed)
+    Feed.find_or_create_by(id: "feed/#{feed["url"]}") do |f|
+      f.title       = feed["title"]
+      f.description = feed["description"] || ''
+      f.website     = feed["website"]
+      f.visualUrl   = feed["visual_url"]
+      f.coverUrl    = feed["cover_url"]
+      f.iconUrl     = feed["icon_url"]
+      f.language    = feed["language"]
+      f.velocity    = feed["velocity"]
+
+      if feed["topics"].present?
+        f.topics = feed["topics"].map {|t| Topic.find_or_create_by(label: t) }
+      end
+    end
+  end
+
   def self.fetch_all_latest_entries
     feeds = Feed.all
     Feed.update_visuals(feeds)
-    feeds.map do |f|
+    result = feeds.map do |f|
       sleep(WAITING_SEC_FOR_FEED)
       f.fetch_latest_entries
     end
+    result
   end
 
   def self.update_visuals(feeds)
