@@ -53,7 +53,7 @@ class EntriesController < ApplicationController
   end
 
   def crawl
-    @entry.crawl
+    @entry.crawl(force: true)
     respond_to do |format|
       format.html {
         redirect_to entry_path(@entry), notice: 'Entry was successfully crawled.'

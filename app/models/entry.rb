@@ -144,13 +144,13 @@ class Entry < ApplicationRecord
   def self.crawl(period: 1.month.ago..Time.now)
     Entry.where("created_at >= ?", period.begin)
          .where("created_at <= ?", period.end).find_each do |entry|
-      entry.crawl
+      entry.crawl(force: true)
     end
   end
 
-  def crawl
+  def crawl(force: false)
     begin
-      playlistified_entry = playlistify(force: true)
+      playlistified_entry = playlistify(force: force)
     rescue
       Rails.logger.info("Entry #{id} no longer exist")
       return
@@ -160,12 +160,16 @@ class Entry < ApplicationRecord
         url: playlistified_entry.visual_url,
         processor: "pink-spider-v1"
       }.to_json
-      Rails.logger.info("Update visual of entry #{id} with #{playlistified_entry.visual_url}")
-      save
     end
-    Track.create_items_of(   self, playlistified_entry.tracks)
-    Playlist.create_items_of(self, playlistified_entry.playlists)
-    Album.create_items_of(   self, playlistified_entry.albums)
+    new_tracks    = Track.create_items_of(self, playlistified_entry.tracks)
+    new_playlists = Playlist.create_items_of(self, playlistified_entry.playlists)
+    new_albums    = Album.create_items_of(self, playlistified_entry.albums)
+    self.save
+    {
+      tracks:    new_tracks,
+      playlists: new_playlists,
+      albums:    new_albums,
+    }
   end
 
   def self.update_visuals(max: 50)
