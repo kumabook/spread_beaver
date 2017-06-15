@@ -146,7 +146,7 @@ class Feed < ApplicationRecord
     save
   end
 
-  def fetch_latest_entries
+  def fetch_latest_entries_with_feedlr
     new_entries   = []
     new_tracks    = []
     new_playlists = []
@@ -169,36 +169,16 @@ class Feed < ApplicationRecord
     cursor.items.each do |entry|
       begin
         sleep(WAITING_SEC_FOR_FEED)
+        if Entry.find_by(feed_id: self.id, originId: entry.originId).present?
+          next
+        end
         e = Entry.first_or_create_by_feedlr(entry, self)
-        logger.info("Fetch tracks of #{e.url}")
-        playtified_entry = e.playlistify
-        [{
-           type:      'track',
-           items:     Track.create_items_of(e, playtified_entry.tracks),
-           new_items: new_tracks
-         }, {
-           type:      'playlist',
-           items:     Playlist.create_items_of(e, playtified_entry.playlists),
-           new_items: new_playlists
-         }, {
-           type:      'album',
-           items:     Album.create_items_of(e, playtified_entry.albums),
-           new_items: new_albums
-         }].each do |hash|
-          hash[:items].each do |item|
-            logger.info("  Create #{hash[:type]} #{item.content['provider']} #{item.content['title']}")
-            hash[:new_items] << item
-          end
-        end
-        if playtified_entry.visual_url.present?
-          e.visual = {
-            url: playtified_entry.visual_url,
-            processor: "pink-spider-v1"
-          }.to_json
-        end
-        e.save
         new_entries << e
-        logger.info("Update entry visual with #{playtified_entry.visual_url}")
+        logger.info("Fetch tracks of #{e.url}")
+        hash = e.crawl
+        new_tracks.concat(hash[:tracks])
+        new_playlists.concat(hash[:playlists])
+        new_albums.concat(hash[:albums])
         if self.lastUpdated.nil? || self.lastUpdated < e.published
           self.lastUpdated = e.published
         end
@@ -207,8 +187,7 @@ class Feed < ApplicationRecord
         logger.error(err.backtrace)
       end
     end
-    self.crawled = DateTime.now
-    save
+    update(crawled: DateTime.now)
     {
       feed:      self,
       entries:   new_entries,
