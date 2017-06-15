@@ -197,6 +197,65 @@ class Feed < ApplicationRecord
     }
   end
 
+
+  def fetch_latest_entries_with_pink_spider
+    new_entries   = []
+    new_tracks    = []
+    new_playlists = []
+    new_albums    = []
+    logger.info("Fetch latest entries of #{id}")
+    newer_than = lastUpdated.present? ? lastUpdated.to_time.to_i : nil
+    response = PinkSpider.new.fetch_entries_of_feed(self.url, newer_than)
+    items    = response["items"]
+    if items.nil?
+      return {
+        feed:      self,
+        entries:   [],
+        tracks:    [],
+        playlists: [],
+        albums:    [],
+      }
+    end
+
+    items.each do |entry|
+      begin
+        sleep(WAITING_SEC_FOR_FEED)
+        if Entry.find_by(feed_id: self.id, originId: entry["origin_id"]).present?
+          next
+        end
+        e = Entry.first_or_create_by_pink_spider(entry, self)
+        new_entries << e
+        logger.info("Fetch tracks of #{e.url}")
+        hash = e.crawl
+        new_tracks.concat(hash[:tracks])
+        new_playlists.concat(hash[:playlists])
+        new_albums.concat(hash[:albums])
+        if self.lastUpdated.nil? || self.lastUpdated < e.published
+          self.lastUpdated = e.published
+        end
+      rescue => err
+        logger.error("Failed to fetch #{entry["url"]}  #{err}")
+        logger.error(err.backtrace)
+      end
+    end
+    update(crawled: DateTime.now)
+    {
+      feed:      self,
+      entries:   new_entries,
+      tracks:    new_tracks,
+      playlists: new_playlists,
+      albums:    new_albums,
+    }
+  rescue
+    return {
+      feed:      self,
+      entries:   [],
+      tracks:    [],
+      playlists: [],
+      albums:    [],
+    }
+  end
+
   def as_json(options = {})
     h                = super(options)
     h['lastUpdated'] = lastUpdated.present? ? lastUpdated.to_time.to_i * 1000 : nil
