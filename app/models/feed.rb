@@ -256,6 +256,17 @@ class Feed < ApplicationRecord
     }
   end
 
+  def self.create_all_on_pink_spider
+    Feed.all.each do |f|
+      begin
+        feed = PinkSpider::new.create_feed(f.url)
+        Feed.first_or_create_by_pink_spider(feed)
+      rescue
+        puts "#{f.url} seems to be dead"
+      end
+    end
+  end
+
   def as_json(options = {})
     h                = super(options)
     h['lastUpdated'] = lastUpdated.present? ? lastUpdated.to_time.to_i * 1000 : nil
