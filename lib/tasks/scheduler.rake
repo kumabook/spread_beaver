@@ -23,9 +23,11 @@ task :crawl => :environment do
 
   notify_slack message
 
-  Rails.logger.info("Updating entry visual...")
-  Entry.update_visuals
-  Rails.logger.info("Updated entry visual.")
+  if Feed::USE_FEEDLR
+    Rails.logger.info("Updating entry visual...")
+    Entry.update_visuals
+    Rails.logger.info("Updated entry visual.")
+  end
   Rails.logger.info("Finish!")
 end
 

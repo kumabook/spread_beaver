@@ -14,6 +14,7 @@ class Feed < ApplicationRecord
   self.primary_key = :id
 
   WAITING_SEC_FOR_FEED = 0.25
+  USE_FEEDLR = false
 
   scope :search, -> (query) {
     q = search_query(query)
@@ -116,10 +117,16 @@ class Feed < ApplicationRecord
 
   def self.fetch_all_latest_entries
     feeds = Feed.all
-    Feed.update_visuals(feeds)
     result = feeds.map do |f|
       sleep(WAITING_SEC_FOR_FEED)
-      f.fetch_latest_entries_with_pink_spider
+      if USE_FEEDLR
+        f.fetch_latest_entries_with_feedlr
+      else
+        f.fetch_latest_entries_with_pink_spider
+      end
+    end
+    if USE_FEEDLR
+      Feed.update_visuals(feeds)
     end
     result
   end
