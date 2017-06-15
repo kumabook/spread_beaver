@@ -35,6 +35,9 @@ class Feed < ApplicationRecord
     where(language: locale) if locale.present?
   }
 
+  def url
+    id[5..-1] # eliminate feed/
+  end
 
   def self.delete_cache_of_search_results
     Rails.cache.delete_matched("feeds_of_search_by-*")
