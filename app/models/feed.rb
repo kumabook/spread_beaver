@@ -1,3 +1,4 @@
+require('pink_spider')
 class Feed < ApplicationRecord
   include Escapable
   include Stream
