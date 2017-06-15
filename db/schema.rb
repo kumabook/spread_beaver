@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170602100558) do
+ActiveRecord::Schema.define(version: 20170614050333) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -59,24 +59,20 @@ ActiveRecord::Schema.define(version: 20170602100558) do
     t.text     "origin"
     t.text     "keywords"
     t.text     "visual"
-    t.text     "categories"
-    t.boolean  "unread",                      null: false
     t.integer  "engagement"
-    t.integer  "actionTimestamp"
     t.text     "enclosure"
-    t.text     "fingerprint",                 null: false
-    t.string   "originId",                    null: false
-    t.string   "sid"
+    t.text     "fingerprint",             null: false
+    t.string   "originId",                null: false
     t.datetime "crawled"
     t.datetime "recrawled"
     t.datetime "published"
     t.datetime "updated"
-    t.datetime "created_at",                  null: false
-    t.datetime "updated_at",                  null: false
-    t.string   "feed_id",                     null: false
-    t.integer  "saved_count",     default: 0, null: false
-    t.integer  "read_count",      default: 0, null: false
-    t.integer  "likes_count",     default: 0, null: false
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
+    t.string   "feed_id",                 null: false
+    t.integer  "saved_count", default: 0, null: false
+    t.integer  "read_count",  default: 0, null: false
+    t.integer  "likes_count", default: 0, null: false
     t.index ["crawled"], name: "index_entries_on_crawled", using: :btree
     t.index ["feed_id"], name: "index_entries_on_feed_id", using: :btree
     t.index ["id"], name: "index_entries_on_id", unique: true, using: :btree

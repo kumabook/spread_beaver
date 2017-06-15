@@ -14,15 +14,11 @@ describe EntriesController, type: :controller do
       alternate:       {},
       origin:          { 'streamId': 'feed/http://exmpale.com/rss'},
       visual:          {},
-      categories:      {},
-      unread:          true,
 
       engagement:      100,
-      actionTimestamp: 1.days.ago.to_time.to_i * 1000,
       enclosure:       {},
       fingerprint:     '',
       originId:        '',
-      sid:             '',
 
       crawled:         1.days.ago.to_time.to_i * 1000,
       published:       1.days.ago.to_time.to_i * 1000,

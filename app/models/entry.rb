@@ -86,15 +86,11 @@ class Entry < ApplicationRecord
       e.alternate   = entry.alternate.to_json
       e.origin      = entry.origin.to_json
       e.visual      = entry.visual.to_json
-      e.categories  = entry.categories.to_json
-      e.unread      = entry.unread
 
       e.engagement  = entry.engagement
-      e.actionTimestamp = entry.actionTimestamp
       e.enclosure   = entry.enclosure.to_json
       e.fingerprint = entry.fingerprint
       e.originId    = entry.originId
-      e.sid         = entry.sid
 
       e.crawled     = Time.at(entry.crawled / 1000)
       e.published   = Time.at(entry.published / 1000)

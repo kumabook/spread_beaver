@@ -56,14 +56,10 @@ FactoryGirl.define do
     alternate       "[]"
     origin          "{}"
     visual          '{"url": "http://test.jpg"}'
-    categories      "null"
-    unread          true
     engagement      9
-    actionTimestamp nil
     enclosure       "null"
     fingerprint     ""
     originId        ""
-    sid             nil
     crawled         DateTime.now
     recrawled       nil
     sequence(:published) do |n|

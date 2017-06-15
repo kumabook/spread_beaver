@@ -8,14 +8,11 @@ FactoryGirl.define do
     alternate       "[]"
     origin          ({streamId: "http://example.com/rss"}).to_json()
     visual          '{"url": "http://test.jpg"}'
-    categories      "null"
     unread          true
     engagement      9
-    actionTimestamp nil
     enclosure       "null"
     fingerprint     ""
     originId        ""
-    sid             nil
     crawled         DateTime.now
     recrawled       nil
     published       1.days.ago

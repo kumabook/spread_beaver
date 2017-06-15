@@ -3,7 +3,7 @@ require('paginated_array')
 module Readable
   extend ActiveSupport::Concern
   included do
-    attr_accessor :is_read
+    attr_accessor :is_read, :unread
 
     reads = "read_#{table_name}".to_sym
     has_many reads, dependent: :destroy
