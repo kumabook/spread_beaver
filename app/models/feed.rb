@@ -15,7 +15,15 @@ class Feed < ApplicationRecord
   self.primary_key = :id
 
   WAITING_SEC_FOR_FEED = 0.25
-  USE_FEEDLR = false
+  @@crawler_type = :pink_spider # :feedlr or :pink_spider
+
+  def self.crawler_type
+    @@crawler_type
+  end
+
+  def self.crawler_type=(val)
+    @@crawler_type = val
+  end
 
   scope :search, -> (query) {
     q = search_query(query)
@@ -62,7 +70,7 @@ class Feed < ApplicationRecord
   end
 
   def self.find_or_create_by_url(url)
-    if Feed::USE_FEEDLR
+    if @@crawler_type == :feedlr
       Feed.find_or_create_by_ids_with_feedlr(["feed/#{url}"]).first
     else
       Feed.find_or_create_by_url_on_pink_spider(url)
@@ -130,13 +138,13 @@ class Feed < ApplicationRecord
     feeds = Feed.all
     result = feeds.map do |f|
       sleep(WAITING_SEC_FOR_FEED)
-      if USE_FEEDLR
+      if @@crawler_type == :feedlr
         f.fetch_latest_entries_with_feedlr
       else
         f.fetch_latest_entries_with_pink_spider
       end
     end
-    if USE_FEEDLR
+    if @@crawler_type == :feedlr
       Feed.update_visuals(feeds)
     end
     result

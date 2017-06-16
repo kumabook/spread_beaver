@@ -24,7 +24,7 @@ task :crawl => :environment do
   Rails.logger.info message
   notify_slack message
 
-  if Feed::USE_FEEDLR
+  if Feed::crawler_type == :feedlr
     Rails.logger.info("Updating entry visual...")
     Entry.update_visuals
     Rails.logger.info("Updated entry visual.")
