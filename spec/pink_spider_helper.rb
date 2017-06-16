@@ -3,6 +3,27 @@ require 'active_support'
 require 'active_support/core_ext'
 
 class PinkSpiderHelper
+  def self.feed_hash(url)
+    {
+      id:           "feed/#{url}",
+      url:          url,
+      title:        'example feed',
+      description:  'description',
+      language:     'ja',
+      velocity:     0,
+      website:      'http://example.com/',
+      state:        'alive',
+      last_updated: '2017-03-16T05:37:02.807854+00:00',
+      crawled:      '2017-03-16T05:37:02.807854+00:00',
+
+      visual_url:  'http://visual.com',
+      icon_url:    'http://visual.com',
+      cover_url:   'http://visual.com',
+
+      created_at:  '2017-03-16T05:37:02.807854+00:00',
+      updated_at:  '2017-03-16T05:37:02.807854+00:00',
+    }.with_indifferent_access
+  end
   def self.entry_hash
     {
       id:          SecureRandom.uuid,

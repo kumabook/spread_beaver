@@ -6,8 +6,9 @@ describe FeedsController, type: :controller do
   let! (:feed  ) { Feed.create!(id: "feed/http://test.com/rss" , title: "feed") }
   let! (:feed2 ) { Feed.create!(id: "feed/http://test2.com/rss", title: "feed") }
   let! (:topic ) { Topic.create!(label: "topic", description: "desc")}
-  let  (:new_id) { "http://new.com/rss" }
-  let  (:feedly_feed) { FeedlrHelper::feed("feed/#{new_id}") }
+  let  (:new_url) { "http://new.com/rss" }
+  let  (:feedly_feed) { FeedlrHelper::feed("feed/#{new_url}") }
+  let  (:pink_spider_feed) { PinkSpiderHelper.feed_hash(new_url) }
 
   before(:each) do
     login_user user
@@ -51,27 +52,29 @@ describe FeedsController, type: :controller do
     context 'when feed url does not exist' do
       before do
         allow_any_instance_of(Feedlr::Client).to receive(:feeds).and_return([])
-        post :create, params: { feed: { id: new_id }}
+        allow_any_instance_of(PinkSpider).to receive(:create_feed).and_return(nil)
+        post :create, params: { feed: { url: new_url }}
       end
       it { expect(response).to render_template("new") }
-      it { expect(Feed.find_by(id: "feed/#{new_id}")).to be_nil }
+      it { expect(Feed.find_by(id: "feed/#{new_url}")).to be_nil }
       it { expect(flash[:notice]).not_to be_nil }
     end
     context 'when id exists' do
       before do
         allow_any_instance_of(Feedlr::Client).to receive(:feeds).and_return([feedly_feed])
+        allow_any_instance_of(PinkSpider).to receive(:create_feed).and_return(pink_spider_feed)
       end
       context 'when succeeds in creating' do
         before do
-          post :create, params: { feed: { id: new_id }}
+          post :create, params: { feed: { url: new_url }}
         end
         it { expect(response).to redirect_to feeds_url }
-        it { expect(Feed.find_by(id: "feed/#{new_id}")).not_to be_nil }
+        it { expect(Feed.find_by(id: "feed/#{new_url}")).not_to be_nil }
       end
       context 'when failes in creating' do
         before do
           allow_any_instance_of(Feed).to receive(:save).and_return(false)
-          post :create, params: { feed: { id: new_id }}
+          post :create, params: { feed: { url: new_url }}
         end
         it { expect(response).to redirect_to feeds_url }
         it { expect(flash[:notice]).not_to be_nil }
