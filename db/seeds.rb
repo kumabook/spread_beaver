@@ -23,28 +23,16 @@ puts "Create default journal hightlight"
 
 news_topic = Topic.first_or_create(label: 'news')
 
-feedIds = [
+feedUrls = [
   "feed/http://pitchfork.com/rss/news",
   "feed/http://pitchfork.com/rss/reviews/best/albums",
   "feed/http://pitchfork.com/rss/reviews/best/tracks",
   'feed/http://spincoaster.com/feed'
 ]
 
-Feed.find_or_create_with_ids(feedIds).each do |f|
-  puts "Create feed(id: #{f.id})"
-  f.topics = [news_topic]
+feedUrls.each do |feedUrl|
+  Feed.find_or_create_by_url(feedUrl).each do |f|
+    puts "Create feed(id: #{f.id})"
+    f.topics = [news_topic]
+  end
 end
-
-Entry.find_each do |entry|
-  Entry.reset_counters(entry.id, :saved_entries)
-  Entry.reset_counters(entry.id, :read_entries)
-end
-puts "Reset counter cache of entry.saved_count"
-puts "Reset counter cache of entry.read_count"
-
-Track.find_each do |track|
-  Track.reset_counters(track.id, :liked_enclosures)
-  Track.reset_counters(track.id, :entries)
-end
-puts "Reset counter cache of track.likes_count"
-puts "Reset counter cache of track.entries_count"

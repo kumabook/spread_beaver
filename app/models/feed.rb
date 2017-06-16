@@ -38,7 +38,7 @@ class Feed < ApplicationRecord
   }
 
   def url
-    id[5..-1] # eliminate feed/
+    id && id[5..-1] # eliminate feed/
   end
 
   def self.delete_cache_of_search_results
@@ -58,6 +58,25 @@ class Feed < ApplicationRecord
           .locale(locale)
           .includes([:feed_topics])
           .order('velocity DESC').to_a
+    end
+  end
+
+  def self.find_or_create_by_url(url)
+    if Feed::USE_FEEDLR
+      Feed.find_or_create_by_ids_with_feedlr(["feed/#{url}"]).first
+    else
+      Feed.find_or_create_by_url_on_pink_spider(url)
+    end
+  rescue
+    nil
+  end
+
+  def self.find_or_create_by_ids_with_feedlr(feed_ids)
+    client = Feedlr::Client.new(sandbox: false)
+    feeds = client.feeds(feed_ids)
+    return [] if feeds.nil?
+    feeds.map do |feed|
+      Feed.first_or_create_by_feedlr(feed)
     end
   end
 
@@ -87,15 +106,6 @@ class Feed < ApplicationRecord
       f.twitterFollowers  = feed.twitterFollowers,
       f.twitterScreenName = feed.twitterScreenName,
 =end
-    end
-  end
-
-  def self.find_or_create_with_ids(feed_ids)
-    client = Feedlr::Client.new(sandbox: false)
-    feeds = client.feeds(feed_ids)
-    return [] if feeds.nil?
-    feeds.map do |feed|
-      Feed.first_or_create_by_feedlr(feed)
     end
   end
 
@@ -263,11 +273,15 @@ class Feed < ApplicationRecord
     }
   end
 
+  def self.find_or_create_by_url_on_pink_spider(url)
+    feed = PinkSpider::new.create_feed(url)
+    Feed.first_or_create_by_pink_spider(feed)
+  end
+
   def self.create_all_on_pink_spider
     Feed.all.each do |f|
       begin
-        feed = PinkSpider::new.create_feed(f.url)
-        Feed.first_or_create_by_pink_spider(feed)
+        Feed.find_or_create_by_url(f.url)
       rescue
         puts "#{f.url} seems to be dead"
       end

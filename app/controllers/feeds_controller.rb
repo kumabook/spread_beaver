@@ -27,13 +27,13 @@ class FeedsController < ApplicationController
   end
 
   def create
-    @feed = Feed.find_or_create_with_ids(["feed/#{feed_params[:id]}"]).first
+    @feed = Feed.find_or_create_by_url(feed_params[:url])
     respond_to do |format|
       if @feed.nil?
         @feed = Feed.new
         flash[:notice] = 'The url is invalid'
         format.html { render :new }
-        format.json { render json: @feed.errors, status: :unprocessable_entity }
+        format.json { render json: {}, status: :unprocessable_entity }
       elsif @feed.save
         format.html { redirect_to feeds_path, notice: 'Feed was successfully created.' }
         format.json { render :show, status: :created, location: @feed }
@@ -76,7 +76,7 @@ class FeedsController < ApplicationController
   end
 
   def feed_params
-    params.require(:feed).permit(:id, :title, :description, :website, :velocity,
+    params.require(:feed).permit(:id, :url, :title, :description, :website, :velocity,
                                  :visualUrl, :coverUrl, :iconUrl,
                                  :language, :partial, :coverColor,
                                  topics: [])
