@@ -24,16 +24,31 @@ class PinkSpiderHelper
       updated_at:  '2017-03-16T05:37:02.807854+00:00',
     }.with_indifferent_access
   end
-  def self.entry_hash
+  def self.entry_hash(url: 'http://example.com')
     {
       id:          SecureRandom.uuid,
-      url:         'http://example.com',
+      url:         url,
       title:       'entry',
       description: 'description',
       visual_url:  'http://visual.com',
-      local:       'ja',
+      locale:       'ja',
+
+      summary:     '',
+      content:     '',
+      author:      '',
+
+      crawled:     '2017-03-16T05:37:02.807854+00:00',
+      published:   '2017-03-16T05:37:02.807854+00:00',
+      updated:     '2017-03-16T05:37:02.807854+00:00',
+      fingerprint: '',
+      origin_id:   url,
+      alternate:   [{ href: url, type: "text/html" }],
+      keywords:    [],
+      enclosure:   [],
+
       created_at:  '2017-03-16T05:37:02.807854+00:00',
       updated_at:  '2017-03-16T05:37:02.807854+00:00',
+
       tracks:      [track_hash],
       playlists:   [playlist_hash],
       albums:      [album_hash],

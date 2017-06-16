@@ -11,15 +11,6 @@ describe 'rake task crawl' do
   end
 
   before do
-    allow_any_instance_of(Feedlr::Client).to receive(:feeds) do |this, ids|
-      ids.map {|id| FeedlrHelper::feed(id) }
-    end
-    allow_any_instance_of(Feedlr::Client).to receive(:user_entries) do |this, ids|
-      ids.map {|id| FeedlrHelper::entry(id) }
-    end
-    allow_any_instance_of(Feedlr::Client).to receive(:stream_entries_contents) do
-      FeedlrHelper::cursor
-    end
     @rake[task].reenable
     FactoryGirl.create(:feed)
     FactoryGirl.create(:keyword)
@@ -29,8 +20,39 @@ describe 'rake task crawl' do
 
   describe 'crawl' do
     let(:task) { 'crawl' }
-    it 'is succeed.' do
-      expect(@rake[task].invoke).to be_truthy
+    context "crawler_type = :feeldr" do
+      before do
+        Feed::crawler_type = :feedlr
+        allow_any_instance_of(Feedlr::Client).to receive(:feeds) do |this, ids|
+          ids.map {|id| FeedlrHelper::feed(id) }
+        end
+        allow_any_instance_of(Feedlr::Client).to receive(:user_entries) do |this, ids|
+          ids.map {|id| FeedlrHelper::entry(id) }
+        end
+        allow_any_instance_of(Feedlr::Client).to receive(:stream_entries_contents) do
+          FeedlrHelper::cursor
+        end
+      end
+      it 'is succeed.' do
+        expect(@rake[task].invoke).to be_truthy
+      end
+    end
+
+    context "craawler_type = :pink_spider" do
+      before do
+        Feed::crawler_type = :pink_spider
+        allow_any_instance_of(PinkSpider).to receive(:fetch_entries_of_feed) do
+          {
+            page:     0,
+            per_page: 1,
+            total:    1,
+            items:    [PinkSpiderHelper::entry_hash(url: 'http://example.com/entry1')]
+          }.with_indifferent_access
+        end
+      end
+      it 'is succeed.' do
+        expect(@rake[task].invoke).to be_truthy
+      end
     end
   end
 
