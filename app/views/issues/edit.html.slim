@@ -12,3 +12,11 @@
   = link_to 'Edit Albums'   , issue_albums_path(@issue), class: 'btn btn-primary'
   '
   = link_to 'Edit Playlists', issue_playlists_path(@issue), class: 'btn btn-primary'
+
+  br
+  br
+  - if @journal.topic.present? && @issue.date.present?
+    = link_to 'Collect Entries',
+              collect_entries_journal_issue_path(@journal, @issue),
+              method: :post,
+              class: 'btn btn-primary'

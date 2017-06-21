@@ -75,7 +75,10 @@ Rails.application.routes.draw do
   end
   resources :resources,  only: [:create, :edit, :update, :destroy]
   resources :journals do
-    resources :issues
+    resources :issues do
+      post 'daily', action: :create_daily, on: :collection
+      post 'collect_entries', action: :collect_entries, on: :member
+    end
   end
   resources :issues, only: []  do
     resources :entry_issues, only: [:new]

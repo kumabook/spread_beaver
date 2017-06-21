@@ -17,9 +17,19 @@ class Issue < ApplicationRecord
 
   self.primary_key = :id
 
-  def create_daily_issue_of_topic(topic)
-    entries = topic.entries_of_stream(since: 1.days.ago)
+  def date
+    Time.zone.strptime(label, "%Y%m%d")
+  rescue
+    nil
+  end
+
+  def collect_entries_of_topic(topic)
+    entries = Entry.topic(topic).period(date..date.tomorrow)
                    .select { |entry| entry.has_visual? }
+    entries = Mix::mix_up_and_paginate(entries,
+                                       Topic::LATEST_ENTRIES_PER_FEED,
+                                       1,
+                                       nil)
     if entries.empty?
       logger.info("Failed to create journal because there is no entry")
       return

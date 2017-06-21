@@ -51,12 +51,17 @@ class IssuesController < ApplicationController
     end
   end
 
+  def collect_entries
+    @issue.collect_entries_of_topic(@journal.topic)
+    redirect_to edit_journal_issue_path(@journal, @issue)
+  end
+
   def set_issue
     @issue = Issue.find(params[:id])
   end
 
   def set_journal
-    @journal = Journal.find(params[:journal_id])
+    @journal = Journal.find(params[:journal_id]) if params[:journal_id].present?
   end
 
   def set_entries
