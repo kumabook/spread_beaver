@@ -27,7 +27,11 @@ class IssuesController < ApplicationController
   end
 
   def create_daily
-    @journal.create_daily_issue
+    if params[:date].present?
+      @journal.create_daily_issue(Date.parse params[:date])
+    else
+      @journal.create_daily_issue
+    end
     redirect_to journal_issues_path(@journal)
   end
 

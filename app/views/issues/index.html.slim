@@ -5,7 +5,13 @@
 = link_to 'New issue', new_journal_issue_path, class: 'btn btn-primary'
 - if @journal.topic.present?
   '
-  = link_to 'Create Daily issue', daily_journal_issues_path(@journal), method: :post, class: 'btn btn-primary'
+  = link_to 'Create Today issue',
+            daily_journal_issues_path(@journal, date: Date.today.iso8601),
+            method: :post, class: 'btn btn-primary'
+  '
+  = link_to 'Create Tomorrow issue',
+            daily_journal_issues_path(@journal, date: Date.tomorrow.iso8601),
+            method: :post, class: 'btn btn-primary'
 
 
 br
