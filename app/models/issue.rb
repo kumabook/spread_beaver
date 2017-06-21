@@ -24,6 +24,7 @@ class Issue < ApplicationRecord
   end
 
   def collect_entries_of_topic(topic)
+    entries = Entry.topic(topic).period((date - 6.hours)..(date + 24.hours))
     entries = Entry.topic(topic).period(date..date.tomorrow)
                    .select { |entry| entry.has_visual? }
     entries = Mix::mix_up_and_paginate(entries,
