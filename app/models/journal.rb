@@ -16,13 +16,16 @@ class Journal < ApplicationRecord
     h
   end
 
-  def create_daily_issue(date=Time.now.tomorrow)
+  def topic
+    Topic.find_by(id: "topic/#{label}")
+  end
+
+  def create_daily_issue(date=Time.now)
     date_str = "#{date.strftime('%Y%m%d')}"
     issue = Issue.find_or_create_by(journal_id: id, label: date_str) do |i|
       i.description = "#{label} entries at #{date_str}"
     end
-    topic = Topic.find_by(id: "topic/#{label}")
-    issue.create_daily_issue_of_topic(topic) if topic.present?
+    issue.collect_entries_of_topic(topic) if topic.present?
   end
 
   def current_issue

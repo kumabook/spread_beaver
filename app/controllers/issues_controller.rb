@@ -1,8 +1,8 @@
 class IssuesController < ApplicationController
-  before_action :set_issue, only: [:edit, :destroy, :update]
+  before_action :set_issue, only: [:edit, :destroy, :update, :collect_entries]
   before_action :set_journal
   before_action :set_entries, only: [:edit]
-  before_action :require_admin, only: [:new, :create, :destroy, :update]
+  before_action :require_admin, only: [:new, :create, :destroy, :update, :create_daily]
   def index
     @issues = Issue.order('label DESC').where(journal: @journal).page(params[:page])
   end
@@ -24,6 +24,11 @@ class IssuesController < ApplicationController
         format.json { render json: @issue.errors, status: :unprocessable_entity }
       end
     end
+  end
+
+  def create_daily
+    @journal.create_daily_issue
+    redirect_to journal_issues_path(@journal)
   end
 
   def destroy
