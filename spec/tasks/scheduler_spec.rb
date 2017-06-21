@@ -41,14 +41,7 @@ describe 'rake task crawl' do
     context "craawler_type = :pink_spider" do
       before do
         Feed::crawler_type = :pink_spider
-        allow_any_instance_of(PinkSpider).to receive(:fetch_entries_of_feed) do
-          {
-            page:     0,
-            per_page: 1,
-            total:    1,
-            items:    [PinkSpiderHelper::entry_hash(url: 'http://example.com/entry1')]
-          }.with_indifferent_access
-        end
+        mock_up_pink_spider
       end
       it 'is succeed.' do
         expect(@rake[task].invoke).to be_truthy
