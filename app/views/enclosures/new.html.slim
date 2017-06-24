@@ -1,7 +1,7 @@
 - model             = @type.downcase.to_sym
 - index_path_method = "#{@type.downcase.pluralize}_path".to_sym
 - create_path       = public_send index_path_method
-- providers         = ['YouTube', 'SoundCloud', 'AppleMusic', 'Spotify']
+- providers         = ['YouTube', 'SoundCloud', 'AppleMusic', 'Spotify', 'Custom']
 .page-header
   h1
     = "New #{@enclosure.class.name}"
