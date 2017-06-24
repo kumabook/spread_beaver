@@ -45,7 +45,7 @@ class EnclosuresController < ApplicationController
     respond_to do |format|
       if @enclosure.save
         format.html {
-          redirect_to index_path,
+          redirect_to item_path(@enclosure),
                       notice: "#{enclosure_class.name} #{@enclosure.id} was successfully created."
         }
       else
