@@ -68,6 +68,14 @@ class Entry < ApplicationRecord
     end
   }
 
+  scope :search, -> (query) {
+    if query.present?
+      where("title ILIKE ?", "%#{query}%")
+    else
+      all
+    end
+  }
+
   JSON_ATTRS = ['content', 'categories', 'summary', 'alternate', 'origin', 'visual']
   WAITING_SEC_FOR_VISUAL = 0.5
   PER_PAGE = Kaminari::config::default_per_page

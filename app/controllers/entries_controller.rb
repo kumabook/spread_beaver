@@ -1,3 +1,4 @@
+# coding: utf-8
 class EntriesController < ApplicationController
   include LikableController
   include SavableController
@@ -8,6 +9,7 @@ class EntriesController < ApplicationController
   before_action :set_keyword  , only: [:index]
   before_action :set_tag      , only: [:index]
   before_action :set_issue    , only: [:index]
+  before_action :set_query    , only: [:index]
   before_action :require_admin, only: [:new, :create, :destroy, :update]
 
   def index
@@ -30,7 +32,8 @@ class EntriesController < ApplicationController
       @entries = @issue.entries
                    .page(params[:page])
     else
-      @entries = Entry.order('published DESC')
+      @entries = Entry.search(@query)
+                      .order('published DESC')
                       .page(params[:page])
     end
     Entry.set_count_of_enclosures(@entries)
@@ -134,6 +137,10 @@ class EntriesController < ApplicationController
 
   def set_issue
     @issue = Issue.find_by(id: params[:issue_id])
+  end
+
+  def set_query
+    @query = params[:query]
   end
 
   def user_item_params

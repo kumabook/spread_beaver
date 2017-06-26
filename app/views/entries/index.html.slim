@@ -17,11 +17,19 @@
     - else
       = "Entries"
 
-- if @issue.present?
-  = link_to 'Add Entry', new_issue_entry_issue_path(@issue), class: 'btn btn-primary'
-- else
-  = link_to 'New Entry', new_entry_path, class: 'btn btn-primary'
-br
+div.row
+  div.col-lg-6
+    - if @issue.present?
+      = link_to 'Add Entry', new_issue_entry_issue_path(@issue), class: 'btn btn-primary'
+    - else
+      = link_to 'New Entry', new_entry_path, class: 'btn btn-primary'
+  div.col-lg-6
+    form
+      .input-group
+        input.form-control name="query" type="text" value="#{@query}"
+          span.input-group-btn
+            button.btn.btn-primary type="submit"
+              = "Search"
 
 = paginate @entries
 table.table.table-striped
