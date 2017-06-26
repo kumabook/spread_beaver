@@ -1,8 +1,10 @@
 class PaginatedArray < Array
-  attr_reader(:total_count)
-  def initialize(values, total_count)
+  attr_reader(:total_count, :page, :per_page)
+  def initialize(values, total_count, page = 1, per_page = 25)
     super(values)
     @total_count = total_count
+    @page        = page
+    @per_page    = per_page
   end
 
   def self.sort_and_paginate_count_hash(count_hash, page: 1, per_page: nil)
@@ -17,5 +19,17 @@ class PaginatedArray < Array
     }.sort_by { |hash|
       hash[:count]
     }.reverse.slice(start_index..end_index)
+  end
+
+  def total_pages
+    @total_count / @per_page
+  end
+
+  def current_page
+    page
+  end
+
+  def limit_value
+    per_page
   end
 end
