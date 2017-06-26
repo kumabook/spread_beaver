@@ -138,16 +138,20 @@ class Feed < ApplicationRecord
     feeds = Feed.all
     result = feeds.map do |f|
       sleep(WAITING_SEC_FOR_FEED)
-      if @@crawler_type == :feedlr
-        f.fetch_latest_entries_with_feedlr
-      else
-        f.fetch_latest_entries_with_pink_spider
-      end
+      f.fetch_latest_entries
     end
     if @@crawler_type == :feedlr
       Feed.update_visuals(feeds)
     end
     result
+  end
+
+  def fetch_latest_entries
+    if @@crawler_type == :feedlr
+      fetch_latest_entries_with_feedlr
+    else
+      fetch_latest_entries_with_pink_spider
+    end
   end
 
   def self.update_visuals(feeds)
