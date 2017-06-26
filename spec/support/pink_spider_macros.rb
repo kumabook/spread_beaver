@@ -29,6 +29,10 @@ module PinkSpiderMacros
         track.clone
       }
     end
+    allow_any_instance_of(PinkSpider).to receive(:search_tracks) do |this, query|
+      track["id"] = Track.first.id
+      { items: [track.clone], total: 1, page: 0, per_page: 25 }.with_indifferent_access
+    end
     allow_any_instance_of(PinkSpider).to receive(:create_track) do |this|
       PinkSpiderHelper::track_hash
     end
@@ -43,6 +47,9 @@ module PinkSpiderMacros
         album.clone
       }
     end
+    allow_any_instance_of(PinkSpider).to receive(:search_albums) do |this, query|
+      { items: [album.clone], total: 1, page: 0, per_page: 25 }.with_indifferent_access
+    end
     allow_any_instance_of(PinkSpider).to receive(:create_album) do |this|
       PinkSpiderHelper::album_hash
     end
@@ -56,6 +63,9 @@ module PinkSpiderMacros
         playlist["id"] = id
         playlist.clone
       }
+    end
+    allow_any_instance_of(PinkSpider).to receive(:search_playlists) do |this, query|
+      { items: [playlist.clone], total: 1, page: 0, per_page: 25 }.with_indifferent_access
     end
     allow_any_instance_of(PinkSpider).to receive(:create_playlist) do |this|
       PinkSpiderHelper::playlist_hash
