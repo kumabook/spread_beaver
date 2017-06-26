@@ -48,6 +48,17 @@ class Resource < ApplicationRecord
         end
       end
     end
+    [{ clazz: Entry   , type: :entry},
+     { clazz: Track   , type: :track},
+     { clazz: Album   , type: :album},
+     { clazz: Playlist, type: :playlist}].each do |h|
+      ids = hash[h[:type]]&.map {|r| r.item_id }
+      h[:clazz].where(id: ids).each do |e|
+        hash[h[:type]].select {|r| r.item_id == e.id }.each do |r|
+          r.item = e
+        end
+      end
+    end
     if hash[:global_tag].present?
       hash[:global_tag].each do |r|
         r.item = {
@@ -60,6 +71,10 @@ class Resource < ApplicationRecord
 
   def stream_id
     resource_id
+  end
+
+  def item_id
+    resource_id.split("/")[1]
   end
 
   def item_type
@@ -78,6 +93,14 @@ class Resource < ApplicationRecord
       return :category
     when /tag\/global\.(latest|hot|featured|popular)/
       return :global_tag
+    when /entry\/.*/
+      return :entry
+    when /track\/.*/
+      return :track
+    when /album\/.*/
+      return :album
+    when /playlist\/.*/
+      return :playlist
     end
   end
 
