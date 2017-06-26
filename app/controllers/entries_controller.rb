@@ -29,8 +29,7 @@ class EntriesController < ApplicationController
       @entry_issues = @issue.entry_issues
                             .order('engagement DESC')
                             .page(params[:page])
-      @entries = @issue.entries
-                   .page(params[:page])
+      @entries = @issue.entries.page(params[:page])
     else
       @entries = Entry.search(@query)
                       .order('published DESC')
