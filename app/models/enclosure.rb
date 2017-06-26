@@ -96,6 +96,19 @@ class Enclosure < ApplicationRecord
     PinkSpider.new.public_send("fetch_#{name.downcase.pluralize}".to_sym, ids)
   end
 
+  def self.search(query, page, per_page)
+    req_page = page.nil? ? 0 : page.to_i - 1
+    res = PinkSpider.new.public_send("search_#{name.downcase.pluralize}".to_sym,
+                                     query,
+                                     req_page,
+                                     per_page)
+    contents = res['items']
+    enclosures = self.where(id: contents.map {|content| content["id"] }).each do |e|
+      e.content = contents.select {|c| c["id"] == e.id }.first
+    end
+    PaginatedArray.new(enclosures, res['total'], res['page'] + 1, res['per_page'])
+  end
+
   def self.set_contents(enclosures)
     return enclosures if enclosures.blank?
     contents = fetch_contents(enclosures.map {|t| t.id })

@@ -1,4 +1,5 @@
 require('pink_spider')
+require('paginated_array')
 class EnclosuresController < ApplicationController
   include LikableController
   include SavableController
@@ -7,6 +8,7 @@ class EnclosuresController < ApplicationController
   before_action :set_content  , only: [:show, :edit]
   before_action :set_entry    , only: [:index]
   before_action :set_issue    , only: [:index]
+  before_action :set_query    , only: [:search]
   before_action :set_view_params
 
   def model_class
@@ -31,6 +33,13 @@ class EnclosuresController < ApplicationController
 
     enclosure_class.set_marks(current_user, @enclosures) if current_user.present?
     enclosure_class.set_contents(@enclosures)
+  end
+
+  def search
+    per_page    = Kaminari::config::default_per_page
+    @enclosures = enclosure_class.search(@query, params[:page], per_page)
+    enclosure_class.set_marks(current_user, @enclosures) if current_user.present?
+    render :index
   end
 
   def show
@@ -101,6 +110,10 @@ class EnclosuresController < ApplicationController
 
     def set_issue
       @issue = Issue.find(params[:issue_id]) if params[:issue_id].present?
+    end
+
+    def set_query
+      @query = params[:query]
     end
 
     def user_item_params

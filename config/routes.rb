@@ -49,6 +49,7 @@ Rails.application.routes.draw do
     post   'save'  , to: :save  , as: :saves
     delete 'unsave', to: :unsave, as: :save
     post   'play'  , to: :play  , as: :plays
+    get    'search', on: :collection
   end
   resources :albums, controller: :enclosures, type: 'Album', except: [:edit, :update] do
     post   'like'  , to: :like  , as: :likes
@@ -56,6 +57,7 @@ Rails.application.routes.draw do
     post   'save'  , to: :save  , as: :saves
     delete 'unsave', to: :unsave, as: :save
     post   'play'  , to: :play  , as: :plays
+    get    'search', on: :collection
   end
   resources :playlists, controller: :enclosures, type: 'Playlist', except: [:edit, :update] do
     post   'like'  , to: :like  , as: :likes
@@ -63,6 +65,7 @@ Rails.application.routes.draw do
     post   'save'  , to: :save  , as: :saves
     delete 'unsave', to: :unsave, as: :save
     post   'play'  , to: :play  , as: :plays
+    get    'search', on: :collection
   end
   resources :keywords do
     resources :entries, only: [:index]
