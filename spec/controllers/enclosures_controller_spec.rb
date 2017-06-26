@@ -32,7 +32,6 @@ describe EnclosuresController, type: :controller do
              }
            }
     end
-    it { expect(response).to redirect_to tracks_url }
     it { expect(Track.count).to eq(count + 1) }
   end
 
