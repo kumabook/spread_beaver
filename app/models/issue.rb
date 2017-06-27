@@ -39,17 +39,14 @@ class Issue < ApplicationRecord
       logger.info("Failed to create journal because there is no entry")
       return
     end
+    count = 0
     entries.each_with_index do |entry, i|
-      ej = EntryIssue.find_or_create_by(entry_id: entry.id,
-                                        issue_id: id)
-      ej.update_attributes(engagement: (entries.count - i) * 10)
+      EntryIssue.find_or_create_by(entry_id: entry.id, issue_id: id) do |ei|
+        count += 1
+        ei.engagement = (entries.count - i) * 10
+      end
     end
-    first_entry = entries.find {|e| e.tracks.count > 0 }
-    first_entry = entries.first if first_entry.nil?
-    first_ej    = EntryIssue.find_or_create_by(entry_id: first_entry.id,
-                                               issue_id: id)
-    first_ej.update_attributes(engagement: (entries.count + 1) * 10)
-    logger.info("Add #{entries.count} entries to Create daily issue: #{label} #{journal.label}")
+    logger.info("Add #{count} entries to #{label} of #{journal.label}")
   end
 
   def entries_of_stream(page: 1, per_page: nil, since: nil)
