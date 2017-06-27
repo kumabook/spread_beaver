@@ -3,6 +3,8 @@ class Issue < ApplicationRecord
   include Stream
   include Mix
 
+  TIME_OFFSET_DAILY_ISSUE = -30.hours
+
   enum state: { draft: 0, published: 1 }
 
   has_many :entry_issues    , ->{order("entry_issues.engagement DESC")}    , dependent: :destroy
@@ -24,8 +26,10 @@ class Issue < ApplicationRecord
   end
 
   def collect_entries_of_topic(topic)
-    entries = Entry.topic(topic).period((date - 6.hours)..(date + 24.hours))
-    entries = Entry.topic(topic).period(date..date.tomorrow)
+    period  = (date + TIME_OFFSET_DAILY_ISSUE)..(date + 24.hours)
+    entries = Entry.topic(topic)
+                   .period(period)
+                   .order(published: :desc)
                    .select { |entry| entry.has_visual? }
     entries = Mix::mix_up_and_paginate(entries,
                                        Topic::LATEST_ENTRIES_PER_FEED,
