@@ -1,3 +1,10 @@
+GIT
+  remote: git://github.com/torbjon/octicons-rails.git
+  revision: cdf8f706f11886cb494e667118170fdef5902896
+  specs:
+    octicons-rails (3.5.0)
+      railties (>= 3.2, < 5.1)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -353,6 +360,7 @@ DEPENDENCIES
   jquery-rails
   kaminari
   newrelic_rpm
+  octicons-rails!
   pg
   puma
   rails (= 5.0.1)

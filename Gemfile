@@ -10,6 +10,7 @@ gem 'sass-rails'
 gem 'uglifier'
 gem 'jquery-rails'
 gem 'twitter-bootstrap-rails'
+gem 'octicons-rails', github: "torbjon/octicons-rails"
 gem 'therubyracer'
 gem 'turbolinks'
 gem 'jbuilder'
