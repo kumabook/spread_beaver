@@ -35,6 +35,7 @@ div.row
 table.table.table-striped
   thead
     tr
+      th
       - if @issue.present?
         th engagement
       th visual
@@ -51,6 +52,7 @@ table.table.table-striped
       - if @issue.present?
         - entry_issue = @entry_issues.select {|ei| ei.entry_id == entry.id }.first
       tr
+        td.resource-menu data-id=entry.id data-resource-id="entry/#{entry.id}"
         - if @issue.present?
           td = entry_issue.engagement
         td = thumbnail_image_link(entry)

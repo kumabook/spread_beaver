@@ -8,6 +8,7 @@ br
 table.table.table-striped
   thead
     tr
+      th
       th.col-md-2 id
       th          label
       th          description
@@ -18,6 +19,7 @@ table.table.table-striped
   tbody
     - @topics.each do |topic|
       tr
+        td.resource-menu data-resource-id=topic.stream_id
         td = topic.id.truncate(20)
         td = topic.label
         td = topic.description

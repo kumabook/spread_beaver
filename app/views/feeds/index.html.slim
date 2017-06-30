@@ -12,6 +12,7 @@ br
 table.table.table-striped
   thead
     tr
+      th
       th visual
       th velocity
       th title
@@ -25,6 +26,7 @@ table.table.table-striped
     - @feeds.each do |feed|
       - subscription = @subscriptions.to_a.select {|s| feed.id == s.feed_id }.first
       tr
+        td.resource-menu data-resource-id=feed.id
         td = thumbnail_image_link(feed)
         td = feed.velocity
         td = link_to feed.title, feed.website

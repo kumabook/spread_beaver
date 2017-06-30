@@ -41,6 +41,7 @@ div.row
 table.table.table-striped
   thead
     tr
+      th
       - if @issue.present?
         th engagement
       th id
@@ -63,6 +64,7 @@ table.table.table-striped
       - if @issue.present?
         - enclosure_issue = @enclosure_issues.select {|ei| ei.enclosure_id == enclosure.id }.first
       tr
+        td.resource-menu data-id=enclosure.id data-resource-id="#{@type.downcase}/#{enclosure.id}"
         - if @issue.present?
           td = enclosure_issue.engagement
         td = link_to enclosure.id, item_path
