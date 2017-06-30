@@ -44,10 +44,8 @@ table.table.table-striped
       th
       - if @issue.present?
         th engagement
-      th id
-      th provider
-      th identifier
       th title
+      th provider
       th likes
       th saves
       th plays
@@ -61,16 +59,15 @@ table.table.table-striped
       - save_path       = public_send save_path_method , enclosure
       - plays_path      = public_send plays_path_method, enclosure
       - content         = enclosure.content || {}
+      - provider_id     = enclosure.content.nil? ? "Unknown" : "#{content["provider"]}/#{content["identifier"]}"
       - if @issue.present?
         - enclosure_issue = @enclosure_issues.select {|ei| ei.enclosure_id == enclosure.id }.first
       tr
         td.resource-menu data-id=enclosure.id data-resource-id="#{@type.downcase}/#{enclosure.id}"
         - if @issue.present?
           td = enclosure_issue.engagement
-        td = link_to enclosure.id, item_path
-        td = content["provider"]
-        td = link_to content["identifier"], content["url"]
-        td = "#{content["title"]}"
+        td = link_to content["title"] || enclosure.id, item_path
+        td = link_to provider_id, content["url"]
         td = "#{enclosure.likes_count || 0} likes"
         td = "#{enclosure.saved_count || 0} saves"
         td = "#{enclosure.play_count  || 0} plays"
