@@ -12,6 +12,21 @@
       = f.text_field :email, :class => 'form-control'
     = f.error_span(:email)
   .form-group
+    = f.label :name, :class => 'control-label col-lg-2'
+    .col-lg-10
+      = f.text_field :name, :class => 'form-control'
+    = f.error_span(:name)
+  .form-group
+    = f.label :locale, :class => 'control-label col-lg-2'
+    .col-lg-10
+      = f.text_field :locale, :class => 'form-control'
+    = f.error_span(:locale)
+  .form-group
+    = f.label :twitter_user_id, :class => 'control-label col-lg-2'
+    .col-lg-10
+      = f.text_field :twitter_user_id, :class => 'form-control'
+    = f.error_span(:twitter_user_id)
+  .form-group
     = f.label :password, :class => 'control-label col-lg-2'
     .col-lg-10
       = f.password_field :password, :class => 'form-control'

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170614050333) do
+ActiveRecord::Schema.define(version: 20170701082039) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -330,8 +330,14 @@ ActiveRecord::Schema.define(version: 20170614050333) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "type"
+    t.string   "name"
+    t.string   "picture"
+    t.string   "locale"
+    t.string   "twitter_user_id"
     t.index ["email"], name: "index_users_on_email", unique: true, using: :btree
     t.index ["id"], name: "index_users_on_id", unique: true, using: :btree
+    t.index ["name"], name: "index_users_on_name", unique: true, using: :btree
+    t.index ["twitter_user_id"], name: "index_users_on_twitter_user_id", unique: true, using: :btree
   end
 
   create_table "walls", force: :cascade do |t|

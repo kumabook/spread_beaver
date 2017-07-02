@@ -5,6 +5,18 @@ p
   br
   = @user.email
 p
+  strong Name
+  br
+  = @user.name || "None"
+p
+  strong Locale
+  br
+  = @user.locale || "None"
+p
+  strong twitter user id
+  br
+  = @user.twitter_user_id || "None"
+p
   strong Type:
   br
   = @user.type
