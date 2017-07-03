@@ -34,6 +34,8 @@ $(document).on('turbolinks:load', function() {
   }
   $dropdown.append($dropdownContent);
   $(".resource-menu")
+    .off('click')
+    .empty()
     .prepend($dropdown)
     .on('click', ".resource-menu", function(e) {
       var $container = $(this).parent().parent();
