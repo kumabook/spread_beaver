@@ -65,11 +65,9 @@ class User < ApplicationRecord
   end
 
   def as_json(options = {})
-    super(options.merge({ except: [:crypted_password, :salt] }))
-  end
-
-  def to_json(options = {})
-    super(options.merge({ except: [:crypted_password, :salt] }))
+    hash = super(options.merge({ except: [:crypted_password, :salt] }))
+    hash['twitterUserId'] = hash['twitter_user_id']
+    hash.delete('twitter_user_id')
   end
 
   def User.delete_cache_of_entries_of_all_user
