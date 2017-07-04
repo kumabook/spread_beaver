@@ -26,3 +26,13 @@
     font-size: 14px !important;
     line-height: 1.42857143  !important;
 }
+
+.resource-option-key {
+}
+
+.resource-option-value {
+    display: inline-block;
+    text-align: left !important;
+    margin-left: 165px;
+    width: 200px;
+}

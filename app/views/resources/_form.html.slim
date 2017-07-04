@@ -29,7 +29,7 @@
       = f.hidden_field :options, :class => 'form-control'
     = f.error_span(:options)
 
-  div.row
+  div.row#stream_options
     span#period_label.control-label.col.col-lg-3 period
     '
     = select_tag 'period',  options_for_select(['', 'daily', 'weekly', 'monthly'])
@@ -38,6 +38,19 @@
     span#mix_type_label.control-label.col.col-lg-3 mix_type
     '
     = select_tag 'mix_type',  options_for_select(['hot', 'popular', 'featured'])
+  div.row#custom_options_new
+    br
+    br
+    span.control-label.col.col-lg-3 key
+    '
+    = text_field_tag 'key', '', id: 'option_key'
+    '
+    span value
+    '
+    = text_field_tag 'value', '', id: 'option_value'
+    '
+    button#option_add.btn.btn-default.octicon.octicon-plus
+  div.row#custom_options
   br
   .form-group
     .col-lg-offset-2.col-lg-10
@@ -46,8 +59,10 @@
       = link_to t('.cancel', :default => t("helpers.links.cancel")), edit_wall_path(@wall), :class => 'btn'
 
 javascript:
-  var resourceType = document.getElementById("resource_resource_type");
-  var options      = document.getElementById("resource_options");
+  var resourceType  = document.getElementById("resource_resource_type");
+  var options       = document.getElementById("resource_options");
+  var streamOptions = document.getElementById("stream_options");
+  var optionAdd     = document.getElementById("option_add");
 
   var period       = document.getElementById("period");
   var mixType      = document.getElementById("mix_type");
@@ -55,19 +70,19 @@ javascript:
   var periodLabel  = document.getElementById("period_label");
   var mixTypeLabel = document.getElementById("mix_type_label");
 
-  var values = {};
+  var values = JSON.parse(options.value);
 
   function updateTextFields() {
-    values = {};
     switch (resourceType.value) {
       case 'stream':
       case 'track_stream':
       case 'album_stream':
       case 'playlist_stream':
-        period.style.display       = '';
-        periodLabel.style.display  = '';
-        mixType.style.display      = 'none';
-        mixTypeLabel.style.display = 'none';
+        streamOptions.style.display = '';
+        period.style.display        = '';
+        periodLabel.style.display   = '';
+        mixType.style.display       = 'none';
+        mixTypeLabel.style.display  = 'none';
         if (period.value) {
           values.period = period.value;
         }
@@ -76,37 +91,72 @@ javascript:
       case 'track_mix':
       case 'album_mix':
       case 'playlist_mix':
-        period.style.display       = '';
-        periodLabel.style.display  = '';
-        mixType.style.display      = '';
-        mixTypeLabel.style.display = '';
+        streamOptions.style.display = '';
+        period.style.display        = '';
+        periodLabel.style.display   = '';
+        mixType.style.display       = '';
+        mixTypeLabel.style.display  = '';
         if (period.value) {
           values.period = period.value;
         }
         values.type = mixType.value;
         break;
       default:
-        period.style.display       = 'none';
-        periodLabel.style.display  = 'none';
-        mixType.style.display      = 'none';
-        mixTypeLabel.style.display = 'none';
-        values = {};
+        streamOptions.style.display = 'none';
         break;
     }
     options.value = JSON.stringify(values);
   }
-  function updateOptionValue() {
-    options.value = {
-    };
+  function updateOptionsValue() {
+    options.value = JSON.stringify(values);
+  }
+  function addOption(key, value) {
+    if (key === '') {
+      return;
+    }
+    values[key] = value;
+    updateOptionsValue();
+    var $pair = $('<div />')
+      .attr('data-key', key)
+      .attr('data-value', value)
+      .append(
+        '<span class="resource-option-key control-label col col-lg-3">' +
+          key +
+        '</span>' +
+        '<span class="resource-option-value control-label">' + value + '</span>' + ' ' +
+        '<button class="resource-option-button btn btn-default octicon octicon-dash" />'
+      );
+    $("#custom_options").append($pair);
   }
   resourceType.addEventListener('change', updateTextFields);
   period.addEventListener(      'change', updateTextFields);
   mixType.addEventListener(     'change', updateTextFields);
+  optionAdd.addEventListener(    'click',   function(e) {
+    e.preventDefault();
+    var $key = $('#option_key');
+    var $value = $('#option_value');
+    addOption($key.val(), $value.val());
+  });
+  $('#custom_options').on('click', '.resource-option-button', function(e) {
+    e.preventDefault();
+    var $pair = $(e.target).parent();
+    var key = $pair.attr('data-key');
+    delete values[key];
+    $pair.remove();
+    updateOptionsValue();
+  });
 
   try {
-    var v         = JSON.parse(options.value)
-    period.value  = v.period;
-    mixType.value = v.type;
+    var v = JSON.parse(options.value)
+    Object.keys(v).forEach(function(key) {
+      if (key === 'period') {
+        period.value  = v[key];
+      } else if (key === 'type') {
+        mixType.value = v[key];
+      } else {
+        addOption(key, v[key]);
+      }
+    });
   } finally {
     updateTextFields();
   }
