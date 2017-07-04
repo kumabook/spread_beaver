@@ -69,6 +69,8 @@ class User < ApplicationRecord
     hash['twitterUserId'] = hash['twitter_user_id']
     hash.delete('twitter_user_id')
     hash['fullName'] = hash['name']
+    hash['created'] = self.created_at.to_time.to_i * 1000
+    hash
   end
 
   def User.delete_cache_of_entries_of_all_user
