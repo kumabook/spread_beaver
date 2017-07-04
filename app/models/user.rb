@@ -68,6 +68,7 @@ class User < ApplicationRecord
     hash = super(options.merge({ except: [:crypted_password, :salt] }))
     hash['twitterUserId'] = hash['twitter_user_id']
     hash.delete('twitter_user_id')
+    hash['fullName'] = hash['name']
   end
 
   def User.delete_cache_of_entries_of_all_user
