@@ -42,6 +42,8 @@ table.table.table-striped
   thead
     tr
       th
+      - if @entry.present?
+        th engagement
       - if @issue.present?
         th engagement
       th title
@@ -62,10 +64,14 @@ table.table.table-striped
       - provider_id     = enclosure.content.nil? ? "Unknown" : "#{content["provider"]}/#{content["identifier"]}"
       - if @issue.present?
         - enclosure_issue = @enclosure_issues.select {|ei| ei.enclosure_id == enclosure.id }.first
+      - if @entry.present?
+        - entry_enclosure = @entry_enclosures.select {|ee| ee.enclosure_id == enclosure.id }.first
       tr
         td.resource-menu data-id=enclosure.id data-resource-id="#{@type.downcase}/#{enclosure.id}"
         - if @issue.present?
           td = enclosure_issue.engagement
+        - if @entry.present?
+          td = entry_enclosure.engagement || 0
         td = link_to content["title"] || enclosure.id, item_path
         td = link_to provider_id, content["url"]
         td = "#{enclosure.likes_count || 0} likes"
@@ -73,11 +79,14 @@ table.table.table-striped
         td = "#{enclosure.play_count  || 0} plays"
         td
           - if @entry.present?
-            = link_to 'Remove', public_send(entry_item_path_method, @entry, enclosure),
+            = link_to 'Edit', edit_entry_enclosure_path(entry_enclosure), :class => 'btn btn-xs btn-primary'
+            '
+            = link_to 'Remove', entry_enclosure_path(entry_enclosure),
                     :method => :delete,
                     :class => 'btn btn-xs btn-primary'
           - elsif @issue.present?
             = link_to 'Edit', edit_enclosure_issue_path(enclosure_issue), :class => 'btn btn-xs btn-primary'
+            '
             = link_to 'Remove', enclosure_issue_path(enclosure_issue),
                     :method => :delete,
                     :class => 'btn btn-xs btn-primary'
