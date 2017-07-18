@@ -30,6 +30,7 @@ Rails.application.routes.draw do
     post   'read'  , to: :read  , as: :reads
     delete 'unread', to: :unread, as: :read
   end
+  resources :entry_enclosures, only: [:create, :edit, :update, :destroy]
   resources :read_entries , only: [:create, :destroy]
   resources :feeds, constraints: res_options, shallow: true do
     get 'feedly', action: :show_feedly, on: :member
