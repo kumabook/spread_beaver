@@ -12,7 +12,9 @@ class Entry < ApplicationRecord
 
   belongs_to :feed            , touch: true
 
-  has_many :entry_enclosures, dependent: :destroy
+  order_by_engagement = ->{order("entry_enclosures.engagement DESC") }
+
+  has_many :entry_enclosures, order_by_engagement, dependent: :destroy
   has_many :entry_tags      , dependent: :destroy
   has_many :entry_keywords  , dependent: :destroy
   has_many :entry_issues    , dependent: :destroy
