@@ -51,6 +51,30 @@ describe EntryEnclosuresController, type: :controller do
     it { expect(response).to render_template("edit") }
   end
 
+  describe '#update' do
+    context 'when succeeds in updating' do
+      before {
+        post :update, params: {
+               id: entry_enclosure.id,
+               entry_enclosure: { engagement: 10 }
+             }
+      }
+      it { expect(response).to redirect_to entry_tracks_url(entry) }
+      it { expect(EntryEnclosure.find(entry_enclosure.id).engagement).to eq(10) }
+    end
+    context 'when fails to update' do
+      before {
+        allow_any_instance_of(EntryEnclosure).to receive(:save).and_return(false)
+        post :update, params: {
+               id: entry_enclosure.id,
+               entry_enclosure: { engagement: 10 }
+             }
+      }
+      it { expect(response).to redirect_to entry_tracks_url(entry) }
+      it { expect(flash[:notice]).not_to be_nil }
+    end
+  end
+
   describe '#destroy' do
     context 'when succeeds in saving' do
       before {
