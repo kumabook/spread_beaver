@@ -46,6 +46,11 @@ describe EntryEnclosuresController, type: :controller do
     end
   end
 
+  describe '#edit' do
+    before { get :edit, params: { id: entry_enclosure.id } }
+    it { expect(response).to render_template("edit") }
+  end
+
   describe '#destroy' do
     context 'when succeeds in saving' do
       before {
