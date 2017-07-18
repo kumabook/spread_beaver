@@ -32,7 +32,7 @@ describe EntryEnclosuresController, type: :controller do
         post :create, params: entry_enclosure_params.merge(entry_id: entry.id,
                                                            type:     Track.name)
       }
-      it { expect(response).to redirect_to entry_url(entry) }
+      it { expect(response).to redirect_to entry_tracks_url(entry) }
       it { expect(assigns(:entry)).not_to be_nil }
     end
     context 'when fails to create' do
@@ -49,10 +49,7 @@ describe EntryEnclosuresController, type: :controller do
   describe '#destroy' do
     context 'when succeeds in saving' do
       before {
-        entry_enclosure
-        delete :destroy, params: entry_enclosure_params.merge(id:       track.id,
-                                                              entry_id: entry.id,
-                                                              type:     Track.name)
+        delete :destroy, params: { id: entry_enclosure.id }
       }
       it { expect(response).to redirect_to entry_tracks_url(entry) }
       it {
@@ -62,11 +59,8 @@ describe EntryEnclosuresController, type: :controller do
     end
     context 'when fails to save' do
       before {
-        entry_enclosure
         allow_any_instance_of(EntryEnclosure).to receive(:destroy).and_return(false)
-        delete :destroy, params: entry_enclosure_params.merge(id:       track.id,
-                                                              entry_id: entry.id,
-                                                              type:     Track.name)
+        delete :destroy, params: { id: entry_enclosure.id }
       }
       it { expect(response).to redirect_to entry_tracks_url(entry) }
       it {
