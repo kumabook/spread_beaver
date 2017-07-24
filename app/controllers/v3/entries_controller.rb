@@ -1,5 +1,4 @@
 class V3::EntriesController < V3::ApiController
-  before_action :doorkeeper_authorize!
   before_action :set_entry, only: [:show]
   before_action :set_entries, only: [:list]
 
