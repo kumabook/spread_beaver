@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy]
+  before_action :set_s3_direct_post, only: [:new, :edit, :create, :update]
   skip_before_action :require_login, only: [:new, :create]
   before_action :require_admin, only: [:index]
 
@@ -73,6 +74,16 @@ class UsersController < ApplicationController
   end
 
   def user_params
-    params.require(:user).permit(:email, :name, :locale, :twitter_user_id, :profile, :password, :password_confirmation)
+    params.require(:user).permit(:email,
+                                 :name,
+                                 :locale,
+                                 :twitter_user_id,
+                                 :picture,
+                                 :password,
+                                 :password_confirmation)
+  end
+
+  def set_s3_direct_post
+    @s3_direct_post = S3_BUCKET.presigned_post(key: "profiles/picture/#{@user.id}", success_action_status: '201', acl: 'public-read')
   end
 end

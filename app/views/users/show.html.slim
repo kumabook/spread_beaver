@@ -17,6 +17,10 @@ p
   br
   = @user.twitter_user_id || "None"
 p
+  strong picture
+  br
+  = image_tag(@user.picture, size: 200, alt: "broken image")
+p
   strong Type:
   br
   = @user.type
