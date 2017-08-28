@@ -15,6 +15,7 @@ gem 'therubyracer'
 gem 'turbolinks'
 gem 'jbuilder'
 gem 'puma'
+gem 'aws-sdk'
 
 gem 'pg'
 gem 'doorkeeper'
