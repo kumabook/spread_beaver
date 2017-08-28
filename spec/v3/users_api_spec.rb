@@ -50,4 +50,18 @@ RSpec.describe "Users api", type: :request, autodoc: true do
       expect(me['fullName']).to eq('full name')
     end
   end
+
+  describe 'GET /v3/profile/edit' do
+    before(:all) do
+      login()
+    end
+    it "get info for updating" do
+      get "/v3/profile/edit",
+           headers: headers_for_login_user_api
+      me = JSON.parse @response.body
+      expect(me['id']).to    eq(@user.id)
+      expect(me['email']).to eq(@user.email)
+      expect(me['picture_post_url']).not_to be_nil
+    end
+  end
 end
