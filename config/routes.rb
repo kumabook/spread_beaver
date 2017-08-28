@@ -112,9 +112,10 @@ Rails.application.routes.draw do
   namespace :v3 do
     resources :profile, only: [] do
       collection do
-        get  '', to: 'users#me'
-        put  '', to: 'users#create'
-        post '', to: 'users#update'
+        get  ''   , to: 'users#me'
+        put  ''   , to: 'users#create'
+        post ''   , to: 'users#update'
+        get 'edit', to: 'users#edit'
       end
     end
 

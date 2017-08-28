@@ -30,6 +30,11 @@ class V3::UsersController < V3::ApiController
     end
   end
 
+  def edit
+    @user = current_resource_owner
+    render json: @user.to_json(need_picture_post_url: true), status: :unprocessable_entity
+  end
+
   private
 
   def profile_params
