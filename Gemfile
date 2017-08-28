@@ -9,6 +9,7 @@ gem 'rails-controller-testing'
 gem 'sass-rails'
 gem 'uglifier'
 gem 'jquery-rails'
+gem "jquery-fileupload-rails"
 gem 'twitter-bootstrap-rails'
 gem 'octicons-rails', github: "torbjon/octicons-rails"
 gem 'therubyracer'
