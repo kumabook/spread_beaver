@@ -84,6 +84,7 @@ class UsersController < ApplicationController
   end
 
   def set_s3_direct_post
-    @s3_direct_post = S3_BUCKET.presigned_post(key: "profiles/picture/#{@user.id}", success_action_status: '201', acl: 'public-read')
+    id = @user.present? ? @user.id : SecureRandom.uuid
+    @s3_direct_post = S3_BUCKET.presigned_post(key: "profiles/picture/#{id}", success_action_status: '201', acl: 'public-read')
   end
 end
