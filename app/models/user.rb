@@ -72,12 +72,14 @@ class User < ApplicationRecord
     hash['created'] = self.created_at.to_time.to_i * 1000
 
     if options[:need_picture_post_url]
+      key = "profiles/picture/#{id}"
       url = S3_SIGNER.presigned_url(:put_object,
                                     bucket: S3_BUCKET.name,
-                                    key:    "profiles/picture/#{id}",
+                                    key:    key,
                                     acl:    "public-read"
                                    )
       hash['picture_post_url'] = url
+      hash['picture_url']      = "https://#{URI(url).host}/#{key}"
     end
     hash
   end
