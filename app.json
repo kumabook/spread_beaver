@@ -42,6 +42,18 @@
     "SPOTIFY_CALLBACK": {
       "description": "spotify web api client callback URL",
       "value": "http://localhost"
+    },
+    "S3_BUCKET": {
+      "description": "s3 bucket name",
+      "value": "typica-dev"
+    },
+    "AWS_ACCESS_KEY_ID": {
+      "description": "aws access key",
+      "value": "xxxx"
+    },
+    "AWS_SECRET_ACCESS_KEY": {
+      "description": "aws secret access key",
+      "value": "xxxx"
     }
   },
   "formation": {
