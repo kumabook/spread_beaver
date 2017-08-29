@@ -64,7 +64,7 @@ class User < ApplicationRecord
     }
   end
 
-  def as_json(options = { need_picture_post_url: true })
+  def as_json(options = { need_picture_post_url: false })
     hash = super(options.merge({ except: [:crypted_password, :salt] }))
     hash['twitterUserId'] = hash['twitter_user_id']
     hash.delete('twitter_user_id')
