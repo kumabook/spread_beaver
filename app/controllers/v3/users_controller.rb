@@ -1,5 +1,5 @@
 class V3::UsersController < V3::ApiController
-  before_action :doorkeeper_authorize!, only: [:me, :update]
+  before_action :doorkeeper_authorize!, only: [:me, :edit, :update]
   if ENV['BASIC_AUTH_USERNAME'].present? && ENV['BASIC_AUTH_PASSWORD'].present?
     http_basic_authenticate_with name: ENV['BASIC_AUTH_USERNAME'],
                                  password: ENV['BASIC_AUTH_PASSWORD']
