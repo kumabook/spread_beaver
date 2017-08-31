@@ -64,22 +64,22 @@ class User < ApplicationRecord
     }
   end
 
-  def as_json(options = { need_picture_post_url: false })
+  def as_json(options = { need_picture_put_url: false })
     hash = super(options.merge({ except: [:crypted_password, :salt] }))
     hash['twitterUserId'] = hash['twitter_user_id']
     hash.delete('twitter_user_id')
     hash['fullName'] = hash['name']
     hash['created'] = self.created_at.to_time.to_i * 1000
 
-    if options[:need_picture_post_url]
+    if options[:need_picture_put_url]
       key = "profiles/picture/#{id}"
       url = S3_SIGNER.presigned_url(:put_object,
                                     bucket: S3_BUCKET.name,
                                     key:    key,
                                     acl:    "public-read"
                                    )
-      hash['picture_post_url'] = url
-      hash['picture_url']      = "https://#{URI(url).host}/#{key}"
+      hash['picture_put_url'] = url
+      hash['picture_url']     = "https://#{URI(url).host}/#{key}"
     end
     hash
   end

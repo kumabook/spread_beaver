@@ -61,7 +61,7 @@ RSpec.describe "Users api", type: :request, autodoc: true do
       me = JSON.parse @response.body
       expect(me['id']).to    eq(@user.id)
       expect(me['email']).to eq(@user.email)
-      expect(me['picture_post_url']).not_to be_nil
+      expect(me['picture_put_url']).not_to be_nil
     end
   end
 end
