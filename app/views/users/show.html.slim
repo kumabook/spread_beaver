@@ -19,7 +19,7 @@ p
 p
   strong picture
   br
-  = image_tag(@user.picture, size: 200, alt: "broken image")
+  = thumbnail_image_link(@user.picture, size: 150, alt: "broken image")
 p
   strong Type:
   br
