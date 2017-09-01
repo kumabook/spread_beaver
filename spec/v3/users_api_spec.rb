@@ -64,4 +64,19 @@ RSpec.describe "Users api", type: :request, autodoc: true do
       expect(me['picture_put_url']).not_to be_nil
     end
   end
+
+  describe 'GET /v3/profile/:id' do
+    before(:all) do
+      login()
+    end
+    it "get a user info" do
+      user = FactoryGirl.create (:member)
+      get "/v3/profile/#{user.id}",
+           headers: headers_for_login_user_api
+      u = JSON.parse @response.body
+      expect(u['id']).to    eq(user.id)
+      expect(u['email']).to eq(user.email)
+    end
+  end
+
 end

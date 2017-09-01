@@ -1,5 +1,5 @@
 class V3::UsersController < V3::ApiController
-  before_action :doorkeeper_authorize!, only: [:me, :edit, :update]
+  before_action :doorkeeper_authorize!, only: [:me, :show, :edit, :update]
   if ENV['BASIC_AUTH_USERNAME'].present? && ENV['BASIC_AUTH_PASSWORD'].present?
     http_basic_authenticate_with name: ENV['BASIC_AUTH_USERNAME'],
                                  password: ENV['BASIC_AUTH_PASSWORD']
@@ -17,8 +17,13 @@ class V3::UsersController < V3::ApiController
     end
   end
 
+  def show
+    @user = User.find(params[:id])
+    render json: @user.to_json, status: :ok
+  end
+
   def me
-    render json: current_resource_owner.to_json, status: 200
+    render json: current_resource_owner.to_json, status: :ok
   end
 
   def update

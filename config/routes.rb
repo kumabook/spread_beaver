@@ -110,7 +110,7 @@ Rails.application.routes.draw do
   end
 
   namespace :v3 do
-    resources :profile, only: [] do
+    resources :profile, controller: :users, only: [:show] do
       collection do
         get  ''   , to: 'users#me'
         put  ''   , to: 'users#create'
