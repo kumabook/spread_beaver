@@ -27,11 +27,19 @@ class V3::UsersController < V3::ApiController
   end
 
   def update
-    @user = current_resource_owner
-    if @user.update(profile_params)
+    if params[:id].present?
+      if current_resource_owner.id == params[:id] || current_resource_owner.admin?
+        @user = User.find(params[:id])
+      end
+    else
+      @user = current_resource_owner
+    end
+    if !@user.present?
+      render json: {}, status: :not_found
+    elsif @user.update(profile_params)
       render json: @user.to_json, status: :ok
     else
-      render render json: @user.errors, status: :unprocessable_entity
+      render json: @user.errors, status: :unprocessable_entity
     end
   end
 

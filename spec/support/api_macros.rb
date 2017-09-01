@@ -11,6 +11,12 @@ module ApiMacros
     @user = FactoryGirl.create(:default)
   end
 
+  def create_admin
+    @admin = FactoryGirl.create(:admin)
+    @admin_email    = @admin.email
+    @admin_password = 'test_password'
+  end
+
   def login()
     post "/v3/oauth/token.json", params: {
            grant_type:  'password',
@@ -18,6 +24,17 @@ module ApiMacros
            client_secret: @app.secret,
            email: @email,
            password: @password
+         }
+    @token = JSON.parse @response.body
+  end
+
+  def login_as_admin()
+    post "/v3/oauth/token.json", params: {
+           grant_type:  'password',
+           client_id: @app.uid,
+           client_secret: @app.secret,
+           email: @admin_email,
+           password: @admin_password
          }
     @token = JSON.parse @response.body
   end

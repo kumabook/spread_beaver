@@ -79,4 +79,40 @@ RSpec.describe "Users api", type: :request, autodoc: true do
     end
   end
 
+  describe 'PUT /v3/profile/:id' do
+    before(:all) do
+      @other = FactoryGirl.create(:member)
+    end
+    context 'admin' do
+      before(:all) do
+        create_admin()
+        login_as_admin()
+      end
+      it "update a user info" do
+        put "/v3/profile/#{@other.id}",
+            params: {
+              fullName: 'full name',
+            }.to_json,
+            headers: headers_for_login_user_api
+        expect(@response.status).to eq(200)
+        u = JSON.parse @response.body
+        expect(u['id']).to    eq(@other.id)
+        expect(u['email']).to eq(@other.email)
+        expect(u['fullName']).to eq('full name')
+      end
+    end
+    context 'member' do
+      before(:all) do
+        login()
+      end
+      it "update a user info" do
+        put "/v3/profile/#{@other.id}",
+            params: {
+              fullName: 'full name',
+            }.to_json,
+            headers: headers_for_login_user_api
+        expect(@response.status).to eq(404)
+      end
+    end
+  end
 end
