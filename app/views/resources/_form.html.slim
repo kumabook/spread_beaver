@@ -70,7 +70,11 @@ javascript:
   var periodLabel  = document.getElementById("period_label");
   var mixTypeLabel = document.getElementById("mix_type_label");
 
-  var values = JSON.parse(options.value);
+  var optionsValue = '{}';
+  if (options && options.value.length > 0) {
+    optionsValue = options.value
+  }
+  var values = JSON.parse(optionsValue);
 
   function updateTextFields() {
     switch (resourceType.value) {
