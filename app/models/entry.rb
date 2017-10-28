@@ -363,6 +363,10 @@ class Entry < ApplicationRecord
            .map { |item| item.as_enclosure }
     end
 
+    hash['tracks']    = tracks.map    { |v| v.as_content_json }
+    hash['playlists'] = playlists.map { |v| v.as_content_json }
+    hash['albums']    = albums.map    { |v| v.as_content_json }
+
     if !is_liked.nil?
       hash['is_liked'] = is_liked
     end
