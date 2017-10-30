@@ -2,7 +2,7 @@
 class V3::Streams::EnclosuresController < V3::ApiController
   include Pagination
   include V3::StreamsControllable
-  before_action :doorkeeper_authorize!
+
   before_action :set_enclosure_class
   before_action :set_stream
   before_action :set_items

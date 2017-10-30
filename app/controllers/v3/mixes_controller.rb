@@ -1,9 +1,6 @@
 class V3::MixesController < V3::ApiController
   include Pagination
   include V3::StreamsControllable
-  if Rails.env.production?
-    before_action :doorkeeper_authorize!
-  end
   before_action :set_mix_type
   before_action :set_stream
   before_action :set_period
