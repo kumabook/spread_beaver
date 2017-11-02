@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170714092132) do
+ActiveRecord::Schema.define(version: 20171102100211) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -320,8 +320,10 @@ ActiveRecord::Schema.define(version: 20170714092132) do
     t.datetime "updated_at",                    null: false
     t.integer  "engagement",   default: 0,      null: false
     t.integer  "mix_duration", default: 259200, null: false
+    t.string   "locale"
     t.index ["id"], name: "index_topics_on_id", unique: true, using: :btree
     t.index ["label"], name: "index_topics_on_label", unique: true, using: :btree
+    t.index ["locale"], name: "index_topics_on_locale", using: :btree
   end
 
   create_table "users", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
