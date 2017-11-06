@@ -255,13 +255,4 @@ RSpec.describe "Streams api", type: :request, autodoc: true do
       it { expect(@response.status).to eq(200) }
     end
   end
-
-  context "non login user" do
-    it "returns unauthroized" do
-      @feed = FactoryGirl.create(:feed)
-      get "/v3/streams/#{@feed.escape.id}/contents",
-          headers: {}
-      expect(@response.status).to eq(401)
-    end
-  end
 end
