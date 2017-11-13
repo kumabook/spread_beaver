@@ -17,6 +17,14 @@ class Topic < ApplicationRecord
 
   LATEST_ENTRIES_PER_FEED = Setting.latest_entries_per_feed || 3
 
+  scope :locale, -> (locale) {
+    if locale == :all
+      all
+    else
+      where(locale: locale)
+    end
+  }
+
   def entries_of_stream(page: 1, per_page: nil, since: nil)
     entries = nil
     if since.present?
@@ -35,9 +43,12 @@ class Topic < ApplicationRecord
     Time.at(Time.now.to_i - mix_duration)
   end
 
-  def self.topics
-    Rails.cache.fetch("topics") {
-      Topic.order("engagement DESC").where('engagement >= 0').to_a
+  def self.topics(locale=nil)
+    key = locale == :all ? "topics" : "topics_#{locale}"
+    Rails.cache.fetch(key) {
+      Topic.locale(locale)
+           .order("engagement DESC")
+           .where('engagement >= 0').to_a
     }
   end
 
