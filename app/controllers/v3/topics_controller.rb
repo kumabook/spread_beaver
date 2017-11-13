@@ -3,13 +3,15 @@ class V3::TopicsController < V3::ApiController
   before_action :set_topic,  except: [:index]
 
   def index
-    @topics = Topic.topics
+    locale  = params[:locale]
+    @topics = Topic.topics(locale)
     render json: @topics.to_json, status: 200
   end
 
   def update
-    if @topic.update(label: params[:label],
-                     description: params[:description])
+    if @topic.update(label:       params[:label],
+                     description: params[:description],
+                     locale:      params[:locale])
       render json: @topic.to_json, status: 200
     else
       render json: {}, status: :unprocessable_entity

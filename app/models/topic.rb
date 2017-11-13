@@ -18,11 +18,7 @@ class Topic < ApplicationRecord
   LATEST_ENTRIES_PER_FEED = Setting.latest_entries_per_feed || 3
 
   scope :locale, -> (locale) {
-    if locale == :all
-      all
-    else
-      where(locale: locale)
-    end
+    where(locale: locale) if locale.present?
   }
 
   def entries_of_stream(page: 1, per_page: nil, since: nil)
@@ -44,7 +40,7 @@ class Topic < ApplicationRecord
   end
 
   def self.topics(locale=nil)
-    key = locale == :all ? "topics" : "topics_#{locale}"
+    key = locale.nil? ? "all_topics" : "topics_#{locale}"
     Rails.cache.fetch(key) {
       Topic.locale(locale)
            .order("engagement DESC")
