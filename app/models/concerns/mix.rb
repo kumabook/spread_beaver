@@ -2,20 +2,25 @@ require('paginated_array')
 
 module Mix
   class Query
-    attr_reader(:period, :entries_per_feed, :type)
+    attr_reader(:period, :entries_per_feed, :type, :locale)
     def initialize(period          = -Float::INFINITY..Float::INFINITY,
                    type            = :hot,
+                   locale          = nil,
                    entries_per_feed: 3)
       @period           = period
       @type             = type
+      @locale           = locale
       @entries_per_feed = entries_per_feed
     end
     def cache_key
-      period_prefix = ""
+      prefix = ""
       if @period.present?
-        period_prefix = "#{time2key(period.begin)}-#{time2key(period.end)}-"
+        prefix = "#{time2key(period.begin)}-#{time2key(period.end)}-"
       end
-      "#{period_prefix}#{type}-entries_per_feed(#{entries_per_feed})"
+      if @locale.present?
+        prefix += "-#{locale}"
+      end
+      "#{prefix}#{type}-entries_per_feed(#{entries_per_feed})"
     end
 
     private
@@ -37,16 +42,18 @@ module Mix
     id
   end
 
-  def entries_of_mix(page: 1, per_page: nil, period: nil, query: nil)
+  def entries_of_mix(page: 1, per_page: nil,query: nil)
     case query.type
     when :hot
       Entry.hot_items(stream:   self,
                       period:   query.period,
+                      locale:   query.locale,
                       page:     page,
                       per_page: per_page)
     when :popular
       Entry.popular_items(stream:   self,
                           period:   query.period,
+                          locale:   query.locale,
                           page:     page,
                           per_page: per_page)
     when :featured
@@ -54,21 +61,24 @@ module Mix
     end
   end
 
-  def enclosures_of_mix(clazz, page: 1, per_page: nil, period: nil, query: nil)
+  def enclosures_of_mix(clazz, page: 1, per_page: nil, query: nil)
     case query.type
     when :hot
       clazz.hot_items(stream:   self,
                       period:   query.period,
+                      locale:   query.locale,
                       page:     page,
                       per_page: per_page)
     when :popular
       clazz.popular_items(stream:   self,
                           period:   query.period,
+                          locale:   query.locale,
                           page:     page,
                           per_page: per_page)
     when :featured
       clazz.most_featured_items(stream:   self,
                                 period:   query.period,
+                                locale:   query.locale,
                                 page:     page,
                                 per_page: per_page)
     end

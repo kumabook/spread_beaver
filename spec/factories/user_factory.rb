@@ -4,6 +4,7 @@ FactoryGirl.define do
     password              'test_password'
     password_confirmation 'test_password'
     type                  'Member'
+    locale                'ja'
     after(:create) do |u|
       create(:preference, user: u, key: 'key1')
       create(:preference, user: u, key: 'key2')
@@ -15,6 +16,10 @@ FactoryGirl.define do
     password              'test_password'
     password_confirmation 'test_password'
     type                  'Member'
+    locale                'ja'
+    trait :en do
+      locale 'en'
+    end
   end
 
   factory :admin, class: User do
@@ -22,6 +27,7 @@ FactoryGirl.define do
     password              'test_password'
     password_confirmation 'test_password'
     type                  'Admin'
+    locale                'ja'
   end
 
   factory :preference, class: Preference do

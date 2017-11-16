@@ -308,9 +308,14 @@ class Entry < ApplicationRecord
     Mix::mix_up_and_paginate(entries, entries_per_feed, page, per_page)
   end
 
-  def self.best_items(clazz: nil, stream: nil, period: nil, page: 1, per_page: PER_PAGE)
+  def self.best_items(clazz: nil,
+                      stream: nil,
+                      locale: nil,
+                      period: nil,
+                      page: 1,
+                      per_page: PER_PAGE)
     raise ArgumentError, "Parameter must be not nil" if period.nil? || clazz.nil?
-    query         = clazz.period(period)
+    query         = clazz.period(period).locale(locale)
     query         = query.stream(stream) if stream.present?
     count_hash    = query.user_count
     total_count   = count_hash.keys.count

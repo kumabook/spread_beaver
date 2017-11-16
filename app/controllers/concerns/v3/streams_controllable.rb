@@ -154,6 +154,10 @@ module V3::StreamsControllable
     end
   end
 
+  def set_locale
+    @locale = params[:locale]
+  end
+
   private
 
   def entries_per_feed

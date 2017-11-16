@@ -24,10 +24,11 @@ module Likable
       marks_hash_of_user(like_class, user, items)
     end
 
-    def popular_items(stream: nil, period: nil, page: 1, per_page: PER_PAGE)
+    def popular_items(stream: nil, period: nil, locale: nil, page: 1, per_page: PER_PAGE)
       best_items(clazz:    self.like_class,
                  stream:   stream,
                  period:   period,
+                 locale:   locale,
                  page:     page,
                  per_page: per_page)
     end

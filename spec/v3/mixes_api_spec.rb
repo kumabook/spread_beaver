@@ -27,6 +27,10 @@ RSpec.describe "Mixes api", type: :request, autodoc: true do
                           entry: @feed.entries[n],
                           created_at: 100.days.ago
       }
+      @en_user = FactoryGirl.create(:member, :en)
+      ReadEntry.create! user: @en_user,
+                        entry: @feed.entries[0],
+                        created_at: 100.days.ago
     end
 
     context "hot mix" do
@@ -81,6 +85,20 @@ RSpec.describe "Mixes api", type: :request, autodoc: true do
             headers: headers_for_login_user_api
         result = JSON.parse @response.body
         expect(result['items'].count).to eq(0)
+        expect(result['continuation']).to be_nil
+      end
+
+      it "only counts mark with specified locale user  " do
+        get "/v3/mixes/#{@topic.escape.id}/contents",
+            params: {
+              type:      :hot,
+              locale:    'en',
+              newerThan: 200.days.ago.to_time.to_i * 1000,
+              olderThan: Time.now.to_i * 1000,
+            },
+            headers: headers_for_login_user_api
+        result = JSON.parse @response.body
+        expect(result['items'].count).to eq(1)
         expect(result['continuation']).to be_nil
       end
     end

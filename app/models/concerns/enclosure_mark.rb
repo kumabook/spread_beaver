@@ -10,6 +10,9 @@ module EnclosureMark
     scope :feed, -> (feed) {
       joins(enclosure: :entries).where(entries: { feed_id: feed.id })
     }
+    scope :locale, -> (locale) {
+      joins(:user).where({ users: { locale: locale} }) if locale.present?
+    }
     scope :keyword, -> (keyword) {
       joins(enclosure: { entries: :keywords })
         .where(keywords: { id: keyword.id })
