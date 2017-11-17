@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  resource_id_regex  = /[a-zA-Z0-9\.%#\$&\?\(\)\=\+\-\_\:\?\\]+/
+  resource_id_regex  = /[a-zA-Z0-9\.%#\$&\?\(\)\=\+\-\_\:\\]+/
   uuid_regex         = /[a-zA-Z0-9\-]+/
   res_options        = { id: resource_id_regex }
   uuid_options       = { id: uuid_regex }
@@ -190,7 +190,7 @@ Rails.application.routes.draw do
     end
 
     resources :tags, only: [:index], constraints: res_options do
-      id_list_regex = /[a-zA-Z0-9\.\,%#\$&\?\(\)\=\+\-\_\:\?\\]+/
+      id_list_regex = /[a-zA-Z0-9\.\,%#\$&\?\(\)\=\+\-\_\:\\]+/
       c             = { tag_ids: id_list_regex, entry_ids: id_list_regex }
       post '', action: :update, on: :member
       collection do
