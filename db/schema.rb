@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171102100211) do
+ActiveRecord::Schema.define(version: 20171117113022) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -45,7 +45,11 @@ ActiveRecord::Schema.define(version: 20171102100211) do
     t.string   "type",          default: "Track", null: false
     t.integer  "saved_count",   default: 0,       null: false
     t.integer  "play_count",    default: 0,       null: false
+    t.integer  "provider",      default: 0
+    t.string   "title",         default: ""
     t.index ["id"], name: "index_enclosures_on_id", unique: true, using: :btree
+    t.index ["provider"], name: "index_enclosures_on_provider", using: :btree
+    t.index ["title"], name: "index_enclosures_on_title", using: :btree
     t.index ["type"], name: "index_enclosures_on_type", using: :btree
   end
 

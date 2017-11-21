@@ -5,6 +5,8 @@ class Enclosure < ApplicationRecord
   include Savable
   include Playable
 
+  enum provider: [:Raw, :Custom, :YouTube, :SoundCloud, :Spotify, :AppleMusic]
+
   has_many :entry_enclosures, dependent: :destroy
   has_many :entries, ->{order("entries.published DESC") }, through: :entry_enclosures
 
