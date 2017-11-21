@@ -159,6 +159,32 @@ RSpec.describe "Track Mix api", type: :request, autodoc: true do
       end
       it { expect(@response.status).to eq(200) }
     end
+
+    context "provider" do
+      it "should return only specified provider tracks" do
+        get "/v3/mixes/#{@topic.escape.id}/tracks/contents",
+            params: {
+              type:      :hot,
+              provider:  "Spotify",
+              newerThan: 200.days.ago.to_time.to_i * 1000,
+              olderThan: Time.now.to_i * 1000,
+            },
+            headers: headers_for_login_user_api
+        result = JSON.parse @response.body
+        expect(result['items'].count).to eq(ITEM_NUM)
+
+        get "/v3/mixes/#{@topic.escape.id}/tracks/contents",
+            params: {
+              type:      :hot,
+              provider:  "YouTube",
+              newerThan: 200.days.ago.to_time.to_i * 1000,
+              olderThan: Time.now.to_i * 1000,
+            },
+            headers: headers_for_login_user_api
+        result = JSON.parse @response.body
+        expect(result['items'].count).to eq(0)
+      end
+    end
   end
 
   def popular_params

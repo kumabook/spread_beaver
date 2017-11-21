@@ -18,6 +18,8 @@ FactoryGirl.define do
   end
 
   factory :track, class: Track do
+    sequence(:title) { |n| "track #{n}" }
+    provider "Spotify"
     sequence(:created_at) { |n|
       if n % TRACK_PER_ENTRY == 0
         1.days.ago
@@ -28,6 +30,8 @@ FactoryGirl.define do
   end
 
   factory :album, class: Album do
+    sequence(:title) { |n| "album #{n}" }
+    provider "Spotify"
     sequence(:created_at) { |n|
       if n % ALBUM_PER_ENTRY == 0
         1.days.ago
@@ -38,6 +42,8 @@ FactoryGirl.define do
   end
 
   factory :playlist, class: Playlist do
+    sequence(:title) { |n| "playlist #{n}" }
+    provider "Spotify"
     sequence(:created_at) { |n|
       if n % PLAYLIST_PER_ENTRY == 0
         1.days.ago
@@ -89,7 +95,7 @@ FactoryGirl.define do
 
   factory :feed, class: Feed do
     sequence(:id) { |n| "feed/http://test#{n}.com/rss" }
-    sequence(:title) { |n| "Test feed #{n}" }
+     sequence(:title) { |n| "Test feed #{n}" }
     description  "description"
     sequence(:website)      { |n| "http://test#{n}.com" }
     sequence(:visualUrl)    { |n| "http://test#{n}.com/visual" }

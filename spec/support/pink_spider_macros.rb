@@ -21,11 +21,13 @@ module PinkSpiderMacros
 
     allow_any_instance_of(PinkSpider).to receive(:fetch_track) do |this, id|
       track["id"] = id
+      track["provider"] = Track.find(id).provider
       track
     end
     allow_any_instance_of(PinkSpider).to receive(:fetch_tracks) do |this, ids|
       ids.map {|id|
         track["id"] = id
+        track["provider"] = Track.find(id).provider
         track.clone
       }
     end
@@ -39,11 +41,13 @@ module PinkSpiderMacros
 
     allow_any_instance_of(PinkSpider).to receive(:fetch_album) do |this, id|
       album["id"] = id
+      album["provider"] = Album.find(id).provider
       album.clone
     end
     allow_any_instance_of(PinkSpider).to receive(:fetch_albums) do |this, ids|
       ids.map {|id|
         album["id"] = id
+        album["provider"] = Album.find(id).provider
         album.clone
       }
     end
@@ -56,11 +60,13 @@ module PinkSpiderMacros
 
     allow_any_instance_of(PinkSpider).to receive(:fetch_playlist) do |this, id|
       playlist["id"] = id
+      playlist["provider"] = Playlist.find(id).provider
       playlist
     end
     allow_any_instance_of(PinkSpider).to receive(:fetch_playlists) do |this, ids|
       ids.map {|id|
         playlist["id"] = id
+        playlist["provider"] = Playlist.find(id).provider
         playlist.clone
       }
     end
