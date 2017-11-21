@@ -11,6 +11,7 @@ module V3::StreamsControllable
     before_action :set_category       , only: [:index]
     before_action :set_need_visual    , only: [:index]
     before_action :set_page           , only: [:index]
+    before_action :set_provider       , only: [:index]
   end
 
   class_methods do
@@ -156,6 +157,10 @@ module V3::StreamsControllable
 
   def set_locale
     @locale = params[:locale]
+  end
+
+  def set_provider
+    @provider = params[:provider]
   end
 
   private

@@ -13,6 +13,9 @@ module EnclosureMark
     scope :locale, -> (locale) {
       joins(:user).where({ users: { locale: locale} }) if locale.present?
     }
+    scope :provider, -> (provider) {
+      joins(:enclosure).where(enclosures: { provider: provider }) if provider.present?
+    }
     scope :keyword, -> (keyword) {
       joins(enclosure: { entries: :keywords })
         .where(keywords: { id: keyword.id })

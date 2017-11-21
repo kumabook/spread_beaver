@@ -42,35 +42,51 @@ class V3::Streams::EnclosuresController < V3::ApiController
       case @resource
       when :latest
         since   = @newer_than.present? ? @newer_than : duration.ago
-        @items = @enclosure_class.latest(since).page(@page).per(@per_page)
+        @items = @enclosure_class.latest(since)
+                                 .page(@page)
+                                 .per(@per_page)
+                                 .provider(@provider)
       when :hot
         from   = @newer_than.present? ? @newer_than : duration_for_ranking.ago
         to     = @older_than.present? ? @older_than : Time.now
-        @items = @enclosure_class.hot_items(period: from..to, page: @page, per_page: @per_page)
+        @items = @enclosure_class.hot_items(period:   from..to,
+                                            page:     @page,
+                                            per_page: @per_page,
+                                            provider: @provider)
       when :popular
         from    = @newer_than.present? ? @newer_than : duration_for_ranking.ago
         to      = @older_than.present? ? @older_than : Time.now
-        @items  = @enclosure_class.popular_items(period: from..to, page: @page, per_page: @per_page)
+        @items  = @enclosure_class.popular_items(period:   from..to,
+                                                 page:     @page,
+                                                 per_page: @per_page,
+                                                 provider: @provider)
       when :featured
         from    = @newer_than.present? ? @newer_than : duration_for_ranking.ago
         to      = @older_than.present? ? @older_than : Time.now
-        @items  = @enclosure_class.most_featured_items(period: from..to, page: @page, per_page: @per_page)
+        @items  = @enclosure_class.most_featured_items(period:   from..to,
+                                                       page:     @page,
+                                                       per_page: @per_page,
+                                                       provider: @provider)
       when :liked
         @items = @enclosure_class.page(@page)
                                  .per(@per_page)
+                                 .provider(@provider)
                                  .liked(@user)
       when :saved
         @items = @enclosure_class.page(@page)
                                  .per(@per_page)
+                                 .provider(@provider)
                                  .saved(@user)
       when :played
         @items = @enclosure_class.page(@page)
                                  .per(@per_page)
+                                 .provider(@provider)
                                  .played(@user)
       end
     elsif @stream.present?
       @items = @enclosure_class.page(@page)
                                .per(@per_page)
+                               .provider(@provider)
                                .stream(@stream)
     end
   end

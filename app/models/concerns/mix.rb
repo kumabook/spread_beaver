@@ -2,24 +2,23 @@ require('paginated_array')
 
 module Mix
   class Query
-    attr_reader(:period, :entries_per_feed, :type, :locale)
+    attr_reader(:period, :entries_per_feed, :type, :locale, :provider)
     def initialize(period          = -Float::INFINITY..Float::INFINITY,
                    type            = :hot,
-                   locale          = nil,
+                   locale:           nil,
+                   provider:         nil,
                    entries_per_feed: 3)
       @period           = period
       @type             = type
       @locale           = locale
+      @provider         = provider
       @entries_per_feed = entries_per_feed
     end
     def cache_key
       prefix = ""
-      if @period.present?
-        prefix = "#{time2key(period.begin)}-#{time2key(period.end)}-"
-      end
-      if @locale.present?
-        prefix += "-#{locale}"
-      end
+      prefix += "#{time2key(period.begin)}-#{time2key(period.end)}-" if @period.present?
+      prefix += "-#{locale}" if @locale.present?
+      prefix += "-#{provider}" if @provider.present?
       "#{prefix}#{type}-entries_per_feed(#{entries_per_feed})"
     end
 
@@ -67,18 +66,21 @@ module Mix
       clazz.hot_items(stream:   self,
                       period:   query.period,
                       locale:   query.locale,
+                      provider: query.provider,
                       page:     page,
                       per_page: per_page)
     when :popular
       clazz.popular_items(stream:   self,
                           period:   query.period,
                           locale:   query.locale,
+                          provider: query.provider,
                           page:     page,
                           per_page: per_page)
     when :featured
       clazz.most_featured_items(stream:   self,
                                 period:   query.period,
                                 locale:   query.locale,
+                                provider: query.provider,
                                 page:     page,
                                 per_page: per_page)
     end

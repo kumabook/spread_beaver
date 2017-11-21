@@ -14,4 +14,7 @@ class EntryEnclosure < ApplicationRecord
   scope :locale, -> (locale) {
     joins(entry: :feed).where(feeds: { language: locale}) if locale.present?
   }
+  scope :provider, -> (provider) {
+    joins(:enclosure).where(enclosures: { provider: provider }) if provider.present?
+  }
 end

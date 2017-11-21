@@ -23,11 +23,17 @@ module Playable
       marks_hash_of_user(play_class, user, items)
     end
 
-    def hot_items(stream: nil, period: nil, locale: nil, page: 1, per_page: nil)
+    def hot_items(stream:   nil,
+                  period:   nil,
+                  locale:   nil,
+                  provider: nil,
+                  page:     1,
+                  per_page: nil)
       best_items(clazz:    self.play_class,
                  stream:   stream,
                  period:   period,
                  locale:   locale,
+                 provider: provider,
                  page:     page,
                  per_page: per_page)
     end

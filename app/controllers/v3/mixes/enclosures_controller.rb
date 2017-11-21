@@ -37,7 +37,10 @@ class V3::Mixes::EnclosuresController < V3::ApiController
   end
 
   def set_items
-    query = Mix::Query.new(@period, @type)
+    query = Mix::Query.new(@period,
+                           @type,
+                           locale:   @locale,
+                           provider: @provider)
     if @stream.present?
       @items = @stream.mix_enclosures(@enclosure_class,
                                       page:     @page,

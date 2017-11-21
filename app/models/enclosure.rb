@@ -11,6 +11,9 @@ class Enclosure < ApplicationRecord
   has_many :enclosure_issues, dependent: :destroy
   has_many :issues          , through: :enclosure_issues
 
+  scope :provider, -> (provider) {
+    where(provider: provider) if provider.present?
+  }
   scope :latest, -> (since) {
     if since.nil?
       order(created_at: :desc)
@@ -141,6 +144,7 @@ class Enclosure < ApplicationRecord
   def self.most_featured_items(stream: nil,
                                period: nil,
                                locale: nil,
+                               provider: nil,
                                page: 1,
                                per_page: nil)
     best_items(clazz:        EntryEnclosure,
@@ -148,6 +152,7 @@ class Enclosure < ApplicationRecord
                stream:       stream,
                period:       period,
                locale:       locale,
+               provider:     provider,
                page:         page,
                per_page:     per_page)
   end
@@ -155,12 +160,16 @@ class Enclosure < ApplicationRecord
   def self.best_items(clazz: nil,
                       count_method: :user_count,
                       stream: nil,
-                      locale: nil,
                       period: nil,
+                      locale: nil,
+                      provider: nil,
                       page: 1,
                       per_page: nil)
     raise ArgumentError, "Parameter must be not nil" if period.nil?
-    query = clazz.where(enclosure_type: self.name).period(period).locale(locale)
+    query = clazz.where(enclosure_type: self.name)
+                 .period(period)
+                 .locale(locale)
+                 .provider(provider)
     query = query.stream(stream) if stream.present?
     count_hash    = query.public_send(count_method)
     total_count   = count_hash.keys.count
