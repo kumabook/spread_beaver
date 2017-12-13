@@ -17,6 +17,7 @@ gem 'turbolinks'
 gem 'jbuilder'
 gem 'puma'
 gem 'aws-sdk'
+gem 'rack-cors', :require => 'rack/cors'
 
 gem 'pg'
 gem 'doorkeeper'

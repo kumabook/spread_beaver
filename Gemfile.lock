@@ -197,6 +197,7 @@ GEM
     public_suffix (2.0.5)
     puma (3.7.1)
     rack (2.0.1)
+    rack-cors (1.0.2)
     rack-test (0.6.3)
       rack (>= 1.0)
     rails (5.0.1)
@@ -378,6 +379,7 @@ DEPENDENCIES
   octicons-rails!
   pg
   puma
+  rack-cors
   rails (= 5.0.1)
   rails-controller-testing
   rails_12factor
