@@ -4,6 +4,9 @@ class V3::TopicsController < V3::ApiController
 
   def index
     locale  = params[:locale]
+    if locale.nil?
+      locale = 'ja'
+    end
     @topics = Topic.topics(locale)
     render json: @topics.to_json, status: 200
   end
