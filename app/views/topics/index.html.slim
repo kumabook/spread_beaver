@@ -13,6 +13,7 @@ table.table.table-striped
       th          label
       th          description
       th          engagement
+      th          locale
       th          mix_duration
       th.col-md-1 links
       th          actions
@@ -24,6 +25,7 @@ table.table.table-striped
         td = topic.label
         td = topic.description
         td = topic.engagement
+        td = topic.locale
         td = topic.mix_duration
         td
           = link_to "Feeds", topic_feeds_path(topic), class: 'btn btn-xs btn-primary'
