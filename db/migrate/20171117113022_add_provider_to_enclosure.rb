@@ -9,12 +9,12 @@ class AddProviderToEnclosure < ActiveRecord::Migration[5.0]
 
     batch_size = 100
     pink_spider = PinkSpider.new
-
     Track.all.find_in_batches(batch_size: batch_size) do |items|
       tracks = pink_spider.fetch_tracks(items.map {|i| i.id })
       items.each do |item|
         t = tracks.find {|track| track["id"] == item.id }
         item.update_columns(title: t["title"], provider: t["provider"])
+        p "update #{t["title"]}"
       end
     end
 
@@ -23,6 +23,7 @@ class AddProviderToEnclosure < ActiveRecord::Migration[5.0]
       items.each do |item|
         a = albums.find {|album| album["id"] == item.id }
         item.update_columns(title: a["title"], provider: a["provider"])
+        p "update #{a["title"]}"
       end
     end
 
@@ -31,6 +32,7 @@ class AddProviderToEnclosure < ActiveRecord::Migration[5.0]
       items.each do |item|
         pl = playlists.find {|playlist| playlist["id"] == item.id }
         item.update_columns(title:  pl["title"], provider: pl["provider"])
+        p "update #{pl["title"]}"
       end
     end
   end
