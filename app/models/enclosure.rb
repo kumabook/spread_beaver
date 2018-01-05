@@ -68,10 +68,12 @@ class Enclosure < ApplicationRecord
 
   def self.create_items_of(entry, items)
     models = items.map do |i|
-      model = find_or_create_by(id: i['id']) do
+      model = find_or_create_by(id: i['id']) do |m|
         logger.info("New enclosure #{i['provider']} #{i['identifier']}")
+        m.created_at = i["published_at"] || entry.published
+        m.title      = i["title"]
+        m.provider   = i["provider"]
       end
-      model.update(created_at: i['published_at'] || entry.published)
       EntryEnclosure.find_or_create_by(entry_id:       entry.id,
                                        enclosure_id:   model.id,
                                        enclosure_type: name) do
