@@ -27,8 +27,8 @@ class AddProviderToEnclosure < ActiveRecord::Migration[5.0]
     Playlist.all.find_in_batches(batch_size: batch_size) do |items|
       playlists = pink_spider.fetch_playlists(items.map {|i| i.id })
       items.each do |item|
-        p = playlists.find {|playlist| playlist["id"] == item.id }
-        item.update_columns(title:  p["title"], provider: p["provider"])
+        pl = playlists.find {|playlist| playlist["id"] == item.id }
+        item.update_columns(title:  pl["title"], provider: pl["provider"])
       end
     end
   end
