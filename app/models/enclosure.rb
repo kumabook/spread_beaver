@@ -153,7 +153,7 @@ class Enclosure < ApplicationRecord
                count_method: :feed_count,
                stream:       stream,
                period:       period,
-               locale:       locale,
+               locale:       nil,
                provider:     provider,
                page:         page,
                per_page:     per_page)
