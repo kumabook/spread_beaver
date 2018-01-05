@@ -6,10 +6,11 @@ class V3::UsersController < V3::ApiController
   end
 
   def create
+    locale = params[:locale] || "ja"
     @user = User.new(email:                 params[:email],
                      password:              params[:password],
                      password_confirmation: params[:password_confirmation],
-                     locale:                params[:locale])
+                     locale:                locale)
     @user.type = User::MEMBER
     if @user.save
       render json: @user.to_json, status: :ok
