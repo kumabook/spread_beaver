@@ -57,7 +57,7 @@ class PinkSpiderHelper
   def self.track_hash
     {
       id:           SecureRandom.uuid,
-      provider:     'spotify',
+      provider:     'Spotify',
       identifier:   '012345',
       owner_id:     'user',
       owner_name:   nil,
@@ -78,7 +78,7 @@ class PinkSpiderHelper
   def self.album_hash
     {
       id:           SecureRandom.uuid,
-      provider:     'spotify',
+      provider:     'Spotify',
       identifier:   '012345',
       owner_id:     'user',
       owner_name:   nil,
@@ -97,7 +97,7 @@ class PinkSpiderHelper
   def self.playlist_hash
     {
       id:           SecureRandom.uuid,
-      provider:     'spotify',
+      provider:     'Spotify',
       identifier:   '012345',
       owner_id:     'user',
       owner_name:   nil,
