@@ -1,0 +1,13 @@
+# git
+
+.git
+
+# Rails
+public/assets/*
+*.dump
+*.~
+
+# Environmentu normalization
+.bundle
+vendor/bundle
+log/*
