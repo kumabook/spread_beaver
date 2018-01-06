@@ -1,0 +1,38 @@
+version: '2'
+volumes:
+  postgres:
+    driver: 'local'
+services:
+  web:
+    build: .
+    env_file:
+      - .env
+    depends_on:
+      - db
+      - redis
+    ports:
+      - "3000:3000"
+    stdin_open: true
+    tty: true
+    volumes:
+      - ./app:/app/app
+      - ./config:/app/config
+      - ./lib:/app/lib
+  pink_spider:
+    image: kumabook/pink-spider
+    env_file:
+      - .env.pink_spider
+    depends_on:
+      - db
+    ports:
+      - "8080:8080"
+  db:
+    image: postgres
+    volumes:
+      - postgres:/var/lib/postgres
+  redis:
+    image: redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - /home/docker/data:/data
