@@ -47,3 +47,7 @@ bower.json
 .DS_Store
 *.dump.*
 *.txt
+
+.env
+.env.pink_spider
+.envrc
