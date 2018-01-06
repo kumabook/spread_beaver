@@ -93,6 +93,28 @@ See [Feedly Cloud API document](https://developer.feedly.com/v3/)
 - Run `rake db:seed`
 - Run `rails s`
 
+### Running on docker
+
+- Install `docker` and `docker-compose` and `docker-machine`
+  - `brew install docker docker-compose docker-machine`
+- Create container and prepare db
+  - `cp .env.dist .env`
+  - `cp .env.pink_spider.dist .env.pink_spider`
+  - `docker-compose up`
+  - `docker-compose run --rm web rails db:create`
+  - `docker-compose run --rm web rails db:migrate`
+  - `docker-compose run --rm pink_spider bundle exec rake db:create`
+  - `docker-compose run --rm pink_spider bundle exec rake db:migrate`
+- Restore database from backup
+  - `heroku pg:backups:capture --app $APP`
+  - `heroku pg:backups:download --app $APP -o spread_beaver.dump`
+  - `cat spread_beaver.dump | docker exec -i `docker-compose ps -q db` pg_restore --verbose  --clean -U postgres -d spread_beaver_development`
+  - `heroku pg:backups:capture --app $PINK_SPIDER_APP`
+  - `heroku pg:backups:download --app $PINK_SPIDER_APP -o pink_spider.dump`
+  - `cat pink_spider.dump | docker exec -i `docker-compose ps -q db` pg_restore --verbose --clean -U postgres -d pink_spider_production`
+- Clear cache
+  - `docker-compose run --rm web bundle exec rails r 'Rails.cache.clear'`
+
 ### Deploying on Heroku
 
 [![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
