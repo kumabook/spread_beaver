@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171215044915) do
+ActiveRecord::Schema.define(version: 20180119083020) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -87,12 +87,13 @@ ActiveRecord::Schema.define(version: 20171215044915) do
   end
 
   create_table "entry_enclosures", force: :cascade do |t|
-    t.string   "entry_id",                         null: false
-    t.uuid     "enclosure_id",                     null: false
-    t.datetime "created_at",                       null: false
-    t.datetime "updated_at",                       null: false
-    t.string   "enclosure_type", default: "Track", null: false
-    t.integer  "engagement",     default: 0,       null: false
+    t.string   "entry_id",                             null: false
+    t.uuid     "enclosure_id",                         null: false
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
+    t.string   "enclosure_type",     default: "Track", null: false
+    t.integer  "engagement",         default: 0,       null: false
+    t.integer  "enclosure_provider", default: 0
     t.index ["enclosure_id"], name: "index_entry_enclosures_on_enclosure_id", using: :btree
     t.index ["enclosure_type"], name: "index_entry_enclosures_on_enclosure_type", using: :btree
     t.index ["entry_id", "enclosure_id"], name: "index_entry_enclosures_on_entry_id_and_enclosure_id", unique: true, using: :btree

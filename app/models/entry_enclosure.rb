@@ -1,5 +1,8 @@
 class EntryEnclosure < ApplicationRecord
   include EntryMark
+
+  enum enclosure_provider: [:Raw, :Custom, :YouTube, :SoundCloud, :Spotify, :AppleMusic]
+
   belongs_to :entry
   belongs_to :enclosure, polymorphic: true, counter_cache: :entries_count, touch: true
 
