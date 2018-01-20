@@ -74,9 +74,10 @@ class Enclosure < ApplicationRecord
         m.title      = i["title"]
         m.provider   = i["provider"]
       end
-      EntryEnclosure.find_or_create_by(entry_id:       entry.id,
-                                       enclosure_id:   model.id,
-                                       enclosure_type: name) do
+      EntryEnclosure.find_or_create_by(entry_id:           entry.id,
+                                       enclosure_id:       model.id,
+                                       enclosure_type:     name,
+                                       enclosure_provider: model.provider) do
         logger.info("Add new #{name} #{i['id']} to entry #{entry.id} #{i["provider"]}")
       end
       model.content = i
