@@ -1,8 +1,10 @@
 class V3::EntriesController < V3::ApiController
-  before_action :set_entry, only: [:show]
-  before_action :set_entries, only: [:list]
+  before_action :set_entry                , only: [:show]
+  before_action :set_entries              , only: [:list]
+  before_action :set_cache_control_headers, only: [:show, :list]
 
   def show
+    set_surrogate_key_header @entry.record_key
     if @entry.present?
       render json: @entry.as_detail_json, status: 200
     else
@@ -11,6 +13,7 @@ class V3::EntriesController < V3::ApiController
   end
 
   def list
+    set_surrogate_key_header Entry.table_key, @entries.map(&:record_key)
     if @entries.present?
       render json: @entries.map {|e|
         e.as_detail_json
