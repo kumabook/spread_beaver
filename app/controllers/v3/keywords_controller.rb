@@ -1,10 +1,12 @@
 class V3::KeywordsController < V3::ApiController
   before_action :doorkeeper_authorize!
   before_action :set_keyword,  except: [:index]
+  before_action :set_cache_control_headers, only: [:index]
 
   def index
-    @keyword = Keyword.order('label ASC').all
-    render json: @keyword.to_json, status: 200
+    @keywords = Keyword.order('label ASC').all
+    set_surrogate_key_header Keyword.table_key, @keywords.map(&:record_key)
+    render json: @keywords.to_json, status: 200
   end
 
   def update
