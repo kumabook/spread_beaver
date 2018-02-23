@@ -4,8 +4,13 @@ class Topic < ApplicationRecord
   include Escapable
   include Stream
   include Mix
+
   after_save    :delete_cache
   after_destroy :delete_cache
+
+  after_create :purge_all
+  after_destroy :purge_all
+  after_save :purge
 
   has_many :feed_topics, dependent: :destroy
   has_many :feeds      , through: :feed_topics
