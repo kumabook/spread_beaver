@@ -31,6 +31,7 @@ gem 'encrypted_strings'
 
 gem 'redis-rails'
 gem 'rest-client'
+gem 'fastly-rails'
 group :production do
   gem 'newrelic_rpm'
 end
