@@ -1,9 +1,11 @@
 class V3::EnclosuresController < V3::ApiController
-  before_action :set_enclosure_class, only: [:show, :list]
-  before_action :set_enclosure      , only: [:show]
-  before_action :set_enclosures     , only: [:list]
+  before_action :set_enclosure_class      , only: [:show, :list]
+  before_action :set_enclosure            , only: [:show]
+  before_action :set_enclosures           , only: [:list]
+  before_action :set_cache_control_headers, only: [:show, :list]
 
   def show
+    set_surrogate_key_header @enclosure.record_key
     if @enclosure.present?
       render json: @enclosure.as_detail_json, status: 200
     else
@@ -12,6 +14,7 @@ class V3::EnclosuresController < V3::ApiController
   end
 
   def list
+    set_surrogate_key_header @enclosure_class.table_key, @enclosures.map(&:record_key)
     if @enclosures.present?
       render json: @enclosures.map {|t|
         t.as_detail_json
@@ -41,4 +44,5 @@ class V3::EnclosuresController < V3::ApiController
     def set_enclosure_class
       @enclosure_class = params[:type].constantize
     end
+
 end
