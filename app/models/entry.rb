@@ -29,6 +29,11 @@ class Entry < ApplicationRecord
   self.primary_key = :id
 
   before_save :normalize_visual
+  after_create :purge_all
+  after_save :purge
+  after_destroy :purge, :purge_all
+  after_touch :purge
+
   scope :with_content,  -> {
     preload(:tracks, :albums, :playlists)
   }
