@@ -37,7 +37,6 @@ group :production do
 end
 
 group :development, :test do
-  gem 'dotenv-rails'
   gem 'byebug'
   gem 'rspec-rails', '~> 3.5'
   gem "autodoc", group: :test
