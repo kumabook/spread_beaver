@@ -5,6 +5,11 @@ class Enclosure < ApplicationRecord
   include Savable
   include Playable
 
+  after_create :purge_all
+  after_save :purge
+  after_destroy :purge, :purge_all
+  after_touch :purge
+
   enum provider: [:Raw, :Custom, :YouTube, :SoundCloud, :Spotify, :AppleMusic]
 
   has_many :entry_enclosures, dependent: :destroy
