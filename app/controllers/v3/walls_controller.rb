@@ -1,7 +1,9 @@
 class V3::WallsController < V3::ApiController
   before_action :set_wall
+  before_action :set_cache_control_headers, only: [:show]
 
   def show
+    set_surrogate_key_header @wall.record_key
     render json: @wall.to_json, status: 200
   end
 
