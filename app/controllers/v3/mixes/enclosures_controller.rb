@@ -8,6 +8,7 @@ class V3::Mixes::EnclosuresController < V3::ApiController
   before_action :set_stream
   before_action :set_period
   before_action :set_items
+  before_action :set_cache_control_headers, only: [:index]
 
   DURATION             = Setting.duration_for_common_stream.days
   DURATION_FOR_RANKING = Setting.duration_for_ranking.days
@@ -33,6 +34,7 @@ class V3::Mixes::EnclosuresController < V3::ApiController
       h[:updated] = @stream.updated_at.to_time.to_i * 1000
     end
     h[:title] = @title
+    set_surrogate_key_header @enclosure_class.table_key, @items.map(&:record_key)
     render json: h, status: 200
   end
 

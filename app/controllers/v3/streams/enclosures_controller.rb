@@ -6,6 +6,7 @@ class V3::Streams::EnclosuresController < V3::ApiController
   before_action :set_enclosure_class
   before_action :set_stream
   before_action :set_items
+  before_action :set_cache_control_headers, only: [:index]
 
   def index
     if @items.nil? || @enclosure_class.nil?
@@ -31,6 +32,7 @@ class V3::Streams::EnclosuresController < V3::ApiController
       h[:updated] = @stream.updated_at.to_time.to_i * 1000
     end
     h[:title] = @title
+    set_surrogate_key_header Entry.table_key, @items.map(&:record_key)
     render json: h, status: 200
   end
 
