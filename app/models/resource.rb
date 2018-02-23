@@ -1,5 +1,5 @@
 class Resource < ApplicationRecord
-  belongs_to :wall, class_name: Wall
+  belongs_to :wall, class_name: Wall, touch: true
   attr_accessor :item
 
   enum resource_type: {
