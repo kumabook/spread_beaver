@@ -10,6 +10,10 @@ class Keyword < ApplicationRecord
   after_initialize :set_id, if: :new_record?
   before_save      :set_id
 
+  after_create :purge_all
+  after_destroy :purge_all
+  after_save :purge
+
   private
   def set_id
     self.id = "keyword/#{label}"
