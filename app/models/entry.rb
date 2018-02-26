@@ -83,7 +83,6 @@ class Entry < ApplicationRecord
     end
   }
 
-  JSON_ATTRS = ['content', 'categories', 'summary', 'alternate', 'origin', 'visual']
   WAITING_SEC_FOR_VISUAL = 0.5
   PER_PAGE = Kaminari::config::default_per_page
 
@@ -359,7 +358,7 @@ class Entry < ApplicationRecord
     h['categories'] = []
     h['keywords']   = nil
     h.delete('saved_count')
-    JSON_ATTRS.each do |key|
+    ['alternate', 'origin', 'visual'].each do |key|
       h[key] = JSON.load(h[key])
     end
     h
@@ -374,6 +373,9 @@ class Entry < ApplicationRecord
            .map { |item| item.as_enclosure }
     end
 
+    hash['content']   = JSON.load self.content
+    hash['summary']   = JSON.load self.summary
+
     hash['tracks']    = tracks.map    { |v| v.as_content_json }
     hash['playlists'] = playlists.map { |v| v.as_content_json }
     hash['albums']    = albums.map    { |v| v.as_content_json }
@@ -381,23 +383,18 @@ class Entry < ApplicationRecord
     if !is_liked.nil?
       hash['is_liked'] = is_liked
     end
-
     if !is_saved.nil?
       hash['is_saved'] = is_saved
     end
-
     if !is_read.nil?
       hash['unread'] = !is_read
     end
-
     if !likes_count.nil?
       hash['likes_count'] = likes_count
     end
-
     if !saved_count.nil?
       hash['saved_count'] = saved_count
     end
-
     if !read_count.nil?
       hash['read_count'] = read_count
     end

@@ -26,7 +26,7 @@ class V3::Streams::EnclosuresController < V3::ApiController
       direction: "ltr",
       continuation: continuation,
       alternate: [],
-      items: @items.map { |t| t.as_content_json }
+      items: @items.map { |t| t.as_detail_json }
     }
     if @stream.present?
       h[:updated] = @stream.updated_at.to_time.to_i * 1000

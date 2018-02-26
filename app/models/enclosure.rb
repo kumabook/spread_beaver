@@ -186,8 +186,9 @@ class Enclosure < ApplicationRecord
     sorted_hashes = PaginatedArray::sort_and_paginate_count_hash(count_hash,
                                                                  page: page,
                                                                  per_page: per_page)
-    items = self.eager_load(:entries)
-              .find(sorted_hashes.map {|h| h[:id] })
+    items = self.eager_load(:entry_enclosures)
+                .eager_load(:entries)
+                .find(sorted_hashes.map {|h| h[:id] })
     sorted_items = sorted_hashes.map {|h|
       items.select { |t| t.id == h[:id] }.first
     }
