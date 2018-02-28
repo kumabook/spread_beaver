@@ -13,7 +13,6 @@ class V3::EntriesController < V3::ApiController
   end
 
   def list
-    set_surrogate_key_header Entry.table_key, @entries.map(&:record_key)
     if @entries.present?
       render json: @entries.map {|e|
         e.as_detail_json

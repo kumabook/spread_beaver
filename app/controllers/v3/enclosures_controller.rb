@@ -14,7 +14,6 @@ class V3::EnclosuresController < V3::ApiController
   end
 
   def list
-    set_surrogate_key_header @enclosure_class.table_key, @enclosures.map(&:record_key)
     if @enclosures.present?
       render json: @enclosures.map {|t|
         t.as_detail_json

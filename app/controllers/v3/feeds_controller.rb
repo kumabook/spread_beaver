@@ -30,7 +30,6 @@ class V3::FeedsController < V3::ApiController
 
   def list
     if @feeds.present?
-      set_surrogate_key_header Feed.table_key, @feeds.map(&:record_key)
       render json: @feeds.to_json, status: 200
     else
       render_not_found
