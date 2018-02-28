@@ -1,6 +1,6 @@
 # coding: utf-8
 
-FactoryGirl.define do
+FactoryBot.define do
   factory :entry_track, class: EntryEnclosure do
     entry_id       nil
     enclosure_id   nil

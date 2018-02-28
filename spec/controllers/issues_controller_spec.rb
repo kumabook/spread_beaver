@@ -4,7 +4,7 @@ describe IssuesController, type: :controller do
   let! (:topic) {   Topic.create!(label: "highlight", description: "desc")}
   let! (:journal) { Journal.create!(label: "highlight", description: "desc")}
   let! (:issue  ) { Issue.create!(label: "20170407", description: "desc", journal_id: journal.id)}
-  let  (:user   ) { FactoryGirl.create (:admin                               )}
+  let  (:user   ) { FactoryBot.create (:admin                               )}
 
   before(:each) do
     login_user user
@@ -64,11 +64,11 @@ describe IssuesController, type: :controller do
   describe "POST collect_entries" do
     before {
       feed  = Feed.create(id: "feed/http://test.com", title: "")
-      entry = FactoryGirl.create(:normal_entry, feed: feed)
+      entry = FactoryBot.create(:normal_entry, feed: feed)
       entry.feed.topics = [topic]
       entry.update!(published: Time.zone.strptime("20170407", "%Y%m%d"))
 
-      entry2 = FactoryGirl.create(:normal_entry, feed: feed)
+      entry2 = FactoryBot.create(:normal_entry, feed: feed)
       entry2.feed.topics = [topic]
       entry2.update!(published: Time.zone.strptime("20170409", "%Y%m%d"))
 

@@ -2,7 +2,7 @@
 require 'rails_helper'
 
 describe Track do
-  let (:entries) { FactoryGirl.create(:feed).entries }
+  let (:entries) { FactoryBot.create(:feed).entries }
   let (:track  ) { entries[0].tracks[0] }
   before do
   end
@@ -20,8 +20,8 @@ describe Track do
   end
 
   describe "::topic" do
-    let (:japanese_feed) { FactoryGirl.create(:feed) }
-    let (:english_feed) { FactoryGirl.create(:feed) }
+    let (:japanese_feed) { FactoryBot.create(:feed) }
+    let (:english_feed) { FactoryBot.create(:feed) }
     let! (:japanese_topic) {
       Topic.create!(label: "japanese", description: "desc", feeds: [japanese_feed])
     }

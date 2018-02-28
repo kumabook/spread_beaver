@@ -6,10 +6,10 @@ RSpec.describe "Markers api", type: :request, autodoc: true do
   MARKED_NUM    = 2
   let (:feed   ) { Feed.create!(id: "feed/http://test.com/rss" , title: "feed") }
   let (:entries) {
-    ENTRY_NUM.times.map { FactoryGirl.create(:normal_entry, feed: feed) }
+    ENTRY_NUM.times.map { FactoryBot.create(:normal_entry, feed: feed) }
   }
   let (:tracks) {
-    TRACK_PER_ENTRY.times.map { FactoryGirl.create(:track) }
+    TRACK_PER_ENTRY.times.map { FactoryBot.create(:track) }
   }
   context 'after login' do
     before do

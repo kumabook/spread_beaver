@@ -5,7 +5,7 @@ RSpec.describe "Playlist Stream api", type: :request, autodoc: true do
     before(:all) do
       setup()
       login()
-      @feed    = FactoryGirl.create(:feed)
+      @feed    = FactoryBot.create(:feed)
       (0...ITEM_NUM).to_a.each { |n|
         d = (n * 150).days.ago
         SavedEnclosure.create! user:           @user,

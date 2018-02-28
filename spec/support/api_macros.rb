@@ -8,11 +8,11 @@ module ApiMacros
                                            redirect_uri: 'urn:ietf:wg:oauth:2.0:oob')
     @email    = 'test@test.com'
     @password = 'test_password'
-    @user = FactoryGirl.create(:default)
+    @user = FactoryBot.create(:default)
   end
 
   def create_admin
-    @admin = FactoryGirl.create(:admin)
+    @admin = FactoryBot.create(:admin)
     @admin_email    = @admin.email
     @admin_password = 'test_password'
   end

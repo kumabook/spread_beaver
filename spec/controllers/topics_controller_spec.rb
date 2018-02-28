@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe TopicsController, type: :controller do
   let! (:topic) {     Topic.create!(label: "topic", description: "desc")}
-  let  (:user ) { FactoryGirl.create (:admin                           )}
+  let  (:user ) { FactoryBot.create (:admin                           )}
 
   before(:each) do
     login_user user

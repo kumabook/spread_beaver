@@ -2,9 +2,9 @@
 require 'rails_helper'
 
 describe Subscription do
-  let! (:user)  { FactoryGirl.create(:default) }
-  let! (:feed1) { FactoryGirl.create(:feed) }
-  let! (:feed2) { FactoryGirl.create(:feed) }
+  let! (:user)  { FactoryBot.create(:default) }
+  let! (:feed1) { FactoryBot.create(:feed) }
+  let! (:feed2) { FactoryBot.create(:feed) }
   let! (:subscription1) { Subscription.create! user: user,
                                                feed: feed1 }
   let! (:subscription2) { Subscription.create! user: user,

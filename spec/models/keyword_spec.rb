@@ -3,7 +3,7 @@ require 'rails_helper'
 
 describe Keyword do
   let! (:keyword) { Keyword.create!(label: "keyword", description: "desc")}
-  let  (:entries) { FactoryGirl.create(:feed).entries }
+  let  (:entries) { FactoryBot.create(:feed).entries }
 
   before do
     keyword.entries = entries

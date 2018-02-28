@@ -4,8 +4,8 @@ RSpec.describe "Feeds api", :type => :request, autodoc: true do
   before(:all) do
     setup()
     login()
-    @feeds = (0...ITEM_NUM).to_a.map { FactoryGirl.create(:feed) }
-    @topic = FactoryGirl.create(:topic)
+    @feeds = (0...ITEM_NUM).to_a.map { FactoryBot.create(:feed) }
+    @topic = FactoryBot.create(:topic)
     @feeds.each { |f|
       f.topics = [@topic]
       f.save!

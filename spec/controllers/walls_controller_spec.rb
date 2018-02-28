@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe WallsController, type: :controller do
   let! (:wall) { Wall.create!(label: "news", description: "news tab")}
-  let  (:user) { FactoryGirl.create (:admin                                     )}
+  let  (:user) { FactoryBot.create (:admin                                     )}
 
   before(:each) do
     login_user user

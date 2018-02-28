@@ -2,7 +2,7 @@
 require 'rails_helper'
 
 describe Resource do
-  let (:user) { FactoryGirl.create(:default) }
+  let (:user) { FactoryBot.create(:default) }
   let (:wall) { Wall.create!(label: "ios/news", description: "news") }
 
   describe "#item_type" do

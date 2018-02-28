@@ -19,10 +19,10 @@ describe 'rake task recrawl' do
       FeedlrHelper::entry(id)
     end
     @rake[task].reenable
-    FactoryGirl.create(:feed)
-    FactoryGirl.create(:feed)
-    FactoryGirl.create(:keyword)
-    FactoryGirl.create(:topic)
+    FactoryBot.create(:feed)
+    FactoryBot.create(:feed)
+    FactoryBot.create(:keyword)
+    FactoryBot.create(:topic)
   end
 
   describe 'recrawl' do

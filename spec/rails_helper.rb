@@ -42,7 +42,7 @@ RSpec.configure do |config|
     DatabaseCleaner[:redis].clean
   end
 
-  config.include FactoryGirl::Syntax::Methods
+  config.include FactoryBot::Syntax::Methods
 end
 
 PER_PAGE           = Kaminari::config::default_per_page

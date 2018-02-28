@@ -5,9 +5,9 @@ RSpec.describe "Track Mix api", type: :request, autodoc: true do
     before(:all) do
       setup()
       login()
-      @feed          = FactoryGirl.create(:feed)
-      @no_topic_feed = FactoryGirl.create(:feed)
-      @topic         = FactoryGirl.create(:topic)
+      @feed          = FactoryBot.create(:feed)
+      @no_topic_feed = FactoryBot.create(:feed)
+      @topic         = FactoryBot.create(:topic)
       @feed.topics   = [@topic]
       @keyword       = Keyword.create!(label: "fujirock")
       @tag           = Tag.create!(label: "fujirock", user: @user)

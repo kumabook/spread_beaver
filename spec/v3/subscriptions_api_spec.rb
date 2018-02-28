@@ -5,8 +5,8 @@ RSpec.describe "Subscriptions api", type: :request, autodoc: true do
     before(:all) do
       setup()
       login()
-      @feed = FactoryGirl.create(:feed)
-      @subscribed   = FactoryGirl.create(:feed)
+      @feed = FactoryBot.create(:feed)
+      @subscribed   = FactoryBot.create(:feed)
       Subscription.create! user: @user,
                            feed: @subscribed
     end

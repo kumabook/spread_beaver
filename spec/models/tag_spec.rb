@@ -2,9 +2,9 @@
 require 'rails_helper'
 
 describe Tag do
-  let (:user   ) { FactoryGirl.create (:admin)}
+  let (:user   ) { FactoryBot.create (:admin)}
   let (:tag    ) { Tag.create!(label: "tag", description: "desc", user: user)}
-  let (:entries) { FactoryGirl.create(:feed).entries }
+  let (:entries) { FactoryBot.create(:feed).entries }
 
   before do
     tag.entries = entries

@@ -4,7 +4,7 @@ RSpec.describe "Entries api", :type => :request, autodoc: true do
   before(:all) do
     setup()
     login()
-    @entries = FactoryGirl.create(:feed).entries
+    @entries = FactoryBot.create(:feed).entries
   end
 
   it "shows a entry by id" do

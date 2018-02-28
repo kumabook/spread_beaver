@@ -4,7 +4,7 @@ RSpec.describe "Tracks api", :type => :request, autodoc: true do
   before(:all) do
     setup()
     login()
-    @feeds = (0...ITEM_NUM).to_a.map { FactoryGirl.create(:feed) }
+    @feeds = (0...ITEM_NUM).to_a.map { FactoryBot.create(:feed) }
     @like = LikedEnclosure.create!(enclosure: @feeds[0].entries[0].tracks[0],
                                    user: @user)
     @feeds[0].entries[1].tracks << @feeds[0].entries[0].tracks[0]

@@ -2,7 +2,7 @@
 require 'rails_helper'
 
 describe Topic do
-  let!  (:feed) { FactoryGirl.create(:feed) }
+  let!  (:feed) { FactoryBot.create(:feed) }
   let! (:topic) { Topic.create!(label: "topic", description: "desc", feeds: [feed])}
 
   describe "Topic#delete_cache_entries" do
@@ -44,7 +44,7 @@ describe Topic do
       it {
         expect(Topic).to receive(:delete_cache_of_stream)
         expect(Topic).to receive(:delete_cache_of_mix)
-        topic.feeds << FactoryGirl.create(:feed)
+        topic.feeds << FactoryBot.create(:feed)
       }
     end
 
@@ -68,7 +68,7 @@ describe Topic do
       it {
         expect(Topic).to receive(:delete_cache_of_stream)
         expect(Topic).to receive(:delete_cache_of_mix)
-        topic.feeds[0].entries << FactoryGirl.create(:entry)
+        topic.feeds[0].entries << FactoryBot.create(:entry)
       }
     end
   end

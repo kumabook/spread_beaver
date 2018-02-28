@@ -12,9 +12,9 @@ describe 'rake task crawl' do
 
   before do
     @rake[task].reenable
-    FactoryGirl.create(:feed)
-    FactoryGirl.create(:keyword)
-    FactoryGirl.create(:topic)
+    FactoryBot.create(:feed)
+    FactoryBot.create(:keyword)
+    FactoryBot.create(:topic)
     Entry.first.update!(visual: nil)
   end
 
@@ -51,7 +51,7 @@ describe 'rake task crawl' do
 
   describe 'create_daily_issue' do
     before do
-      FactoryGirl.create(:feed)
+      FactoryBot.create(:feed)
       Journal.create!(label: 'highlight')
       topic       = Topic.create!(label: 'highlight')
       feed        = Feed.first

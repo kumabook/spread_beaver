@@ -14,7 +14,7 @@ describe Entry do
   end
 
   describe "::set_count_of_enclosures" do
-    let (:feed) { FactoryGirl.create(:feed) }
+    let (:feed) { FactoryBot.create(:feed) }
     before do
       Entry::set_count_of_enclosures(feed.entries)
     end
@@ -29,7 +29,7 @@ describe Entry do
   describe "::latest_items" do
     feed_num = 5
     before(:each) do
-      feeds = (0..feed_num-1).map { |i| FactoryGirl.create(:feed) }
+      feeds = (0..feed_num-1).map { |i| FactoryBot.create(:feed) }
       feeds.each do |f|
         f.entries.each do |e|
           e.published = 2.days.ago
@@ -54,10 +54,10 @@ describe Entry do
 
   describe "::popular_items" do
     before(:each) do
-      user     = FactoryGirl.create(:member)
-      feed     = FactoryGirl.create(:feed)
-      old_feed = FactoryGirl.create(:feed)
-      old_user = FactoryGirl.create(:member)
+      user     = FactoryBot.create(:member)
+      feed     = FactoryBot.create(:feed)
+      old_feed = FactoryBot.create(:feed)
+      old_user = FactoryBot.create(:member)
       (0...ITEM_NUM).to_a.each { |i|
         n = i + 1
         LikedEntry.create! user:       user,
@@ -84,8 +84,8 @@ describe Entry do
   end
 
   describe "::topic" do
-    let (:japanese_feed) { FactoryGirl.create(:feed) }
-    let (:english_feed) { FactoryGirl.create(:feed) }
+    let (:japanese_feed) { FactoryBot.create(:feed) }
+    let (:english_feed) { FactoryBot.create(:feed) }
     let! (:japanese_topic) {
       Topic.create!(label: "japanese", description: "desc", feeds: [japanese_feed])
     }

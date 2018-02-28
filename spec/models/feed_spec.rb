@@ -2,12 +2,12 @@
 require 'rails_helper'
 
 describe Feed do
-  let!  (:feed) { FactoryGirl.create(:feed) }
+  let!  (:feed) { FactoryBot.create(:feed) }
   describe "Feed#delete_cache_of_search_results" do
     context "when feeds are created" do
       it {
         expect(Feed).to receive(:delete_cache_of_search_results)
-        FactoryGirl.create(:feed)
+        FactoryBot.create(:feed)
       }
     end
     context "when feeds are updated" do

@@ -2,8 +2,8 @@ require 'rails_helper'
 
 describe EnclosuresController, type: :controller do
   let  (:uuid ) { SecureRandom.uuid }
-  let! (:track) { FactoryGirl.create(:track) }
-  let  (:user ) { FactoryGirl.create(:admin) }
+  let! (:track) { FactoryBot.create(:track) }
+  let  (:user ) { FactoryBot.create(:admin) }
 
   before(:each) do
     login_user user

@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe TagsController, type: :controller do
-  let  (:user) { FactoryGirl.create (:admin                               )}
+  let  (:user) { FactoryBot.create (:admin                               )}
   let! (:tag ) { Tag.create!(label: "tag", description: "desc", user: user)}
 
   before(:each) do

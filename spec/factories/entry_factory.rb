@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :normal_entry, class: Entry do
     sequence(:id) { |n| "entry#{n}" }
     sequence(:title) { |n| "entry #{n}" }

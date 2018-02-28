@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe UserSessionsController, type: :controller do
-  let! (:user) { FactoryGirl.create (:admin) }
+  let! (:user) { FactoryBot.create (:admin) }
 
   describe '#create' do
     context 'with correct email and password' do

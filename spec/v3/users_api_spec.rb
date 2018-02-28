@@ -70,7 +70,7 @@ RSpec.describe "Users api", type: :request, autodoc: true do
       login()
     end
     it "get a user info" do
-      user = FactoryGirl.create (:member)
+      user = FactoryBot.create (:member)
       get "/v3/profile/#{user.id}",
            headers: headers_for_login_user_api
       u = JSON.parse @response.body
@@ -81,7 +81,7 @@ RSpec.describe "Users api", type: :request, autodoc: true do
 
   describe 'PUT /v3/profile/:id' do
     before(:all) do
-      @other = FactoryGirl.create(:member)
+      @other = FactoryBot.create(:member)
     end
     context 'admin' do
       before(:all) do

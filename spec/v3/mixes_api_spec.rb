@@ -5,8 +5,8 @@ RSpec.describe "Mixes api", type: :request, autodoc: true do
     before(:all) do
       setup()
       login()
-      @feed         = FactoryGirl.create(:feed)
-      @topic        = FactoryGirl.create(:topic)
+      @feed         = FactoryBot.create(:feed)
+      @topic        = FactoryBot.create(:topic)
       @feed.topics  = [@topic]
       @keyword      = Keyword.create!(label: "fujirock")
       @tag          = Tag.create!(label: "fujirock", user: @user)
@@ -27,7 +27,7 @@ RSpec.describe "Mixes api", type: :request, autodoc: true do
                           entry: @feed.entries[n],
                           created_at: 100.days.ago
       }
-      @en_user = FactoryGirl.create(:member, :en)
+      @en_user = FactoryBot.create(:member, :en)
       ReadEntry.create! user: @en_user,
                         entry: @feed.entries[0],
                         created_at: 100.days.ago

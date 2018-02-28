@@ -6,10 +6,10 @@ RSpec.describe "Streams api", type: :request, autodoc: true do
     before(:all) do
       setup()
       login()
-      @feed         = FactoryGirl.create(:feed)
-      @subscribed   = FactoryGirl.create(:feed)
-      @keyword      = FactoryGirl.create(:keyword)
-      @topic        = FactoryGirl.create(:topic)
+      @feed         = FactoryBot.create(:feed)
+      @subscribed   = FactoryBot.create(:feed)
+      @keyword      = FactoryBot.create(:keyword)
+      @topic        = FactoryBot.create(:topic)
       @feed.topics  = [@topic]
       @subscription = Subscription.create! user: @user,
                                            feed: @subscribed

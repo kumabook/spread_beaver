@@ -4,7 +4,7 @@ RSpec.describe "Albums  api", :type => :request, autodoc: true do
   before(:all) do
     setup()
     login()
-    @feeds = (0...ITEM_NUM).to_a.map { FactoryGirl.create(:feed) }
+    @feeds = (0...ITEM_NUM).to_a.map { FactoryBot.create(:feed) }
     @like = LikedEnclosure.create!(user:           @user,
                                    enclosure:      @feeds[0].entries[0].albums[0],
                                    enclosure_type: Album.name)

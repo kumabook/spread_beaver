@@ -2,7 +2,7 @@ require 'rails_helper'
 require 'feedlr_helper'
 
 describe FeedsController, type: :controller do
-  let  (:user  ) { FactoryGirl.create(:admin) }
+  let  (:user  ) { FactoryBot.create(:admin) }
   let! (:feed  ) { Feed.create!(id: "feed/http://test.com/rss" , title: "feed") }
   let! (:feed2 ) { Feed.create!(id: "feed/http://test2.com/rss", title: "feed") }
   let! (:topic ) { Topic.create!(label: "topic", description: "desc")}

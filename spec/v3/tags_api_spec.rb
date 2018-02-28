@@ -4,7 +4,7 @@ RSpec.describe "Tags api", :type => :request, autodoc: true do
   before(:all) do
     setup()
     login()
-    @feed = FactoryGirl.create(:feed)
+    @feed = FactoryBot.create(:feed)
     (0...5).each do |i|
       Tag.create! user: @user,
                   label: "tag-#{i}",
