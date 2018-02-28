@@ -1,4 +1,4 @@
-require 'factory_girl'
+require 'factory_bot'
 require 'coveralls'
 require 'simplecov'
 
