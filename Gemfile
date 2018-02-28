@@ -3,7 +3,7 @@ ruby '2.3.3'
 
 gem 'coveralls', require: false
 
-gem 'rails', '5.0.1'
+gem 'rails', '~> 5.1.0'
 gem 'rails_12factor', group: :production
 gem 'rails-controller-testing'
 gem 'sass-rails'
@@ -11,7 +11,7 @@ gem 'uglifier'
 gem 'jquery-rails'
 gem "jquery-fileupload-rails"
 gem 'twitter-bootstrap-rails'
-gem 'octicons-rails', github: "torbjon/octicons-rails"
+gem 'octicons-rails', github: "kumabook/octicons-rails"
 gem 'therubyracer'
 gem 'turbolinks'
 gem 'jbuilder'
@@ -21,7 +21,7 @@ gem 'rack-cors', :require => 'rack/cors'
 
 gem 'pg'
 gem 'doorkeeper'
-gem 'sorcery', '0.10.2'
+gem 'sorcery'
 gem 'slim-rails'
 gem 'feedlr'
 gem 'kaminari'
@@ -38,11 +38,11 @@ end
 
 group :development, :test do
   gem 'byebug'
-  gem 'rspec-rails', '~> 3.5'
+  gem 'rspec-rails'
   gem "autodoc", group: :test
   gem 'database_cleaner'
-  gem 'factory_girl'
-  gem 'factory_girl_rails'
+  gem 'factory_bot'
+  gem "factory_bot_rails"
   gem "bullet"
 end
 
