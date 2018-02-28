@@ -14,6 +14,8 @@ RSpec.describe "Entries api", :type => :request, autodoc: true do
     entry = JSON.parse @response.body
     expect(entry).not_to be_nil()
     expect(entry['id']).to eq(@entries[0].id)
+    expect(entry['tracks'].length).to be > 0
+    expect(entry['tracks'][0]['entries'].length).to be > 0
   end
 
   it "shows entries list by id list" do
@@ -25,6 +27,8 @@ RSpec.describe "Entries api", :type => :request, autodoc: true do
     expect(entries).not_to be_nil()
     entries.each_with_index { |e, i|
       expect(e['id']).to eq(ids[i])
+      expect(e['tracks'].length).to be > 0
+      expect(e['tracks'][0]['entries'].length).to be > 0
     }
   end
 end
