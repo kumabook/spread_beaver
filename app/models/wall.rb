@@ -1,7 +1,5 @@
 class Wall < ApplicationRecord
-  has_many :resources,
-           -> { order("engagement DESC") },
-           class_name: Resource, foreign_key: 'wall_id', dependent: :destroy
+  has_many :resources, -> { order("engagement DESC") }, dependent: :destroy
 
   after_create :purge_all
   after_destroy :purge_all
