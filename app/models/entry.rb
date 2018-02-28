@@ -38,7 +38,9 @@ class Entry < ApplicationRecord
     preload(:tracks, :albums, :playlists)
   }
   scope :with_detail, -> {
-    with_content().eager_load(:keywords)
+    with_content()
+      .eager_load(:keywords)
+      .eager_load(tracks: :entries, albums: :entries, playlists: :entries)
   }
   scope :latest,        ->    (since) {
     if since.nil?
@@ -364,7 +366,7 @@ class Entry < ApplicationRecord
     h
   end
 
-  def as_content_json(only_legacy: false)
+  def as_content_json(only_legacy: false, enclosure_as_json: :as_content_json)
     hash               = as_json
     hash['engagement'] = saved_count
     hash['tags']       = nil
@@ -376,9 +378,9 @@ class Entry < ApplicationRecord
     hash['content']   = JSON.load self.content
     hash['summary']   = JSON.load self.summary
 
-    hash['tracks']    = tracks.map    { |v| v.as_content_json }
-    hash['playlists'] = playlists.map { |v| v.as_content_json }
-    hash['albums']    = albums.map    { |v| v.as_content_json }
+    hash['tracks']    = tracks.map(&enclosure_as_json)
+    hash['playlists'] = playlists.map(&enclosure_as_json)
+    hash['albums']    = albums.map(&enclosure_as_json)
 
     if !is_liked.nil?
       hash['is_liked'] = is_liked
@@ -403,7 +405,7 @@ class Entry < ApplicationRecord
   end
 
   def as_detail_json
-    hash             = as_content_json
+    hash             = as_content_json(enclosure_as_json: :as_detail_json)
     hash['tags']     = []
     hash['keywords'] = keywords.map { |k| k.label }
     hash

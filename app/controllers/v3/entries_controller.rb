@@ -26,7 +26,7 @@ class V3::EntriesController < V3::ApiController
   private
 
   def set_entry
-    @entry = Entry.find(params[:id]) if params[:id].present?
+    @entry = Entry.with_detail.find(params[:id]) if params[:id].present?
     Entry.set_contents_of_enclosures([@entry])
     if current_resource_owner.present?
       Entry.set_marks(current_resource_owner, [@entry])
@@ -34,7 +34,7 @@ class V3::EntriesController < V3::ApiController
   end
 
   def set_entries
-    @entries = Entry.find(params['_json'])
+    @entries = Entry.with_detail.find(params['_json'])
     Entry.set_contents_of_enclosures(@entries)
     if current_resource_owner.present?
       Entry.set_marks(current_resource_owner, @entries)
