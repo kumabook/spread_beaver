@@ -74,11 +74,13 @@ RSpec.describe "Feeds api", :type => :request, autodoc: true do
 
   it "shows feeds list by id list" do
     ids = @feeds.map { |t| t.id }
+    ids.push 'feed/unknown'
     post "/v3/feeds/.mget",
          params: ids.to_json,
          headers: headers_for_login_user_api
     feeds = JSON.parse @response.body
     expect(feeds).not_to be_nil()
+    expect(feeds.count).to eq(@feeds.count)
     feeds.each_with_index {|f, i|
       expect(f['id']).to eq(ids[i])
     }

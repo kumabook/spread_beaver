@@ -28,13 +28,15 @@ RSpec.describe "Tracks api", :type => :request, autodoc: true do
   end
 
   it "shows track list by id list" do
-    ids = @feeds[0].entries[0].tracks.map { |t| t.id }
+    tracks = @feeds[0].entries[0].tracks
+    ids = tracks.map { |t| t.id }
+    ids.push "unknown_track_id"
     post "/v3/tracks/.mget",
          params: ids.to_json,
          headers: headers_for_login_user_api
     tracks = JSON.parse @response.body
     expect(tracks).not_to be_nil()
-    expect(tracks.count).to eq(ids.count)
+    expect(tracks.count).to eq(tracks.count)
     tracks.each_with_index {|t, i|
       expect(ids).to include(t['id'])
     }

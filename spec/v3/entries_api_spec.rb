@@ -20,11 +20,13 @@ RSpec.describe "Entries api", :type => :request, autodoc: true do
 
   it "shows entries list by id list" do
     ids = @entries.map { |e| e.id }
+    ids.push "unknown_id"
     post "/v3/entries/.mget",
          params: ids.to_json,
          headers: headers_for_login_user_api
     entries = JSON.parse @response.body
     expect(entries).not_to be_nil()
+    expect(entries.count).to eq(@entries.count)
     entries.each_with_index { |e, i|
       expect(e['id']).to eq(ids[i])
       expect(e['tracks'].length).to be > 0

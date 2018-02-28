@@ -13,7 +13,7 @@ class V3::EntriesController < V3::ApiController
   end
 
   def list
-    if @entries.present?
+    if !@entries.nil?
       render json: @entries.map {|e|
         e.as_detail_json
       }.to_json, status: 200
@@ -33,7 +33,10 @@ class V3::EntriesController < V3::ApiController
   end
 
   def set_entries
-    @entries = Entry.with_detail.find(params['_json'])
+    @entries = Entry.with_detail.where(id: params['_json'])
+    @entries = params['_json'].flat_map { |id|
+      @entries.select { |v| v.id == id }
+    }
     Entry.set_contents_of_enclosures(@entries)
     if current_resource_owner.present?
       Entry.set_marks(current_resource_owner, @entries)

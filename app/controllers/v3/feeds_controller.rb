@@ -29,7 +29,7 @@ class V3::FeedsController < V3::ApiController
 
 
   def list
-    if @feeds.present?
+    if !@feeds.nil?
       render json: @feeds.to_json, status: 200
     else
       render_not_found
@@ -42,9 +42,9 @@ class V3::FeedsController < V3::ApiController
   end
 
   def set_feeds
-    @feeds = Feed.includes(:topics).find(params['_json'])
-    @feeds = params['_json'].map { |id|
-      @feeds.select { |f| f.id == id }.first
+    @feeds = Feed.includes(:topics).where(id: params['_json'])
+    @feeds = params['_json'].flat_map { |id|
+      @feeds.select { |v| v.id == id }
     }
   end
 

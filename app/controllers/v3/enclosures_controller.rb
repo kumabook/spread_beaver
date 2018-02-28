@@ -14,7 +14,7 @@ class V3::EnclosuresController < V3::ApiController
   end
 
   def list
-    if @enclosures.present?
+    if !@enclosures.nil?
       render json: @enclosures.map {|t|
         t.as_detail_json
       }.to_json, status: 200
@@ -33,7 +33,10 @@ class V3::EnclosuresController < V3::ApiController
     end
 
     def set_enclosures
-      @enclosures = @enclosure_class.detail.find(params['_json'])
+      @enclosures = @enclosure_class.detail.where(id: params['_json'])
+      @enclosures = params['_json'].flat_map { |id|
+        @enclosures.select { |v| v.id == id }
+      }
       @enclosure_class.set_contents(@enclosures)
       if current_resource_owner.present?
         @enclosure_class.set_marks(current_resource_owner, @enclosures)
