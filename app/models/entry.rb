@@ -38,9 +38,7 @@ class Entry < ApplicationRecord
     preload(:tracks, :albums, :playlists)
   }
   scope :with_detail, -> {
-    with_content()
-      .eager_load(:keywords)
-      .eager_load(tracks: :entries, albums: :entries, playlists: :entries)
+    with_content().eager_load(:keywords)
   }
   scope :latest,        ->    (since) {
     if since.nil?
@@ -265,15 +263,18 @@ class Entry < ApplicationRecord
     }
   end
 
+  def self.enclosures_of_entries(entries)
+    entries.flat_map {|e| [e.tracks, e.albums, e.playlists].flatten }
+  end
+
+  def self.set_partial_entries_of_enclosures(entries)
+    enclosures = self.enclosures_of_entries(entries)
+    Enclosure.set_partial_entries(enclosures)
+  end
+
   def self.set_marks_of_enclosures(user, entries)
-    track_items    = entries.flat_map {|e| e.tracks }
-    album_items    = entries.flat_map {|e| e.albums }
-    playlist_items = entries.flat_map {|e| e.playlists }
-    {
-      tracks:    Track.set_marks(   user, track_items),
-      albums:    Album.set_marks(   user, album_items),
-      playlists: Playlist.set_marks(user, playlist_items),
-    }
+    enclosures = enclosures_of_entries(entries)
+    Enclosure.set_marks(user, enclosures)
   end
 
   def url
@@ -405,7 +406,7 @@ class Entry < ApplicationRecord
   end
 
   def as_detail_json
-    hash             = as_content_json(enclosure_as_json: :as_detail_json)
+    hash             = as_content_json
     hash['tags']     = []
     hash['keywords'] = keywords.map { |k| k.label }
     hash

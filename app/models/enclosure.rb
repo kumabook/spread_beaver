@@ -1,9 +1,12 @@
 class Enclosure < ApplicationRecord
   LEGACY_PROVIDERS = ["YouTube", "SoundCloud"]
   attr_accessor :content
+  attr_accessor :partial_entries
   include Likable
   include Savable
   include Playable
+
+  PARTIAL_ENTRIES_LIMIT = 100
 
   after_create :purge_all
   after_save :purge
@@ -131,6 +134,18 @@ class Enclosure < ApplicationRecord
     enclosures
   end
 
+  def self.set_partial_entries(enclosures)
+    items = EntryEnclosure.where(enclosure_id: enclosures.map {|e| e.id })
+                          .order('entries.published DESC')
+                          .joins(:entry)
+                          .limit(PARTIAL_ENTRIES_LIMIT)
+                          .preload(:entry)
+    enclosures.each do |e|
+      e.partial_entries = items.select {|item| item.enclosure_id == e.id }
+                               .map {|item| item.entry }
+    end
+  end
+
   def self.set_marks(user, enclosures)
     liked_hash  = Enclosure.user_liked_hash( user, enclosures)
     saved_hash  = Enclosure.user_saved_hash( user, enclosures)
@@ -213,7 +228,15 @@ class Enclosure < ApplicationRecord
     if !is_played.nil?
       hash['is_played'] = is_played
     end
-    hash.merge! @content if !@content.nil?
+
+    if !@content.nil?
+      hash.merge! @content
+    end
+
+    if !@partial_entries.nil?
+      hash['entries'] = @partial_entries.map { |e| e.as_json }
+    end
+
     hash['id'] = id
     hash
   end
