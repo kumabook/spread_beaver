@@ -6,6 +6,7 @@ class Enclosure < ApplicationRecord
   include Savable
   include Playable
 
+  ENTRIES_LIMIT = 100
   PARTIAL_ENTRIES_LIMIT = 100
 
   after_create :purge_all
@@ -16,7 +17,7 @@ class Enclosure < ApplicationRecord
   enum provider: [:Raw, :Custom, :YouTube, :SoundCloud, :Spotify, :AppleMusic]
 
   has_many :entry_enclosures, dependent: :destroy
-  has_many :entries, ->{order("entries.published DESC") }, through: :entry_enclosures
+  has_many :entries, ->{ order("entries.published DESC").limit(ENTRIES_LIMIT) }, through: :entry_enclosures
 
   has_many :enclosure_issues, dependent: :destroy
   has_many :issues          , through: :enclosure_issues
