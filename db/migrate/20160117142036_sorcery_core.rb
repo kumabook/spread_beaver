@@ -1,4 +1,4 @@
-class SorceryCore < ActiveRecord::Migration
+class SorceryCore < ActiveRecord::Migration[4.2]
   def change
     enable_extension 'uuid-ossp'
     create_table :users, id: :uuid, default: "uuid_generate_v4()", force: true do |t|

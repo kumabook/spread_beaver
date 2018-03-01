@@ -1,4 +1,4 @@
-class CreateSubscriptions < ActiveRecord::Migration
+class CreateSubscriptions < ActiveRecord::Migration[4.2]
   def change
     create_table :subscriptions do |t|
       t.uuid   :user_id, null: false

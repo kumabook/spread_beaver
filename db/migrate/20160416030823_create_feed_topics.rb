@@ -1,4 +1,4 @@
-class CreateFeedTopics < ActiveRecord::Migration
+class CreateFeedTopics < ActiveRecord::Migration[4.2]
   def change
     create_table :feed_topics do |t|
       t.string :feed_id

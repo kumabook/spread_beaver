@@ -1,4 +1,4 @@
-class CreateFeeds < ActiveRecord::Migration
+class CreateFeeds < ActiveRecord::Migration[4.2]
   def change
     create_table :feeds, id: false do |t|
       t.string  :id, :null => false

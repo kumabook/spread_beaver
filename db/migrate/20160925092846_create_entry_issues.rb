@@ -1,4 +1,4 @@
-class CreateEntryIssues < ActiveRecord::Migration
+class CreateEntryIssues < ActiveRecord::Migration[4.2]
   def change
     create_table :entry_issues do |t|
       t.string  :entry_id  , null: false

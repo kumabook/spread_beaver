@@ -1,4 +1,4 @@
-class CreateJournals < ActiveRecord::Migration
+class CreateJournals < ActiveRecord::Migration[4.2]
   def change
     create_table :journals, id: :uuid, force: true do |t|
       t.string :stream_id, null: false

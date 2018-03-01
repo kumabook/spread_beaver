@@ -1,4 +1,4 @@
-class CreateSubscriptionCategories < ActiveRecord::Migration
+class CreateSubscriptionCategories < ActiveRecord::Migration[4.2]
   def change
     create_table :subscription_categories do |t|
       t.integer :subscription_id

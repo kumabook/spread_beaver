@@ -1,4 +1,4 @@
-class CreateEntryKeywords < ActiveRecord::Migration
+class CreateEntryKeywords < ActiveRecord::Migration[4.2]
   def change
     create_table :entry_keywords do |t|
       t.string :entry_id,   null: false

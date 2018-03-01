@@ -1,4 +1,4 @@
-class CreateUserEntries < ActiveRecord::Migration
+class CreateUserEntries < ActiveRecord::Migration[4.2]
   def change
     create_table :user_entries do |t|
       t.uuid   :user_id, null: false

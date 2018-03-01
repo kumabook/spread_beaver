@@ -1,4 +1,4 @@
-class CreateCategories < ActiveRecord::Migration
+class CreateCategories < ActiveRecord::Migration[4.2]
   def change
     create_table :categories, id: false do |t|
       t.string :id          , null: false

@@ -1,4 +1,4 @@
-class CreateEntryTags < ActiveRecord::Migration
+class CreateEntryTags < ActiveRecord::Migration[4.2]
   def change
     create_table :entry_tags do |t|
       t.string :tag_id

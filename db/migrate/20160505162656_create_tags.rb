@@ -1,4 +1,4 @@
-class CreateTags < ActiveRecord::Migration
+class CreateTags < ActiveRecord::Migration[4.2]
   def change
     create_table :tags, id: false, force: true do |t|
       t.string :id      , null: false

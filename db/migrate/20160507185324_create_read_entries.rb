@@ -1,4 +1,4 @@
-class CreateReadEntries < ActiveRecord::Migration
+class CreateReadEntries < ActiveRecord::Migration[4.2]
   def change
     create_table :read_entries do |t|
       t.uuid   :user_id, null: false

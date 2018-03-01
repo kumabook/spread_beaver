@@ -1,4 +1,4 @@
-class CreateIssues < ActiveRecord::Migration
+class CreateIssues < ActiveRecord::Migration[4.2]
   def change
     create_table :issues, id: :uuid, force: true do |t|
       t.string  :label      , null: false

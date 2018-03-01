@@ -1,4 +1,4 @@
-class CreateEntryTracks < ActiveRecord::Migration
+class CreateEntryTracks < ActiveRecord::Migration[4.2]
   def change
     create_table :entry_tracks do |t|
       t.string :entry_id, null: false
