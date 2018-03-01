@@ -83,6 +83,7 @@ class Entry < ApplicationRecord
     end
   }
 
+  JSON_ATTRS = ['content', 'categories', 'summary', 'alternate', 'origin', 'visual']
   WAITING_SEC_FOR_VISUAL = 0.5
   PER_PAGE = Kaminari::config::default_per_page
 
@@ -352,6 +353,10 @@ class Entry < ApplicationRecord
                            self)
   end
 
+  def as_partial_json()
+    as_json(except: ['content', 'summary'])
+  end
+
   def as_json(options = {})
     h               = super(options)
     h['crawled']    = crawled.to_time.to_i * 1000
@@ -361,8 +366,9 @@ class Entry < ApplicationRecord
     h['categories'] = []
     h['keywords']   = nil
     h.delete('saved_count')
-    ['alternate', 'origin', 'visual'].each do |key|
-      h[key] = JSON.load(h[key])
+
+    JSON_ATTRS.each do |key|
+      h[key] = JSON.load(h[key]) if h[key].present?
     end
     h
   end
@@ -375,9 +381,6 @@ class Entry < ApplicationRecord
       items.select {|item| !only_legacy || item.legacy? }
            .map { |item| item.as_enclosure }
     end
-
-    hash['content']   = JSON.load self.content
-    hash['summary']   = JSON.load self.summary
 
     hash['tracks']    = tracks.map(&enclosure_as_json)
     hash['playlists'] = playlists.map(&enclosure_as_json)

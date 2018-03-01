@@ -235,7 +235,7 @@ class Enclosure < ApplicationRecord
     end
 
     if !@partial_entries.nil?
-      hash['entries'] = @partial_entries.map { |e| e.as_json }
+      hash['entries'] = @partial_entries.map { |e| e.as_partial_json }
     end
 
     hash['id'] = id

@@ -11,11 +11,12 @@ RSpec.describe "Entries api", :type => :request, autodoc: true do
     id = @entries[0].id
     get "/v3/entries/#{id}",
         headers: headers_for_login_user_api
-    entry = JSON.parse @response.body
-    expect(entry).not_to be_nil()
-    expect(entry['id']).to eq(@entries[0].id)
-    expect(entry['tracks'].length).to be > 0
-    expect(entry['tracks'][0]['entries'].length).to be > 0
+    e = JSON.parse @response.body
+    expect(e).not_to be_nil()
+    expect(e['id']).to eq(@entries[0].id)
+    expect(e['tracks'].length).to be > 0
+    expect(e['tracks'][0]['entries'].length).to be > 0
+    expect(e['tracks'][0]['entries'][0]["summary"]).to be_nil
   end
 
   it "shows entries list by id list" do
@@ -31,6 +32,7 @@ RSpec.describe "Entries api", :type => :request, autodoc: true do
       expect(e['id']).to eq(ids[i])
       expect(e['tracks'].length).to be > 0
       expect(e['tracks'][0]['entries'].length).to be > 0
+      expect(e['tracks'][0]['entries'][0]["summary"]).to be_nil
     }
   end
 end
