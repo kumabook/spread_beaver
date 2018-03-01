@@ -361,8 +361,8 @@ class Entry < ApplicationRecord
     h               = super(options)
     h['crawled']    = crawled.to_time.to_i * 1000
     h['published']  = published.to_time.to_i * 1000
-    h['recrawled']  = recrawled.present? ? recrawled.to_time.to_i * 1000 : nil
-    h['updated']    = updated.present?   ? updated.to_time.to_i   * 1000 : nil
+    h['recrawled']  = recrawled&.to_time&.to_i&.* 1000
+    h['updated']    = updated&.to_time&.to_i&.* 1000
     h['categories'] = []
     h['keywords']   = nil
     h.delete('saved_count')
