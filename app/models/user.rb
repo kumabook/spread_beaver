@@ -13,9 +13,9 @@ class User < ApplicationRecord
   has_many :saved_entries    , dependent: :destroy
   has_many :read_entries     , dependent: :destroy
 
-  belongs_to :liked_enclosures , polymorphic: true
-  belongs_to :saved_enclosures , polymorphic: true
-  belongs_to :played_enclosures, polymorphic: true
+  belongs_to :liked_enclosures , polymorphic: true, optional: true
+  belongs_to :saved_enclosures , polymorphic: true, optional: true
+  belongs_to :played_enclosures, polymorphic: true, optional: true
 
   has_many   :liked_enclosures , dependent: :destroy
   has_many   :saved_enclosures , dependent: :destroy
