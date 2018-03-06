@@ -4,5 +4,5 @@ FastlyRails.configure do |c|
   c.max_age                = 86400
   c.stale_while_revalidate = 86400
   c.stale_if_error         = 86400
-  c.purging_enabled        = Rails.env.production?
+  c.purging_enabled        = Rails.env.production? && ENV["FASTLY_API_KEY"].present?
 end
