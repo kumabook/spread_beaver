@@ -54,4 +54,19 @@ class Playlist < Enclosure
       Playlist.find_or_create_by_content(c)
     end
   end
+
+  def self.crawl
+    playlists = Playlist.fetch_actives()
+    info = {
+      total_playlists: playlists.count,
+      total_tracks:    0,
+    }
+    playlists.each do |playlist|
+      tracks = playlist.fetch_tracks()
+      info = info.merge({
+                          total_tracks: info[:total_tracks] + tracks.count
+                        })
+    end
+    info
+  end
 end

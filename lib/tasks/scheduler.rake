@@ -32,6 +32,16 @@ task :crawl => :environment do
   Rails.logger.info("Finish!")
 end
 
+desc "Crawl playlists"
+task :crawl_playlists => :environment do
+  Rails.logger.info("Start crawling playlists")
+
+  info = Playlist.crawl
+
+  Rails.logger.info("Finish crawling playlists")
+  Rails.logger.info("#{info[:total_tracks]} tracks from #{info[:total_playlists]}")
+end
+
 desc "Create latest entries as daily top keyword"
 task :create_daily_issue => :environment do
   issues = Journal.create_daily_issues
