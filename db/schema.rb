@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180119083020) do
+ActiveRecord::Schema.define(version: 20180312034525) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -237,6 +237,18 @@ ActiveRecord::Schema.define(version: 20180119083020) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.index ["uid"], name: "index_oauth_applications_on_uid", unique: true
+  end
+
+  create_table "picks", force: :cascade do |t|
+    t.uuid "enclosure_id", null: false
+    t.string "enclosure_type", null: false
+    t.uuid "container_id", null: false
+    t.string "container_type", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["created_at"], name: "index_picks_on_created_at"
+    t.index ["enclosure_id", "container_id"], name: "index_picks_on_enclosure_id_and_container_id", unique: true
+    t.index ["updated_at"], name: "index_picks_on_updated_at"
   end
 
   create_table "played_enclosures", id: :serial, force: :cascade do |t|
