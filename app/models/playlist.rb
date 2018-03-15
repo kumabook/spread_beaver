@@ -47,4 +47,11 @@ class Playlist < Enclosure
       pt
     end
   end
+
+  def self.fetch_actives
+    contents  = PinkSpider.new.fetch_active_playlists()
+    contents["items"].map do |c|
+      Playlist.find_or_create_by_content(c)
+    end
+  end
 end
