@@ -29,6 +29,9 @@ div.row
       = link_to "Add #{@type}", new_issue_enclosure_issue_path(type: @type), :class => 'btn btn-primary'
     - else
       = link_to "New #{@type}", public_send(new_path_method), :class => 'btn btn-primary'
+    - if @type == 'Playlist'
+      '
+      = link_to "Actives", actives_playlists_path, :class => 'btn btn-primary'
   div.col-lg-6
     form action="#{public_send(search_path_method)}" method="get"
       .input-group
@@ -48,6 +51,8 @@ table.table.table-striped
         th engagement
       th title
       th provider
+      - if @type == 'Playlist'
+        th isActive
       th likes
       th saves
       th plays
@@ -74,6 +79,8 @@ table.table.table-striped
           td = entry_enclosure.engagement || 0
         td = link_to content["title"] || enclosure.id, item_path
         td = link_to provider_id, content["url"]
+        - if @type == 'Playlist'
+          td = content["velocity"] > 0
         td = "#{enclosure.likes_count || 0} likes"
         td = "#{enclosure.saved_count || 0} saves"
         td = "#{enclosure.play_count  || 0} plays"
@@ -91,6 +98,11 @@ table.table.table-striped
                     :method => :delete,
                     :class => 'btn btn-xs btn-primary'
           - else
+            - if @type == 'Playlist'
+              - if enclosure.is_active
+                = link_to 'Deactivate', playlist_deactivate_path(enclosure), :class => 'btn btn-xs btn-primary'
+              - else
+                = link_to 'Activate', playlist_activate_path(enclosure), :class => 'btn btn-xs btn-primary'
             - if enclosure.is_liked
               = form_for :like, url: like_path, method: :delete do |f|
                 = f.submit 'Unlike', class: 'btn btn-xs btn-primary'

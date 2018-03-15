@@ -43,6 +43,12 @@ class EnclosuresController < ApplicationController
     render :index
   end
 
+  def actives
+    items = Playlist.fetch_actives
+    @enclosures = PaginatedArray.new(items, items.count)
+    render :index
+  end
+
   def show
   end
 
@@ -72,6 +78,20 @@ class EnclosuresController < ApplicationController
                     notice: "#{enclosure_class.name} was successfully destroyed."
       }
     end
+  end
+
+  def activate
+    target_id  = params["#{model_class.name.downcase}_id"]
+    @enclosure = enclosure_class.find(target_id)
+    @enclosure.activate
+    redirect_back(fallback_location: root_path)
+  end
+
+  def deactivate
+    target_id  = params["#{model_class.name.downcase}_id"]
+    @enclosure = enclosure_class.find(target_id)
+    @enclosure.deactivate
+    redirect_back(fallback_location: root_path)
   end
 
   private

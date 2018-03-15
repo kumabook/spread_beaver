@@ -83,6 +83,13 @@ module Mix
                                 provider: query.provider,
                                 page:     page,
                                 per_page: per_page)
+    when :picked
+      clazz.most_picked_items(stream:   self,
+                              period:   query.period,
+                              locale:   query.locale,
+                              provider: query.provider,
+                              page:     page,
+                              per_page: per_page)
     end
   end
 

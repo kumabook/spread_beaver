@@ -67,6 +67,10 @@ Rails.application.routes.draw do
     delete 'unsave', to: :unsave, as: :save
     post   'play'  , to: :play  , as: :plays
     get    'search', on: :collection
+
+    get    'activate'
+    get    'deactivate'
+    get    'actives'   , on: :collection
   end
   resources :keywords do
     resources :entries, only: [:index]

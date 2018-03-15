@@ -180,9 +180,25 @@ class Enclosure < ApplicationRecord
                                locale: nil,
                                provider: nil,
                                page: 1,
-                               per_page: nil)
+                               per_page: 10)
     best_items(clazz:        EntryEnclosure,
                count_method: :feed_count,
+               stream:       stream,
+               period:       period,
+               locale:       nil,
+               provider:     provider,
+               page:         page,
+               per_page:     per_page)
+  end
+
+  def self.most_picked_items(stream: nil,
+                             period: nil,
+                             locale: nil,
+                             provider: nil,
+                             page: 1,
+                             per_page: 10)
+    best_items(clazz:        Pick,
+               count_method: :pick_count,
                stream:       stream,
                period:       period,
                locale:       nil,
