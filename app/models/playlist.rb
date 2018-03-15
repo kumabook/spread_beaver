@@ -17,4 +17,16 @@ class Playlist < Enclosure
     fetch_content if @content.nil?
     @content["url"]
   end
+
+  def is_active
+    @content['velocity'] > 0
+  end
+
+  def activate
+    self.class.update_content(id, { velocity: 10.0 })
+  end
+
+  def deactivate
+    self.class.update_content(id, { velocity: 0.0 })
+  end
 end
