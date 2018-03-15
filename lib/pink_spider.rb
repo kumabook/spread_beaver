@@ -51,6 +51,14 @@ class PinkSpider
     JSON.parse(response)
   end
 
+  def fetch_tracks_of_playlist(playlist_id, newer_than)
+    response = RestClient.get "#{base_url}/v1/playlists/#{playlist_id}/tracks",
+                              params: { newer_than: newer_than },
+                              accept: :json
+    return if response.code != 200
+    JSON.parse(response.body)
+  end
+
   def fetch_track(id)
     fetch_item(id, 'tracks')
   end

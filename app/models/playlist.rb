@@ -29,4 +29,22 @@ class Playlist < Enclosure
   def deactivate
     self.class.update_content(id, { velocity: 0.0 })
   end
+
+  def fetch_tracks
+    playlist_tracks = PinkSpider.new.fetch_tracks_of_playlist(id, updated_at)
+
+    playlist_tracks["items"].map do |playlist_track|
+      track_content = playlist_track["track"]
+      Track.find_or_create_by_content(track_content)
+      pt = Pick.find_or_create_by(enclosure_id:   playlist_track["track_id"],
+                                  enclosure_type: Track.name,
+                                  container_id:   playlist_track["playlist_id"],
+                                  container_type: Playlist.name) do |m|
+        m.created_at = playlist_track["created_at"]
+        m.updated_at = playlist_track["updated_at"]
+      end
+      pt.save
+      pt
+    end
+  end
 end
