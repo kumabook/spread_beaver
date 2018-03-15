@@ -83,6 +83,10 @@ class PinkSpider
     create_item('playlists', params)
   end
 
+  def update_playlist(id, params)
+    update_item('playlists', id, params)
+  end
+
   def fetch_album(id)
     fetch_item(id, 'albums')
   end
@@ -134,4 +138,13 @@ class PinkSpider
     return if response.code != 200
     JSON.parse(response.body)
   end
+
+  def update_item(resource_name, id, params)
+    response = RestClient.post("#{base_url}/v1/#{resource_name}/#{id}",
+                               params,
+                               accept: :json)
+    return if response.code != 200
+    JSON.parse(response)
+  end
+
 end

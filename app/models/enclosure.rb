@@ -117,6 +117,10 @@ class Enclosure < ApplicationRecord
     PinkSpider.new.public_send("fetch_#{name.downcase.pluralize}".to_sym, ids)
   end
 
+  def self.update_content(id, params)
+    PinkSpider.new.public_send("update_#{name.downcase}".to_sym, id, params)
+  end
+
   def self.search(query, page, per_page)
     req_page = page.nil? ? 0 : page.to_i - 1
     res = PinkSpider.new.public_send("search_#{name.downcase.pluralize}".to_sym,
