@@ -75,21 +75,25 @@ class Enclosure < ApplicationRecord
     end
   }
 
+  def self.find_or_create_by_content(content)
+    model = find_or_create_by(id: content['id']) do |m|
+      m.created_at = content["published_at"]
+      m.title      = content["title"]
+      m.provider   = content["provider"]
+    end
+    model.content = content
+    model
+  end
+
   def self.create_items_of(entry, items)
     models = items.map do |i|
-      model = find_or_create_by(id: i['id']) do |m|
-        logger.info("New enclosure #{i['provider']} #{i['identifier']}")
-        m.created_at = i["published_at"] || entry.published
-        m.title      = i["title"]
-        m.provider   = i["provider"]
-      end
+      model = find_or_create_by_content(i)
       EntryEnclosure.find_or_create_by(entry_id:           entry.id,
                                        enclosure_id:       model.id,
                                        enclosure_type:     name,
                                        enclosure_provider: model.provider) do
         logger.info("Add new #{name} #{i['id']} to entry #{entry.id} #{i["provider"]}")
       end
-      model.content = i
       model
     end
     models
