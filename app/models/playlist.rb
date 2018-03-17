@@ -43,6 +43,7 @@ class Playlist < Enclosure
         m.created_at = playlist_track["created_at"]
         m.updated_at = playlist_track["updated_at"]
       end
+      pt.touch
       pt.save
       pt
     end
