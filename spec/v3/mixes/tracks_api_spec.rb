@@ -27,6 +27,11 @@ RSpec.describe "Track Mix api", type: :request, autodoc: true do
                                 enclosure:      @feed.entries[0].tracks[n],
                                 enclosure_type: Track.name,
                                 created_at:     100.days.ago
+        Pick.create! enclosure_id:   @feed.entries[0].tracks[n].id,
+                     enclosure_type: Track.name,
+                     container_id:   @feed.entries[0].playlists[n].id,
+                     container_type: Playlist.name,
+                     created_at:     100.days.ago
       }
     end
 
@@ -112,7 +117,34 @@ RSpec.describe "Track Mix api", type: :request, autodoc: true do
         expect(result['items'].count).to eq(0)
         expect(result['continuation']).to be_nil
       end
+    end
 
+    context "picked mix" do
+      it "gets picked mixes of a topic " do
+        get "/v3/mixes/#{@topic.escape.id}/tracks/contents",
+            params: {
+              type:      :picked,
+              newerThan: 400.days.ago.to_time.to_i * 1000,
+              olderThan: Time.now.to_i * 1000,
+            },
+            headers: headers_for_login_user_api
+        result = JSON.parse @response.body
+        expect(result['items'].count).to eq(ITEM_NUM)
+        expect(result['continuation']).to be_nil
+      end
+
+      it "doesn't count mark out of term" do
+        get "/v3/mixes/#{@topic.escape.id}/tracks/contents",
+            params: {
+              type:      :picked,
+              newerThan: 400.days.ago.to_time.to_i * 1000,
+              olderThan: 200.days.ago.to_time.to_i * 1000,
+            },
+            headers: headers_for_login_user_api
+        result = JSON.parse @response.body
+        expect(result['items'].count).to eq(0)
+        expect(result['continuation']).to be_nil
+      end
     end
 
     context "feed" do
