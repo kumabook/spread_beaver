@@ -85,6 +85,11 @@ table.table.table-striped
         td = "#{enclosure.saved_count || 0} saves"
         td = "#{enclosure.play_count  || 0} plays"
         td
+          - if @type == 'Playlist'
+            - if enclosure.is_active
+              = link_to 'Deactivate', playlist_deactivate_path(enclosure), :class => 'btn btn-xs btn-primary'
+            - else
+              = link_to 'Activate', playlist_activate_path(enclosure), :class => 'btn btn-xs btn-primary'
           - if @entry.present?
             = link_to 'Edit', edit_entry_enclosure_path(entry_enclosure), :class => 'btn btn-xs btn-primary'
             '
@@ -98,11 +103,6 @@ table.table.table-striped
                     :method => :delete,
                     :class => 'btn btn-xs btn-primary'
           - else
-            - if @type == 'Playlist'
-              - if enclosure.is_active
-                = link_to 'Deactivate', playlist_deactivate_path(enclosure), :class => 'btn btn-xs btn-primary'
-              - else
-                = link_to 'Activate', playlist_activate_path(enclosure), :class => 'btn btn-xs btn-primary'
             - if enclosure.is_liked
               = form_for :like, url: like_path, method: :delete do |f|
                 = f.submit 'Unlike', class: 'btn btn-xs btn-primary'
