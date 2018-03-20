@@ -71,7 +71,7 @@ class Entry < ApplicationRecord
     elsif s.kind_of?(Issue)
       issue(s)
     else
-      raise Exception.new("Unknown stream")
+      all
     end
   }
 
