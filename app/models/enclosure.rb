@@ -1,5 +1,6 @@
 class Enclosure < ApplicationRecord
   LEGACY_PROVIDERS = ["YouTube", "SoundCloud"]
+  attr_accessor :engagement
   attr_accessor :content
   attr_accessor :partial_entries
   include Likable
@@ -267,6 +268,10 @@ class Enclosure < ApplicationRecord
 
     if !@partial_entries.nil?
       hash['entries'] = @partial_entries.map { |e| e.as_partial_json }
+    end
+
+    if !@engagement.nil?
+      hash['engagement'] = @engagement
     end
 
     hash['id'] = id
