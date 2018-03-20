@@ -32,7 +32,10 @@ class Enclosure < ApplicationRecord
       where(created_at: since..Float::INFINITY).order(created_at: :desc)
     end
   }
-  scope :detail, ->        { includes([:likers]).includes(:entries) }
+
+  scope :with_content, -> { eager_load(:entry_enclosures).eager_load(:entries) }
+  scope :detail      , -> { includes([:likers]).includes(:entries) }
+
   scope :issue , -> (issue) {
     joins(:enclosure_issues)
       .where(enclosure_issues: { issue: issue })
@@ -230,9 +233,7 @@ class Enclosure < ApplicationRecord
     sorted_hashes = PaginatedArray::sort_and_paginate_count_hash(count_hash,
                                                                  page: page,
                                                                  per_page: per_page)
-    items = self.eager_load(:entry_enclosures)
-                .eager_load(:entries)
-                .find(sorted_hashes.map {|h| h[:id] })
+    items = self.with_content.find(sorted_hashes.map {|h| h[:id] })
     sorted_items = sorted_hashes.map {|h|
       items.select { |t| t.id == h[:id] }.first
     }
