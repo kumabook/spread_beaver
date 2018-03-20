@@ -147,6 +147,23 @@ RSpec.describe "Track Mix api", type: :request, autodoc: true do
       end
     end
 
+    context "engaging mix" do
+      it "gets engaging mixes of a topic " do
+        get "/v3/mixes/#{@topic.escape.id}/tracks/contents",
+            params: {
+              type:      :engaging,
+              newerThan: 400.days.ago.to_time.to_i * 1000,
+              olderThan: Time.now.to_i * 1000,
+            },
+            headers: headers_for_login_user_api
+        result = JSON.parse @response.body
+        expect(result['items'].count).to eq(PER_PAGE)
+        expect(result['continuation']).not_to be_nil
+        expect(result['items'][0]["engagement"]).not_to be_nil
+        expect(result['items'][0]["engagement"]).to be > 0
+      end
+    end
+
     context "feed" do
       before do
         get "/v3/mixes/#{@feed.escape.id}/tracks/contents",

@@ -91,7 +91,7 @@ module EnclosureEngagementScorer
 
       sorted_items = scores.map do |h|
         item = items.select { |t| t.id == h["id"] }.first
-        item.engagement = h["score"]
+        item.engagement = h["score"].to_i
         item
       end
       PaginatedArray.new(sorted_items, total_count)
