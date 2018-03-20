@@ -207,6 +207,14 @@ class Enclosure < ApplicationRecord
                per_page:     per_page)
   end
 
+  def self.query_for_best_items(clazz, stream, period, locale, provider)
+    clazz.where(enclosure_type: self.name)
+      .stream(stream)
+      .period(period)
+      .locale(locale)
+      .provider(provider)
+  end
+
   def self.best_items(clazz: nil,
                       count_method: :user_count,
                       stream: nil,
@@ -216,11 +224,7 @@ class Enclosure < ApplicationRecord
                       page: 1,
                       per_page: nil)
     raise ArgumentError, "Parameter must be not nil" if period.nil?
-    query = clazz.where(enclosure_type: self.name)
-                 .period(period)
-                 .locale(locale)
-                 .provider(provider)
-    query = query.stream(stream) if stream.present?
+    query = self.query_for_best_items(clazz, stream, period, locale, provider)
     count_hash    = query.public_send(count_method)
     total_count   = count_hash.keys.count
     sorted_hashes = PaginatedArray::sort_and_paginate_count_hash(count_hash,
