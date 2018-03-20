@@ -184,6 +184,7 @@ class Enclosure < ApplicationRecord
                                provider: nil,
                                page: 1,
                                per_page: 10)
+    # doesn't support locale, use stream filter instead
     best_items(clazz:        EntryEnclosure,
                count_method: :feed_count,
                stream:       stream,
@@ -200,6 +201,7 @@ class Enclosure < ApplicationRecord
                              provider: nil,
                              page: 1,
                              per_page: 10)
+    # doesn't support locale, use stream filter instead
     best_items(clazz:        Pick,
                count_method: :pick_count,
                stream:       stream,
