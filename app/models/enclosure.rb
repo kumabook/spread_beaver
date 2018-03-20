@@ -6,6 +6,7 @@ class Enclosure < ApplicationRecord
   include Likable
   include Savable
   include Playable
+  include EnclosureEngagementScorer
 
   ENTRIES_LIMIT = 100
   PARTIAL_ENTRIES_LIMIT = 100

@@ -90,6 +90,13 @@ module Mix
                               provider: query.provider,
                               page:     page,
                               per_page: per_page)
+    when :engaging
+      clazz.most_engaging_items(stream:   self,
+                                period:   query.period,
+                                locale:   query.locale,
+                                provider: query.provider,
+                                page:     page,
+                                per_page: per_page)
     end
   end
 

@@ -153,6 +153,8 @@ module V3::StreamsControllable
       @type = :featured
     when 'picked'
       @type = :picked
+    when 'engaging'
+      @type = :engaging
     else
       @type = :hot
     end
