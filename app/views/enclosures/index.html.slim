@@ -78,7 +78,7 @@ table.table.table-striped
         - if @entry.present?
           td = entry_enclosure.engagement || 0
         td = link_to content["title"] || enclosure.id, item_path
-        td = link_to provider_id, content["url"]
+        td = link_to provider_id, enclosure.permalink_url
         - if @type == 'Playlist'
           td = content["velocity"] > 0
         td = "#{enclosure.likes_count || 0} likes"

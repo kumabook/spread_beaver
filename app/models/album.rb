@@ -13,8 +13,14 @@ class Album < Enclosure
     "#{@content["title"]} / #{@content["owner_name"]}"
   end
 
-  def permalink_url provider, identifier
+  def permalink_url
     fetch_content if @content.nil?
-    @content["url"]
+    case @content["provider"]
+    when 'Spotify'
+      s = @content["url"].split(':')
+      "http://open.spotify.com/album/#{s[2]}"
+    else
+      @content["url"]
+    end
   end
 end
