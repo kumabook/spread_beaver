@@ -179,6 +179,11 @@ class Entry < ApplicationRecord
     new_tracks    = Track.create_items_of(self, playlistified_entry.tracks)
     new_playlists = Playlist.create_items_of(self, playlistified_entry.playlists)
     new_albums    = Album.create_items_of(self, playlistified_entry.albums)
+
+    new_playlists.each do |playlist|
+      playlist.fetch_tracks
+    end
+
     self.save
     {
       tracks:    new_tracks,
