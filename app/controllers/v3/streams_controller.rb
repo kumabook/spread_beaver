@@ -3,9 +3,9 @@ class V3::StreamsController < V3::ApiController
   include V3::StreamsControllable
   before_action :set_stream
   before_action :set_items
-  before_action :set_cache_control_headers, only: [:index]
+  before_action :set_cache_control_headers, only: [:show]
 
-  def index
+  def show
     continuation = self.class.calculate_continuation(@items, @page, @per_page)
     # TODO: currently visual is json string,
     # so we cannot check if the entry has visual or not.

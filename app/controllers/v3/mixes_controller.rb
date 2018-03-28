@@ -6,9 +6,9 @@ class V3::MixesController < V3::ApiController
   before_action :set_stream
   before_action :set_period
   before_action :set_items
-  before_action :set_cache_control_headers, only: [:index]
+  before_action :set_cache_control_headers, only: [:show]
 
-  def index
+  def show
     continuation = self.class.calculate_continuation(@items, @page, @per_page)
     Entry.set_contents_of_enclosures(@items)
     if current_resource_owner.present?

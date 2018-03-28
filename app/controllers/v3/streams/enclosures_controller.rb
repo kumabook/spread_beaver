@@ -6,9 +6,9 @@ class V3::Streams::EnclosuresController < V3::ApiController
   before_action :set_enclosure_class
   before_action :set_stream
   before_action :set_items
-  before_action :set_cache_control_headers, only: [:index]
+  before_action :set_cache_control_headers, only: [:show]
 
-  def index
+  def show
     if @items.nil? || @enclosure_class.nil?
       render json: {message: "Not found" }, status: :not_found
       return

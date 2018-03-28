@@ -1,18 +1,18 @@
 module V3::StreamsControllable
   extend ActiveSupport::Concern
   included do
-    before_action :set_stream_id      , only: [:index]
-    before_action :set_global_resource, only: [:index]
-    before_action :set_feed           , only: [:index]
-    before_action :set_keyword        , only: [:index]
-    before_action :set_tag            , only: [:index]
-    before_action :set_journal        , only: [:index]
-    before_action :set_topic          , only: [:index]
-    before_action :set_category       , only: [:index]
-    before_action :set_need_visual    , only: [:index]
-    before_action :set_page           , only: [:index]
-    before_action :set_provider       , only: [:index]
-    before_action :set_locale         , only: [:index]
+    before_action :set_stream_id      , only: [:show]
+    before_action :set_global_resource, only: [:show]
+    before_action :set_feed           , only: [:show]
+    before_action :set_keyword        , only: [:show]
+    before_action :set_tag            , only: [:show]
+    before_action :set_journal        , only: [:show]
+    before_action :set_topic          , only: [:show]
+    before_action :set_category       , only: [:show]
+    before_action :set_need_visual    , only: [:show]
+    before_action :set_page           , only: [:show]
+    before_action :set_provider       , only: [:show]
+    before_action :set_locale         , only: [:show]
   end
 
   class_methods do

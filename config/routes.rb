@@ -137,21 +137,21 @@ Rails.application.routes.draw do
 
     resources :streams, only: [], constraints: res_options do
       member do
-        get 'ids',      action: :index
-        get 'contents', action: :index
+        get 'ids',      action: :show
+        get 'contents', action: :show
 
-        get ':enclosures/ids'      => 'streams/enclosures#index'
-        get ':enclosures/contents' => 'streams/enclosures#index'
+        get ':enclosures/ids'      => 'streams/enclosures#show'
+        get ':enclosures/contents' => 'streams/enclosures#show'
       end
     end
 
     resources :mixes, only: [], constraints: res_options do
       member do
-        get 'ids',      action: :index
-        get 'contents', action: :index
+        get 'ids',      action: :show
+        get 'contents', action: :show
 
-        get ':enclosures/ids'      => 'mixes/enclosures#index'
-        get ':enclosures/contents' => 'mixes/enclosures#index'
+        get ':enclosures/ids'      => 'mixes/enclosures#show'
+        get ':enclosures/contents' => 'mixes/enclosures#show'
       end
     end
 

@@ -8,12 +8,12 @@ class V3::Mixes::EnclosuresController < V3::ApiController
   before_action :set_stream
   before_action :set_period
   before_action :set_items
-  before_action :set_cache_control_headers, only: [:index]
+  before_action :set_cache_control_headers, only: [:show]
 
   DURATION             = Setting.duration_for_common_stream.days
   DURATION_FOR_RANKING = Setting.duration_for_ranking.days
 
-  def index
+  def show
     if @items.nil? || @enclosure_class.nil?
       render json: {message: "Not found" }, status: :not_found
       return
