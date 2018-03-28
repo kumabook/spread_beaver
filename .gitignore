@@ -51,3 +51,8 @@ bower.json
 .env
 .env.pink_spider
 .envrc
+/public/packs
+/public/packs-test
+/node_modules
+yarn-debug.log*
+.yarn-integrity

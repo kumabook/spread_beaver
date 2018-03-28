@@ -7,6 +7,7 @@ gem 'rails', '~> 5.1.0'
 gem 'rails_12factor', group: :production
 gem 'rails-controller-testing'
 gem 'sass-rails'
+gem 'webpacker', '~> 3.4'
 gem 'uglifier'
 gem 'jquery-rails'
 gem "jquery-fileupload-rails"
