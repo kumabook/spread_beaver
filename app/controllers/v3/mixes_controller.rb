@@ -1,6 +1,6 @@
 class V3::MixesController < V3::ApiController
   include Pagination
-  include V3::StreamsControllable
+  include StreamsControllable
   before_action :set_mix_type
   before_action :set_locale
   before_action :set_stream

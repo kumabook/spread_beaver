@@ -1,6 +1,6 @@
 class V3::StreamsController < V3::ApiController
   include Pagination
-  include V3::StreamsControllable
+  include StreamsControllable
   before_action :set_stream
   before_action :set_items
   before_action :set_cache_control_headers, only: [:show]

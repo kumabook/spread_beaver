@@ -1,7 +1,7 @@
 # coding: utf-8
 class V3::Mixes::EnclosuresController < V3::ApiController
   include Pagination
-  include V3::StreamsControllable
+  include StreamsControllable
 
   before_action :set_enclosure_class
   before_action :set_mix_type

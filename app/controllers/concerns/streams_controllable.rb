@@ -1,4 +1,4 @@
-module V3::StreamsControllable
+module StreamsControllable
   extend ActiveSupport::Concern
   included do
     before_action :set_stream_id      , only: [:show]
