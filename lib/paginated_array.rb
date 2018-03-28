@@ -22,7 +22,7 @@ class PaginatedArray < Array
   end
 
   def total_pages
-    @total_count / @per_page
+    (@total_count.to_f / @per_page).ceil
   end
 
   def current_page
