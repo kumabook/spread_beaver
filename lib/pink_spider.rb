@@ -51,9 +51,13 @@ class PinkSpider
     JSON.parse(response)
   end
 
-  def fetch_active_playlists()
+  def fetch_active_playlists(page=0, per_page=25)
     response = RestClient.get "#{base_url}/v1/playlists",
-                              params: { type: "active" },
+                              params: {
+                                page:     page,
+                                per_page: per_page,
+                                type:     "active",
+                              },
                               accept: :json
     return if response.code != 200
     JSON.parse(response.body)

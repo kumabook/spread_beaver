@@ -44,8 +44,10 @@ class EnclosuresController < ApplicationController
   end
 
   def actives
-    items = Playlist.fetch_actives
-    @enclosures = PaginatedArray.new(items, items.count)
+    per_page    = Kaminari::config::default_per_page
+    @enclosures = Playlist.fetch_actives(page: params[:page].to_i, per_page: per_page)
+    enclosure_class.set_marks(current_user, @enclosures) if current_user.present?
+    enclosure_class.set_contents(@enclosures)
     render :index
   end
 
