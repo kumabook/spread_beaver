@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180312034525) do
+ActiveRecord::Schema.define(version: 20180329022001) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -47,6 +47,7 @@ ActiveRecord::Schema.define(version: 20180312034525) do
     t.integer "play_count", default: 0, null: false
     t.integer "provider", default: 0
     t.string "title", default: ""
+    t.integer "pick_count", default: 0, null: false
     t.index ["id"], name: "index_enclosures_on_id", unique: true
     t.index ["provider"], name: "index_enclosures_on_provider"
     t.index ["title"], name: "index_enclosures_on_title"
