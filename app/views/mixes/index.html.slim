@@ -1,0 +1,29 @@
+- stream_types = [Track, Album, Playlist, Entry].map { |c| c.name.downcase.pluralize }
+
+.page-header
+  h1 Mixes
+
+form.form.form-horizontal#mix_form
+  .form-group
+    = label_tag :stream_id, "Stream id", :class => 'control-label col-lg-2'
+    .col-lg-4
+      = select_tag :stream_id, options_for_select(Mix::stream_ids), class: 'form-control'
+  .form-group
+    = label_tag :stream_type, nil, :class => 'control-label col-lg-2'
+    .col-lg-4
+      = select_tag :stream_type, options_for_select(stream_types), class: 'form-control'
+  .form-group
+    = label_tag :mixtype, nil, :class => 'control-label col-lg-2'
+    .col-lg-4
+      = select_tag :mix_type, options_for_select(Mix::mix_types), class: 'form-control'
+  .form-group
+    = label_tag :period, nil, :class => 'control-label col-lg-2'
+    .col-lg-4
+      = select_tag :period, options_for_select(['daily', 'weekly', 'monthly']), class: 'form-control'
+
+  .form-group
+    .col-lg-offset-2.col-lg-10
+      span.input-group-btn
+        button.btn.btn-primary type="submit"
+          = "Show"
+= javascript_pack_tag 'mixes/index'
