@@ -9,8 +9,10 @@ before_script:
   - cp config/database.travis.yml config/database.yml
   - bundle exec rails db:create
   - bundle exec rails db:migrate
+  - ./bin/yarn
 
 script:
+  - ./bin/webpack
   - bundle exec rails spec
 services:
   - redis-server
