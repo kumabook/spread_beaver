@@ -3,6 +3,7 @@ class Enclosure < ApplicationRecord
   attr_accessor :engagement
   attr_accessor :content
   attr_accessor :partial_entries
+  attr_accessor :scores
   include Likable
   include Savable
   include Playable
