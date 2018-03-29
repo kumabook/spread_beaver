@@ -1,0 +1,36 @@
+- item_path_method = "#{@enclosure_class.name.downcase}_path".to_sym
+.page-header
+  h1 = "#{@enclosure_class.name} #{@type} mix (#{params[:period]}: #{@period})"
+
+
+== CGI.unescape paginate(@items, params: { id: CGI.escape(params[:id]) })
+table.table.table-striped
+  thead
+    tr
+      th
+      th title
+      th provider
+      - @items.first&.scores&.each_key do |name|
+        th.col-md-1
+          - score = EnclosureEngagementScorer::SCORES_PER_MARK[name]
+          = "#{t name} (#{score})"
+      th total
+  tbody
+    - @items.each do |item|
+      - item_path       = public_send item_path_method, item.id
+      - content         = item.content || {}
+      - provider_id     = item.content.nil? ? "Unknown" : "#{content["provider"]}/#{content["identifier"]}"
+      tr
+        td.resource-menu data-id=item.id data-resource-id="#{@type.downcase}/#{item.id}"
+        td = link_to content["title"] || item.id, item_path
+        td = link_to provider_id, item.permalink_url
+        - item&.scores&.each_value do |score|
+          td
+            = "#{score[:value]} (#{score[:count]})"
+        td = "#{item.engagement}"
+        td
+          - if @type == 'Playlist'
+            - if item.is_active
+              = link_to 'Deactivate', playlist_deactivate_path(item), :class => 'btn btn-xs btn-primary'
+            - else
+              = link_to 'Activate', playlist_activate_path(item), :class => 'btn btn-xs btn-primary'

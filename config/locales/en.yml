@@ -31,3 +31,8 @@
 
 en:
   hello: "Hello world"
+  played_enclosures: "played"
+  liked_enclosures:  "liked"
+  saved_enclosures:  "saved"
+  entry_enclosures:  "feed"
+  picks:             "playlist"
