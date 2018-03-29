@@ -100,6 +100,12 @@ Rails.application.routes.draw do
   resources :entry_issues    , only: [:create, :edit, :update, :destroy]
   resources :enclosure_issues, only: [:create, :edit, :update, :destroy]
 
+  resources :mixes, only: [:index, :show], constraints: res_options do
+    member do
+      get ':enclosures' => 'mixes/enclosures#show'
+    end
+  end
+
   scope :v3 do
     use_doorkeeper
   end
