@@ -114,12 +114,11 @@ module Mix
                                                  page:     page,
                                                  per_page: per_page,
                                                  query:    query)
-    items, count = Rails.cache.fetch(key) do
-      items = entries_of_mix(page: page, per_page: per_page, query: query)
-      [items.to_a, items.total_count || items.count]
-    end
-
-    PaginatedArray.new(items, count)
+    PaginatedArray.from_cache(
+      Rails.cache.fetch(key) do
+        entries_of_mix(page: page, per_page: per_page, query: query)&.to_cache
+      end
+    )
   end
 
   def mix_enclosures(clazz, page: 1, per_page: nil, query: nil)
@@ -128,11 +127,11 @@ module Mix
                                                     page:     page,
                                                     per_page: per_page,
                                                     query:    query)
-    items, count = Rails.cache.fetch(key) do
-      items = enclosures_of_mix(clazz, page: page, per_page: per_page, query: query)
-      [items.to_a, items.total_count || items.count]
-    end
-    PaginatedArray.new(items, count)
+    PaginatedArray.from_cache(
+      Rails.cache.fetch(key) do
+        enclosures_of_mix(clazz, page: page, per_page: per_page, query: query)&.to_cache
+      end
+    )
   end
 
   def delete_cache_mix_entries

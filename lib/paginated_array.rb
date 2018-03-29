@@ -21,6 +21,20 @@ class PaginatedArray < Array
     }.reverse.slice(start_index..end_index)
   end
 
+  def to_cache
+    [
+      to_a,
+      total_count || count || 0,
+      page,
+      per_page,
+    ]
+  end
+
+  def self.from_cache(cache)
+    items, total_count, page, per_page,  = cache
+    PaginatedArray.new(items, total_count, page, per_page)
+  end
+
   def total_pages
     (@total_count.to_f / @per_page).ceil
   end
