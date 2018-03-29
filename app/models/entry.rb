@@ -334,11 +334,13 @@ class Entry < ApplicationRecord
     count_hash    = query.user_count
     total_count   = count_hash.keys.count
     sorted_hashes = PaginatedArray::sort_and_paginate_count_hash(count_hash,
-                                                                 page: page,
+                                                                 page:     page,
                                                                  per_page: per_page)
     entries = Entry.with_content.find(sorted_hashes.map {|h| h[:id] })
     sorted_entries = sorted_hashes.map {|h|
-      entries.select { |e| e.id == h[:id] }.first
+      item = entries.select { |e| e.id == h[:id] }.first
+      item.engagement = count_hash[item.id]
+      item
     }
     PaginatedArray.new(sorted_entries, total_count)
   end

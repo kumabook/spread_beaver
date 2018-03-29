@@ -240,7 +240,9 @@ class Enclosure < ApplicationRecord
                                                                  per_page: per_page)
     items = self.with_content.find(sorted_hashes.map {|h| h[:id] })
     sorted_items = sorted_hashes.map {|h|
-      items.select { |t| t.id == h[:id] }.first
+      item = items.select { |t| t.id == h[:id] }.first
+      item.engagement = count_hash[item.id]
+      item
     }
     PaginatedArray.new(sorted_items, total_count)
   end
