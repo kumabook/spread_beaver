@@ -25,12 +25,12 @@ module Stream
     clazz.page(page).per(per_page).stream(self).latest(since)
   end
 
-  def stream_entries(page: 1, per_page: nil, since: nil)
+  def stream_entries(page: 1, per_page: nil, since: nil, cache_options: nil)
     key = self.class.cache_key_of_entries_of_stream(stream_id,
                                                     page:          page,
                                                     per_page:      per_page,
                                                     since:         since)
-    items, count = Rails.cache.fetch(key) do
+    items, count = Rails.cache.fetch(key, cache_options) do
       items = entries_of_stream(page: page, per_page: per_page, since: since)
       [items.to_a, items.total_count || items.count]
     end
@@ -38,12 +38,12 @@ module Stream
     PaginatedArray.new(items, count)
   end
 
-  def stream_enclosures(clazz, page: 1, per_page: nil, since: nil)
+  def stream_enclosures(clazz, page: 1, per_page: nil, since: nil, cache_options: nil)
     key = self.class.cache_key_of_enclosures_of_stream(clazz, stream_id,
                                                        page:          page,
                                                        per_page:      per_page,
                                                        since:         since)
-    items, count = Rails.cache.fetch(key) do
+    items, count = Rails.cache.fetch(key, cache_options) do
       items = enclosures_of_stream(page: page, per_page: per_page, since: since)
       [items.to_a, items.total_count || items.count]
     end

@@ -109,26 +109,26 @@ module Mix
     end
   end
 
-  def mix_entries(page: 1, per_page: nil, query: nil)
+  def mix_entries(page: 1, per_page: nil, query: nil, cache_options: nil)
     key = self.class.cache_key_of_entries_of_mix(stream_id,
                                                  page:     page,
                                                  per_page: per_page,
                                                  query:    query)
     PaginatedArray.from_cache(
-      Rails.cache.fetch(key) do
+      Rails.cache.fetch(key, cache_options) do
         entries_of_mix(page: page, per_page: per_page, query: query)&.to_cache
       end
     )
   end
 
-  def mix_enclosures(clazz, page: 1, per_page: nil, query: nil)
+  def mix_enclosures(clazz, page: 1, per_page: nil, query: nil, cache_options: nil)
     key = self.class.cache_key_of_enclosures_of_mix(clazz,
                                                     stream_id,
                                                     page:     page,
                                                     per_page: per_page,
                                                     query:    query)
     PaginatedArray.from_cache(
-      Rails.cache.fetch(key) do
+      Rails.cache.fetch(key, cache_options) do
         enclosures_of_mix(clazz, page: page, per_page: per_page, query: query)&.to_cache
       end
     )
