@@ -31,6 +31,10 @@ module Mix
   end
   extend ActiveSupport::Concern
 
+  def self.mix_types
+    ["engaging", "hot", "popular", "featured", "picked"]
+  end
+
   included do
     after_touch   :delete_cache_mix_entries
     after_update  :delete_cache_mix_entries
