@@ -1,0 +1,35 @@
+.page-header
+  h1 = "Entries #{@type} mix (#{params[:period]}: #{@period})"
+
+= paginate @items, params: { id: CGI.escape(params[:id]) }
+table.table.table-striped
+  thead
+    tr
+      th
+      th visual
+      th title
+      td feeds
+      th published
+      th crawled
+      th engagement
+      th links
+  tbody
+    - @items.each do |entry|
+      - path = feed_path(CGI.escape entry.origin_hash['streamId'])
+      tr
+        td.resource-menu data-id=entry.id data-resource-id="entry/#{entry.id}"
+        td = thumbnail_image_link(entry)
+        td = link_to entry.title&.truncate(50), entry.url
+        td = link_to entry.origin_hash['title'], path
+        td = entry.published
+        td = entry.crawled
+        td = entry.engagement
+
+        td
+          = link_to 'Detail', entry_path(entry), class: 'btn btn-xs btn-primary'
+          '
+          = link_to 'crawl', crawl_entry_path(entry), class: 'btn btn-xs btn-primary'
+          br
+          = link_to "#{entry.count_of[:tracks]} tracks", entry_tracks_path(entry), class: 'btn btn-xs btn-primary'
+          = link_to "#{entry.count_of[:albums]} albums", entry_albums_path(entry), class: 'btn btn-xs btn-primary'
+          = link_to "#{entry.count_of[:playlists]} playlists", entry_playlists_path(entry), class: 'btn btn-xs btn-primary'
