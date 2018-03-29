@@ -19,6 +19,7 @@ class Enclosure < ApplicationRecord
   enum provider: [:Raw, :Custom, :YouTube, :SoundCloud, :Spotify, :AppleMusic]
 
   has_many :entry_enclosures, dependent: :destroy
+  has_many :picks           , dependent: :destroy
   has_many :entries, ->{ order("entries.published DESC").limit(ENTRIES_LIMIT) }, through: :entry_enclosures
 
   has_many :enclosure_issues, dependent: :destroy
@@ -252,6 +253,7 @@ class Enclosure < ApplicationRecord
     hash = as_json
     hash['likesCount']   = likes_count
     hash['entriesCount'] = entries_count
+    hash['pickCount']    = pick_count
     hash.delete('users')
     if !is_liked.nil?
       hash['is_liked'] = is_liked
