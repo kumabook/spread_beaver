@@ -342,7 +342,7 @@ class Entry < ApplicationRecord
       item.engagement = count_hash[item.id]
       item
     }
-    PaginatedArray.new(sorted_entries, total_count)
+    PaginatedArray.new(sorted_entries, total_count, page, per_page)
   end
 
   def playlistify(force: false)

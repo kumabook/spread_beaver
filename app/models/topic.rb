@@ -37,7 +37,7 @@ class Topic < ApplicationRecord
                                      LATEST_ENTRIES_PER_FEED,
                                      page,
                                      per_page)
-    PaginatedArray.new(items, entries.count)
+    PaginatedArray.new(items, entries.count, page, per_page)
   end
 
   def mix_newer_than

@@ -94,7 +94,7 @@ module EnclosureEngagementScorer
         item.engagement = h["score"].to_i
         item
       end
-      PaginatedArray.new(sorted_items, total_count)
+      PaginatedArray.new(sorted_items, total_count, page, per_page)
     end
   end
 end
