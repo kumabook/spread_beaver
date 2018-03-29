@@ -1,3 +1,4 @@
+# coding: utf-8
 require('paginated_array')
 
 module Mix
@@ -33,6 +34,10 @@ module Mix
 
   def self.mix_types
     ["engaging", "hot", "popular", "featured", "picked"]
+  end
+
+  def self.stream_ids
+    Topic.all.map(&:id)
   end
 
   included do
