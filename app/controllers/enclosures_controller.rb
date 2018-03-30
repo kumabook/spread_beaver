@@ -83,18 +83,19 @@ class EnclosuresController < ApplicationController
     end
   end
 
-  def activate
+  def update_velocity(velocity)
     target_id  = params["#{model_class.name.downcase}_id"]
     @enclosure = enclosure_class.find(target_id)
-    @enclosure.activate
+    @enclosure.update_content(id, { velocity: velocity })
     redirect_back(fallback_location: root_path)
   end
 
+  def activate
+    update_velocity(10.0)
+  end
+
   def deactivate
-    target_id  = params["#{model_class.name.downcase}_id"]
-    @enclosure = enclosure_class.find(target_id)
-    @enclosure.deactivate
-    redirect_back(fallback_location: root_path)
+    update_velocity(0)
   end
 
   private

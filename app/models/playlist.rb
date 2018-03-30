@@ -28,14 +28,6 @@ class Playlist < Enclosure
     @content['velocity'] > 0
   end
 
-  def activate
-    self.class.update_content(id, { velocity: 10.0 })
-  end
-
-  def deactivate
-    self.class.update_content(id, { velocity: 0.0 })
-  end
-
   def fetch_tracks
     playlist_tracks = PinkSpider.new.fetch_tracks_of_playlist(id, updated_at)
 
