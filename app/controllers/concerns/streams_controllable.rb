@@ -93,13 +93,10 @@ module StreamsControllable
   end
 
   def set_global_resource
-    GLOBAL_RESOURCE_REGEXES.each do |regex, resource, type|
-      if @stream_id =~ regex
-        @resource = resource
-        @user     = User.find($1) if type == :user
-        break
-      end
+    _, @resource, type = GLOBAL_RESOURCE_REGEXES.find do |regex, _resource, _type|
+      @stream_id =~ regex
     end
+    @user = User.find($1) if type == :user
   end
 
   def set_need_visual

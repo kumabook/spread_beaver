@@ -3,6 +3,7 @@ require('paginated_array')
 module Playable
   extend ActiveSupport::Concern
   included do
+    include Viewable
     attr_accessor :is_played
 
     plays = "played_#{table_name}".to_sym
@@ -18,13 +19,14 @@ module Playable
     def play_class
       "Played#{table_name.singularize.capitalize}".constantize
     end
+    alias view_class play_class
 
     def user_played_hash(user, items)
       marks_hash_of_user(play_class, user, items)
     end
 
     def hot_items(stream: nil, query: nil, page: 1, per_page: nil)
-      count_hash = self.query_for_best_items(self.play_class, stream, query).user_count
+      count_hash = self.query_for_best_items(self.view_class, stream, query).user_count
       Mix::items_from_count_hash(self, count_hash, page: page, per_page: per_page)
     end
   end
