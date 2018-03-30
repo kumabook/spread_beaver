@@ -72,13 +72,13 @@ describe Entry do
     end
 
     it "showes popular entries within a certain time period" do
-      all = Entry.popular_items(period: 5.years.ago..Time.now)
+      all = Entry.popular_items(query: Mix::Query.new(5.years.ago..Time.now))
       expect(all.count).to eq(ITEM_NUM * 2)
 
-      latest_popular = Entry.popular_items(period: 10.days.ago..Time.now)
+      latest_popular = Entry.popular_items(query: Mix::Query.new(10.days.ago..Time.now))
       expect(latest_popular.count).to eq(ITEM_NUM)
 
-      latest_popular = Entry.popular_items(period: 1.years.ago..20.days.ago)
+      latest_popular = Entry.popular_items(query: Mix::Query.new(1.years.ago..20.days.ago))
       expect(latest_popular.count).to eq(ITEM_NUM)
     end
   end

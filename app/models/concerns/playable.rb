@@ -23,19 +23,9 @@ module Playable
       marks_hash_of_user(play_class, user, items)
     end
 
-    def hot_items(stream:   nil,
-                  period:   nil,
-                  locale:   nil,
-                  provider: nil,
-                  page:     1,
-                  per_page: nil)
-      best_items(clazz:    self.play_class,
-                 stream:   stream,
-                 period:   period,
-                 locale:   locale,
-                 provider: provider,
-                 page:     page,
-                 per_page: per_page)
+    def hot_items(stream: nil, query: nil, page: 1, per_page: nil)
+      count_hash = self.query_for_best_items(self.play_class, stream, query).user_count
+      Mix::items_from_count_hash(self, count_hash, page: page, per_page: per_page)
     end
   end
 end

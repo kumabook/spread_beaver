@@ -55,31 +55,26 @@ module EnclosureEngagementScorer
         .group(Enclosures[:id])
     end
 
-    def most_engaging_items(stream: nil,
-                            locale: nil,
-                            period: nil,
-                            provider: nil,
-                            page: 1,
-                            per_page: 10)
-      played    = self.query_for_best_items(PlayedEnclosure, stream, period, locale, provider)
+    def most_engaging_items(stream: nil, query: Mix::Query.new, page: 1, per_page: 10)
+      played    = self.query_for_best_items(PlayedEnclosure, stream, query)
                     .select("COUNT(played_enclosures.enclosure_id) * #{score_per(PlayedEnclosure)} as score, played_enclosures.enclosure_id")
                     .group("enclosure_id")
 
-      liked     = self.query_for_best_items(LikedEnclosure, stream, period, locale, provider)
+      liked     = self.query_for_best_items(LikedEnclosure, stream, query)
                     .select("COUNT(liked_enclosures.enclosure_id) * #{score_per(LikedEnclosure)} as score, liked_enclosures.enclosure_id")
                     .group("enclosure_id")
-      saved     = self.query_for_best_items(SavedEnclosure, stream, period, locale, provider)
+      saved     = self.query_for_best_items(SavedEnclosure, stream, query)
                     .select("COUNT(saved_enclosures.enclosure_id) * #{score_per(SavedEnclosure)} as score, saved_enclosures.enclosure_id")
                     .group("enclosure_id")
       # doesn't support locale, use stream filter instead
-      featured  = self.query_for_best_items(EntryEnclosure, stream, period, nil, provider)
+      featured  = self.query_for_best_items(EntryEnclosure, stream, query.no_locale)
                     .joins(:entry)
                     .distinct()
                     .select("COUNT(entries.feed_id) * #{score_per(EntryEnclosure)} as score, entry_enclosures.enclosure_id")
                     .group("entries.feed_id")
                     .group(:enclosure_id)
       # doesn't support locale, use stream filter instead
-      picked    = self.query_for_best_items(Pick, stream, period, nil, provider)
+      picked    = self.query_for_best_items(Pick, stream, query.no_locale)
                     .select("COUNT(container_id) * #{score_per(Pick)} as score, picks.enclosure_id")
                     .group(:enclosure_id)
 

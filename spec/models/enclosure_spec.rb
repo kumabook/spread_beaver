@@ -2,6 +2,7 @@ require 'rails_helper'
 require 'pink_spider_helper'
 
 describe Enclosure do
+  Query = Mix::Query
   let (:feeds) {
     5.times.map {|i| Feed.create!(id: "feed/http://test#{i}.com/rss" , title: "feed#{i}") }
   }
@@ -51,7 +52,7 @@ describe Enclosure do
     end
 
     it "should return most featured entries during specified period" do
-      old_items = Track.most_featured_items(period:   10.days.ago..Time.now,
+      old_items = Track.most_featured_items(query:    Query.new(10.days.ago..Time.now),
                                             page:     1,
                                             per_page: 10)
       expect(old_items.count).to eq(5)
@@ -61,7 +62,7 @@ describe Enclosure do
       expect(old_items[3]).to eq(tracks[1])
       expect(old_items[4]).to eq(tracks[0])
 
-      items     = Track.most_featured_items(period:   3.days.ago..Time.now,
+      items     = Track.most_featured_items(query:    Query.new(  3.days.ago..Time.now),
                                             page:     1,
                                             per_page: 10)
       expect(items.count).to eq(3)
@@ -81,7 +82,7 @@ describe Enclosure do
         }
       end
       it "should calcurated by feed count (not entry count" do
-        old_items = Track.most_featured_items(period:   10.days.ago..Time.now,
+        old_items = Track.most_featured_items(query:    Query.new(10.days.ago..Time.now),
                                               page:     1,
                                               per_page: 10)
         expect(old_items.count).to eq(5)

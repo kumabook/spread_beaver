@@ -24,19 +24,9 @@ module Likable
       marks_hash_of_user(like_class, user, items)
     end
 
-    def popular_items(stream:   nil,
-                      period:   nil,
-                      locale:   nil,
-                      provider: nil,
-                      page:     1,
-                      per_page: PER_PAGE)
-      best_items(clazz:    self.like_class,
-                 stream:   stream,
-                 period:   period,
-                 locale:   locale,
-                 provider: provider,
-                 page:     page,
-                 per_page: per_page)
+    def popular_items(stream: nil, query: nil, page: 1, per_page: PER_PAGE)
+      count_hash = self.query_for_best_items(self.like_class, stream, query).user_count
+      Mix::items_from_count_hash(self, count_hash, page: page, per_page: per_page)
     end
   end
 end

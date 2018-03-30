@@ -15,6 +15,9 @@ module Mix
       @provider         = provider
       @entries_per_feed = entries_per_feed
     end
+    def no_locale
+      Query.new(@period, @type, locale: nil, provider: @provider, entries_per_feed: @entries_per_feed)
+    end
     def cache_key
       prefix = ""
       prefix += "#{time2key(period.begin)}-#{time2key(period.end)}-" if @period.present?
@@ -50,20 +53,12 @@ module Mix
     id
   end
 
-  def entries_of_mix(page: 1, per_page: nil,query: nil)
+  def entries_of_mix(page: 1, per_page: nil, query: nil)
     case query.type
     when :hot
-      Entry.hot_items(stream:   self,
-                      period:   query.period,
-                      locale:   query.locale,
-                      page:     page,
-                      per_page: per_page)
+      Entry.hot_items(stream: self, query: query, page: page, per_page: per_page)
     when :popular
-      Entry.popular_items(stream:   self,
-                          period:   query.period,
-                          locale:   query.locale,
-                          page:     page,
-                          per_page: per_page)
+      Entry.popular_items(stream: self, query: query, page: page, per_page: per_page)
     when :featured
       # not support for entries
     end
@@ -72,40 +67,15 @@ module Mix
   def enclosures_of_mix(clazz, page: 1, per_page: nil, query: nil)
     case query.type
     when :hot
-      clazz.hot_items(stream:   self,
-                      period:   query.period,
-                      locale:   query.locale,
-                      provider: query.provider,
-                      page:     page,
-                      per_page: per_page)
+      clazz.hot_items(stream: self, query: query, page: page, per_page: per_page)
     when :popular
-      clazz.popular_items(stream:   self,
-                          period:   query.period,
-                          locale:   query.locale,
-                          provider: query.provider,
-                          page:     page,
-                          per_page: per_page)
+      clazz.popular_items(stream: self, query: query, page: page, per_page: per_page)
     when :featured
-      clazz.most_featured_items(stream:   self,
-                                period:   query.period,
-                                locale:   query.locale,
-                                provider: query.provider,
-                                page:     page,
-                                per_page: per_page)
+      clazz.most_featured_items(stream: self, query: query, page: page, per_page: per_page)
     when :picked
-      clazz.most_picked_items(stream:   self,
-                              period:   query.period,
-                              locale:   query.locale,
-                              provider: query.provider,
-                              page:     page,
-                              per_page: per_page)
+      clazz.most_picked_items(stream: self, query: query, page: page, per_page: per_page)
     when :engaging
-      clazz.most_engaging_items(stream:   self,
-                                period:   query.period,
-                                locale:   query.locale,
-                                provider: query.provider,
-                                page:     page,
-                                per_page: per_page)
+      clazz.most_engaging_items(stream: self, query: query, page: page, per_page: per_page)
     end
   end
 
@@ -176,5 +146,17 @@ module Mix
     (0...entries_per_feed).to_a
       .flat_map { |i| entries_list.map { |list| list[i] }}
       .select   { |a| a.present? }
+  end
+
+  def self.items_from_count_hash(clazz, count_hash, page: 1, per_page: PER_PAGE)
+    total_count   = count_hash.keys.count
+    sorted_hashes = PaginatedArray::sort_and_paginate_count_hash(count_hash, page: page, per_page: per_page)
+    items = clazz.with_content.find(sorted_hashes.map {|h| h[:id] })
+    sorted_items = sorted_hashes.map {|h|
+      item = items.select { |t| t.id == h[:id] }.first
+      item.engagement = count_hash[item.id]
+      item
+    }
+    PaginatedArray.new(sorted_items, total_count)
   end
 end

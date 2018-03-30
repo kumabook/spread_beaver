@@ -320,29 +320,8 @@ class Entry < ApplicationRecord
     entries = Entry.latest(since)
     Mix::mix_up_and_paginate(entries, entries_per_feed, page, per_page)
   end
-
-  def self.best_items(clazz:    nil,
-                      stream:   nil,
-                      locale:   nil,
-                      period:   nil,
-                      provider: nil,
-                      page:     1,
-                      per_page: PER_PAGE)
-    raise ArgumentError, "Parameter must be not nil" if period.nil? || clazz.nil?
-    query         = clazz.period(period).locale(locale)
-    query         = query.stream(stream) if stream.present?
-    count_hash    = query.user_count
-    total_count   = count_hash.keys.count
-    sorted_hashes = PaginatedArray::sort_and_paginate_count_hash(count_hash,
-                                                                 page:     page,
-                                                                 per_page: per_page)
-    entries = Entry.with_content.find(sorted_hashes.map {|h| h[:id] })
-    sorted_entries = sorted_hashes.map {|h|
-      item = entries.select { |e| e.id == h[:id] }.first
-      item.engagement = count_hash[item.id]
-      item
-    }
-    PaginatedArray.new(sorted_entries, total_count, page, per_page)
+  def self.query_for_best_items(clazz, stream, query={})
+    clazz.stream(stream).period(query.period).locale(query.locale)
   end
 
   def playlistify(force: false)

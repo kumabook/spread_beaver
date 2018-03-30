@@ -51,24 +51,24 @@ class V3::Streams::EnclosuresController < V3::ApiController
       when :hot
         from   = @newer_than.present? ? @newer_than : duration_for_ranking.ago
         to     = @older_than.present? ? @older_than : Time.now
-        @items = @enclosure_class.hot_items(period:   from..to,
+        query  = Mix::Query.new(from..to, :hot, provider: @provider)
+        @items = @enclosure_class.hot_items(query: query,
                                             page:     @page,
-                                            per_page: @per_page,
-                                            provider: @provider)
+                                            per_page: @per_page)
       when :popular
         from    = @newer_than.present? ? @newer_than : duration_for_ranking.ago
         to      = @older_than.present? ? @older_than : Time.now
-        @items  = @enclosure_class.popular_items(period:   from..to,
+        query   = Mix::Query.new(from..to, :popular, provider: @provider)
+        @items  = @enclosure_class.popular_items(query:    query,
                                                  page:     @page,
-                                                 per_page: @per_page,
-                                                 provider: @provider)
+                                                 per_page: @per_page)
       when :featured
         from    = @newer_than.present? ? @newer_than : duration_for_ranking.ago
         to      = @older_than.present? ? @older_than : Time.now
-        @items  = @enclosure_class.most_featured_items(period:   from..to,
+        query   = Mix::Query.new(from..to, :featured, provider: @provider)
+        @items  = @enclosure_class.most_featured_items(query:    query,
                                                        page:     @page,
-                                                       per_page: @per_page,
-                                                       provider: @provider)
+                                                       per_page: @per_page)
       when :liked
         @items = @enclosure_class.page(@page)
                                  .per(@per_page)

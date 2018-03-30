@@ -182,70 +182,24 @@ class Enclosure < ApplicationRecord
     end
   end
 
-  def self.most_featured_items(stream: nil,
-                               period: nil,
-                               locale: nil,
-                               provider: nil,
-                               page: 1,
-                               per_page: 10)
+  def self.most_featured_items(stream: nil, query: {}, page: 1, per_page: 10)
     # doesn't support locale, use stream filter instead
-    best_items(clazz:        EntryEnclosure,
-               count_method: :feed_count,
-               stream:       stream,
-               period:       period,
-               locale:       nil,
-               provider:     provider,
-               page:         page,
-               per_page:     per_page)
+    count_hash = self.query_for_best_items(EntryEnclosure, stream, query.no_locale).feed_count
+    Mix.items_from_count_hash(self, count_hash, page: page, per_page: per_page)
   end
 
-  def self.most_picked_items(stream: nil,
-                             period: nil,
-                             locale: nil,
-                             provider: nil,
-                             page: 1,
-                             per_page: 10)
+  def self.most_picked_items(stream: nil, query: {}, page: 1, per_page: 10)
     # doesn't support locale, use stream filter instead
-    best_items(clazz:        Pick,
-               count_method: :pick_count,
-               stream:       stream,
-               period:       period,
-               locale:       nil,
-               provider:     provider,
-               page:         page,
-               per_page:     per_page)
+    count_hash = self.query_for_best_items(Pick, stream, query.no_locale).pick_count
+    Mix.items_from_count_hash(self, count_hash, page: page, per_page: per_page)
   end
 
-  def self.query_for_best_items(clazz, stream, period, locale, provider)
+  def self.query_for_best_items(clazz, stream, query=nil)
     clazz.where(enclosure_type: self.name)
       .stream(stream)
-      .period(period)
-      .locale(locale)
-      .provider(provider)
-  end
-
-  def self.best_items(clazz: nil,
-                      count_method: :user_count,
-                      stream: nil,
-                      period: nil,
-                      locale: nil,
-                      provider: nil,
-                      page: 1,
-                      per_page: nil)
-    raise ArgumentError, "Parameter must be not nil" if period.nil?
-    query = self.query_for_best_items(clazz, stream, period, locale, provider)
-    count_hash    = query.public_send(count_method)
-    total_count   = count_hash.keys.count
-    sorted_hashes = PaginatedArray::sort_and_paginate_count_hash(count_hash,
-                                                                 page: page,
-                                                                 per_page: per_page)
-    items = self.with_content.find(sorted_hashes.map {|h| h[:id] })
-    sorted_items = sorted_hashes.map {|h|
-      item = items.select { |t| t.id == h[:id] }.first
-      item.engagement = count_hash[item.id]
-      item
-    }
-    PaginatedArray.new(sorted_items, total_count)
+      .period(query.period)
+      .locale(query.locale)
+      .provider(query.provider)
   end
 
   def legacy?
