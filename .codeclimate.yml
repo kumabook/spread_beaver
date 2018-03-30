@@ -2,6 +2,8 @@
 engines:
   brakeman:
     enabled: true
+    config:
+      url-safe-methods: sanitize_link
   bundler-audit:
     enabled: true
   csslint:

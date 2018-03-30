@@ -23,7 +23,7 @@ table.table.table-striped
       tr
         td.resource-menu data-id=item.id data-resource-id="#{@type.downcase}/#{item.id}"
         td = link_to content["title"] || item.id, item_path
-        td = link_to provider_id, item.permalink_url
+        td = link_to provider_id, sanitize_link(item.permalink_url)
         - item&.scores&.each_value do |score|
           td
             = "#{score[:value]} (#{score[:count]})"

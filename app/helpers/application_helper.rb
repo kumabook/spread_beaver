@@ -32,4 +32,12 @@ module ApplicationHelper
   def thumbnail_image_link(model, size = "50x50")
     link_to thumbnail_image_tag(model, size), thumbnail_path(model)
   end
+
+  def sanitize_link(href)
+    if href.start_with?("javascript:", "data:")
+      ""
+    else
+      href
+    end
+  end
 end
