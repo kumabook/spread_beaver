@@ -11,10 +11,6 @@ class EnclosuresController < ApplicationController
   before_action :set_query    , only: [:search]
   before_action :set_view_params
 
-  def model_class
-    enclosure_class
-  end
-
   def index
     if @entry.present?
       @entry_enclosures = @entry.entry_enclosures
@@ -84,7 +80,7 @@ class EnclosuresController < ApplicationController
   end
 
   def update_velocity(velocity)
-    target_id  = params["#{model_class.name.downcase}_id"]
+    target_id  = params["#{enclosure_class.name.downcase}_id"]
     @enclosure = enclosure_class.find(target_id)
     @enclosure.update_content(id, { velocity: velocity })
     redirect_back(fallback_location: root_path)
@@ -135,12 +131,12 @@ class EnclosuresController < ApplicationController
     end
 
     def user_item_params
-      target_id  = params["#{model_class.name.downcase}_id"]
-      target_key = "#{model_class.table_name.singularize}_id".to_sym
+      target_id  = params["#{enclosure_class.name.downcase}_id"]
+      target_key = "#{enclosure_class.table_name.singularize}_id".to_sym
       {
         :user_id        => current_user.id,
         target_key      => target_id,
-        :enclosure_type => model_class.name
+        :enclosure_type => enclosure_class.name
       }
     end
 
