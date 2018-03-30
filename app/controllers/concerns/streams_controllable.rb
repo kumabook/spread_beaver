@@ -15,6 +15,18 @@ module StreamsControllable
     before_action :set_locale         , only: [:show]
   end
 
+  GLOBAL_RESOURCE_REGEXES = [
+    [/(tag|playlist)\/global\.latest/            , :latest  , :shared],
+    [/(tag|playlist)\/global\.hot/               , :hot     , :shared],
+    [/(tag|playlist)\/global\.popular/           , :popular , :shared],
+    [/(tag|playlist)\/global\.featured/          , :featured, :shared],
+    [/user\/(.*)\/category\/global\.all/         , :all     , :user],
+    [/user\/(.*)\/(tag|playlist)\/global\.liked/ , :liked   , :user],
+    [/user\/(.*)\/(tag|playlist)\/global\.saved/ , :saved   , :user],
+    [/user\/(.*)\/(tag|playlist)\/global\.read/  , :read    , :user],
+    [/user\/(.*)\/(tag|playlist)\/global\.played/, :played  , :user],
+  ]
+
   class_methods do
     def calculate_continuation(items, page, per_page)
       if items.respond_to?(:total_count)
@@ -73,30 +85,12 @@ module StreamsControllable
   end
 
   def set_global_resource
-    case @stream_id
-    when /(tag|playlist)\/global\.latest/
-      @resource = :latest
-    when /(tag|playlist)\/global\.hot/
-      @resource = :hot
-    when /(tag|playlist)\/global\.popular/
-      @resource = :popular
-    when /(tag|playlist)\/global\.featured/
-      @resource = :featured
-    when /user\/(.*)\/category\/global\.all/
-      @resource = :all
-      @user     = User.find($1)
-    when /user\/(.*)\/(tag|playlist)\/global\.liked/
-      @resource = :liked
-      @user     = User.find($1)
-    when /user\/(.*)\/(tag|playlist)\/global\.saved/
-      @resource = :saved
-      @user     = User.find($1)
-    when /user\/(.*)\/(tag|playlist)\/global\.read/
-      @resource = :read
-      @user     = User.find($1)
-    when /user\/(.*)\/(tag|playlist)\/global\.played/
-      @resource = :played
-      @user     = User.find($1)
+    GLOBAL_RESOURCE_REGEXES.each do |regex, resource, type|
+      if @stream_id =~ regex
+        @resource = resource
+        @user    = User.find($1) if type == :user
+        break
+      end
     end
   end
 
