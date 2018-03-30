@@ -56,10 +56,26 @@ module EnclosureEngagementScorer
     end
 
     def most_engaging_items(stream: nil, query: Mix::Query.new, page: 1, per_page: 10)
+      score_tables = self.score_table_queries(stream, query)
+      bind_values  = self.score_bind_values(score_tables)
+
+      total_count  = Enclosure.where(type: self.name).count
+
+      select_mgr   = self.score_select_mgr(score_tables)
+
+      select_mgr.offset = (page - 1) < 0 ? 0 : (page - 1) * per_page
+      select_mgr.limit  = per_page
+
+      scores       = self.select_all(select_mgr, bind_values)
+      items        = self.with_content.find(scores.map {|h| h["id"] })
+      sorted_items = self.sort_items(items, scores, score_tables)
+      PaginatedArray.new(sorted_items, total_count, page, per_page)
+    end
+
+    def score_table_queries(stream, query)
       played    = self.query_for_best_items(PlayedEnclosure, stream, query)
                     .select("COUNT(played_enclosures.enclosure_id) * #{score_per(PlayedEnclosure)} as score, played_enclosures.enclosure_id")
                     .group("enclosure_id")
-
       liked     = self.query_for_best_items(LikedEnclosure, stream, query)
                     .select("COUNT(liked_enclosures.enclosure_id) * #{score_per(LikedEnclosure)} as score, liked_enclosures.enclosure_id")
                     .group("enclosure_id")
@@ -77,21 +93,11 @@ module EnclosureEngagementScorer
       picked    = self.query_for_best_items(Pick, stream, query.no_locale)
                     .select("COUNT(container_id) * #{score_per(Pick)} as score, picks.enclosure_id")
                     .group(:enclosure_id)
+      [played, liked, saved, featured, picked]
+    end
 
-      score_tables = [played, liked, saved, featured, picked]
-      bind_values  = self.score_bind_values(score_tables)
-
-      total_count  = Enclosure.where(type: self.name).count
-
-      select_mgr   = self.score_select_mgr(score_tables)
-
-      select_mgr.offset = (page - 1) < 0 ? 0 : (page - 1) * per_page
-      select_mgr.limit  = per_page
-
-      scores      = self.select_all(select_mgr, bind_values)
-      items = self.with_content.find(scores.map {|h| h["id"] })
-
-      sorted_items = scores.map do |h|
+    def sort_items(items, scores, score_tables)
+      scores.map do |h|
         item = items.select { |t| t.id == h["id"] }.first
         item.engagement = h["score"].to_i
         item.scores = score_tables.reduce({}) do |memo, t|
@@ -104,7 +110,6 @@ module EnclosureEngagementScorer
         end
         item
       end
-      PaginatedArray.new(sorted_items, total_count, page, per_page)
     end
   end
 end
