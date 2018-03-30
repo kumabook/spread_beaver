@@ -62,8 +62,9 @@ class EnclosuresController < ApplicationController
     @enclosure = enclosure_class.create_with_pink_spider(enclosure_params.to_h)
     respond_to do |format|
       if @enclosure.save
+        item_path = self.public_send("#{@type.downcase}_path".to_sym, @enclosure)
         format.html {
-          redirect_to item_path(@enclosure),
+          redirect_to item_path,
                       notice: "#{enclosure_class.name} #{@enclosure.id} was successfully created."
         }
       else
@@ -76,7 +77,7 @@ class EnclosuresController < ApplicationController
     @enclosure.destroy
     respond_to do |format|
       format.html {
-        redirect_to index_path,
+        redirect_to @index_path,
                     notice: "#{enclosure_class.name} was successfully destroyed."
       }
     end
@@ -98,24 +99,12 @@ class EnclosuresController < ApplicationController
 
   private
 
-    def type
-      params[:type]
-    end
-
     def enclosure_class
-      type.constantize
+      params[:type].constantize
     end
 
     def index_method
-      type.downcase.pluralize.to_sym
-    end
-
-    def index_path
-      self.public_send "#{type.downcase.pluralize}_path".to_sym
-    end
-
-    def item_path(enclosure)
-      self.public_send "#{type.downcase}_path".to_sym, enclosure
+      @type.downcase.pluralize.to_sym
     end
 
     def set_enclosure
@@ -139,6 +128,11 @@ class EnclosuresController < ApplicationController
       @query = params[:query]
     end
 
+    def set_view_params
+      @type       = params[:type]
+      @index_path = self.public_send("#{@type.downcase.pluralize}_path".to_sym)
+    end
+
     def user_item_params
       target_id  = params["#{model_class.name.downcase}_id"]
       target_key = "#{model_class.table_name.singularize}_id".to_sym
@@ -150,16 +144,10 @@ class EnclosuresController < ApplicationController
     end
 
     def enclosure_params
-      params.require(type.underscore.to_sym).permit(:id,
-                                                    :identifier,
-                                                    :provider,
-                                                    :owner_id,
-                                                    :url)
-    end
-
-    def set_view_params
-      @type       = type
-      @index_path = index_path
-      @item_path  = item_path @enclosure if @enclosure.present?
+      params.require(@type.underscore.to_sym).permit(:id,
+                                                     :identifier,
+                                                     :provider,
+                                                     :owner_id,
+                                                     :url)
     end
 end
