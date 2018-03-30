@@ -300,6 +300,10 @@ class Feed < ApplicationRecord
     end
   end
 
+  def label
+    title
+  end
+
   def as_json(options = {})
     h                = super(options)
     h['lastUpdated'] = lastUpdated.present? ? lastUpdated.to_time.to_i * 1000 : nil

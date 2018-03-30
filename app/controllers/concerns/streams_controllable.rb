@@ -50,31 +50,31 @@ module StreamsControllable
     @stream_id = CGI.unescape params[:id] if params[:id].present?
   end
 
-  def set_feed
-    if params[:id].present? && @stream_id.match(/feed\/.*/)
-      @feed = Feed.find_by(id: @stream_id)
-      @title  = @feed&.title
+  def get_resource_and_title_if_match(regex, clazz)
+    if params[:id].present? && @stream_id.match(regex)
+      model = clazz.find_by(id: @stream_id)
+      [model, model&.label]
+    else
+      [nil, ""]
     end
+  end
+
+  def set_feed
+    @feed, @title = get_resource_and_title_if_match(/feed\/.*/, Feed)
   end
 
   def set_keyword
-    if params[:id].present? && @stream_id.match(/keyword\/.*/)
-      @keyword = Keyword.find_by(id: @stream_id)
-      @title  = @keyword&.label
-    end
+    @keyword, @title = get_resource_and_title_if_match(/keyword\/.*/, Keyword)
   end
 
   def set_tag
-    if params[:id].present? && @stream_id.match(/user\/.*\/tag\/.*/)
-      @tag = Tag.find_by(id: @stream_id)
-      @title  = @tag&.label
-    end
+    @tag, @title = get_resource_and_title_if_match(/user\/.*\/tag\/.*/, Tag)
   end
 
   def set_journal
     if params[:id].present? && @stream_id.match(/journal\/.*/)
       @journal = Journal.find_by(stream_id: @stream_id)
-      @title  = @journal&.label
+      @title   = @journal&.label
     end
   end
 
