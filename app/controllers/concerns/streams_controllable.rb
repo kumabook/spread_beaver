@@ -38,6 +38,14 @@ module StreamsControllable
     end
   end
 
+  def mix_query_for_stream
+    duration_for_ranking = Setting.duration_for_ranking&.days || 3.days
+    from   = @newer_than.present? ? @newer_than : duration_for_ranking.ago
+    to     = @older_than.present? ? @older_than : Time.now
+    locale = "ja" # FIX after client updates
+    Mix::Query.new(from..to, nil, locale: locale)
+  end
+
   def set_stream_id
     @stream_id = CGI.unescape params[:id] if params[:id].present?
   end
@@ -88,7 +96,7 @@ module StreamsControllable
     GLOBAL_RESOURCE_REGEXES.each do |regex, resource, type|
       if @stream_id =~ regex
         @resource = resource
-        @user    = User.find($1) if type == :user
+        @user     = User.find($1) if type == :user
         break
       end
     end

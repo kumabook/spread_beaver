@@ -36,8 +36,7 @@ class V3::StreamsController < V3::ApiController
   private
 
   def set_items
-    duration             = Setting.duration_for_common_stream&.days || 5.days
-    duration_for_ranking = Setting.duration_for_ranking&.days || 3.days
+    duration = Setting.duration_for_common_stream&.days || 5.days
 
     if @resource.present?
       case @resource
@@ -51,17 +50,9 @@ class V3::StreamsController < V3::ApiController
         @items = current_resource_owner.stream_entries(page:     @page,
                                                        per_page: @per_page)
       when :hot
-        from   = @newer_than.present? ? @newer_than : duration_for_ranking.ago
-        to     = @older_than.present? ? @older_than : Time.now
-        locale = "ja" # FIX after client updates
-        query  = Mix::Query.new(from..to, :hot, locale: locale)
-        @items = Entry.hot_items(query: query, page: @page, per_page: @per_page)
+        @items = Entry.hot_items(query: mix_query_for_stream, page: @page, per_page: @per_page)
       when :popular
-        from   = @newer_than.present? ? @newer_than : duration_for_ranking.ago
-        to     = @older_than.present? ? @older_than : Time.now
-        locale = "ja" # FIX after client updates
-        query  = Mix::Query.new(from..to, :popular, locale: locale)
-        @items = Entry.popular_items(query: query, page: @page, per_page: @per_page)
+        @items = Entry.popular_items(query: mix_query_for_stream, page: @page, per_page: @per_page)
       when :liked
         @items = Entry.page(@page)
                       .per(@per_page)
