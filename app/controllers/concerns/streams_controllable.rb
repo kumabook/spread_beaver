@@ -128,19 +128,13 @@ module StreamsControllable
   end
 
   def set_stream
-    if @feed.present?
-      @stream = @feed
-    elsif @keyword.present?
-      @stream = @keyword
-    elsif @tag.present?
-      @stream = @tag
-    elsif @topic.present?
-      @stream = @topic
-    elsif @category.present?
-      @stream = @category
-    elsif @journal.present?
-      @stream = @journal.current_issue
+    [@feed, @keyword, @tag, @topic, @category].each do |stream|
+      if stream.present?
+        @stream = stream
+        break
+      end
     end
+    @stream = @journal.current_issue if @journal.present?
   end
 
   def set_mix_type
