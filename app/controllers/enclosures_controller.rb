@@ -4,12 +4,12 @@ class EnclosuresController < ApplicationController
   include LikableController
   include SavableController
   include PlayableController
+  before_action :set_type
   before_action :set_enclosure, only: [:show, :destroy]
   before_action :set_content  , only: [:show, :edit]
   before_action :set_entry    , only: [:index]
   before_action :set_issue    , only: [:index]
   before_action :set_query    , only: [:search]
-  before_action :set_view_params
 
   def index
     if @entry.present?
@@ -58,9 +58,8 @@ class EnclosuresController < ApplicationController
     @enclosure = enclosure_class.create_with_pink_spider(enclosure_params.to_h)
     respond_to do |format|
       if @enclosure.save
-        item_path = self.public_send("#{@type.downcase}_path".to_sym, @enclosure)
         format.html {
-          redirect_to item_path,
+          redirect_to view_context.enc_path(@type, @enclosure),
                       notice: "#{enclosure_class.name} #{@enclosure.id} was successfully created."
         }
       else
@@ -73,7 +72,7 @@ class EnclosuresController < ApplicationController
     @enclosure.destroy
     respond_to do |format|
       format.html {
-        redirect_to @index_path,
+        redirect_to view_context.index_enc_path(@type),
                     notice: "#{enclosure_class.name} was successfully destroyed."
       }
     end
@@ -97,11 +96,15 @@ class EnclosuresController < ApplicationController
   private
 
     def enclosure_class
-      params[:type].constantize
+      @type.constantize
     end
 
     def index_method
       @type.downcase.pluralize.to_sym
+    end
+
+    def set_type
+      @type = params[:type]
     end
 
     def set_enclosure
@@ -123,11 +126,6 @@ class EnclosuresController < ApplicationController
 
     def set_query
       @query = params[:query]
-    end
-
-    def set_view_params
-      @type       = params[:type]
-      @index_path = self.public_send("#{@type.downcase.pluralize}_path".to_sym)
     end
 
     def user_item_params
