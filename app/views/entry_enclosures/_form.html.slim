@@ -1,5 +1,5 @@
 - type = @entry_enclosure.enclosure_type.downcase.pluralize
-- url = public_send "entry_#{type}_path".to_sym, @entry.id
+- url = entry_enc_path(type, @entry)
 = form_for @entry_enclosure, html: { class: "form form-horizontal" } do |f|
   - if @entry_enclosure.errors.any?
     #error_explanation
