@@ -1,6 +1,7 @@
 module EntryMark
   extend ActiveSupport::Concern
   included do
+    include Streamable
     scope :period, -> (period) {
       where({ table_name.to_sym => { created_at: period }})
     }
@@ -28,23 +29,6 @@ module EntryMark
     }
     scope :issue, -> (issue) {
       joins(entry: :issues).where(issues: { id: issue.id })
-    }
-    scope :stream, -> (s) {
-      if s.kind_of?(Feed)
-        feed(s)
-      elsif s.kind_of?(Keyword)
-        keyword(s)
-      elsif s.kind_of?(Tag)
-        tag(s)
-      elsif s.kind_of?(Topic)
-        topic(s)
-      elsif s.kind_of?(Category)
-        category(s)
-      elsif s.kind_of?(Issue)
-        issue(s)
-      else
-        all
-      end
     }
   end
 

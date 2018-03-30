@@ -4,6 +4,7 @@ require('paginated_array')
 require('playlistified_entry')
 
 class Entry < ApplicationRecord
+  include Streamable
   include Likable
   include Savable
   include Readable
@@ -57,24 +58,6 @@ class Entry < ApplicationRecord
   scope :period, -> (period) {
     where({ table_name.to_sym => { published:  period }})
   }
-  scope :stream, -> (s) {
-    if s.kind_of?(Feed)
-      feed(s)
-    elsif s.kind_of?(Keyword)
-      keyword(s)
-    elsif s.kind_of?(Tag)
-      tag(s)
-    elsif s.kind_of?(Topic)
-      topic(s)
-    elsif s.kind_of?(Category)
-      category(s)
-    elsif s.kind_of?(Issue)
-      issue(s)
-    else
-      all
-    end
-  }
-
   scope :search, -> (query) {
     if query.present?
       where("title ILIKE ?", "%#{query}%")

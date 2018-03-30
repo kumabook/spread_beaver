@@ -4,6 +4,7 @@ class Enclosure < ApplicationRecord
   attr_accessor :content
   attr_accessor :partial_entries
   attr_accessor :scores
+  include Streamable
   include Likable
   include Savable
   include Playable
@@ -63,23 +64,6 @@ class Enclosure < ApplicationRecord
   }
   scope :period, -> (period) {
     where({ table_name.to_sym => { created_at:  period }})
-  }
-  scope :stream, -> (s) {
-    if s.kind_of?(Feed)
-      feed(s)
-    elsif s.kind_of?(Keyword)
-      keyword(s)
-    elsif s.kind_of?(Tag)
-      tag(s)
-    elsif s.kind_of?(Topic)
-      topic(s)
-    elsif s.kind_of?(Category)
-      category(s)
-    elsif s.kind_of?(Issue)
-      issue(s)
-    else
-      all
-    end
   }
 
   def self.find_or_create_by_content(content)
