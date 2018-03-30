@@ -4,6 +4,7 @@ engines:
     enabled: true
     config:
       url-safe-methods: sanitize_link
+      safe-methods: paginate_for_mix
   bundler-audit:
     enabled: true
   csslint:

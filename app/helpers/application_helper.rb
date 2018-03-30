@@ -40,4 +40,8 @@ module ApplicationHelper
       href
     end
   end
+
+  def paginate_for_mix(items, options)
+    CGI.unescape paginate(items, options)
+  end
 end

@@ -3,7 +3,7 @@
   h1 = "#{@enclosure_class.name} #{@type} mix (#{params[:period]}: #{@period})"
 
 
-== CGI.unescape paginate(@items, params: { id: CGI.escape(params[:id]) })
+== paginate_for_mix @items, params: { id: CGI.escape(params[:id]) }
 table.table.table-striped
   thead
     tr

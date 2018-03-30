@@ -1,7 +1,7 @@
 .page-header
   h1 = "Entries #{@type} mix (#{params[:period]}: #{@period})"
 
-= paginate @items, params: { id: CGI.escape(params[:id]) }
+== paginate_for_mix @items, params: { id: CGI.escape(params[:id]) }
 table.table.table-striped
   thead
     tr
