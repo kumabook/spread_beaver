@@ -212,14 +212,9 @@ class Enclosure < ApplicationRecord
     hash['entriesCount'] = entries_count
     hash['pickCount']    = pick_count
     hash.delete('users')
-    if !is_liked.nil?
-      hash['is_liked'] = is_liked
-    end
-    if !is_saved.nil?
-      hash['is_saved'] = is_saved
-    end
-    if !is_played.nil?
-      hash['is_played'] = is_played
+    [:is_liked, :is_saved, :is_played, :engagement].each do |method|
+      v = self.public_send(method)
+      hash[method.to_s] = v if !v.nil?
     end
 
     if !@content.nil?
@@ -229,12 +224,6 @@ class Enclosure < ApplicationRecord
     if !@partial_entries.nil?
       hash['entries'] = @partial_entries.map { |e| e.as_partial_json }
     end
-
-    if !@engagement.nil?
-      hash['engagement'] = @engagement
-    end
-
-    hash['id'] = id
     hash
   end
 
