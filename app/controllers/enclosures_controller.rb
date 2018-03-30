@@ -96,7 +96,14 @@ class EnclosuresController < ApplicationController
   private
 
     def enclosure_class
-      @type.constantize
+      case @type
+      when "Track"
+        Track
+      when "Album"
+        Album
+      when "Playlist"
+        Playlist
+      end
     end
 
     def index_method
