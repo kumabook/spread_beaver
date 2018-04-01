@@ -14,17 +14,6 @@ class Feed < ApplicationRecord
 
   self.primary_key = :id
 
-  WAITING_SEC_FOR_FEED = 0.25
-  @@crawler_type = :pink_spider # :feedlr or :pink_spider
-
-  def self.crawler_type
-    @@crawler_type
-  end
-
-  def self.crawler_type=(val)
-    @@crawler_type = val
-  end
-
   scope :search, -> (query) {
     q = search_query(query)
     case q[:type]
@@ -134,37 +123,6 @@ class Feed < ApplicationRecord
     end
   end
 
-  def self.fetch_all_latest_entries
-    feeds = Feed.all
-    result = feeds.map do |f|
-      sleep(WAITING_SEC_FOR_FEED)
-      f.fetch_latest_entries
-    end
-    if @@crawler_type == :feedlr
-      Feed.update_visuals(feeds)
-    end
-    result
-  end
-
-  def fetch_latest_entries
-    if @@crawler_type == :feedlr
-      fetch_latest_entries_with_feedlr
-    else
-      fetch_latest_entries_with_pink_spider
-    end
-  end
-
-  def self.update_visuals(feeds)
-    client = Feedlr::Client.new
-    feedlr_feeds = client.feeds(feeds.map { |f| f.id })
-    return [] if feedlr_feeds.nil?
-    feedlr_feeds.map do |feedlr_feed|
-      feeds.select { |f| f.id == feedlr_feed.id }.each do |feed|
-        feed.update_visuals_with_feedlr(feedlr_feed)
-      end
-    end
-  end
-
   def update_visuals_with_feedlr(feed, force=false)
     ["visualUrl", "coverUrl", "iconUrl"].each do |url_method|
       url = feed.public_send(url_method)
@@ -176,128 +134,9 @@ class Feed < ApplicationRecord
     save
   end
 
-  def fetch_latest_entries_with_feedlr
-    new_entries   = []
-    new_tracks    = []
-    new_playlists = []
-    new_albums    = []
-    client = Feedlr::Client.new(sandbox: false)
-    logger.info("Fetch latest entries of #{id}")
-    newer_than = crawled.present? ? crawled.to_time.to_i : nil
-    cursor = client.stream_entries_contents(id, newerThan: newer_than)
-
-    if cursor.items.nil?
-      return {
-        feed:      self,
-        entries:   [],
-        tracks:    [],
-        playlists: [],
-        albums:    [],
-      }
-    end
-
-    cursor.items.each do |entry|
-      begin
-        sleep(WAITING_SEC_FOR_FEED)
-        if Entry.find_by(feed_id: self.id, originId: entry.originId).present?
-          next
-        end
-        e = Entry.first_or_create_by_feedlr(entry, self)
-        new_entries << e
-        logger.info("Fetch tracks of #{e.url}")
-        hash = e.crawl
-        new_tracks.concat(hash[:tracks])
-        new_playlists.concat(hash[:playlists])
-        new_albums.concat(hash[:albums])
-        if self.lastUpdated.nil? || self.lastUpdated < e.published
-          self.lastUpdated = e.published
-        end
-      rescue => err
-        logger.error("Failed to fetch #{e.url}  #{err}")
-        logger.error(err.backtrace)
-      end
-    end
-    update(crawled: DateTime.now)
-    {
-      feed:      self,
-      entries:   new_entries,
-      tracks:    new_tracks,
-      playlists: new_playlists,
-      albums:    new_albums,
-    }
-  end
-
-
-  def fetch_latest_entries_with_pink_spider
-    new_entries   = []
-    new_tracks    = []
-    new_playlists = []
-    new_albums    = []
-    logger.info("Fetch latest entries of #{id}")
-    response = PinkSpider.new.fetch_entries_of_feed(self.url, nil)
-    items    = response["items"]
-    if items.nil?
-      return {
-        feed:      self,
-        entries:   [],
-        tracks:    [],
-        playlists: [],
-        albums:    [],
-      }
-    end
-
-    items.each do |entry|
-      begin
-        sleep(WAITING_SEC_FOR_FEED)
-        if Entry.find_by(feed_id: self.id, originId: entry["origin_id"]).present?
-          next
-        end
-        e = Entry.first_or_create_by_pink_spider(entry, self)
-        new_entries << e
-        logger.info("Fetch tracks of #{e.url}")
-        hash = e.crawl
-        new_tracks.concat(hash[:tracks])
-        new_playlists.concat(hash[:playlists])
-        new_albums.concat(hash[:albums])
-        if self.lastUpdated.nil? || self.lastUpdated < e.published
-          self.lastUpdated = e.published
-        end
-      rescue => err
-        logger.error("Failed to fetch #{entry["url"]}  #{err}")
-        logger.error(err.backtrace)
-      end
-    end
-    update(crawled: DateTime.now)
-    {
-      feed:      self,
-      entries:   new_entries,
-      tracks:    new_tracks,
-      playlists: new_playlists,
-      albums:    new_albums,
-    }
-  rescue
-    return {
-      feed:      self,
-      entries:   [],
-      tracks:    [],
-      playlists: [],
-      albums:    [],
-    }
-  end
-
   def self.find_or_create_by_url_on_pink_spider(url)
     feed = PinkSpider::new.create_feed(url)
     Feed.first_or_create_by_pink_spider(feed)
-  end
-
-  def self.create_all_on_pink_spider
-    Feed.all.each do |f|
-      begin
-        Feed.find_or_create_by_url(f.url)
-      rescue
-        puts "#{f.url} seems to be dead"
-      end
-    end
   end
 
   def label

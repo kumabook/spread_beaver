@@ -20,9 +20,8 @@ describe 'rake task crawl' do
 
   describe 'crawl' do
     let(:task) { 'crawl' }
-    context "crawler_type = :feeldr" do
+    context "type = :feeldr" do
       before do
-        Feed::crawler_type = :feedlr
         allow_any_instance_of(Feedlr::Client).to receive(:feeds) do |this, ids|
           ids.map {|id| FeedlrHelper::feed(id) }
         end
@@ -34,17 +33,16 @@ describe 'rake task crawl' do
         end
       end
       it 'is succeed.' do
-        expect(@rake[task].invoke).to be_truthy
+        expect(@rake[task].invoke("feedlr")).to be_truthy
       end
     end
 
     context "craawler_type = :pink_spider" do
       before do
-        Feed::crawler_type = :pink_spider
         mock_up_pink_spider
       end
       it 'is succeed.' do
-        expect(@rake[task].invoke).to be_truthy
+        expect(@rake[task].invoke("pink_spider")).to be_truthy
       end
     end
   end
