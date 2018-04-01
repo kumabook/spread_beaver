@@ -37,49 +37,55 @@ class V3::Streams::EnclosuresController < V3::ApiController
   end
 
   def set_items
-    duration = Setting.duration_for_common_stream&.days || 5.days
-
     if @resource.present?
-      case @resource
-      when :latest
-        since   = @newer_than.present? ? @newer_than : duration.ago
-        @items = @enclosure_class.latest(since)
-                                 .page(@page)
-                                 .per(@per_page)
-                                 .provider(@provider)
-      when :hot
-        @items = @enclosure_class.hot_items(query:    mix_query_for_stream,
-                                            page:     @page,
-                                            per_page: @per_page)
-      when :popular
-        @items  = @enclosure_class.popular_items(query:    mix_query_for_stream,
-                                                 page:     @page,
-                                                 per_page: @per_page)
-      when :featured
-        @items  = @enclosure_class.most_featured_items(query:    mix_query_for_stream,
-                                                       page:     @page,
-                                                       per_page: @per_page)
-      when :liked
-        @items = @enclosure_class.page(@page)
-                                 .per(@per_page)
-                                 .provider(@provider)
-                                 .liked(@user)
-      when :saved
-        @items = @enclosure_class.page(@page)
-                                 .per(@per_page)
-                                 .provider(@provider)
-                                 .saved(@user)
-      when :played
-        @items = @enclosure_class.page(@page)
-                                 .per(@per_page)
-                                 .provider(@provider)
-                                 .played(@user)
-      end
+      @items = items_of_global_resource
     elsif @stream.present?
       @items = @enclosure_class.page(@page)
                                .per(@per_page)
                                .provider(@provider)
                                .stream(@stream)
     end
+  end
+
+  private
+  def items_of_global_resource
+    case @resource
+    when :latest
+      @enclosure_class.latest(newer_than_from_param_or_default.ago)
+        .page(@page)
+        .per(@per_page)
+        .provider(@provider)
+    when :hot, :popular, :featured
+      items_of_mix_resource(@resource)
+    when :liked, :saved, :played
+      items_of_user_mark(@resource)
+    else
+      nil
+    end
+  end
+
+  def items_of_mix_resource(mix_type)
+    case mix_type
+    when :hot
+      @enclosure_class.hot_items(query:    mix_query_for_stream,
+                                 page:     @page,
+                                 per_page: @per_page)
+    when :popular
+      @enclosure_class.popular_items(query:    mix_query_for_stream,
+                                     page:     @page,
+                                     per_page: @per_page)
+    when :featured
+      @enclosure_class.most_featured_items(query:    mix_query_for_stream,
+                                           page:     @page,
+                                           per_page: @per_page)
+    end
+  end
+
+  def items_of_user_mark(user_mark)
+    @enclosure_class
+      .page(@page)
+      .per(@per_page)
+      .provider(@provider)
+      .try!(user_mark, @user)
   end
 end

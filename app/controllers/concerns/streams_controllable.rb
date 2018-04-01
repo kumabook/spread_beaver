@@ -167,4 +167,8 @@ module StreamsControllable
   def entries_per_feed
     Setting.latest_entries_per_feed || 3
   end
+
+  def newer_than_from_param_or_default
+    @newer_than || Setting.duration_for_common_stream&.days
+  end
 end
