@@ -33,5 +33,11 @@ module EntryMark
   end
 
   class_methods do
+    def marker_params(user, id, _)
+      {
+        user:     user,
+        entry_id: id,
+      }
+    end
   end
 end

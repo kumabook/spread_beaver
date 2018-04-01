@@ -27,53 +27,17 @@ class V3::MarkersController < V3::ApiController
     @ids = @ids.select {|id| id.present? }
     case @action
     when 'markAsLiked'
-      @ids.each do |id|
-        begin
-          @like = LikedEntry.create(user:     current_resource_owner,
-                                    entry_id: id)
-        rescue ActiveRecord::RecordNotUnique
-        end
-      end
-      render json: {}, status: 200
+      mark_items(LikedEntry)
     when 'markAsUnliked'
-      @ids.each do |id|
-        @like = LikedEntry.find_by(user:     current_resource_owner,
-                                   entry_id: id)
-        @like.destroy if @like.present?
-      end
-      render json: {}, status: 200
+      unmark_items(LikedEntry)
     when 'markAsSaved'
-      @ids.each do |id|
-        begin
-          @saved_entry = SavedEntry.create(user: current_resource_owner,
-                                           entry_id: id)
-        rescue ActiveRecord::RecordNotUnique
-        end
-      end
-      render json: {}, status: 200
+      mark_items(SavedEntry)
     when 'markAsUnsaved'
-      @ids.each do |id|
-        @saved_entry = SavedEntry.find_by(user: current_resource_owner,
-                                          entry_id: id)
-        @saved_entry.destroy if @saved_entry.present?
-      end
-      render json: {}, status: 200
+      unmark_items(SavedEntry)
     when 'markAsRead'
-      @ids.each do |id|
-        begin
-          @read_entry = ReadEntry.create(user: current_resource_owner,
-                                         entry_id: id)
-        rescue ActiveRecord::RecordNotUnique
-        end
-      end
-      render json: {}, status: 200
+      mark_items(ReadEntry)
     when 'keepUnread'
-      @ids.each do |id|
-        @read_entry = ReadEntry.find_by(user: current_resource_owner,
-                                        entry_id: id)
-        @read_entry.destroy if @read_entry.present?
-      end
-      render json: {}, status: 200
+      unmark_items(ReadEntry)
     end
   end
 
@@ -82,55 +46,53 @@ class V3::MarkersController < V3::ApiController
     @ids = @ids.select {|id| id.present? }
     case @action
     when 'markAsLiked'
-      @ids.each do |id|
-        begin
-          @like = LikedEnclosure.create(user:           current_resource_owner,
-                                        enclosure_id:   id,
-                                        enclosure_type: type)
-        rescue ActiveRecord::RecordNotUnique
-        end
-      end
-      render json: {}, status: 200
+      mark_items(LikedEnclosure, type)
     when 'markAsUnliked'
-      @ids.each do |id|
-        @like = LikedEnclosure.find_by(user:         current_resource_owner,
-                                       enclosure_id: id)
-        @like.destroy if @like.present?
-      end
-      render json: {}, status: 200
+      unmark_items(LikedEnclosure, type)
     when 'markAsSaved'
+      mark_items(SavedEnclosure, type)
+    when 'markAsUnsaved'
+      unmark_items(SavedEnclosure, type)
+    when /markAsPlayed/
+      mark_items_if_elapsed(PlayedEnclosure, type)
+    end
+  end
+
+  private
+    def mark_items(mark_class, type=nil)
       @ids.each do |id|
         begin
-          @save = SavedEnclosure.create(user:           current_resource_owner,
-                                        enclosure_id:   id,
-                                        enclosure_type: type)
+          params = mark_class.marker_params(current_resource_owner, id, type)
+          @mark  = mark_class.create(params)
         rescue ActiveRecord::RecordNotUnique
-        end
-      end
-      render json: {}, status: 200
-    when 'markAsUnsaved'
-      @ids.each do |id|
-        @save = SavedEnclosure.find_by(user:         current_resource_owner,
-                                       enclosure_id: id)
-        @save.destroy if @save.present?
-      end
-      render json: {}, status: 200
-    when /markAsPlayed/
-      @ids.each do |id|
-        recent_play = PlayedEnclosure
-                        .period(1.day.ago..Time.now)
-                        .where(user: current_resource_owner,
-                               enclosure_id: id)
-                        .limit(1)
-                        .first
-        if recent_play.nil?
-          @play = PlayedEnclosure.new(user:           current_resource_owner,
-                                      enclosure_id:   id,
-                                      enclosure_type: type)
-          @play.save
         end
       end
       render json: {}, status: 200
     end
-  end
+
+    def unmark_items(mark_class, type=nil)
+      @ids.each do |id|
+        params = mark_class.marker_params(current_resource_owner, id, type)
+        @mark  = mark_class.find_by(params)
+        @mark.destroy if @mark.present?
+      end
+      render json: {}, status: 200
+    end
+
+    def mark_items_if_elapsed(mark_class, type, duration=1.day.ago)
+      @ids.each do |id|
+        recent_play = mark_class
+                        .period(duration..Float::INFINITY)
+                        .where(user: current_resource_owner, enclosure_id: id)
+                        .limit(1)
+                        .first
+        if recent_play.nil?
+          @mark = mark_class.new(user:           current_resource_owner,
+                                 enclosure_id:   id,
+                                 enclosure_type: type)
+          @mark.save
+        end
+      end
+      render json: {}, status: 200
+    end
 end

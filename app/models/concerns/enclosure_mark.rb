@@ -38,5 +38,12 @@ module EnclosureMark
   end
 
   class_methods do
+    def marker_params(user, id, type=nil)
+      {
+        user:           user,
+        enclosure_id:   id,
+        enclosure_type: type,
+      }
+    end
   end
 end
