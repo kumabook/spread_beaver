@@ -53,7 +53,7 @@ describe FeedsController, type: :controller do
       context "crawler_type = :feedlr" do
         before do
           allow_any_instance_of(Feedlr::Client).to receive(:feeds).and_return([])
-          post :create, params: { feed: { url: new_url }}
+          post :create, params: { feed: { url: new_url }, crawler_type: "feedlr" }
         end
         it { expect(response).to render_template("new") }
         it { expect(Feed.find_by(id: "feed/#{new_url}")).to be_nil }
@@ -62,7 +62,7 @@ describe FeedsController, type: :controller do
       context "crawler_type = :pink_spider" do
         before do
           allow_any_instance_of(PinkSpider).to receive(:create_feed).and_return(nil)
-          post :create, params: { feed: { url: new_url }}
+          post :create, params: { feed: { url: new_url }, crawler_type: "pink_spider" }
         end
         it { expect(response).to render_template("new") }
         it { expect(Feed.find_by(id: "feed/#{new_url}")).to be_nil }
@@ -72,12 +72,11 @@ describe FeedsController, type: :controller do
     context 'when id exists' do
       context "crawler_type = :feedlr" do
         before do
-          Feed::crawler_type = :feedlr
           allow_any_instance_of(Feedlr::Client).to receive(:feeds).and_return([feedly_feed])
         end
         context 'when succeeds in creating' do
           before do
-            post :create, params: { feed: { url: new_url }}
+            post :create, params: { feed: { url: new_url }, crawler_type: "feedlr" }
           end
           it { expect(response).to redirect_to feeds_url }
           it { expect(Feed.find_by(id: "feed/#{new_url}")).not_to be_nil }
@@ -85,7 +84,7 @@ describe FeedsController, type: :controller do
         context 'when failes in creating' do
           before do
             allow_any_instance_of(Feed).to receive(:save).and_return(false)
-            post :create, params: { feed: { url: new_url }}
+            post :create, params: { feed: { url: new_url }, crawler_type: "feedlr" }
           end
           it { expect(response).to redirect_to feeds_url }
           it { expect(flash[:notice]).not_to be_nil }
@@ -93,12 +92,11 @@ describe FeedsController, type: :controller do
       end
       context "crawler_type = :pink_spider" do
         before do
-          Feed::crawler_type = :pink_spider
           allow_any_instance_of(PinkSpider).to receive(:create_feed).and_return(pink_spider_feed)
         end
         context 'when succeeds in creating' do
           before do
-            post :create, params: { feed: { url: new_url }}
+            post :create, params: { feed: { url: new_url }, crawler_type: "pink_spider" }
           end
           it { expect(response).to redirect_to feeds_url }
           it { expect(Feed.find_by(id: "feed/#{new_url}")).not_to be_nil }
@@ -106,7 +104,7 @@ describe FeedsController, type: :controller do
         context 'when failes in creating' do
           before do
             allow_any_instance_of(Feed).to receive(:save).and_return(false)
-            post :create, params: { feed: { url: new_url }}
+            post :create, params: { feed: { url: new_url }, crawler_type: "pink_spider" }
           end
           it { expect(response).to redirect_to feeds_url }
           it { expect(flash[:notice]).not_to be_nil }

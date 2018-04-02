@@ -58,8 +58,8 @@ class Feed < ApplicationRecord
     end
   end
 
-  def self.find_or_create_by_url(url)
-    if @@crawler_type == :feedlr
+  def self.find_or_create_by_url(url, crawler_type=:pink_spider)
+    if crawler_type == :feedlr
       Feed.find_or_create_by_ids_with_feedlr(["feed/#{url}"]).first
     else
       Feed.find_or_create_by_url_on_pink_spider(url)

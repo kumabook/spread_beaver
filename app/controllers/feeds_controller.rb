@@ -27,7 +27,7 @@ class FeedsController < ApplicationController
   end
 
   def create
-    @feed = Feed.find_or_create_by_url(feed_params[:url])
+    @feed = Feed.find_or_create_by_url(feed_params[:url], crawler_type)
     respond_to do |format|
       if @feed.nil?
         @feed = Feed.new
@@ -80,5 +80,14 @@ class FeedsController < ApplicationController
                                  :visualUrl, :coverUrl, :iconUrl,
                                  :language, :partial, :coverColor,
                                  topics: [])
+  end
+
+  def crawler_type
+    case params[:crawler_type]
+    when "feedlr"
+      :feedlr
+    else
+      :pink_spider
+    end
   end
 end
