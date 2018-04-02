@@ -57,7 +57,7 @@ class RSSCrawler < ApplicationJob
     crawler_result = Result.new(feed)
     client = Feedlr::Client.new(sandbox: false)
     logger.info("Fetch latest entries of #{feed.id}")
-    newer_than = feed.crawled.present? ? feed.crawled.to_time.to_i : nil
+    newer_than = feed.crawled&.to_time&.to_i
     cursor = client.stream_entries_contents(feed.id, newerThan: newer_than)
 
     return crawler_result if cursor.items.nil?
