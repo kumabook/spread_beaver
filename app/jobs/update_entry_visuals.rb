@@ -17,7 +17,7 @@ class UpdateEntryVisuals < ApplicationJob
         h[e.id][:feedlr_entry] = e
         h
       end
-      hash.each do |id, value|
+      hash.each do |_id, value|
         entry        = value[:entry]
         feedlr_entry = value[:feedlr_entry]
         visual       = feedlr_entry&.visual
