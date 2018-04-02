@@ -37,11 +37,9 @@ class RSSCrawler < ApplicationJob
           next
         end
         e = Entry.first_or_create_by_pink_spider(entry, feed)
-        crawler_result.append(e, e.crawl)
         logger.info("Fetch tracks of #{e.url}")
-        if feed.lastUpdated.nil? || feed.lastUpdated < e.published
-          feed.lastUpdated = e.published
-        end
+        crawler_result.append(e, e.crawl)
+        update_feed_last_updated(feed, e)
       rescue => err
         logger.error("Failed to fetch #{entry["url"]}  #{err}")
         logger.error(err.backtrace)
@@ -71,9 +69,7 @@ class RSSCrawler < ApplicationJob
         e = Entry.first_or_create_by_feedlr(entry, feed)
         logger.info("Fetch tracks of #{e.url}")
         crawler_result.append(e, e.crawl)
-        if feed.lastUpdated.nil? || feed.lastUpdated < e.published
-          feed.lastUpdated = e.published
-        end
+        update_feed_last_updated(feed, e)
       rescue => err
         logger.error("Failed to fetch #{e.url}  #{err}")
         logger.error(err.backtrace)
@@ -112,6 +108,12 @@ class RSSCrawler < ApplicationJob
       "Create #{r.entries.count} entries and #{r.tracks.count} tracks from #{r.feed.id}"
     }.join("\n")
     message
+  end
+
+  def update_feed_last_updated(feed, entry)
+    if feed.lastUpdated.nil? || feed.lastUpdated < entry.published
+      feed.lastUpdated = entry.published
+    end
   end
 
 
