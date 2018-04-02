@@ -26,6 +26,7 @@ class Mixes::EnclosuresController < ApplicationController
       query  = Mix::Query.new(@period,
                               @type,
                               locale:           @locale,
+                              provider:         @provider,
                               entries_per_feed: entries_per_feed)
       @items = @stream.mix_enclosures(@enclosure_class,
                                       page:          @page,
