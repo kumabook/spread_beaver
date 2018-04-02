@@ -20,6 +20,11 @@ form.form.form-horizontal#mix_form
     = label_tag :period, nil, :class => 'control-label col-lg-2'
     .col-lg-4
       = select_tag :period, options_for_select(['daily', 'weekly', 'monthly']), class: 'form-control'
+  .form-group
+    = label_tag :provider, nil, :class => 'control-label col-lg-2'
+    .col-lg-4
+      = select_tag :provider, options_for_select(['youtube', 'others']), class: 'form-control'
+
 
   .form-group
     .col-lg-offset-2.col-lg-10

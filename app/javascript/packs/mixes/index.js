@@ -21,11 +21,21 @@ function newerThan(peroid) {
   }
 }
 
-function mixParams(type, period) {
+function providers(value) {
+  switch (value) {
+    case 'youtube':
+      return ['YouTube'];
+    case 'others':
+      return ['SoundCloud', 'Spotify', 'AppleMusic'];
+  }
+}
+
+function mixParams(type, period, provider) {
   return {
     type,
     newerThan: newerThan(period),
-    period
+    period,
+    provider,
   };
 }
 
@@ -33,11 +43,15 @@ var streamId   = document.getElementById("stream_id");
 var streamType = document.getElementById("stream_type");
 var mixType    = document.getElementById("mix_type");
 var period     = document.getElementById("period");
+var provider   = document.getElementById("provider");
 var mixForm    = document.getElementById("mix_form");
 
 mixForm.addEventListener('submit', function(e) {
   e.preventDefault();
   var url   = mixUrl(streamId.value, streamType.value);
-  var query = qs.stringify(mixParams(mixType.value, period.value));
+  var params = mixParams(mixType.value,
+                         period.value,
+                         providers(provider.value));
+  var query = qs.stringify(params, { arrayFormat: 'brackets' });
   document.location.href = `${url}?${query}`;
 });
