@@ -13,8 +13,8 @@ class UpdateEntryVisuals < ApplicationJob
         entry        = value[:entry]
         feedlr_entry = value[:feedlr_entry]
         visual       = feedlr_entry&.visual
-        visual_url   = visual.url if visual.present?
-        if !entry.has_visual? && visual_url.present? && visual_url != "none"
+        visual_url   = visual&.url
+        if !entry.has_visual? && is_valid_visual_url?(visual_url)
           logger.info("Update the visual of #{entry.url} with #{visual_url}")
           entry.visual = visual.to_json
           entry.save
@@ -33,5 +33,9 @@ class UpdateEntryVisuals < ApplicationJob
       h[e.id][:feedlr_entry] = e
       h
     end
+  end
+
+  def is_valid_visual_url?(visual_url)
+    visual_url.present? && visual_url != 'none'
   end
 end
