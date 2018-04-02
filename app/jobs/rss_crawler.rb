@@ -31,24 +31,26 @@ class RSSCrawler < ApplicationJob
     return crawler_result if items.nil?
 
     items.each do |entry|
-      begin
-        sleep(WAITING_SEC_FOR_FEED)
-        if Entry.find_by(feed_id: feed.id, originId: entry["origin_id"]).present?
-          next
-        end
-        e = Entry.first_or_create_by_pink_spider(entry, feed)
-        logger.info("Fetch tracks of #{e.url}")
-        crawler_result.append(e, e.crawl)
-        update_feed_last_updated(feed, e)
-      rescue => err
-        logger.error("Failed to fetch #{entry["url"]}  #{err}")
-        logger.error(err.backtrace)
-      end
+      handle_pink_spider_entry(crawler_result, feed, entry)
     end
     feed.update(crawled: DateTime.now)
     crawler_result
   rescue
     crawler_result
+  end
+
+  def handle_pink_spider_entry(crawler_result, feed, entry)
+    sleep(WAITING_SEC_FOR_FEED)
+    if Entry.find_by(feed_id: feed.id, originId: entry["origin_id"]).present?
+      return
+    end
+    e = Entry.first_or_create_by_pink_spider(entry, feed)
+    logger.info("Fetch tracks of #{e.url}")
+    crawler_result.append(e, e.crawl)
+    update_feed_last_updated(feed, e)
+  rescue => err
+    logger.error("Failed to fetch #{entry["url"]}  #{err}")
+    logger.error(err.backtrace)
   end
 
   def fetch_latest_entries_with_feedlr(feed)
@@ -61,22 +63,24 @@ class RSSCrawler < ApplicationJob
     return crawler_result if cursor.items.nil?
 
     cursor.items.each do |entry|
-      begin
-        sleep(WAITING_SEC_FOR_FEED)
-        if Entry.find_by(feed_id: feed.id, originId: entry.originId).present?
-          next
-        end
-        e = Entry.first_or_create_by_feedlr(entry, feed)
-        logger.info("Fetch tracks of #{e.url}")
-        crawler_result.append(e, e.crawl)
-        update_feed_last_updated(feed, e)
-      rescue => err
-        logger.error("Failed to fetch #{e.url}  #{err}")
-        logger.error(err.backtrace)
-      end
+      handle_feedlr_entry(crawler_result, feed, entry)
     end
     feed.update(crawled: DateTime.now)
     crawler_result
+  end
+
+  def handle_feedlr_entry(crawler_result, feed, entry)
+    sleep(WAITING_SEC_FOR_FEED)
+    if Entry.find_by(feed_id: feed.id, originId: entry.originId).present?
+      return
+    end
+    e = Entry.first_or_create_by_feedlr(entry, feed)
+    logger.info("Fetch tracks of #{e.url}")
+    crawler_result.append(e, e.crawl)
+    update_feed_last_updated(feed, e)
+  rescue => err
+    logger.error("Failed to fetch #{e.url}  #{err}")
+    logger.error(err.backtrace)
   end
 
   def update_feed_visuals(feeds)
