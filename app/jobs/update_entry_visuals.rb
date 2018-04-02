@@ -8,15 +8,7 @@ class UpdateEntryVisuals < ApplicationJob
       client = Feedlr::Client.new(sandbox: false)
       sleep(WAITING_SEC_FOR_VISUAL)
       feedlr_entries = client.user_entries(entries.map { |e| e.id })
-      hash = entries.reduce({}) do |h, e|
-        h[e.id] = {} if h[e.id].nil?
-        h[e.id][:entry] = e
-        h
-      end
-      feedlr_entries.reduce(hash) do |h, e|
-        h[e.id][:feedlr_entry] = e
-        h
-      end
+      hash = entry_and_feedlr_entry_hash(entries, feedlr_entries)
       hash.each do |_id, value|
         entry        = value[:entry]
         feedlr_entry = value[:feedlr_entry]
@@ -28,6 +20,18 @@ class UpdateEntryVisuals < ApplicationJob
           entry.save
         end
       end
+    end
+  end
+
+  def entry_and_feedlr_entry_hash(entries, feedlr_entries)
+    hash = entries.reduce({}) do |h, e|
+      h[e.id] = {} if h[e.id].nil?
+      h[e.id][:entry] = e
+      h
+    end
+    feedlr_entries.reduce(hash) do |h, e|
+      h[e.id][:feedlr_entry] = e
+      h
     end
   end
 end
