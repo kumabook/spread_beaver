@@ -28,7 +28,7 @@ task :crawl, [:type]  => :environment do |_, args|
 
   if crawler_type == :feedlr
     Rails.logger.info("Updating entry visual...")
-    Entry.update_visuals
+    UpdateEntryVisuals.perform_now()
     Rails.logger.info("Updated entry visual.")
   end
   Rails.logger.info("Finish!")
