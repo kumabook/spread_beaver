@@ -3,22 +3,17 @@ class V3::MarkersController < V3::ApiController
   def mark
     @type     = params[:type]
     @action   = request.request_parameters['action']
-    @ids      = []
     case @type
     when 'entries'
       mark_entries
     when 'tracks'
-      mark_enclosures(:trackIds, Track.name) if params[:trackIds].present?
+      mark_enclosures(:trackIds, Track.name)
     when 'playlists'
-      mark_enclosures(:playlistIds, Playlist.name) if params[:playlistIds].present?
+      mark_enclosures(:playlistIds, Playlist.name)
     when 'albums'
-      mark_enclosures(:albumIds, Album.name) if params[:albumIds].present?
-    when 'feeds'
-      @ids = params[:feedIds] if params[:feedIds].present?
-    when 'categories'
-      @ids = params[:categoryIds] if params[:categoryIds].present?
-    when 'tags'
-      @ids = params[:tags]
+      mark_enclosures(:albumIds, Album.name)
+    when 'feeds', 'categories', 'tags'
+      # TODO
     end
   end
 
