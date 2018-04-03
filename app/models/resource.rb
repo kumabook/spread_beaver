@@ -18,6 +18,20 @@ class Resource < ApplicationRecord
          playlist_mix:   12,
        }
 
+  RESOURCE_REGEXES = [
+    [/journal\/.*/                               , :journal],
+    [/topic\/.*/                                 , :topic  ],
+    [/feed\/.*/                                  , :feed   ],
+    [/keyword\/.*/                               , :keyword],
+    [/user\/.*\/tag\/.*/                         , :tag],
+    [/user\/.*\/category\/.*/                    , :category],
+    [/tag\/global\.(latest|hot|featured|popular)/, :global_tag],
+    [/entry\/.*/                                 , :entry],
+    [/track\/.*/                                 , :track],
+    [/album\/.*/                                 , :album],
+    [/playlist\/.*/                              , :playlist]
+  ]
+
   def as_json(options = {})
     h = super(options)
     h["item_type"] = self.item_type
@@ -78,30 +92,10 @@ class Resource < ApplicationRecord
   end
 
   def item_type
-    case resource_id
-    when /journal\/.*/
-      return :journal
-    when /topic\/.*/
-      return :topic
-    when /feed\/.*/
-      return :feed
-    when /keyword\/.*/
-      return :keyword
-    when /user\/.*\/tag\/.*/
-      return :tag
-    when /user\/.*\/category\/.*/
-      return :category
-    when /tag\/global\.(latest|hot|featured|popular)/
-      return :global_tag
-    when /entry\/.*/
-      return :entry
-    when /track\/.*/
-      return :track
-    when /album\/.*/
-      return :album
-    when /playlist\/.*/
-      return :playlist
+    _, type = RESOURCE_REGEXES.find do |regex, _|
+      resource_id =~ regex
     end
+    type
   end
 
   def global_tag_label
