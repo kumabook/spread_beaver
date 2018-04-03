@@ -22,8 +22,8 @@
 }
 
 .copy-resource-id {
-    font-weight: normal !important;
     font-size: 14px !important;
+    font-weight: normal !important;
     line-height: 1.42857143  !important;
 }
 
@@ -32,8 +32,8 @@
 
 .resource-option-value {
     display: inline-block;
-    text-align: left !important;
     margin-left: 165px;
+    text-align: left !important;
     width: 200px;
 }
 
