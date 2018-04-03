@@ -1,0 +1,51 @@
+inherit_from:
+  - .rubocop_suppress_temp.yml
+
+Security/JSONLoad:
+  Enabled: false
+Style/TernaryParentheses::
+  Enabled: false
+Layout/ClosingParenthesisIndentation::
+  Enabled: false
+Performance/TimesMap:
+  Enabled: false
+Lint/HandleExceptions:
+  Enabled: false
+Layout/EmptyLinesAroundClassBody:
+  Enabled: false
+Style/TernaryParentheses:
+  Enabled: false
+Style/StderrPuts:
+  Enabled: false
+Lint/AssignmentInCondition:
+  Enabled: false
+Style/Next:
+  Enabled: false
+Lint/AmbiguousBlockAssociation::
+  Enabled: false
+Metrics/PerceivedComplexity:
+  Enabled: false
+Style/PreferredHashMethods:
+  Enabled: false
+Layout/ClosingParenthesisIndentation:
+  Enabled: false
+Naming/PredicateName:
+  Enabled: false
+Naming/UncommunicativeMethodParamName:
+  Enabled: false
+Security/YAMLLoad:
+  Enabled: false
+Lint/IneffectiveAccessModifier:
+  Enabled: false
+Lint/EmptyWhen:
+  Enabled: false
+Style/SafeNavigation:
+  Enabled: false
+Lint/AmbiguousBlockAssociation:
+  Enabled: false
+Style/MixinUsage:
+  Enabled: false
+Metrics/ParameterLists:
+  Enabled: false
+Naming/UncommunicativeBlockParamName:
+  Enabled: false

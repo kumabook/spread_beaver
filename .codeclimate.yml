@@ -26,6 +26,13 @@ engines:
     enabled: true
   rubocop:
     enabled: true
+    config:
+      file: .rubocop_codeclimate.yml
+    checks:
+      Rubocop/Style/TrailingCommaInLiteral:
+        enabled: false
+      Rubocop/Performance/HashEachMethods:
+        enabled: false
 ratings:
   paths:
   - Gemfile.lock
