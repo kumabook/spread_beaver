@@ -13,6 +13,7 @@ before_script:
 
 script:
   - ./bin/webpack
+  - bundle exec rubocop
   - bundle exec rails spec
 services:
   - redis-server
