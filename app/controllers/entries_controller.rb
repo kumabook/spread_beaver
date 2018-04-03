@@ -10,31 +10,10 @@ class EntriesController < ApplicationController
   before_action :set_tag      , only: [:index]
   before_action :set_issue    , only: [:index]
   before_action :set_query    , only: [:index]
+  before_action :set_entries  , only: [:index]
   before_action :require_admin, only: [:new, :create, :destroy, :update]
 
   def index
-    if @keyword.present?
-      @entries = @keyword.entries
-                         .order('published DESC')
-                         .page(params[:page])
-    elsif @tag.present?
-      @entries = @tag.entries
-                     .order('published DESC')
-                     .page(params[:page])
-    elsif @feed.present?
-      @entries = Entry.where(feed_id: @feed.id)
-                      .order('published DESC')
-                      .page(params[:page])
-    elsif @issue.present?
-      @entry_issues = @issue.entry_issues
-                            .order('engagement DESC')
-                            .page(params[:page])
-      @entries = @issue.entries.page(params[:page])
-    else
-      @entries = Entry.search(@query)
-                      .order('published DESC')
-                      .page(params[:page])
-    end
     Entry.set_count_of_enclosures(@entries)
     @liked_entries = LikedEntry.where(user_id: current_user.id,
                                       entry_id: @entries.map { |e| e.id })
@@ -117,6 +96,31 @@ class EntriesController < ApplicationController
   end
 
   private
+
+  def set_entries
+    if @keyword.present?
+      @entries = @keyword.entries
+                         .order('published DESC')
+                         .page(params[:page])
+    elsif @tag.present?
+      @entries = @tag.entries
+                     .order('published DESC')
+                     .page(params[:page])
+    elsif @feed.present?
+      @entries = Entry.where(feed_id: @feed.id)
+                      .order('published DESC')
+                      .page(params[:page])
+    elsif @issue.present?
+      @entry_issues = @issue.entry_issues
+                            .order('engagement DESC')
+                            .page(params[:page])
+      @entries = @issue.entries.page(params[:page])
+    else
+      @entries = Entry.search(@query)
+                      .order('published DESC')
+                      .page(params[:page])
+    end
+  end
 
   def set_entry
     @entry = Entry.find(params[:id])
