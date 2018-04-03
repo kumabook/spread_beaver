@@ -13,15 +13,7 @@ class SubscriptionsController < ApplicationController
 
   def create
     @subscription = Subscription.new(create_subscription_params)
-    respond_to do |format|
-      if @subscription.save
-        format.html { redirect_to subscriptions_path, notice: 'Subscription was successfully created.' }
-        format.json { render :show, status: :created, location: @subscription }
-      else
-        format.html { redirect_to subscriptions_path, notice: 'Failed to subscribe.' }
-        format.json { render json: @subscription.errors, status: :unprocessable_entity }
-      end
-    end
+    respond_as_create(@subscription)
   end
 
   def edit
@@ -43,11 +35,7 @@ class SubscriptionsController < ApplicationController
 
 
   def destroy
-    @subscription.destroy
-    respond_to do |format|
-      format.html { redirect_to subscriptions_path, notice: 'Subscription was successfully destroyed.' }
-      format.json { head :no_content }
-    end
+    respond_as_destroy(@subscription)
   end
 
   private

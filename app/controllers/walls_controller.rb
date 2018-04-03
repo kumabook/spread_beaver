@@ -11,15 +11,7 @@ class WallsController < ApplicationController
 
   def create
     @wall = Wall.new(wall_params)
-    respond_to do |format|
-      if @wall.save
-        format.html { redirect_to walls_path, notice: 'Wall was successfully created.' }
-        format.json { render :show, status: :created, location: @wall }
-      else
-        format.html { redirect_to journals_path, notice: @wall.errors }
-        format.json { render json: @wall.errors, status: :unprocessable_entity }
-      end
-    end
+    respond_as_create(@wall)
   end
 
   def edit
@@ -29,23 +21,11 @@ class WallsController < ApplicationController
 
   def update
     @wall = Wall.find(params[:id])
-    respond_to do |format|
-      if @wall.update(wall_params)
-        format.html { redirect_to walls_path, notice: 'Wall was successfully updated.' }
-      else
-        format.html { render :edit }
-      end
-    end
+    respond_as_update(@wall, wall_params)
   end
 
   def destroy
-    respond_to do |format|
-      if @wall.destroy
-        format.html { redirect_to walls_path, notice: 'Wall was successfully destroyed.' }
-      else
-        format.html { redirect_to walls_path, notice: @wall.errors }
-      end
-    end
+    respond_as_destroy(@wall)
   end
 
   private

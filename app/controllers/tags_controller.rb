@@ -10,40 +10,15 @@ class TagsController < ApplicationController
 
   def create
     @tag = Tag.new(tag_params.merge(user: current_user))
-    respond_to do |format|
-      if @tag.save
-        format.html { redirect_to tags_path, notice: 'Tag was successfully created.' }
-        format.json { render :show, status: :created, location: @tag }
-      else
-        format.html { redirect_to tags_path, notice: @tag.errors }
-        format.json { render json: @tag.errors, status: :unprocessable_entity }
-      end
-    end
+    respond_as_create(@tag)
   end
 
   def destroy
-    respond_to do |format|
-      if @tag.destroy
-        format.html { redirect_to tags_path, notice: 'Tag was successfully destroyed.' }
-        format.json { head :no_content }
-      else
-        format.html { redirect_to tags_path, notice: @tag.errors }
-        format.json { render json: @tag.errors, status: :unprocessable_entity }
-      end
-    end
+    respond_as_destroy(@tag)
   end
 
-
   def update
-    respond_to do |format|
-      if @tag.update(tag_params)
-        format.html { redirect_to tags_path, notice: 'Tag was successfully updated.' }
-        format.json { render :show, status: :ok, location: @tag }
-      else
-        format.html { render :edit }
-        format.json { render json: @tag.errors, status: :unprocessable_entity }
-      end
-    end
+    respond_as_update(@tag, tag_params)
   end
 
   def set_tag

@@ -11,40 +11,15 @@ class JournalsController < ApplicationController
 
   def create
     @journal = Journal.new(journal_params)
-    respond_to do |format|
-      if @journal.save
-        format.html { redirect_to journals_path, notice: 'Journal was successfully created.' }
-        format.json { render :show, status: :created, location: @journal }
-      else
-        format.html { redirect_to journals_path, notice: @journal.errors }
-        format.json { render json: @journal.errors, status: :unprocessable_entity }
-      end
-    end
+    respond_as_create(@journal)
   end
 
   def destroy
-    respond_to do |format|
-      if @journal.destroy
-        format.html { redirect_to journals_path, notice: 'Journal was successfully destroyed.' }
-        format.json { head :no_content }
-      else
-        format.html { redirect_to journals_path, notice: @journal.errors }
-        format.json { render json: @journal.errors, status: :unprocessable_entity }
-      end
-    end
+    respond_as_destroy(@journal)
   end
 
-
   def update
-    respond_to do |format|
-      if @journal.update(journal_params)
-        format.html { redirect_to journals_path, notice: 'Journal was successfully updated.' }
-        format.json { render :show, status: :ok, location: @journal }
-      else
-        format.html { render :edit }
-        format.json { render json: @journal.errors, status: :unprocessable_entity }
-      end
-    end
+    respond_as_update(@journal, journal_params)
   end
 
   def set_journal
