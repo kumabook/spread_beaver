@@ -89,10 +89,10 @@ class Entry < ApplicationRecord
       e.fingerprint = entry.fingerprint
       e.originId    = entry.originId
 
-      e.crawled     = Time.at(entry.crawled / 1000)
-      e.published   = Time.at(entry.published / 1000)
-      e.recrawled   = entry.recrawled.present? ? Time.at(entry.recrawled / 1000) : nil
-      e.updated     = entry.updated.present?   ? Time.at(entry.updated / 1000) : nil
+      e.crawled     = entry.crawled.to_time
+      e.published   = entry.published.to_time
+      e.recrawled   = entry.recrawled&.to_time
+      e.updated     = entry.updated&.to_time
       e.feed        = feed
       if entry.keywords.present?
         e.keywords  = entry.keywords.uniq.map { |k| Keyword.find_or_create_by label: k }
