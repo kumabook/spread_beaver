@@ -1,6 +1,7 @@
 require('pink_spider')
 require('paginated_array')
 class EnclosuresController < ApplicationController
+  include MarkControllable
   include LikableController
   include SavableController
   include PlayableController

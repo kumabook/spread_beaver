@@ -1,5 +1,6 @@
 # coding: utf-8
 class EntriesController < ApplicationController
+  include MarkControllable
   include LikableController
   include SavableController
   include ReadableController
