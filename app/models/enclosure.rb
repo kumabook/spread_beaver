@@ -10,8 +10,10 @@ class Enclosure < ApplicationRecord
   include Playable
   include EnclosureEngagementScorer
 
-  ENTRIES_LIMIT = 100
+  ENTRIES_LIMIT         = 100
   PARTIAL_ENTRIES_LIMIT = 100
+  PICKS_LIMIT           = 100
+  CONTAINERS_LIMIT      = 100
 
   after_create :purge_all
   after_save :purge
@@ -21,13 +23,19 @@ class Enclosure < ApplicationRecord
   enum provider: [:Raw, :Custom, :YouTube, :SoundCloud, :Spotify, :AppleMusic]
 
   has_many :entry_enclosures, dependent: :destroy
-  has_many :entries, ->{ order("entries.published DESC").limit(ENTRIES_LIMIT) }, through: :entry_enclosures
+  has_many :entries, ->{
+    order("entries.published DESC").limit(ENTRIES_LIMIT)
+  }, through: :entry_enclosures
 
   has_many :containers      , dependent: :destroy   , class_name: 'Pick'
-  has_many :pick_containers , through:   :containers, source:     :container
+  has_many :pick_containers , ->{
+    joins(:picks).order("picks.updated_at DESC").limit(CONTAINERS_LIMIT)
+  }, through: :containers, source: :container
 
   has_many :picks           , dependent: :destroy, foreign_key: "container_id"
-  has_many :pick_enclosures , through:   :picks  , source:      :enclosure
+  has_many :pick_enclosures , ->{
+    joins(:picks).order("picks.updated_at DESC").limit(PICKS_LIMIT)
+  }, through: :picks, source: :enclosure
 
   has_many :enclosure_issues, dependent: :destroy
   has_many :issues          , through: :enclosure_issues
