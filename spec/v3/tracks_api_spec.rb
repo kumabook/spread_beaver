@@ -10,6 +10,10 @@ RSpec.describe "Tracks api", :type => :request, autodoc: true do
     @feeds[0].entries[1].tracks << @feeds[0].entries[0].tracks[0]
     @feeds[0].entries[0].update!(published: 1.days.ago)
     @feeds[0].entries[1].update!(published: 2.days.ago)
+    @pick = Pick.create!(enclosure_id:   @feeds[0].entries[0].tracks[0].id,
+                         enclosure_type: Track.name,
+                         container_id:   Playlist.first.id,
+                         container_type: Playlist.name)
   end
 
   it "shows a track by id" do
@@ -26,6 +30,11 @@ RSpec.describe "Tracks api", :type => :request, autodoc: true do
     expect(track['likers']).not_to be_nil()
     expect(track['likesCount']).to eq(1)
     expect(track['entriesCount']).not_to be_nil()
+    expect(track['playlists'].count).to be > 0
+    expect(track['playlists'][0]).not_to be_nil
+    expect(track['playlists'][0]['entriesCount']).not_to be_nil
+    expect(track['playlists'][0]['entries'].count).not_to be_nil
+    expect(track['playlists'][0]['entries'][0]).not_to be_nil
   end
 
   it "shows track list by id list" do
@@ -35,11 +44,11 @@ RSpec.describe "Tracks api", :type => :request, autodoc: true do
     post "/v3/tracks/.mget",
          params: ids.to_json,
          headers: headers_for_login_user_api
-    tracks = JSON.parse @response.body
-    expect(tracks).not_to be_nil()
-    expect(tracks.count).to eq(tracks.count)
-    expect(tracks[0]['entries'][0]["summary"]).not_to be_nil
-    tracks.each_with_index {|t, i|
+    items = JSON.parse @response.body
+    expect(items).not_to be_nil()
+    expect(items.count).to eq(tracks.count)
+    expect(items[0]['entries'][0]["summary"]).not_to be_nil
+    items.each_with_index {|t, i|
       expect(ids).to include(t['id'])
     }
   end

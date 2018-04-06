@@ -27,6 +27,7 @@ class V3::EnclosuresController < V3::ApiController
     def set_enclosure
       @enclosure = @enclosure_class.detail.find(params[:id])
       @enclosure_class.set_contents([@enclosure])
+      @enclosure_class.set_partial_entries(@enclosure.pick_containers)
       if current_resource_owner.present?
         @enclosure_class.set_marks(current_resource_owner, [@enclosure])
       end
@@ -37,6 +38,8 @@ class V3::EnclosuresController < V3::ApiController
       @enclosures = params['_json'].flat_map { |id|
         @enclosures.select { |v| v.id == id }
       }
+      pick_containers = @enclosures.flat_map(&:pick_containers)
+      @enclosure_class.set_partial_entries(pick_containers)
       @enclosure_class.set_contents(@enclosures)
       if current_resource_owner.present?
         @enclosure_class.set_marks(current_resource_owner, @enclosures)

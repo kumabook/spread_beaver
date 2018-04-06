@@ -42,7 +42,7 @@ class Enclosure < ApplicationRecord
   }
 
   scope :with_content, -> { eager_load(:entry_enclosures).eager_load(:entries) }
-  scope :detail      , -> { includes([:likers]).includes(:entries) }
+  scope :detail      , -> { includes([:likers]).includes(:entries).includes(:pick_containers) }
 
   scope :issue , -> (issue) {
     joins(:enclosure_issues)
