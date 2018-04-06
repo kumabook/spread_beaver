@@ -100,8 +100,9 @@ class Enclosure < ApplicationRecord
     item
   end
 
-  def self.fetch_content(id)
-    PinkSpider.new.public_send("fetch_#{name.downcase}".to_sym, id)
+  def fetch_content
+    @content = PinkSpider.new.public_send("fetch_#{self.class.name.downcase}".to_sym, id)
+    @content
   end
 
   def self.fetch_contents(ids)

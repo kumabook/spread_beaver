@@ -120,8 +120,7 @@ class EnclosuresController < ApplicationController
     end
 
     def set_content
-      @content           = enclosure_class.fetch_content(@enclosure.id)
-      @enclosure.content = @content
+      @content = @enclosure.fetch_content
     end
 
     def set_entry
