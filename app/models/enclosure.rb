@@ -22,6 +22,9 @@ class Enclosure < ApplicationRecord
 
   has_many :entry_enclosures, dependent: :destroy
   has_many :picks           , dependent: :destroy
+  has_many :pick_containers , through: :picks, source: :container
+  has_many :pick_enclosures , through: :picks, source: :enclosure
+
   has_many :entries, ->{ order("entries.published DESC").limit(ENTRIES_LIMIT) }, through: :entry_enclosures
 
   has_many :enclosure_issues, dependent: :destroy
