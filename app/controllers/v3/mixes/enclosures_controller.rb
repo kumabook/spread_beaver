@@ -24,11 +24,12 @@ class V3::Mixes::EnclosuresController < V3::ApiController
       @enclosure_class.set_marks(current_resource_owner, @items)
     end
     @enclosure_class.set_contents(@items)
+    @enclosure_class.set_partial_entries(@items)
     h = {
       direction: "ltr",
       continuation: continuation,
       alternate: [],
-      items: @items.map { |t| t.as_detail_json }
+      items: @items.map { |t| t.as_content_json }
     }
     if @stream.present?
       h[:updated] = @stream.updated_at.to_time.to_i * 1000
