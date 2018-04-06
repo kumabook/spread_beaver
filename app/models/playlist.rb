@@ -16,6 +16,23 @@ class Playlist < Enclosure
     end
   end
 
+  def tracks
+    pick_enclosures.select { |enc| enc.type == Track.name }
+  end
+
+  def as_detail_json
+    hash = super
+    if tracks.present?
+      hash['tracks'] = tracks.map do |track|
+        playlist_track = hash['tracks'].find { |h| h['track_id'] == track.id }
+        track.content = playlist_track['track']
+        playlist_track['track'] = track.as_content_json
+        playlist_track
+      end
+    end
+    hash
+  end
+
   def is_active
     @content['velocity'] > 0
   end
