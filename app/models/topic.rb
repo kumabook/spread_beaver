@@ -45,7 +45,7 @@ class Topic < ApplicationRecord
   end
 
   def self.topics(locale=nil)
-    key = locale.nil? ? "all_topics" : "topics_#{locale}"
+    key = locale.nil? ? "topics_all" : "topics_#{locale}"
     Rails.cache.fetch(key) {
       Topic.locale(locale)
            .order("engagement DESC")
@@ -63,6 +63,6 @@ class Topic < ApplicationRecord
   end
 
   def self.delete_cache
-    Rails.cache.delete("topics")
+    Rails.cache.delete_matched("topics_*")
   end
 end
