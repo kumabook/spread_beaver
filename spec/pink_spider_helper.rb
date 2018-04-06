@@ -3,6 +3,7 @@ require 'active_support'
 require 'active_support/core_ext'
 
 class PinkSpiderHelper
+  PLAYLIST_TRACK_ID = SecureRandom.uuid
   def self.feed_hash(url)
     {
       id:           "feed/#{url}",
@@ -49,12 +50,12 @@ class PinkSpiderHelper
       created_at:  '2017-03-16T05:37:02.807854+00:00',
       updated_at:  '2017-03-16T05:37:02.807854+00:00',
 
-      tracks:      [track_hash],
+      tracks:      [track_hash(shallow: true)],
       playlists:   [playlist_hash],
       albums:      [album_hash],
     }.with_indifferent_access
   end
-  def self.track_hash
+  def self.track_hash(shallow: false)
     {
       id:           SecureRandom.uuid,
       provider:     'Spotify',
@@ -73,7 +74,7 @@ class PinkSpiderHelper
       updated_at:   '2017-03-16T05:37:02.807854+00:00',
       state:        'alive',
       artists:      [],
-      playlists:    [self.playlist_hash],
+      playlists:    shallow ? nil : [self.playlist_hash],
     }.with_indifferent_access
   end
   def self.album_hash
@@ -111,6 +112,11 @@ class PinkSpiderHelper
       created_at:   '2017-03-16T05:37:02.807854+00:00',
       updated_at:   '2017-03-16T05:37:02.807854+00:00',
       state:        'alive',
+      tracks:    [{
+                    playlist_id: SecureRandom.uuid,
+                    track_id:    PLAYLIST_TRACK_ID,
+                    track:       self.track_hash(shallow: true)
+                  }],
     }.with_indifferent_access
   end
 end
