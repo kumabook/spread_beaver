@@ -21,11 +21,13 @@ class Enclosure < ApplicationRecord
   enum provider: [:Raw, :Custom, :YouTube, :SoundCloud, :Spotify, :AppleMusic]
 
   has_many :entry_enclosures, dependent: :destroy
-  has_many :picks           , dependent: :destroy
-  has_many :pick_containers , through: :picks, source: :container
-  has_many :pick_enclosures , through: :picks, source: :enclosure
-
   has_many :entries, ->{ order("entries.published DESC").limit(ENTRIES_LIMIT) }, through: :entry_enclosures
+
+  has_many :containers      , dependent: :destroy   , class_name: 'Pick'
+  has_many :pick_containers , through:   :containers, source:     :container
+
+  has_many :picks           , dependent: :destroy, foreign_key: "container_id"
+  has_many :pick_enclosures , through:   :picks  , source:      :enclosure
 
   has_many :enclosure_issues, dependent: :destroy
   has_many :issues          , through: :enclosure_issues
