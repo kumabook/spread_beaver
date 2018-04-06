@@ -10,4 +10,19 @@ class Track < Enclosure
       @content["url"]
     end
   end
+
+  def playlists
+    pick_containers.select { |enc| enc.type == Playlist.name }
+  end
+
+  def as_detail_json
+    hash = super
+    if playlists.present?
+      hash['playlists'] = playlists.map do |pl|
+        pl.content = hash['playlists'].find { |h| h['id'] == pl.id }
+        pl.as_content_json
+      end
+    end
+    hash
+  end
 end

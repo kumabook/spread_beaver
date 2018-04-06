@@ -34,4 +34,24 @@ describe Track do
     it { expect(Track.topic(japanese_topic).count).to eq(TRACKS_PER_TOPIC) }
     it { expect(Track.topic(english_topic).count).to eq(TRACKS_PER_TOPIC) }
   end
+
+  describe "#as_detail_json" do
+    let! (:track)    { Track.create!(id: SecureRandom.uuid) }
+    let! (:playlist) { Playlist.create!(id: SecureRandom.uuid) }
+    let! (:pick)     { Pick.create!(enclosure_id:   track.id,
+                                   enclosure_type: Track.name,
+                                   container_id:   playlist.id,
+                                   container_type: Playlist.name) }
+    let! (:user)     { FactoryBot.create(:default) }
+    before do
+      mock_up_pink_spider
+      track.fetch_content
+      Track.set_marks(user, [track])
+    end
+    it "should includes playlist marks" do
+      json = track.as_detail_json
+      expect(json["playlists"].count).to be > 0
+      expect(json["playlists"][0]["entries_count"]).not_to be_nil
+    end
+  end
 end

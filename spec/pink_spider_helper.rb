@@ -73,6 +73,7 @@ class PinkSpiderHelper
       updated_at:   '2017-03-16T05:37:02.807854+00:00',
       state:        'alive',
       artists:      [],
+      playlists:    [self.playlist_hash],
     }.with_indifferent_access
   end
   def self.album_hash
