@@ -23,7 +23,6 @@ RSpec.describe "Playlists api", :type => :request, autodoc: true do
     expect(playlist).not_to be_nil()
     expect(playlist['id']).to eq(id)
     expect(playlist['entries']).not_to be_nil()
-    expect(playlist['likers']).not_to be_nil()
     expect(playlist['likesCount']).to eq(1)
     expect(playlist['entriesCount']).not_to be_nil()
     expect(playlist['tracks'].count).to be > 0

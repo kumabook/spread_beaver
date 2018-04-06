@@ -17,7 +17,6 @@ RSpec.describe "Albums  api", :type => :request, autodoc: true do
     expect(album).not_to be_nil()
     expect(album['id']).to eq(id)
     expect(album['entries']).not_to be_nil()
-    expect(album['likers']).not_to be_nil()
     expect(album['likesCount']).to eq(1)
     expect(album['entriesCount']).not_to be_nil()
   end

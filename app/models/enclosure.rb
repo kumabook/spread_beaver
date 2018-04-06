@@ -44,7 +44,7 @@ class Enclosure < ApplicationRecord
   }
 
   scope :with_content, -> { eager_load(:entry_enclosures).eager_load(:entries) }
-  scope :detail      , -> { includes([:likers]).includes(:entries).includes(:pick_containers) }
+  scope :detail      , -> { includes(:entries).includes(:pick_containers).includes(:pick_enclosures) }
 
   scope :issue , -> (issue) {
     joins(:enclosure_issues)
@@ -219,8 +219,7 @@ class Enclosure < ApplicationRecord
 
   def as_detail_json
     hash = as_content_json
-    hash['likers']     = [] # hash['users'] TODO
-    hash['entries']    = entries.map { |e| e.as_json }
+    hash['entries'] = entries.map(&:as_partial_json) if hash['entries'].nil?
     hash
   end
 

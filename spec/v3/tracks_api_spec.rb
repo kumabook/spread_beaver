@@ -25,9 +25,8 @@ RSpec.describe "Tracks api", :type => :request, autodoc: true do
     expect(track['id']).to eq(id)
     expect(track['entries']).not_to be_nil()
     expect(track['entries'].count).to be(2)
-    expect(track['entries'][0]["summary"]).not_to be_nil
+    expect(track['entries'][0]["summary"]).to be_nil
     expect(es[0]['published'] > es[1]['published']).to be_truthy
-    expect(track['likers']).not_to be_nil()
     expect(track['likesCount']).to eq(1)
     expect(track['entriesCount']).not_to be_nil()
     expect(track['playlists'].count).to be > 0
@@ -47,7 +46,7 @@ RSpec.describe "Tracks api", :type => :request, autodoc: true do
     items = JSON.parse @response.body
     expect(items).not_to be_nil()
     expect(items.count).to eq(tracks.count)
-    expect(items[0]['entries'][0]["summary"]).not_to be_nil
+    expect(items[0]['entries'][0]["summary"]).to be_nil
     items.each_with_index {|t, i|
       expect(ids).to include(t['id'])
     }
