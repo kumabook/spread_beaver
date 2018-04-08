@@ -29,12 +29,12 @@ class Enclosure < ApplicationRecord
 
   has_many :containers      , dependent: :destroy   , class_name: 'Pick'
   has_many :pick_containers , ->{
-    joins(:picks).order("picks.updated_at DESC").limit(CONTAINERS_LIMIT)
+    order("picks.updated_at DESC").limit(CONTAINERS_LIMIT)
   }, through: :containers, source: :container
 
   has_many :picks           , dependent: :destroy, foreign_key: "container_id"
   has_many :pick_enclosures , ->{
-    joins(:picks).order("picks.updated_at DESC").limit(PICKS_LIMIT)
+    order("picks.updated_at DESC").limit(PICKS_LIMIT)
   }, through: :picks, source: :enclosure
 
   has_many :enclosure_issues, dependent: :destroy
@@ -52,7 +52,11 @@ class Enclosure < ApplicationRecord
   }
 
   scope :with_content, -> { eager_load(:entry_enclosures).eager_load(:entries) }
-  scope :detail      , -> { includes(:entries).includes(:pick_containers).includes(:pick_enclosures) }
+  scope :detail, -> {
+    eager_load(:entries)
+      .eager_load(:pick_containers)
+      .eager_load(:pick_enclosures)
+  }
 
   scope :issue , -> (issue) {
     joins(:enclosure_issues)
