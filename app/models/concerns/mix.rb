@@ -12,7 +12,7 @@ module Mix
       @period           = period
       @type             = type
       @locale           = locale
-      @provider         = provider
+      @provider         = provider.nil? ? nil : [provider].flatten
       @entries_per_feed = entries_per_feed
     end
     def no_locale

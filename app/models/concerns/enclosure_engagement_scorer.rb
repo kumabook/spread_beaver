@@ -35,7 +35,7 @@ module EnclosureEngagementScorer
       end
     end
 
-    def score_select_mgr(score_tables)
+    def score_select_mgr(score_tables, mix_query)
       score_columns = []
       score_names   = []
       query         = Enclosures
@@ -53,15 +53,17 @@ module EnclosureEngagementScorer
         .where(Enclosures[:type].eq(self.name))
         .order("score DESC")
         .group(Enclosures[:id])
+      query.where(Enclosures[:provider].in(mix_query.provider)) if !mix_query.provider.nil?
+      query
     end
 
     def most_engaging_items(stream: nil, query: Mix::Query.new, page: 1, per_page: 10)
       score_tables = self.score_table_queries(stream, query)
       bind_values  = self.score_bind_values(score_tables)
 
-      total_count  = Enclosure.where(type: self.name).count
+      total_count  = Enclosure.where(type: self.name).provider(query.provider).count
 
-      select_mgr   = self.score_select_mgr(score_tables)
+      select_mgr   = self.score_select_mgr(score_tables, query)
 
       select_mgr.offset = (page - 1) < 0 ? 0 : (page - 1) * per_page
       select_mgr.limit  = per_page
