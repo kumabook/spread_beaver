@@ -68,6 +68,7 @@ Rails.application.routes.draw do
     post   'play'  , to: :play  , as: :plays
     get    'search', on: :collection
     member do
+      get 'crawl'
       get 'activate'
       get 'deactivate'
     end

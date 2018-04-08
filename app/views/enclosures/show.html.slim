@@ -29,6 +29,8 @@ p
 = link_to 'View', content["url"], class: 'btn btn-info'
 '
 - if @type == 'Playlist'
+  = link_to 'Crawl', crawl_playlist_path(@enclosure), class: 'btn btn-info'
+  '
   - if @enclosure.active?
     = link_to 'Deactivate', deactivate_playlist_path(@enclosure), :class => 'btn btn-primary'
   - else

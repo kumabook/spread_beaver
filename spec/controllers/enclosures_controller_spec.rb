@@ -64,6 +64,13 @@ describe EnclosuresController, type: :controller do
     }
   end
 
+  describe "#crawl" do
+    it {
+      expect_any_instance_of(PinkSpider).to receive(:fetch_tracks_of_playlist)
+      get :crawl, params: { id: playlist.id, type: Playlist.name }
+    }
+  end
+
   describe '#like' do
     before do
       post :like, params: {

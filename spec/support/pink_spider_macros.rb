@@ -79,5 +79,10 @@ module PinkSpiderMacros
     allow_any_instance_of(PinkSpider).to receive(:update_playlist) do |this|
       PinkSpiderHelper::playlist_hash
     end
+    allow_any_instance_of(PinkSpider).to receive(:fetch_tracks_of_playlist) do |this|
+      {
+        "items": []
+      }.with_indifferent_access
+    end
   end
 end

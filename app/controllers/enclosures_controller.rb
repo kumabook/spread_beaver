@@ -6,7 +6,7 @@ class EnclosuresController < ApplicationController
   include SavableController
   include PlayableController
   before_action :set_type
-  before_action :set_enclosure, only: [:show, :destroy, :activate, :deactivate]
+  before_action :set_enclosure, only: [:show, :destroy, :crawl, :activate, :deactivate]
   before_action :set_content  , only: [:show, :edit]
   before_action :set_entry    , only: [:index]
   before_action :set_issue    , only: [:index]
@@ -77,6 +77,11 @@ class EnclosuresController < ApplicationController
                     notice: "#{enclosure_class.name} was successfully destroyed."
       }
     end
+  end
+
+  def crawl
+    @enclosure.fetch_tracks()
+    redirect_back(fallback_location: root_path)
   end
 
   def update_velocity(velocity)
