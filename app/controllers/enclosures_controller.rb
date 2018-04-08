@@ -6,11 +6,10 @@ class EnclosuresController < ApplicationController
   include SavableController
   include PlayableController
   before_action :set_type
-  before_action :set_enclosure, only: [:show, :destroy, :crawl, :activate, :deactivate]
-  before_action :set_content  , only: [:show, :edit]
-  before_action :set_entry    , only: [:index]
-  before_action :set_issue    , only: [:index]
-  before_action :set_query    , only: [:search]
+  before_action :set_enclosure      , only: [:show, :destroy, :crawl, :activate, :deactivate]
+  before_action :set_content        , only: [:show, :edit]
+  before_action :set_entry_and_issue, only: [:index]
+  before_action :set_query          , only: [:search]
 
   def index
     if @entry.present?
@@ -126,11 +125,8 @@ class EnclosuresController < ApplicationController
       @content = @enclosure.fetch_content
     end
 
-    def set_entry
+    def set_entry_and_issue
       @entry = Entry.find(params[:entry_id]) if params[:entry_id].present?
-    end
-
-    def set_issue
       @issue = Issue.find(params[:issue_id]) if params[:issue_id].present?
     end
 
