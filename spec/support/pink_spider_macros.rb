@@ -76,5 +76,8 @@ module PinkSpiderMacros
     allow_any_instance_of(PinkSpider).to receive(:create_playlist) do |this|
       PinkSpiderHelper::playlist_hash
     end
+    allow_any_instance_of(PinkSpider).to receive(:update_playlist) do |this|
+      PinkSpiderHelper::playlist_hash
+    end
   end
 end

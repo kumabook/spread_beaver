@@ -1,9 +1,10 @@
 require 'rails_helper'
 
 describe EnclosuresController, type: :controller do
-  let  (:uuid ) { SecureRandom.uuid }
-  let! (:track) { FactoryBot.create(:track) }
-  let  (:user ) { FactoryBot.create(:admin) }
+  let  (:uuid )    { SecureRandom.uuid }
+  let! (:track)    { FactoryBot.create(:track) }
+  let! (:playlist) { FactoryBot.create(:playlist) }
+  let  (:user )    { FactoryBot.create(:admin) }
 
   before(:each) do
     login_user user
@@ -47,6 +48,20 @@ describe EnclosuresController, type: :controller do
     }
     it { expect(response).to redirect_to tracks_url }
     it { expect(Track.find_by(id: track.id)).to be_nil }
+  end
+
+  describe "#activate" do
+    it {
+      expect_any_instance_of(PinkSpider).to receive(:update_playlist)
+      get :activate, params: { id: playlist.id, type: Playlist.name }
+    }
+  end
+
+  describe "#deactivate" do
+    it {
+      expect_any_instance_of(PinkSpider).to receive(:update_playlist)
+      get :deactivate, params: { id: playlist.id, type: Playlist.name }
+    }
   end
 
   describe '#like' do

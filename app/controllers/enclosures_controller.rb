@@ -6,7 +6,7 @@ class EnclosuresController < ApplicationController
   include SavableController
   include PlayableController
   before_action :set_type
-  before_action :set_enclosure, only: [:show, :destroy]
+  before_action :set_enclosure, only: [:show, :destroy, :activate, :deactivate]
   before_action :set_content  , only: [:show, :edit]
   before_action :set_entry    , only: [:index]
   before_action :set_issue    , only: [:index]
@@ -80,9 +80,7 @@ class EnclosuresController < ApplicationController
   end
 
   def update_velocity(velocity)
-    target_id  = params["#{enclosure_class.name.downcase}_id"]
-    @enclosure = enclosure_class.find(target_id)
-    @enclosure.update_content(id, { velocity: velocity })
+    @enclosure.update_content({ velocity: velocity })
     redirect_back(fallback_location: root_path)
   end
 

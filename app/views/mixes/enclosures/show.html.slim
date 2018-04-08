@@ -29,7 +29,7 @@ table.table.table-striped
         td = "#{item.engagement}"
         td
           - if @type == 'Playlist'
-            - if item.is_active
-              = link_to 'Deactivate', playlist_deactivate_path(item), :class => 'btn btn-xs btn-primary'
+            - if item.active?
+              = link_to 'Deactivate', deactivate_playlist_path(item), :class => 'btn btn-xs btn-primary'
             - else
-              = link_to 'Activate', playlist_activate_path(item), :class => 'btn btn-xs btn-primary'
+              = link_to 'Activate', activate_playlist_path(item), :class => 'btn btn-xs btn-primary'

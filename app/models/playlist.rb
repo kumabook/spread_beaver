@@ -33,7 +33,7 @@ class Playlist < Enclosure
     hash
   end
 
-  def is_active
+  def active?
     @content['velocity'] > 0
   end
 
