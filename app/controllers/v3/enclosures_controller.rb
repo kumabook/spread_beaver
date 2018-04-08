@@ -25,7 +25,7 @@ class V3::EnclosuresController < V3::ApiController
 
   private
     def set_enclosure
-      @enclosure = @enclosure_class.detail.find(params[:id])
+      @enclosure = @enclosure_class.with_detail.find(params[:id])
       @enclosure_class.set_contents([@enclosure])
       enclosures = [] + @enclosure.pick_enclosures + @enclosure.pick_containers
       @enclosure_class.set_partial_entries(enclosures)
@@ -35,7 +35,7 @@ class V3::EnclosuresController < V3::ApiController
     end
 
     def set_enclosures
-      @enclosures = @enclosure_class.detail.where(id: params['_json'])
+      @enclosures = @enclosure_class.with_detail.where(id: params['_json'])
       @enclosures = params['_json'].flat_map { |id|
         @enclosures.select { |v| v.id == id }
       }

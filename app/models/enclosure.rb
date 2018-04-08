@@ -52,7 +52,7 @@ class Enclosure < ApplicationRecord
   }
 
   scope :with_content, -> { eager_load(:entry_enclosures).eager_load(:entries) }
-  scope :detail, -> {
+  scope :with_detail, -> {
     eager_load(:entries)
       .eager_load(:pick_containers)
       .eager_load(:pick_enclosures)
