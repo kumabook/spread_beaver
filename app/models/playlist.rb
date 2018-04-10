@@ -23,12 +23,16 @@ class Playlist < Enclosure
   def as_detail_json
     hash = super
     if tracks.present?
-      hash['tracks'] = tracks.map do |track|
-        playlist_track = hash['tracks'].find { |h| h['track_id'] == track.id }
+      hash['tracks'] = hash['tracks'].map do |playlist_track|
+        track = tracks.find { |t| t.id == playlist_track['track_id'] }
+        if track.nil?
+          next nil
+        end
         track.content = playlist_track['track']
         playlist_track['track'] = track.as_content_json
         playlist_track
       end
+      hash['tracks'].compact!
     end
     hash
   end
