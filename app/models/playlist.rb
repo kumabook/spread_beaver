@@ -46,11 +46,9 @@ class Playlist < Enclosure
       pt = Pick.find_or_create_by(enclosure_id:   playlist_track["track_id"],
                                   enclosure_type: Track.name,
                                   container_id:   playlist_track["playlist_id"],
-                                  container_type: Playlist.name) do |m|
-        m.created_at = playlist_track["created_at"]
-        m.updated_at = playlist_track["updated_at"]
-      end
-      pt.touch
+                                  container_type: Playlist.name)
+      m.created_at = playlist_track["created_at"]
+      m.updated_at = playlist_track["updated_at"]
       pt.save
       pt
     end
