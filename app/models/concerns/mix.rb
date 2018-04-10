@@ -18,6 +18,11 @@ module Mix
     def no_locale
       Query.new(@period, @type, locale: nil, provider: @provider, entries_per_feed: @entries_per_feed)
     end
+
+    def twice_past
+      Query.new(@period.twice_past, @type, locale: nil, provider: @provider, entries_per_feed: @entries_per_feed)
+    end
+
     def cache_key
       prefix = ""
       prefix += "#{time2key(period.begin)}-#{time2key(period.end)}-" if @period.present?

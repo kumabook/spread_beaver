@@ -92,10 +92,18 @@ module EnclosureEngagementScorer
                     .group("entries.feed_id")
                     .group(:enclosure_id)
       # doesn't support locale, use stream filter instead
-      picked    = self.query_for_best_items(Pick, stream, query.no_locale)
-                    .select("COUNT(container_id) * #{score_per(Pick)} as score, picks.enclosure_id")
-                    .group(:enclosure_id)
+      pick_query = query.no_locale.twice_past
+      picked     = self.query_for_best_items(Pick, stream, pick_query)
+                     .select("#{time_decayed_score(Pick, pick_query.period)} as score, picks.enclosure_id")
+                     .group(:enclosure_id)
       [played, liked, saved, featured, picked]
+    end
+
+    def time_decayed_score(clazz, period)
+      to       = period.end == Float::INFINITY ? 'CURRENT_TIMESTAMP' : "'#{period.end}'"
+      interval = period.interval
+      elapsed_time = "EXTRACT(EPOCH FROM #{to} - #{clazz.table_name}.created_at)"
+      "SUM((#{interval} - #{elapsed_time}) / #{interval} * #{score_per(clazz)})"
     end
 
     def sort_items(items, scores, score_tables)
@@ -106,7 +114,7 @@ module EnclosureEngagementScorer
           value = h["#{t.table_name}_score"].to_i
           memo[t.table_name] = {
             value: value,
-            count: value / SCORES_PER_MARK[t.table_name],
+            count: value / SCORES_PER_MARK[t.table_name].to_f,
           }
           memo
         end
