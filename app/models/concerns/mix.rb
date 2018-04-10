@@ -23,6 +23,14 @@ module Mix
       Query.new(@period.twice_past, @type, locale: nil, provider: @provider, entries_per_feed: @entries_per_feed)
     end
 
+    def exclude_sound_cloud
+      if @provider.nil?
+        self.dup
+      else
+        Query.new(@period, @type, locale: nil, provider: @provider.select {|pr| pr != "SoundCloud" }, entries_per_feed: @entries_per_feed)
+      end
+    end
+
     def cache_key
       prefix = ""
       prefix += "#{time2key(period.begin)}-#{time2key(period.end)}-" if @period.present?

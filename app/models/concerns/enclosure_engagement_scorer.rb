@@ -92,7 +92,7 @@ module EnclosureEngagementScorer
                     .group("entries.feed_id")
                     .group(:enclosure_id)
       # doesn't support locale, use stream filter instead
-      pick_query = query.no_locale.twice_past
+      pick_query = query.no_locale.twice_past.exclude_sound_cloud
       picked     = self.query_for_best_items(Pick, stream, pick_query)
                      .select("#{time_decayed_score(Pick, pick_query.period)} as score, picks.enclosure_id")
                      .group(:enclosure_id)
