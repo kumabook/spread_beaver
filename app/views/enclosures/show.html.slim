@@ -23,8 +23,26 @@ p
   p
     strong
       = key
+  - if key == "tracks"
+    - content[key].each do |playlist_track|
+      p
+        - v = playlist_track['track']
+        = link_to "#{v['title']} | #{v['owner_name']}", track_path['track_id']
+  - elsif key == "playlists"
+    - content[key].each do |v|
+      p
+        = link_to "#{v['title']} | #{v['owner_name']}", playlist_path(v['id'])
+  - elsif key == "albums"
+    - content[key].each do |v|
+      p
+        = link_to "#{v['title']} | #{v['owner_name']}", album_path(v['id'])
+  - elsif key == "artists"
+    - content[key].each do |artist|
+      p
+        = artist['name']
+  - else
     br
-    = "#{content[key]}"
+      = content[key]
 
 = link_to 'View', content["url"], class: 'btn btn-info'
 '
