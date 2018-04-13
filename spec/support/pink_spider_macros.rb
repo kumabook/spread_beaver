@@ -79,9 +79,16 @@ module PinkSpiderMacros
     allow_any_instance_of(PinkSpider).to receive(:update_playlist) do |this|
       PinkSpiderHelper::playlist_hash
     end
-    allow_any_instance_of(PinkSpider).to receive(:fetch_tracks_of_playlist) do |this|
+    allow_any_instance_of(PinkSpider).to receive(:fetch_tracks_of_playlist) do |this, playlist_id|
+      playlist_track = {
+        playlist_id: playlist_id,
+        track_id: track[:id],
+        track: track,
+        created_at: '2018-04-13T05:37:02.807854+00:00',
+        updated_at: '2018-04-13T05:37:02.807854+00:00',
+      }
       {
-        "items": []
+        "items": [playlist_track]
       }.with_indifferent_access
     end
   end

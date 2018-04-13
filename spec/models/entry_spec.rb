@@ -97,4 +97,15 @@ describe Entry do
     it { expect(Entry.topic(japanese_topic).count).to eq(ENTRY_PER_FEED) }
     it { expect(Entry.topic(english_topic).count).to eq(ENTRY_PER_FEED) }
   end
+
+  describe "#crawl" do
+    let (:feed) { FactoryBot.create(:feed) }
+    let (:entry) { feed.entries[0] }
+    before { mock_up_pink_spider }
+    it {
+      expect(entry.crawl()[:tracks].count).to be > 0
+      expect(entry.crawl()[:playlists].count).to be > 0
+      expect(entry.crawl()[:albums].count).to be > 0
+    }
+  end
 end
