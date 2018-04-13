@@ -93,9 +93,11 @@ describe Entry do
       Topic.create!(label: "english", description: "desc", feeds: [english_feed])
     }
 
-    it { expect(Entry.all.count).to eq(ENTRY_PER_FEED * 2) }
-    it { expect(Entry.topic(japanese_topic).count).to eq(ENTRY_PER_FEED) }
-    it { expect(Entry.topic(english_topic).count).to eq(ENTRY_PER_FEED) }
+    it {
+      expect(Entry.all.count).to eq(ENTRY_PER_FEED * 2)
+      expect(Entry.topic(japanese_topic).count).to eq(ENTRY_PER_FEED)
+      expect(Entry.topic(english_topic).count).to eq(ENTRY_PER_FEED)
+    }
   end
 
   describe "#crawl" do
