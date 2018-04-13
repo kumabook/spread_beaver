@@ -1,24 +1,11 @@
 import qs from "qs";
-import { daily, weekly, monthly } from "../utils/newerThan";
+import { since, fromToday } from "../utils/date";
 
 function mixUrl(id, type) {
   if (type === "entries") {
     return `/mixes/${encodeURIComponent(id)}`;
   }
   return `/mixes/${encodeURIComponent(id)}/${type}`;
-}
-
-function newerThan(peroid) {
-  switch (peroid) {
-    case "daily":
-      return daily();
-    case "weekly":
-      return weekly();
-    case "monthly":
-      return monthly();
-    default:
-      return null;
-  }
 }
 
 function providers(value) {
@@ -31,9 +18,11 @@ function providers(value) {
 }
 
 function mixParams(type, period, provider) {
+  const { newerThan, olderThan } = fromToday(type);
   return {
     type,
-    newerThan: newerThan(period),
+    newerThan,
+    olderThan,
     period,
     provider,
   };
