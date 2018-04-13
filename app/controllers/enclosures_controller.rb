@@ -66,6 +66,9 @@ class EnclosuresController < ApplicationController
         format.html { render :new }
       end
     end
+  rescue RestClient::NotFound
+    flash[:alert] = "Sorry, the resource not found."
+    redirect_to view_context.new_enc_path(@type)
   end
 
   def destroy
