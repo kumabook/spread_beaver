@@ -24,7 +24,7 @@ function mixParams(type, period, provider) {
     newerThan,
     olderThan,
     period,
-    provider,
+    provider
   };
 }
 
