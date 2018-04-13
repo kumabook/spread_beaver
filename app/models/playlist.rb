@@ -51,8 +51,8 @@ class Playlist < Enclosure
                                   enclosure_type: Track.name,
                                   container_id:   playlist_track["playlist_id"],
                                   container_type: Playlist.name)
-      m.created_at = playlist_track["created_at"]
-      m.updated_at = playlist_track["updated_at"]
+      pt.created_at = playlist_track["created_at"]
+      pt.updated_at = playlist_track["updated_at"]
       pt.save
       pt
     end
