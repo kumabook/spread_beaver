@@ -103,9 +103,9 @@ module EnclosureEngagementScorer
     end
 
     def time_decayed_score(clazz, period)
-      to       = period.end == Float::INFINITY ? 'CURRENT_TIMESTAMP' : "'#{period.end}'"
+      to       = period.end == Float::INFINITY ? "'#{Time.now.iso8601}'" : "'#{period.end.iso8601}'"
       interval = period.interval
-      elapsed_time = "EXTRACT(EPOCH FROM #{to} - #{clazz.table_name}.created_at)"
+      elapsed_time = "EXTRACT(EPOCH FROM TIMESTAMP WITH TIME ZONE #{to} - #{clazz.table_name}.created_at)"
       "SUM((#{interval} - #{elapsed_time}) / #{interval} * #{score_per(clazz)})"
     end
 
