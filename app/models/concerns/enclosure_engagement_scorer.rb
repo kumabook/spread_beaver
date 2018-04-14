@@ -117,9 +117,9 @@ module EnclosureEngagementScorer
     def sort_items(items, scores, score_tables)
       scores.map do |h|
         item = items.select { |t| t.id == h["id"] }.first
-        item.engagement = h["score"].to_i
+        item.engagement = h["score"].to_f
         item.scores = score_tables.reduce({}) do |memo, t|
-          value = h["#{t.table_name}_score"].to_i
+          value = h["#{t.table_name}_score"].to_f
           memo[t.table_name] = {
             value: value,
             count: value / SCORES_PER_MARK[t.table_name].to_f,
