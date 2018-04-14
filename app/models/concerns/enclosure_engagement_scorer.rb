@@ -97,15 +97,20 @@ module EnclosureEngagementScorer
       # uses time decayed score
       pick_query = query.no_locale.twice_past.exclude_sound_cloud
       picked     = self.query_for_best_items(Pick, nil, pick_query)
-                     .select("#{time_decayed_score(Pick, pick_query.period)} as score, picks.enclosure_id")
+                     .select("#{time_decayed_score(Pick, pick_query.period, 1.day.to_i)} as score, picks.enclosure_id")
                      .group(:enclosure_id)
       [played, liked, saved, featured, picked]
     end
 
-    def time_decayed_score(clazz, period)
+    def time_decayed_score(clazz, period, precision=nil)
       to       = period.end == Float::INFINITY ? "'#{Time.now.iso8601}'" : "'#{period.end.iso8601}'"
       interval = period.interval
       elapsed_time = "EXTRACT(EPOCH FROM TIMESTAMP WITH TIME ZONE #{to} - #{clazz.table_name}.created_at)"
+
+      if precision.present?
+        interval     = period.interval / precision
+        elapsed_time = "FLOOR(#{elapsed_time} / #{precision})"
+      end
       "SUM((#{interval} - #{elapsed_time}) / #{interval} * #{score_per(clazz)})"
     end
 
