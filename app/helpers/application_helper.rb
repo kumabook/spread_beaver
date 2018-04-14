@@ -13,6 +13,10 @@ module ApplicationHelper
     nil
   end
 
+  def score_value(score)
+    format("%.2f", score)
+  end
+
   def thumbnail_path(model)
     if model.is_a?(String)
       model

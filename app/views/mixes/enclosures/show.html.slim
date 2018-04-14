@@ -25,8 +25,8 @@ table.table.table-striped
         td = link_to provider_id, sanitize_link(item.permalink_url)
         - item&.scores&.each_value do |score|
           td
-            = "#{score[:value]} (#{score[:count]})"
-        td = "#{item.engagement}"
+            = "#{score_value(score[:value])} (#{score_value(score[:count])})"
+        td = "#{score_value(item.engagement)}"
         td
           - if @type == 'Playlist'
             - if item.active?
