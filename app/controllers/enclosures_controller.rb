@@ -82,6 +82,10 @@ class EnclosuresController < ApplicationController
   end
 
   def crawl
+    content = @enclosure.fetch_content
+    @enclosure.update(created_at: content["published_at"],
+                      title:      content["title"],
+                      provider:   content["provider"])
     @enclosure.fetch_tracks()
     redirect_back(fallback_location: root_path)
   end
