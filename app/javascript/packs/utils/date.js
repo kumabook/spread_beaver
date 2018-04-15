@@ -8,8 +8,8 @@ export function since(d) {
     .valueOf();
 }
 
-export function fromToday(type) {
-  switch (type) {
+export function fromToday(period) {
+  switch (period) {
     case 'daily':
       return { newerThan: since(1), olderThan: since(0) };
     case 'weekly':

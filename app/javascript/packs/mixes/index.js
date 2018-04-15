@@ -18,7 +18,7 @@ function providers(value) {
 }
 
 function mixParams(type, period, provider) {
-  const { newerThan, olderThan } = fromToday(type);
+  const { newerThan, olderThan } = fromToday(period);
   return {
     type,
     newerThan,
