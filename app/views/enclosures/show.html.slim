@@ -44,7 +44,7 @@ p
     br
       = content[key]
 
-= link_to 'View', content["url"], class: 'btn btn-info'
+= link_to 'View',  @enclosure.permalink_url, class: 'btn btn-info'
 '
 - if @type == 'Playlist'
   = link_to 'Crawl', crawl_playlist_path(@enclosure), class: 'btn btn-info'
