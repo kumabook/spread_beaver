@@ -109,12 +109,7 @@ class Enclosure < ApplicationRecord
 
   def self.create_with_pink_spider(params)
     c = PinkSpider.new.public_send("create_#{name.downcase}".to_sym, params)
-    item = find_or_create_by(id: c["id"]) do
-      logger.info("New enclosure #{c['provider']} #{c['identifier']}")
-    end
-    item.update(created_at: c["published_at"])
-    item.content = c
-    item
+    find_or_create_by_content(c)
   end
 
   def fetch_content
