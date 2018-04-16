@@ -2,7 +2,7 @@
   h1
     - if @keyword.present?
       = "Entries of keyword/"
-      = link_to(@keyword.label, keyword_path(@keyowrd))
+      = link_to(@keyword.label, keyword_path(@keyword))
     - elsif @tag.present?
       = "Entries of tag/"
       = link_to(@tag.label, tag_path(@tag))
