@@ -7,6 +7,7 @@ table.table.table-striped
   thead
     tr
       th
+      th thumbnail
       th title
       th provider
       - @items.first&.scores&.each_key do |name|
@@ -21,6 +22,7 @@ table.table.table-striped
       - provider_id     = item.content.nil? ? "Unknown" : "#{content["provider"]}/#{content["identifier"]}"
       tr
         td.resource-menu data-id=item.id data-resource-id="#{@type.downcase}/#{item.id}"
+        td = thumbnail_image_link(item)
         td = link_to content["title"] || item.id, item_path
         td = link_to provider_id, sanitize_link(item.permalink_url)
         - item&.scores&.each_value do |score|

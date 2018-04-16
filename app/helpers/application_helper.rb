@@ -24,6 +24,8 @@ module ApplicationHelper
       model.visualUrl
     elsif model.is_a?(Entry) && model.has_visual?
       model.visual_url
+    elsif model.is_a?(Enclosure) && model.content['thumbnail_url'].present?
+      model.content['thumbnail_url']
     else
       asset_path('no_image.png')
     end
