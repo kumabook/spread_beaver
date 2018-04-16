@@ -44,6 +44,14 @@ p
     br
       = content[key]
 
+p
+  strong topics
+
+- @enclosure.entries.flat_map { |e| e.feed.topics }.uniq.each do |topic|
+  = link_to topic.label, edit_topic_path(topic)
+  br
+'
+
 = link_to 'View',  @enclosure.permalink_url, class: 'btn btn-info'
 '
 - if @type == 'Playlist'

@@ -125,7 +125,9 @@ class EnclosuresController < ApplicationController
     end
 
     def set_enclosure
-      @enclosure = enclosure_class.find(params[:id])
+      @enclosure = enclosure_class
+                     .eager_load(entries: { feed: [:feed_topics, :topics] })
+                     .find(params[:id])
     end
 
     def set_content
