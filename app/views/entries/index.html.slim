@@ -48,7 +48,7 @@ table.table.table-striped
 
   tbody
     - @entries.each do |entry|
-      - path = feed_path(CGI.escape entry.origin_hash['streamId'])
+      - path = feed_path(CGI.escape entry.feed_id)
       - if @issue.present?
         - entry_issue = @entry_issues.select {|ei| ei.entry_id == entry.id }.first
       tr
@@ -57,7 +57,7 @@ table.table.table-striped
           td = entry_issue.engagement
         td = thumbnail_image_link(entry)
         td = link_to entry.title&.truncate(50), entry.url
-        td = link_to entry.origin_hash['title'], path
+        td = link_to entry.feed.title, path
         td = entry.published
         td = entry.crawled
         td
