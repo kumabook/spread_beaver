@@ -14,7 +14,7 @@
 div.row
   div.col-lg-6
     - if @entry.present?
-      = link_to "Add #{@type}", new_entry_enc_path(@type), :class => 'btn btn-primary'
+      = link_to "Add #{@type}", new_entry_enc_path(@type, @entry), :class => 'btn btn-primary'
     - elsif @issue.present?
       = link_to "Add #{@type}", new_issue_enclosure_issue_path(type: @type), :class => 'btn btn-primary'
     - else
