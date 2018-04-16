@@ -19,6 +19,11 @@ module EnclosureEngagementScorer
     def score_per(clazz)
       SCORES_PER_MARK[clazz.table_name]
     end
+
+    def score_per_of(table_name)
+      SCORES_PER_MARK[table_name]
+    end
+
     def select_all(select_mgr, bind_values)
       visitor     = ActiveRecord::Base.connection.visitor
       collector   = visitor.accept(select_mgr.ast, Arel::Collectors::Bind.new)
@@ -35,16 +40,17 @@ module EnclosureEngagementScorer
       end
     end
 
-    def score_select_mgr(score_tables, mix_query)
+    def score_select_mgr(score_queries, mix_query)
       score_columns = []
       score_names   = []
       query         = Enclosures
-      score_tables.each do |mark|
-        scores = mark.as("#{mark.table_name}_scores")
-        query  = query.join(scores, Join).on(Enclosures[:id].eq(scores[:enclosure_id]))
-        column = "COALESCE(#{scores[:score].sum().to_sql}, 0)"
+      score_queries.each do |score_query|
+        score_name = "#{score_query[:query].table_name}_score"
+        scores     = score_table(score_query, mix_query)
+        query      = query.join(scores, Join).on(Enclosures[:id].eq(scores[:enclosure_id]))
+        column     = "COALESCE(#{scores[:score].sum().to_sql}, 0)"
         score_columns << column
-        score_names << "#{column} as #{mark.table_name}_score"
+        score_names << "#{column} as #{score_name}"
       end
 
       score = score_columns.join(' + ')
@@ -57,13 +63,40 @@ module EnclosureEngagementScorer
       query
     end
 
+    def score_table(score_query, mix_query)
+      mark = score_query[:query]
+      case score_query[:type]
+      when :count
+        mark.as("#{mark.table_name}_scores")
+      when :time_decayed
+        time_decayed_score_table(mark, mix_query.period)
+      end
+    end
+
+    def time_decayed_score_table(mark, period)
+      marks       = mark.arel_table
+      table_name  = mark.table_name
+      table_alias = mark.as("distinct_#{table_name}")
+      per_score   = score_per_of(table_name)
+      score       = time_decayed_score(table_alias.table_name,
+                                       per_score,
+                                       period.twice_past,
+                                       1.day.to_i)
+      marks.join(table_alias, Join).on(marks[:id].eq(table_alias[:id]))
+        .project("#{score} as score, #{table_name}.enclosure_id")
+        .group(marks[:enclosure_id])
+        .as("#{table_name}_score")
+    end
+
     def most_engaging_items(stream: nil, query: Mix::Query.new, page: 1, per_page: 10)
-      score_tables = self.score_table_queries(stream, query)
-      bind_values  = self.score_bind_values(score_tables)
+      score_queries = self.score_table_queries(stream, query)
+      score_tables  = score_queries.map { |q| q[:clazz] }
 
-      total_count  = Enclosure.where(type: self.name).provider(query.provider).count
+      bind_values   = self.score_bind_values(score_queries.map { |q| q[:query] })
 
-      select_mgr   = self.score_select_mgr(score_tables, query)
+      total_count   = Enclosure.where(type: self.name).provider(query.provider).count
+
+      select_mgr    = self.score_select_mgr(score_queries, query)
 
       select_mgr.offset = (page - 1) < 0 ? 0 : (page - 1) * per_page
       select_mgr.limit  = per_page
@@ -96,22 +129,27 @@ module EnclosureEngagementScorer
       # excludes sound cloud from provider,
       # uses time decayed score
       pick_query = query.no_locale.twice_past.exclude_sound_cloud
-      picked     = self.query_for_best_items(Pick, nil, pick_query)
-                     .select("#{time_decayed_score(Pick, pick_query.period, 1.day.to_i)} as score, picks.enclosure_id")
-                     .group(:enclosure_id)
-      [played, liked, saved, featured, picked]
+      picked     = self.query_for_best_items(Pick, stream, pick_query)
+                     .distinct(:container_id)
+      [
+        { type: :count       , query: played  , clazz: PlayedEnclosure },
+        { type: :count       , query: liked   , clazz: LikedEnclosure },
+        { type: :count       , query: saved   , clazz: SavedEnclosure },
+        { type: :count       , query: featured, clazz: EntryEnclosure },
+        { type: :time_decayed, query: picked  , clazz: Pick }
+      ]
     end
 
-    def time_decayed_score(clazz, period, precision=nil)
+    def time_decayed_score(table_name, score, period, precision=nil)
       to       = period.end == Float::INFINITY ? "'#{Time.now.iso8601}'" : "'#{period.end.iso8601}'"
       interval = period.interval
-      elapsed_time = "EXTRACT(EPOCH FROM TIMESTAMP WITH TIME ZONE #{to} - #{clazz.table_name}.created_at)"
+      elapsed_time = "EXTRACT(EPOCH FROM TIMESTAMP WITH TIME ZONE #{to} - #{table_name}.created_at)"
 
       if precision.present?
         interval     = period.interval / precision
         elapsed_time = "FLOOR(#{elapsed_time} / #{precision})"
       end
-      "SUM((#{interval} - #{elapsed_time}) / #{interval} * #{score_per(clazz)})"
+      "SUM((#{interval} - #{elapsed_time}) / #{interval} * #{score})"
     end
 
     def sort_items(items, scores, score_tables)
