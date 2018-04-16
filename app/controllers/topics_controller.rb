@@ -1,6 +1,6 @@
 class TopicsController < ApplicationController
-  before_action :set_topic, only: [:edit, :destroy, :update]
-  before_action :require_admin, only: [:new, :create, :destroy, :update]
+  before_action :set_topic, only: [:edit, :destroy, :update, :dummy_entry]
+  before_action :require_admin, only: [:new, :create, :destroy, :update, :dummy_entry]
   def index
     @topics = Topic.order('engagement DESC').all
   end
@@ -22,8 +22,12 @@ class TopicsController < ApplicationController
     respond_as_update(@topic, topic_params)
   end
 
+  def dummy_entry
+    redirect_to entry_path(@topic.find_or_create_dummy_entry)
+  end
+
   def set_topic
-    @topic = Topic.find(params[:id])
+    @topic = Topic.find(params[:id] || params[:topic_id])
   end
 
   def topic_params
