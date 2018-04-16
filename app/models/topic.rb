@@ -44,6 +44,12 @@ class Topic < ApplicationRecord
     Time.at(Time.now.to_i - mix_duration)
   end
 
+  def find_or_create_dummy_entry
+    feed = Feed.find_or_create_dummy_for_topic(self)
+    FeedTopic.find_or_create_by(topic_id: self.id, feed_id: feed.id)
+    Entry.find_or_create_dummy_for_feed(feed)
+  end
+
   def self.topics(locale=nil)
     key = locale.nil? ? "topics_all" : "topics_#{locale}"
     Rails.cache.fetch(key) {
