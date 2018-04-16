@@ -279,6 +279,9 @@ class Entry < ApplicationRecord
     visual_url.present? && visual_url != 'none'
   end
 
+  alias has_thumbnail? has_visual?
+  alias thumbnail_url visual_url
+
   def self.latest_items(since: 3.days.ago,
                         entries_per_feed: 3,
                         page: 1, per_page: nil)

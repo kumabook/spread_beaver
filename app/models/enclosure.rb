@@ -83,6 +83,14 @@ class Enclosure < ApplicationRecord
     where({ table_name.to_sym => { created_at:  period }})
   }
 
+  def has_thumbnail?
+    content.present? && content['thumbnail_url'].present?
+  end
+
+  def thumbnail_url
+    content['thumbnail_url']
+  end
+
   def self.find_or_create_by_content(content)
     model = find_or_create_by(id: content['id']) do |m|
       m.created_at = content["published_at"]

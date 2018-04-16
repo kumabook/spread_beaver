@@ -20,12 +20,8 @@ module ApplicationHelper
   def thumbnail_path(model)
     if model.is_a?(String)
       model
-    elsif model.is_a?(Feed) && model.visualUrl.present?
-      model.visualUrl
-    elsif model.is_a?(Entry) && model.has_visual?
-      model.visual_url
-    elsif model.is_a?(Enclosure) && model.content['thumbnail_url'].present?
-      model.content['thumbnail_url']
+    elsif model.respond_to?(:has_thumbnail?) && model.has_thumbnail?
+      model.thumbnail_url
     else
       asset_path('no_image.png')
     end
