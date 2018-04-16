@@ -310,12 +310,13 @@ class Entry < ApplicationRecord
 
   def as_json(options = {})
     h               = super(options)
-    h['crawled']    = crawled.to_time.to_i * 1000
-    h['published']  = published.to_time.to_i * 1000
+    h['crawled']    = crawled&.to_time.to_i * 1000
+    h['published']  = published&.to_time.to_i * 1000
     h['recrawled']  = recrawled&.to_time&.to_i&.* 1000
     h['updated']    = updated&.to_time&.to_i&.* 1000
     h['categories'] = []
     h['keywords']   = nil
+    h['origin']     ||= {}
     h.delete('saved_count')
 
     JSON_ATTRS.each do |key|
