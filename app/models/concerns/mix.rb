@@ -4,6 +4,7 @@ require('paginated_array')
 module Mix
   class Query
     attr_reader(:period, :entries_per_feed, :type, :locale, :provider)
+    attr_accessor(:use_stream_for_pick)
     def initialize(period          = -Float::INFINITY..Float::INFINITY,
                    type            = :hot,
                    locale:           nil,
@@ -14,6 +15,7 @@ module Mix
       @locale           = locale
       @provider         = provider.nil? ? nil : [provider].flatten
       @entries_per_feed = entries_per_feed
+      @use_stream_for_pick = true
     end
     def no_locale
       Query.new(@period, @type, locale: nil, provider: @provider, entries_per_feed: @entries_per_feed)

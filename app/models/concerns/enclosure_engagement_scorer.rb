@@ -129,7 +129,7 @@ module EnclosureEngagementScorer
       # excludes sound cloud from provider,
       # uses time decayed score
       pick_query = query.no_locale.twice_past.exclude_sound_cloud
-      picked     = self.query_for_best_items(Pick, stream, pick_query)
+      picked     = self.query_for_best_items(Pick, query.use_stream_for_pick ? stream : nil, pick_query)
                      .distinct(:container_id)
       [
         { type: :count       , query: played  , clazz: PlayedEnclosure },

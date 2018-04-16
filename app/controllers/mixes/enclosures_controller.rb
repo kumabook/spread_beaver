@@ -28,6 +28,11 @@ class Mixes::EnclosuresController < ApplicationController
                               locale:           @locale,
                               provider:         @provider,
                               entries_per_feed: entries_per_feed)
+      if params[:use_stream_for_pick] == "true"
+        query.use_stream_for_pick = true
+      else
+        query.use_stream_for_pick = false
+      end
       @items = @stream.mix_enclosures(@enclosure_class,
                                       page:          @page,
                                       per_page:      @per_page,
