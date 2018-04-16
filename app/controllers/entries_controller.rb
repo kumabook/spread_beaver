@@ -100,7 +100,7 @@ class EntriesController < ApplicationController
 
   def set_entries
     if @keyword.present?
-      @entries = @keyword.entries
+      @entries = @keyword.entries.includes(:feed)
                          .order('published DESC')
                          .page(params[:page])
     elsif @tag.present?
@@ -110,14 +110,16 @@ class EntriesController < ApplicationController
     elsif @feed.present?
       @entries = Entry.where(feed_id: @feed.id)
                       .order('published DESC')
+                      .includes(:feed)
                       .page(params[:page])
     elsif @issue.present?
       @entry_issues = @issue.entry_issues
                             .order('engagement DESC')
                             .page(params[:page])
-      @entries = @issue.entries.page(params[:page])
+      @entries = @issue.entries.includes(:feed).page(params[:page])
     else
       @entries = Entry.search(@query)
+                      .includes(:feed)
                       .order('published DESC')
                       .page(params[:page])
     end
