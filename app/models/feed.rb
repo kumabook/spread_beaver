@@ -53,6 +53,7 @@ class Feed < ApplicationRecord
           .per(per_page)
           .search(query)
           .locale(locale)
+          .where('velocity >= 0')
           .includes([:feed_topics])
           .order('velocity DESC').to_a
     end
