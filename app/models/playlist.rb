@@ -65,19 +65,4 @@ class Playlist < Enclosure
     end
     PaginatedArray.new(items, r["total"], r["page"] + 1, r["per_page"])
   end
-
-  def self.crawl
-    playlists = Playlist.fetch_actives()
-    info = {
-      total_playlists: playlists.count,
-      total_tracks:    0,
-    }
-    playlists.each do |playlist|
-      tracks = playlist.fetch_tracks()
-      info = info.merge({
-                          total_tracks: info[:total_tracks] + tracks.count
-                        })
-    end
-    info
-  end
 end
