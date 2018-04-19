@@ -37,11 +37,15 @@ end
 desc "Crawl playlists"
 task :crawl_playlists => :environment do
   Rails.logger.info("Start crawling playlists")
+  notify_slack "Start crawling playlists"
 
-  info = Playlist.crawl
+  result = PlaylistCrawler.perform_now()
+  message = result[:message]
 
   Rails.logger.info("Finish crawling playlists")
-  Rails.logger.info("#{info[:total_tracks]} tracks from #{info[:total_playlists]}")
+  Rails.logger.info(message)
+  notify_slack "Finish crawling playlists"
+  notify_slack message
 end
 
 desc "Create latest entries as daily top keyword"
