@@ -58,7 +58,7 @@ class Playlist < Enclosure
     end
   end
 
-  def self.fetch_actives(page: 1, per_page: 25)
+  def self.fetch_actives(page: 1, per_page: 1000)
     r = PinkSpider.new.fetch_active_playlists(page < 1 ? 0 : page - 1, per_page)
     items = r["items"].map do |item|
       Playlist.find_or_create_by_content(item)
