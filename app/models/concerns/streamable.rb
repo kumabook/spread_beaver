@@ -15,6 +15,8 @@ module Streamable
         category(s)
       elsif s.kind_of?(Issue)
         issue(s)
+      elsif s.kind_of?(Enumerable) && s[0].kind_of?(Issue)
+        issues(s)
       else
         all
       end
