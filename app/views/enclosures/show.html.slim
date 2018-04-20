@@ -32,6 +32,8 @@ p
       p
         - v = playlist_track['track']
         = link_to "#{v['title']} | #{v['owner_name']}", track_path['track_id']
+        '
+        = Time.zone.iso8601(playlist_track["created_at"])
   - elsif key == "playlists"
     - content[key].each do |v|
       p
