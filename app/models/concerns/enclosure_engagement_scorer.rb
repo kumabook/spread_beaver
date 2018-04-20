@@ -108,13 +108,13 @@ module EnclosureEngagementScorer
     end
 
     def score_table_queries(stream, query)
-      played    = self.query_for_best_items(PlayedEnclosure, stream, query)
+      played    = self.query_for_best_items(PlayedEnclosure, nil, query)
                     .select("COUNT(played_enclosures.enclosure_id) * #{score_per(PlayedEnclosure)} as score, played_enclosures.enclosure_id")
                     .group("enclosure_id")
-      liked     = self.query_for_best_items(LikedEnclosure, stream, query)
+      liked     = self.query_for_best_items(LikedEnclosure, nil, query)
                     .select("COUNT(liked_enclosures.enclosure_id) * #{score_per(LikedEnclosure)} as score, liked_enclosures.enclosure_id")
                     .group("enclosure_id")
-      saved     = self.query_for_best_items(SavedEnclosure, stream, query)
+      saved     = self.query_for_best_items(SavedEnclosure, nil, query)
                     .select("COUNT(saved_enclosures.enclosure_id) * #{score_per(SavedEnclosure)} as score, saved_enclosures.enclosure_id")
                     .group("enclosure_id")
       # doesn't support locale, use stream filter instead
