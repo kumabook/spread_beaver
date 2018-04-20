@@ -7,6 +7,7 @@ table.table.table-striped
   thead
     tr
       th
+      th
       th thumbnail
       th title
       th provider
@@ -16,12 +17,13 @@ table.table.table-striped
           = "#{t name} (#{score})"
       th total
   tbody
-    - @items.each do |item|
+    - @items.each_with_index do |item, index|
       - item_path       = enc_path(@enclosure_class.name.downcase, item)
       - content         = item.content || {}
       - provider_id     = item.content.nil? ? "Unknown" : "#{content["provider"]}/#{content["identifier"]}"
       tr
         td.resource-menu data-id=item.id data-resource-id="#{@type.downcase}/#{item.id}"
+        td = index + 1 + (@items.page - 1) * @items.per_page
         td = thumbnail_image_link(item)
         td = link_to content["title"] || item.id, item_path
         td = link_to provider_id, sanitize_link(item.permalink_url)
