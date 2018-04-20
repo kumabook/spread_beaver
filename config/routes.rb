@@ -38,7 +38,7 @@ Rails.application.routes.draw do
   end
 
   resources :topics do
-    get 'dummy_entry', to: :dummy_entry, as: :dummy_entry
+    get 'mix_issue', to: :mix_issue, as: :mix_issue
     resources :feeds, only: [:index]
   end
   resources :subscriptions, except: [:new]

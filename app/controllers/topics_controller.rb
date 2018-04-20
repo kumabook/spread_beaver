@@ -1,6 +1,6 @@
 class TopicsController < ApplicationController
-  before_action :set_topic, only: [:edit, :destroy, :update, :dummy_entry]
-  before_action :require_admin, only: [:new, :create, :destroy, :update, :dummy_entry]
+  before_action :set_topic, only: [:edit, :destroy, :update, :mix_issue]
+  before_action :require_admin, only: [:new, :create, :destroy, :update, :mix_issue]
   def index
     @topics = Topic.order('engagement DESC').all
   end
@@ -22,8 +22,9 @@ class TopicsController < ApplicationController
     respond_as_update(@topic, topic_params)
   end
 
-  def dummy_entry
-    redirect_to entry_path(@topic.find_or_create_dummy_entry)
+  def mix_issue
+    journal = Journal.create_topic_mix_journal(topic)
+    redirect_to issue_playlists_path(@topic.find_or_create_mix_issue(journal))
   end
 
   def set_topic
