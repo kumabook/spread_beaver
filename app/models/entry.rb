@@ -179,12 +179,31 @@ class Entry < ApplicationRecord
       playlist.fetch_tracks
     end
 
+    add_playlists_to_mix_issue(new_playlists)
+
     self.save
     {
       tracks:    new_tracks,
       playlists: new_playlists,
       albums:    new_albums,
     }
+  end
+
+  def add_playlists_to_mix_issue(playlists)
+    feed.topics.each do |topic|
+      mix_journal = topic.mix_journal
+      if mix_journal.present?
+        mix_issue = topic.find_or_create_daily_mix_issue(mix_journal, created_at)
+        playlists.each do |playlist|
+          begin
+            mix_issue.playlists << playlist
+          rescue ActiveRecord::RecordNotUnique
+            # already exists
+          end
+        end
+      end
+    end
+
   end
 
   def self.set_marks(user, entries)
