@@ -5,6 +5,10 @@
 
 form.form.form-horizontal#mix_form
   .form-group
+    = label_tag :locale, nil, :class => 'control-label col-lg-2'
+    .col-lg-4
+      = select_tag :locale, options_for_select(["ja", "en", nil]), class: 'form-control'
+  .form-group
     = label_tag :stream_id, "Stream id", :class => 'control-label col-lg-2'
     .col-lg-4
       = select_tag :stream_id, options_for_select(Mix::stream_ids), class: 'form-control'
@@ -24,6 +28,10 @@ form.form.form-horizontal#mix_form
     = label_tag :provider, nil, :class => 'control-label col-lg-2'
     .col-lg-4
       = select_tag :provider, options_for_select(['youtube', 'others']), class: 'form-control'
+  .form-group
+    = label_tag :use_stream_for_pick, nil, :class => 'control-label col-lg-2'
+    .col-lg-4
+      = select_tag :use_stream_for_pick, options_for_select(['true', 'false']), class: 'form-control'
 
 
   .form-group
