@@ -44,6 +44,49 @@ class Topic < ApplicationRecord
     Time.at(Time.now.to_i - mix_duration)
   end
 
+  def mix_journal
+    Journal.topic_mix_journal(self)
+  end
+
+  def find_or_create_mix_issue(mix_journal)
+    Issue.find_or_create_by(journal: mix_journal,
+                            label:   id) do |i|
+      i.description = "mix for #{id}"
+    end
+  end
+
+  def daily_mix_issue_label(time=Time.zone.now)
+    time_str = "#{time.strftime('%Y%m%d')}"
+    "#{id}-#{time_str}"
+  end
+
+  def find_daily_mix_issue(mix_journal, time=Time.zone.now)
+    label       = daily_mix_issue_label(time)
+    Issue.find_by(journal: mix_journal,
+                  label:   label) do |i|
+      i.description = "mix for #{label}"
+    end
+  end
+
+  def find_or_create_daily_mix_issue(mix_journal, time=Time.zone.now)
+    label       = daily_mix_issue_label(time)
+    Issue.find_or_create_by(journal: mix_journal,
+                            label:   label) do |i|
+      i.description = "mix for #{label}"
+    end
+  end
+
+  def daily_mix_issues(mix_journal, period)
+    (period.begin.to_i..period.end.to_i).step(1.day)
+      .map { |i| Time.zone.at(i) }
+      .map { |time| find_daily_mix_issue(mix_journal, time) }
+      .compact
+  end
+
+  def mix_issues(mix_journal, period=2.week.ago..1.day.ago)
+    daily_mix_issues(mix_journal, period) + [find_or_create_mix_issue(mix_journal)]
+  end
+
   def find_or_create_dummy_entry
     feed = Feed.find_or_create_dummy_for_topic(self)
     FeedTopic.find_or_create_by(topic_id: self.id, feed_id: feed.id)

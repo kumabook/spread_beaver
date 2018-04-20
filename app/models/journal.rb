@@ -20,6 +20,14 @@ class Journal < ApplicationRecord
     Topic.find_by(id: "topic/#{label}")
   end
 
+  def self.create_topic_mix_journal(topic)
+    Journal.find_or_create_by(label: "mixes_#{topic.id}")
+  end
+
+  def self.topic_mix_journal(topic)
+    Journal.find_by(label: "mixes_#{topic.id}")
+  end
+
   def self.create_daily_issues
     Journal.all.select {|j| j.topic.present? }.map do |j|
       j.create_daily_issue
