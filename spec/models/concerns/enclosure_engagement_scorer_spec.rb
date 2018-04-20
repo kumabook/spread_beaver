@@ -44,8 +44,10 @@ describe EnclosureEngagementScorer do
 
     context "with topic" do
       before do
-        japan_entry = japan.find_or_create_dummy_entry
-        japan_entry.playlists << playlist
+        japan_mix_journal = Journal.create_topic_mix_journal(japan)
+        global_mix_journal = Journal.create_topic_mix_journal(global)
+        issue = japan.find_or_create_mix_issue(japan_mix_journal)
+        issue.playlists << playlist
         create_pick(today)
       end
       it "should return score with specified topic" do

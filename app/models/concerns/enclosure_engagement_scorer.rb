@@ -129,8 +129,21 @@ module EnclosureEngagementScorer
       # excludes sound cloud from provider,
       # uses time decayed score
       pick_query = query.no_locale.twice_past.exclude_sound_cloud
-      picked     = self.query_for_best_items(Pick, query.use_stream_for_pick ? stream : nil, pick_query)
-                     .distinct(:container_id)
+      pick_stream = nil
+      if query.use_stream_for_pick
+        if stream.kind_of?(Topic)
+          # NOTE: In order to improve performance,
+          # cache playlist of a topic to mix_issues of the topic
+          mix_journal = stream.mix_journal
+          if mix_journal.present?
+            pick_stream = stream.mix_issues(mix_journal, pick_query.period)
+          end
+        else
+          pick_stream = stream
+        end
+      end
+      picked = self.query_for_best_items(Pick, pick_stream, pick_query)
+                 .distinct(:container_id)
       [
         { type: :count       , query: played  , clazz: PlayedEnclosure },
         { type: :count       , query: liked   , clazz: LikedEnclosure },
