@@ -23,6 +23,10 @@ p
   p
     strong
       = key
+    - if ["tracks", "playlists", "albums"].include?(key)
+      '
+      = "#{content[key].count} items"
+      br
   - if key == "tracks"
     - content[key].each do |playlist_track|
       p
