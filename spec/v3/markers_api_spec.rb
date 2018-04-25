@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe "Markers api", type: :request, autodoc: true do
   ENTRY_NUM     = 4
@@ -12,7 +12,7 @@ RSpec.describe "Markers api", type: :request, autodoc: true do
   let (:tracks) {
     TRACK_PER_ENTRY.times.map { FactoryBot.create(:track) }
   }
-  context 'after login' do
+  context "after login" do
     before do
       setup()
       login()
@@ -23,8 +23,8 @@ RSpec.describe "Markers api", type: :request, autodoc: true do
         count = Entry.read(@user).count
         post "/v3/markers",
              params: {
-               type: 'entries',
-               action: 'markAsRead',
+               type: "entries",
+               action: "markAsRead",
                entryIds: [entries[MARKED_NUM + 1].id]
              },
              headers: headers_for_login_user
@@ -44,8 +44,8 @@ RSpec.describe "Markers api", type: :request, autodoc: true do
         count = Entry.read(@user).count
         post "/v3/markers",
              params: {
-               type: 'entries',
-               action: 'keepUnread',
+               type: "entries",
+               action: "keepUnread",
                entryIds: [entries[0].id]
              },
              headers: headers_for_login_user
@@ -60,8 +60,8 @@ RSpec.describe "Markers api", type: :request, autodoc: true do
         count = Entry.saved(@user).count
         post "/v3/markers",
              params: {
-               type: 'entries',
-               action: 'markAsSaved',
+               type: "entries",
+               action: "markAsSaved",
                entryIds: [entries[MARKED_NUM + 1].id]
              },
              headers: headers_for_login_user
@@ -81,8 +81,8 @@ RSpec.describe "Markers api", type: :request, autodoc: true do
         count = Entry.saved(@user).count
         post "/v3/markers",
              params: {
-               type: 'entries',
-               action: 'markAsUnsaved',
+               type: "entries",
+               action: "markAsUnsaved",
                entryIds: [entries[0].id]
              },
              headers: headers_for_login_user
@@ -100,8 +100,8 @@ RSpec.describe "Markers api", type: :request, autodoc: true do
         count = Track.liked(@user).count
         post "/v3/markers",
              params: {
-               type: 'tracks',
-               action: 'markAsLiked',
+               type: "tracks",
+               action: "markAsLiked",
                trackIds: [entries[0].tracks[MARKED_NUM + 1].id]
              },
              headers: headers_for_login_user
@@ -123,8 +123,8 @@ RSpec.describe "Markers api", type: :request, autodoc: true do
         count = Track.liked(@user).count
         post "/v3/markers",
              params: {
-               type: 'tracks',
-               action: 'markAsUnliked',
+               type: "tracks",
+               action: "markAsUnliked",
                trackIds: [entries[0].tracks[0].id]
              },
              headers: headers_for_login_user
@@ -142,8 +142,8 @@ RSpec.describe "Markers api", type: :request, autodoc: true do
         count = Track.joins(:saved_users).where(users: { id: @user.id }).count
         post "/v3/markers",
              params: {
-               type: 'tracks',
-               action: 'markAsSaved',
+               type: "tracks",
+               action: "markAsSaved",
                trackIds: [entries[0].tracks[MARKED_NUM + 1].id]
              },
              headers: headers_for_login_user
@@ -165,8 +165,8 @@ RSpec.describe "Markers api", type: :request, autodoc: true do
         count = Track.saved(@user).count
         post "/v3/markers",
              params: {
-               type: 'tracks',
-               action: 'markAsUnsaved',
+               type: "tracks",
+               action: "markAsUnsaved",
                trackIds: [entries[0].tracks[0].id]
              },
              headers: headers_for_login_user
@@ -185,8 +185,8 @@ RSpec.describe "Markers api", type: :request, autodoc: true do
           count = Track.played(@user).count
           post "/v3/markers",
                params: {
-                 type: 'tracks',
-                 action: 'markAsPlayed',
+                 type: "tracks",
+                 action: "markAsPlayed",
                  trackIds: [entries[0].tracks[0].id]
                },
                headers: headers_for_login_user
@@ -207,8 +207,8 @@ RSpec.describe "Markers api", type: :request, autodoc: true do
           count = Track.played(@user).count
           post "/v3/markers",
                params: {
-                 type: 'tracks',
-                 action: 'markAsPlayed',
+                 type: "tracks",
+                 action: "markAsPlayed",
                  trackIds: [entries[0].tracks[0].id]
                },
                headers: headers_for_login_user
@@ -231,8 +231,8 @@ RSpec.describe "Markers api", type: :request, autodoc: true do
           count = Track.played(@user).count
           post "/v3/markers",
                params: {
-                 type: 'tracks',
-                 action: 'markAsPlayed',
+                 type: "tracks",
+                 action: "markAsPlayed",
                  trackIds: [entries[0].tracks[0].id]
                },
                headers: headers_for_login_user
@@ -247,8 +247,8 @@ RSpec.describe "Markers api", type: :request, autodoc: true do
         count = Track.played(@user).count
         post "/v3/markers",
              params: {
-               type: 'tracks',
-               action: 'markAsPlayed',
+               type: "tracks",
+               action: "markAsPlayed",
                trackIds: [""]
              },
              headers: headers_for_login_user

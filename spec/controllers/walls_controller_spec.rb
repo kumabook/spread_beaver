@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-require 'rails_helper'
+require "rails_helper"
 
 describe WallsController, type: :controller do
   let! (:wall) { Wall.create!(label: "news", description: "news tab")}
@@ -9,18 +9,18 @@ describe WallsController, type: :controller do
     login_user user
   end
 
-  describe 'GET index' do
+  describe "GET index" do
     before { get :index }
     it { expect(assigns(:walls)).to eq([wall])  }
     it { expect(response).to render_template("index") }
   end
 
-  describe 'GET new' do
+  describe "GET new" do
     before { get :new }
     it { expect(response).to render_template("new") }
   end
 
-  describe 'POST create' do
+  describe "POST create" do
     label       = "new_wall"
     description = "desc"
     before { post :create, params: { wall: { label: label, description: description} }}
@@ -28,12 +28,12 @@ describe WallsController, type: :controller do
     it { expect(Wall.find_by(label: label).label).to eq(label) }
   end
 
-  describe 'GET edit' do
+  describe "GET edit" do
     before { get :edit, params: { id: wall.id }}
     it { expect(response).to render_template("edit") }
   end
 
-  describe 'POST update' do
+  describe "POST update" do
     label = "changed"
     before { post :update, params: { id: wall.id, wall: { label: label } }}
     it { expect(response).to redirect_to walls_url }

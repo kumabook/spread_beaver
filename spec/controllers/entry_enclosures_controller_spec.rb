@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-require 'rails_helper'
+require "rails_helper"
 
 describe EntryEnclosuresController, type: :controller do
   let  (:feed  ) { Feed.create!(id: "feed/http://test.com/rss" , title: "feed") }
@@ -22,13 +22,13 @@ describe EntryEnclosuresController, type: :controller do
     login_user user
   end
 
-  describe '#new' do
+  describe "#new" do
     before { get :new, params: { entry_id: entry.id, type: Track.name } }
     it { expect(response).to render_template("new") }
   end
 
-  describe '#create' do
-    context 'when succeeds in creating' do
+  describe "#create" do
+    context "when succeeds in creating" do
       before {
         post :create, params: entry_enclosure_params.merge(entry_id: entry.id,
                                                            type:     Track.name)
@@ -36,7 +36,7 @@ describe EntryEnclosuresController, type: :controller do
       it { expect(response).to redirect_to entry_tracks_url(entry) }
       it { expect(assigns(:entry)).not_to be_nil }
     end
-    context 'when fails to create' do
+    context "when fails to create" do
       before {
         allow_any_instance_of(EntryEnclosure).to receive(:save).and_return(false)
         post :create, params: entry_enclosure_params.merge(entry_id: entry.id,
@@ -47,13 +47,13 @@ describe EntryEnclosuresController, type: :controller do
     end
   end
 
-  describe '#edit' do
+  describe "#edit" do
     before { get :edit, params: { id: entry_enclosure.id } }
     it { expect(response).to render_template("edit") }
   end
 
-  describe '#update' do
-    context 'when succeeds in updating' do
+  describe "#update" do
+    context "when succeeds in updating" do
       before {
         post :update, params: {
                id: entry_enclosure.id,
@@ -63,7 +63,7 @@ describe EntryEnclosuresController, type: :controller do
       it { expect(response).to redirect_to entry_tracks_url(entry) }
       it { expect(EntryEnclosure.find(entry_enclosure.id).engagement).to eq(10) }
     end
-    context 'when fails to update' do
+    context "when fails to update" do
       before {
         allow_any_instance_of(EntryEnclosure).to receive(:save).and_return(false)
         post :update, params: {
@@ -76,8 +76,8 @@ describe EntryEnclosuresController, type: :controller do
     end
   end
 
-  describe '#destroy' do
-    context 'when succeeds in saving' do
+  describe "#destroy" do
+    context "when succeeds in saving" do
       before {
         delete :destroy, params: { id: entry_enclosure.id }
       }
@@ -87,7 +87,7 @@ describe EntryEnclosuresController, type: :controller do
                                       enclosure_id: track.id)).to be_nil
       }
     end
-    context 'when fails to save' do
+    context "when fails to save" do
       before {
         allow_any_instance_of(EntryEnclosure).to receive(:destroy).and_return(false)
         delete :destroy, params: { id: entry_enclosure.id }

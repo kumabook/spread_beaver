@@ -1,8 +1,8 @@
 # frozen_string_literal: true
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe "Album Stream api", type: :request, autodoc: true do
-  context 'after login' do
+  context "after login" do
     before(:all) do
       setup()
       login()
@@ -30,15 +30,15 @@ RSpec.describe "Album Stream api", type: :request, autodoc: true do
           params: { newer_than: 3.days.ago.to_time.to_i * 1000 },
           headers: headers_for_login_user_api
       result = JSON.parse @response.body
-      expect(result['items'].count).to eq(PER_PAGE)
-      expect(result['continuation']).not_to be_nil
+      expect(result["items"].count).to eq(PER_PAGE)
+      expect(result["continuation"]).not_to be_nil
 
       get "/v3/streams/#{resource}/albums/contents",
-          params: { continuation: result['continuation'] },
+          params: { continuation: result["continuation"] },
           headers: headers_for_login_user_api
       result = JSON.parse @response.body
-      expect(result['items'].count).to eq(Entry.all.count - PER_PAGE)
-      expect(result['continuation']).to be_nil
+      expect(result["items"].count).to eq(Entry.all.count - PER_PAGE)
+      expect(result["continuation"]).to be_nil
     end
 
     it "gets popular albums" do
@@ -50,8 +50,8 @@ RSpec.describe "Album Stream api", type: :request, autodoc: true do
           },
           headers: headers_for_login_user_api
       result = JSON.parse @response.body
-      expect(result['items'].count).to eq(1)
-      expect(result['continuation']).to be_nil
+      expect(result["items"].count).to eq(1)
+      expect(result["continuation"]).to be_nil
     end
 
     it "gets hot albums" do
@@ -63,8 +63,8 @@ RSpec.describe "Album Stream api", type: :request, autodoc: true do
           },
           headers: headers_for_login_user_api
       result = JSON.parse @response.body
-      expect(result['items'].count).to eq(1)
-      expect(result['continuation']).to be_nil
+      expect(result["items"].count).to eq(1)
+      expect(result["continuation"]).to be_nil
     end
 
     it "gets liked albums" do
@@ -72,8 +72,8 @@ RSpec.describe "Album Stream api", type: :request, autodoc: true do
       get "/v3/streams/#{resource}/albums/contents",
           headers: headers_for_login_user_api
       result = JSON.parse @response.body
-      expect(result['items'].count).to eq(ITEM_NUM)
-      expect(result['continuation']).to be_nil
+      expect(result["items"].count).to eq(ITEM_NUM)
+      expect(result["continuation"]).to be_nil
     end
 
     it "gets saved albums" do
@@ -81,8 +81,8 @@ RSpec.describe "Album Stream api", type: :request, autodoc: true do
       get "/v3/streams/#{resource}/albums/contents",
           headers: headers_for_login_user_api
       result = JSON.parse @response.body
-      expect(result['items'].count).to eq(ITEM_NUM)
-      expect(result['continuation']).to be_nil
+      expect(result["items"].count).to eq(ITEM_NUM)
+      expect(result["continuation"]).to be_nil
     end
 
     it "gets played albums" do
@@ -90,8 +90,8 @@ RSpec.describe "Album Stream api", type: :request, autodoc: true do
       get "/v3/streams/#{resource}/albums/contents",
           headers: headers_for_login_user_api
       result = JSON.parse @response.body
-      expect(result['items'].count).to eq(ITEM_NUM)
-      expect(result['continuation']).to be_nil
+      expect(result["items"].count).to eq(ITEM_NUM)
+      expect(result["continuation"]).to be_nil
     end
 
   end

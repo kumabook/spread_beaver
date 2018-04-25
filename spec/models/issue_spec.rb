@@ -1,6 +1,6 @@
 # coding: utf-8
 # frozen_string_literal: true
-require 'rails_helper'
+require "rails_helper"
 
 describe Issue do
   let! (:journal) {     Journal.create!(label: "journal", description: "desc")}

@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-require('paginated_array')
+require("paginated_array")
 
 module Playable
   extend ActiveSupport::Concern
@@ -10,7 +10,7 @@ module Playable
     plays = "played_#{table_name}".to_sym
     has_many plays, dependent: :destroy
 
-    scope :hot,    ->        { joins(:users).order('play_count DESC') }
+    scope :hot,    ->        { joins(:users).order("play_count DESC") }
     scope :played, -> (user) {
       joins(plays).where(plays => { user_id: user.id }).order("#{plays}.created_at DESC")
     }

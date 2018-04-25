@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-require('paginated_array')
+require("paginated_array")
 module EnclosureEngagementScorer
   extend ActiveSupport::Concern
 
@@ -54,7 +54,7 @@ module EnclosureEngagementScorer
         score_names << "#{column} as #{score_name}"
       end
 
-      score = score_columns.join(' + ')
+      score = score_columns.join(" + ")
       query
         .project(Enclosures[:id], *score_names, "#{score} as score")
         .where(Enclosures[:type].eq(self.name))

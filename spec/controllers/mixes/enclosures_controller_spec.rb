@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-require 'rails_helper'
+require "rails_helper"
 
 describe Mixes::EnclosuresController, type: :controller do
   let  (:user) { FactoryBot.create(:admin) }
@@ -11,7 +11,7 @@ describe Mixes::EnclosuresController, type: :controller do
     login_user user
   end
 
-  describe '#show' do
+  describe "#show" do
     before {
       get :show,
           params: {

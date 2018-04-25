@@ -9,7 +9,7 @@ class Wall < ApplicationRecord
 
   def as_json(options = {})
     h              = super(options)
-    h['resources'] = resources.as_json
+    h["resources"] = resources.as_json
     h
   end
 end

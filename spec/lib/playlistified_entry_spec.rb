@@ -1,8 +1,8 @@
 # coding: utf-8
 # frozen_string_literal: true
 
-require 'pink_spider_helper'
-require 'playlistified_entry'
+require "pink_spider_helper"
+require "playlistified_entry"
 
 describe PlaylistifiedEntry do
   let (:entry_hash) {

@@ -39,7 +39,7 @@ class EntriesController < ApplicationController
     @entry.crawl(force: true)
     respond_to do |format|
       format.html {
-        redirect_to entry_path(@entry), notice: 'Entry was successfully crawled.'
+        redirect_to entry_path(@entry), notice: "Entry was successfully crawled."
       }
     end
   end
@@ -52,10 +52,10 @@ class EntriesController < ApplicationController
     @entry = Entry.new(entry_params)
     respond_to do |format|
       if @entry.save
-        format.html { redirect_to entries_path, notice: 'Entry was successfully created.' }
+        format.html { redirect_to entries_path, notice: "Entry was successfully created." }
         format.json { render :show, status: :created, location: @entry }
       else
-        flash[:notice] = 'Failed to create'
+        flash[:notice] = "Failed to create"
         format.html { render :new }
         format.json { render json: @entry.errors, status: :unprocessable_entity }
       end
@@ -65,7 +65,7 @@ class EntriesController < ApplicationController
   def destroy
     @entry.destroy
     respond_to do |format|
-      format.html { redirect_to entries_path, notice: 'Feed was successfully destroyed.' }
+      format.html { redirect_to entries_path, notice: "Feed was successfully destroyed." }
       format.json { head :no_content }
     end
   end
@@ -85,7 +85,7 @@ class EntriesController < ApplicationController
                                                 }))
     respond_to do |format|
       if @entry.save
-        format.html { redirect_to entry_path(@entry), notice: 'Entry was successfully updated.' }
+        format.html { redirect_to entry_path(@entry), notice: "Entry was successfully updated." }
         format.json { render :show, status: :ok, location: @entry }
       else
         format.html { render :edit }
@@ -102,26 +102,26 @@ class EntriesController < ApplicationController
   def set_entries
     if @keyword.present?
       @entries = @keyword.entries.includes(:feed)
-                         .order('published DESC')
+                         .order("published DESC")
                          .page(params[:page])
     elsif @tag.present?
       @entries = @tag.entries
-                     .order('published DESC')
+                     .order("published DESC")
                      .page(params[:page])
     elsif @feed.present?
       @entries = Entry.where(feed_id: @feed.id)
-                      .order('published DESC')
+                      .order("published DESC")
                       .includes(:feed)
                       .page(params[:page])
     elsif @issue.present?
       @entry_issues = @issue.entry_issues
-                            .order('engagement DESC')
+                            .order("engagement DESC")
                             .page(params[:page])
       @entries = @issue.entries.includes(:feed).page(params[:page])
     else
       @entries = Entry.search(@query)
                       .includes(:feed)
-                      .order('published DESC')
+                      .order("published DESC")
                       .page(params[:page])
     end
   end

@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe "Wall api", :type => :request, autodoc: true do
   before(:all) do
@@ -20,6 +20,6 @@ RSpec.describe "Wall api", :type => :request, autodoc: true do
     get "/v3/walls/#{CGI.escape("ios/news")}",
         headers: headers_for_login_user_api
     wall = JSON.parse @response.body
-    expect(wall['resources'].count).to eq(5)
+    expect(wall["resources"].count).to eq(5)
   end
 end

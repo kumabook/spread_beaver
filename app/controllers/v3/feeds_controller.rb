@@ -43,8 +43,8 @@ class V3::FeedsController < V3::ApiController
   end
 
   def set_feeds
-    @feeds = Feed.includes(:topics).where(id: params['_json'])
-    @feeds = params['_json'].flat_map { |id|
+    @feeds = Feed.includes(:topics).where(id: params["_json"])
+    @feeds = params["_json"].flat_map { |id|
       @feeds.select { |v| v.id == id }
     }
   end

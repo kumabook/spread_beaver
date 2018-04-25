@@ -41,7 +41,7 @@ def get_hot_entry_tweet
   entry  = entries[0]
   origin = JSON.load(entry.origin)
 
-  if origin.present? && origin['title'].present?
+  if origin.present? && origin["title"].present?
     body  = "✏[Today's Hot Entry] #{entry.title} by #{origin['title']}"
     body  = (body.length > 116) ? body[0..115].to_s : body
     tweet = "#{body} #{entry.originId}"

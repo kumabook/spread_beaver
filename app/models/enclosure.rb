@@ -28,7 +28,7 @@ class Enclosure < ApplicationRecord
     order("entries.published DESC").limit(ENTRIES_LIMIT)
   }, through: :entry_enclosures
 
-  has_many :containers      , dependent: :destroy   , class_name: 'Pick'
+  has_many :containers      , dependent: :destroy   , class_name: "Pick"
   has_many :pick_containers , ->{
     order("picks.updated_at DESC").limit(CONTAINERS_LIMIT)
   }, through: :containers, source: :container
@@ -85,15 +85,15 @@ class Enclosure < ApplicationRecord
   }
 
   def has_thumbnail?
-    content.present? && content['thumbnail_url'].present?
+    content.present? && content["thumbnail_url"].present?
   end
 
   def thumbnail_url
-    content['thumbnail_url']
+    content["thumbnail_url"]
   end
 
   def self.find_or_create_by_content(content)
-    model = find_or_create_by(id: content['id']) do |m|
+    model = find_or_create_by(id: content["id"]) do |m|
       m.created_at = content["published_at"]
       m.title      = content["title"]
       m.provider   = content["provider"]
@@ -140,11 +140,11 @@ class Enclosure < ApplicationRecord
                                      query,
                                      req_page,
                                      per_page)
-    contents = res['items']
+    contents = res["items"]
     enclosures = self.where(id: contents.map {|content| content["id"] }).each do |e|
       e.content = contents.select {|c| c["id"] == e.id }.first
     end
-    PaginatedArray.new(enclosures, res['total'], res['page'] + 1, res['per_page'])
+    PaginatedArray.new(enclosures, res["total"], res["page"] + 1, res["per_page"])
   end
 
   def self.set_contents(enclosures)
@@ -158,7 +158,7 @@ class Enclosure < ApplicationRecord
 
   def self.set_partial_entries(enclosures)
     items = EntryEnclosure.where(enclosure_id: enclosures.map {|e| e.id })
-                          .order('entries.published DESC')
+                          .order("entries.published DESC")
                           .joins(:entry)
                           .limit(PARTIAL_ENTRIES_LIMIT)
                           .preload(:entry)
@@ -209,15 +209,15 @@ class Enclosure < ApplicationRecord
   end
 
   def legacy?
-    type == Track.name && @content && LEGACY_PROVIDERS.include?(@content['provider'])
+    type == Track.name && @content && LEGACY_PROVIDERS.include?(@content["provider"])
   end
 
   def as_content_json
     hash = as_json
-    hash['likesCount']   = likes_count
-    hash['entriesCount'] = entries_count
-    hash['pickCount']    = pick_count
-    hash.delete('users')
+    hash["likesCount"]   = likes_count
+    hash["entriesCount"] = entries_count
+    hash["pickCount"]    = pick_count
+    hash.delete("users")
     [:is_liked, :is_saved, :is_played, :engagement].each do |method|
       v = self.public_send(method)
       hash[method.to_s] = v if !v.nil?
@@ -228,14 +228,14 @@ class Enclosure < ApplicationRecord
     end
 
     if !@partial_entries.nil?
-      hash['entries'] = @partial_entries.map { |e| e.as_partial_json }
+      hash["entries"] = @partial_entries.map { |e| e.as_partial_json }
     end
     hash
   end
 
   def as_detail_json
     hash = as_content_json
-    hash['entries'] = entries.map(&:as_partial_json) if hash['entries'].nil?
+    hash["entries"] = entries.map(&:as_partial_json) if hash["entries"].nil?
     hash
   end
 

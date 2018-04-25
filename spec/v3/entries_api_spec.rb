@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe "Entries api", :type => :request, autodoc: true do
   before(:all) do
@@ -14,10 +14,10 @@ RSpec.describe "Entries api", :type => :request, autodoc: true do
         headers: headers_for_login_user_api
     e = JSON.parse @response.body
     expect(e).not_to be_nil()
-    expect(e['id']).to eq(@entries[0].id)
-    expect(e['tracks'].length).to be > 0
-    expect(e['tracks'][0]['entries'].length).to be > 0
-    expect(e['tracks'][0]['entries'][0]["summary"]).to be_nil
+    expect(e["id"]).to eq(@entries[0].id)
+    expect(e["tracks"].length).to be > 0
+    expect(e["tracks"][0]["entries"].length).to be > 0
+    expect(e["tracks"][0]["entries"][0]["summary"]).to be_nil
   end
 
   it "shows entries list by id list" do
@@ -30,10 +30,10 @@ RSpec.describe "Entries api", :type => :request, autodoc: true do
     expect(entries).not_to be_nil()
     expect(entries.count).to eq(@entries.count)
     entries.each_with_index { |e, i|
-      expect(e['id']).to eq(ids[i])
-      expect(e['tracks'].length).to be > 0
-      expect(e['tracks'][0]['entries'].length).to be > 0
-      expect(e['tracks'][0]['entries'][0]["summary"]).to be_nil
+      expect(e["id"]).to eq(ids[i])
+      expect(e["tracks"].length).to be > 0
+      expect(e["tracks"][0]["entries"].length).to be > 0
+      expect(e["tracks"][0]["entries"][0]["summary"]).to be_nil
     }
   end
 end

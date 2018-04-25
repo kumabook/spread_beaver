@@ -112,11 +112,11 @@ module StreamsControllable
 
   def set_enclosure_class
     case params[:enclosures]
-    when 'tracks'
+    when "tracks"
       @enclosure_class = Track
-    when 'playlists'
+    when "playlists"
       @enclosure_class = Playlist
-    when 'albums'
+    when "albums"
       @enclosure_class = Album
     end
   end
@@ -139,15 +139,15 @@ module StreamsControllable
 
   def set_mix_type
     case params[:type]
-    when 'hot'
+    when "hot"
       @type = :hot
-    when 'popular'
+    when "popular"
       @type = :popular
-    when 'featured'
+    when "featured"
       @type = :featured
-    when 'picked'
+    when "picked"
       @type = :picked
-    when 'engaging'
+    when "engaging"
       @type = :engaging
     else
       @type = :hot

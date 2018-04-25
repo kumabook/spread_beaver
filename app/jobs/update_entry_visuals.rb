@@ -4,7 +4,7 @@ class UpdateEntryVisuals < ApplicationJob
   queue_as :default
 
   def perform(max=50)
-    Entry.order('published DESC').page(0).per(max)
+    Entry.order("published DESC").page(0).per(max)
         .where(visual: nil).find_in_batches(batch_size: 20) do |entries|
       client = Feedlr::Client.new(sandbox: false)
       sleep(WAITING_SEC_FOR_VISUAL)
@@ -37,6 +37,6 @@ class UpdateEntryVisuals < ApplicationJob
   end
 
   def is_valid_visual_url?(visual_url)
-    visual_url.present? && visual_url != 'none'
+    visual_url.present? && visual_url != "none"
   end
 end

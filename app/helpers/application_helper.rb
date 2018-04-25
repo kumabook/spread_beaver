@@ -7,7 +7,7 @@ module ApplicationHelper
   def flash_messages(opts = {})
     flash.each do |msg_type, message|
       concat(content_tag(:div, message, class: "alert #{bootstrap_class_for(msg_type)} fade in") do
-              concat content_tag(:button, 'x', class: "close", data: { dismiss: 'alert' })
+              concat content_tag(:button, "x", class: "close", data: { dismiss: "alert" })
               concat message
             end)
     end
@@ -24,7 +24,7 @@ module ApplicationHelper
     elsif model.respond_to?(:has_thumbnail?) && model.has_thumbnail?
       model.thumbnail_url
     else
-      asset_path('no_image.png')
+      asset_path("no_image.png")
     end
   end
 

@@ -1,14 +1,14 @@
 # frozen_string_literal: true
-require 'factory_bot'
-require 'coveralls'
-require 'simplecov'
+require "factory_bot"
+require "coveralls"
+require "simplecov"
 
-Coveralls.wear!('rails')
+Coveralls.wear!("rails")
 SimpleCov.formatters = [
   SimpleCov::Formatter::HTMLFormatter,
   Coveralls::SimpleCov::Formatter
 ]
-SimpleCov.start 'rails'
+SimpleCov.start "rails"
 
 RSpec.configure do |config|
   config.expect_with :rspec do |expectations|

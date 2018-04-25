@@ -1,9 +1,9 @@
 # frozen_string_literal: true
-require 'rails_helper'
+require "rails_helper"
 
 
 RSpec.describe "Streams api", type: :request, autodoc: true do
-  context 'after login' do
+  context "after login" do
     before(:all) do
       setup()
       login()
@@ -52,8 +52,8 @@ RSpec.describe "Streams api", type: :request, autodoc: true do
       get "/v3/streams/#{@feed.escape.id}/contents",
           headers: headers_for_login_user_api
       result = JSON.parse @response.body
-      expect(result['items'].count).to eq(PER_PAGE)
-      expect(result['continuation']).not_to be_nil
+      expect(result["items"].count).to eq(PER_PAGE)
+      expect(result["continuation"]).not_to be_nil
     end
 
     it "gets a specified page entries of a feed" do
@@ -62,9 +62,9 @@ RSpec.describe "Streams api", type: :request, autodoc: true do
           params: {continuation: continuation},
           headers: headers_for_login_user_api
       result = JSON.parse @response.body
-      expect(result['items'].count).to eq(ENTRY_PER_FEED - PER_PAGE)
-      expect(result['items'][0]['enclosure'].count).to eq(12)
-      expect(result['continuation']).to be_nil
+      expect(result["items"].count).to eq(ENTRY_PER_FEED - PER_PAGE)
+      expect(result["items"][0]["enclosure"].count).to eq(12)
+      expect(result["continuation"]).to be_nil
     end
 
     it "gets entries of all subscirptions" do
@@ -72,11 +72,11 @@ RSpec.describe "Streams api", type: :request, autodoc: true do
       get "/v3/streams/#{resource}/contents",
           headers: headers_for_login_user_api
       result = JSON.parse @response.body
-      expect(result['items'].count).to eq(PER_PAGE)
-      result['items'].each { |item|
-        expect(item['feed_id']).to eq(@subscribed.id)
+      expect(result["items"].count).to eq(PER_PAGE)
+      result["items"].each { |item|
+        expect(item["feed_id"]).to eq(@subscribed.id)
       }
-      expect(result['continuation']).not_to be_nil
+      expect(result["continuation"]).not_to be_nil
     end
 
     it "gets saved entries" do
@@ -84,8 +84,8 @@ RSpec.describe "Streams api", type: :request, autodoc: true do
       get "/v3/streams/#{resource}/contents",
           headers: headers_for_login_user_api
       result = JSON.parse @response.body
-      expect(result['items'].count).to eq(ITEM_NUM)
-      expect(result['continuation']).to be_nil
+      expect(result["items"].count).to eq(ITEM_NUM)
+      expect(result["continuation"]).to be_nil
     end
 
     it "gets liked entries" do
@@ -93,8 +93,8 @@ RSpec.describe "Streams api", type: :request, autodoc: true do
       get "/v3/streams/#{resource}/contents",
           headers: headers_for_login_user_api
       result = JSON.parse @response.body
-      expect(result['items'].count).to eq(ITEM_NUM)
-      expect(result['continuation']).to be_nil
+      expect(result["items"].count).to eq(ITEM_NUM)
+      expect(result["continuation"]).to be_nil
     end
 
     it "gets read entries" do
@@ -102,8 +102,8 @@ RSpec.describe "Streams api", type: :request, autodoc: true do
       get "/v3/streams/#{resource}/contents",
           headers: headers_for_login_user_api
       result = JSON.parse @response.body
-      expect(result['items'].count).to eq(ITEM_NUM)
-      expect(result['continuation']).to be_nil
+      expect(result["items"].count).to eq(ITEM_NUM)
+      expect(result["continuation"]).to be_nil
     end
 
     it "gets latest entries" do
@@ -112,8 +112,8 @@ RSpec.describe "Streams api", type: :request, autodoc: true do
           params: { newerThan: 3.days.ago.to_time.to_i * 1000 },
           headers: headers_for_login_user_api
       result = JSON.parse @response.body
-      expect(result['items'].count).to eq(2)
-      expect(result['continuation']).to be_nil
+      expect(result["items"].count).to eq(2)
+      expect(result["continuation"]).to be_nil
     end
 
     it "gets hot entries" do
@@ -125,8 +125,8 @@ RSpec.describe "Streams api", type: :request, autodoc: true do
           },
           headers: headers_for_login_user_api
       result = JSON.parse @response.body
-      expect(result['items'].count).to eq(2)
-      expect(result['continuation']).to be_nil
+      expect(result["items"].count).to eq(2)
+      expect(result["continuation"]).to be_nil
     end
 
     it "gets popular entries" do
@@ -138,8 +138,8 @@ RSpec.describe "Streams api", type: :request, autodoc: true do
           },
           headers: headers_for_login_user_api
       result = JSON.parse @response.body
-      expect(result['items'].count).to eq(2)
-      expect(result['continuation']).to be_nil
+      expect(result["items"].count).to eq(2)
+      expect(result["continuation"]).to be_nil
     end
 
     it "gets entries of a keyword" do
@@ -151,7 +151,7 @@ RSpec.describe "Streams api", type: :request, autodoc: true do
           },
           headers: headers_for_login_user_api
       result = JSON.parse @response.body
-      expect(result['items'].count).to eq(PER_PAGE)
+      expect(result["items"].count).to eq(PER_PAGE)
     end
 
     it "gets entries of a tag" do
@@ -163,7 +163,7 @@ RSpec.describe "Streams api", type: :request, autodoc: true do
           },
           headers: headers_for_login_user_api
       result = JSON.parse @response.body
-      expect(result['items'].count).to eq(PER_PAGE)
+      expect(result["items"].count).to eq(PER_PAGE)
     end
 
     it "gets entries of feeds that has a specified topic " do
@@ -176,9 +176,9 @@ RSpec.describe "Streams api", type: :request, autodoc: true do
           },
           headers: headers_for_login_user_api
       result = JSON.parse @response.body
-      expect(result['items'].count).to eq(2)
-      result['items'].each { |item|
-        expect(Entry.find(item['id']).feed).to eq(@feed)
+      expect(result["items"].count).to eq(2)
+      result["items"].each { |item|
+        expect(Entry.find(item["id"]).feed).to eq(@feed)
       }
     end
 
@@ -191,9 +191,9 @@ RSpec.describe "Streams api", type: :request, autodoc: true do
           },
           headers: headers_for_login_user_api
       result = JSON.parse @response.body
-      expect(result['items'].count).to eq(PER_PAGE)
-      result['items'].each { |item|
-        expect(Entry.find(item['id']).feed).to eq(@subscription.feed)
+      expect(result["items"].count).to eq(PER_PAGE)
+      result["items"].each { |item|
+        expect(Entry.find(item["id"]).feed).to eq(@subscription.feed)
       }
     end
 
@@ -202,9 +202,9 @@ RSpec.describe "Streams api", type: :request, autodoc: true do
         get "/v3/streams/#{@feed.escape.id}/contents",
             headers: headers_for_legacy_login_user_api
         result = JSON.parse @response.body
-        expect(result['items'].count).to eq(PER_PAGE)
-        expect(result['items'][0]['enclosure'].count).to eq(0)
-        expect(result['continuation']).not_to be_nil
+        expect(result["items"].count).to eq(PER_PAGE)
+        expect(result["items"][0]["enclosure"].count).to eq(0)
+        expect(result["continuation"]).not_to be_nil
       end
     end
 

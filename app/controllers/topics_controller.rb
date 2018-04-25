@@ -3,7 +3,7 @@ class TopicsController < ApplicationController
   before_action :set_topic, only: [:edit, :destroy, :update, :mix_issue]
   before_action :require_admin, only: [:new, :create, :destroy, :update, :mix_issue]
   def index
-    @topics = Topic.order('engagement DESC').all
+    @topics = Topic.order("engagement DESC").all
   end
 
   def new

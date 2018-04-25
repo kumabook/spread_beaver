@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-require('paginated_array')
+require("paginated_array")
 
 module Likable
   extend ActiveSupport::Concern
@@ -10,7 +10,7 @@ module Likable
     has_many likes, dependent: :destroy
     has_many :likers, through: likes, source: :user
 
-    scope :popular, ->        { joins(:users).order('likes_count DESC') }
+    scope :popular, ->        { joins(:users).order("likes_count DESC") }
     scope :liked,   -> (user) {
       joins(:likers).where(users: { id: user.id }).order("#{likes}.created_at DESC")
     }

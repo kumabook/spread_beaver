@@ -9,7 +9,7 @@ module Pagination
     CONTINUATION_SALT       = "continuation_salt"
     def pagination(str)
       return DEFAULT_PAGINATION if str.nil?
-      dec = OpenSSL::Cipher::Cipher.new('aes256')
+      dec = OpenSSL::Cipher::Cipher.new("aes256")
       dec.decrypt
       dec.pkcs5_keyivgen(CONTINUATION_SALT)
       JSON.parse (dec.update(Array.new([str]).pack("H*")) + dec.final)
@@ -24,7 +24,7 @@ module Pagination
         newer_than: newer_than,
         older_than: older_than
       }.to_json
-      enc = OpenSSL::Cipher::Cipher.new('aes256')
+      enc = OpenSSL::Cipher::Cipher.new("aes256")
       enc.encrypt
       enc.pkcs5_keyivgen(CONTINUATION_SALT)
       ((enc.update(str) + enc.final).unpack("H*"))[0].to_s
@@ -37,9 +37,9 @@ module Pagination
     @newer_than = params[:newerThan]&.to_i&.to_time
     @older_than = params[:olderThan]&.to_i&.to_time
     pagination  = V3::StreamsController::pagination(params[:continuation])
-    @page       = pagination['page'] || params[:page]&.to_i || 1
-    @per_page   = pagination['per_page'] || params[:count]&.to_i || Kaminari::config::default_per_page
-    @older_than = pagination['olderThan'] if pagination['olderThan'].present?
-    @newer_than = pagination['newerThan'] if pagination['newerThan'].present?
+    @page       = pagination["page"] || params[:page]&.to_i || 1
+    @per_page   = pagination["per_page"] || params[:count]&.to_i || Kaminari::config::default_per_page
+    @older_than = pagination["olderThan"] if pagination["olderThan"].present?
+    @newer_than = pagination["newerThan"] if pagination["newerThan"].present?
   end
 end

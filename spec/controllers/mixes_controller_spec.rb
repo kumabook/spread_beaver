@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-require 'rails_helper'
+require "rails_helper"
 
 describe MixesController, type: :controller do
   let  (:user) { FactoryBot.create(:admin) }
@@ -11,12 +11,12 @@ describe MixesController, type: :controller do
     login_user user
   end
 
-  describe '#index' do
+  describe "#index" do
     before { get :index }
     it { expect(response).to render_template("index") }
   end
 
-  describe '#show' do
+  describe "#show" do
     before {
       get :show,
           params: {

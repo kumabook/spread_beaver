@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-require 'pink_spider'
+require "pink_spider"
 class Playlist < Enclosure
   def title
     fetch_content if @content.nil?
@@ -9,8 +9,8 @@ class Playlist < Enclosure
   def permalink_url
     fetch_content if @content.nil?
     case @content["provider"]
-    when 'Spotify'
-      s = @content["url"].split(':')
+    when "Spotify"
+      s = @content["url"].split(":")
       "http://open.spotify.com/user/#{s[2]}/playlist/#{s[4]}"
     else
       @content["url"]
@@ -25,22 +25,22 @@ class Playlist < Enclosure
     hash = super
     hash['tracks'] = []
     if tracks.present?
-      hash['tracks'] = hash['tracks'].map do |playlist_track|
-        track = tracks.find { |t| t.id == playlist_track['track_id'] }
+      hash["tracks"] = hash["tracks"].map do |playlist_track|
+        track = tracks.find { |t| t.id == playlist_track["track_id"] }
         if track.nil?
           next nil
         end
-        track.content = playlist_track['track']
-        playlist_track['track'] = track.as_content_json
+        track.content = playlist_track["track"]
+        playlist_track["track"] = track.as_content_json
         playlist_track
       end
-      hash['tracks'].compact!
+      hash["tracks"].compact!
     end
     hash
   end
 
   def active?
-    @content['velocity'] > 0
+    @content["velocity"] > 0
   end
 
   def fetch_tracks

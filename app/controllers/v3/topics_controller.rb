@@ -7,7 +7,7 @@ class V3::TopicsController < V3::ApiController
   def index
     locale  = params[:locale]
     if locale.nil?
-      locale = 'ja'
+      locale = "ja"
     end
     @topics = Topic.topics(locale)
     set_surrogate_key_header Topic.table_key, @topics.map(&:record_key)

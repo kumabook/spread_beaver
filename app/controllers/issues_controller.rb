@@ -5,7 +5,7 @@ class IssuesController < ApplicationController
   before_action :set_entries, only: [:edit]
   before_action :require_admin, only: [:new, :create, :destroy, :update, :create_daily]
   def index
-    @issues = Issue.order('label DESC').where(journal: @journal).page(params[:page])
+    @issues = Issue.order("label DESC").where(journal: @journal).page(params[:page])
   end
 
   def new
@@ -18,7 +18,7 @@ class IssuesController < ApplicationController
     @issue.journal = @journal
     respond_to do |format|
       if @issue.save
-        format.html { redirect_to journal_issues_path(@journal), notice: 'Issue was successfully created.' }
+        format.html { redirect_to journal_issues_path(@journal), notice: "Issue was successfully created." }
         format.json { render :show, status: :created, location: @issue }
       else
         format.html { redirect_to journal_issues_path(@journal), notice: @issue.errors }
@@ -39,7 +39,7 @@ class IssuesController < ApplicationController
   def destroy
     respond_to do |format|
       if @issue.destroy
-        format.html { redirect_to journal_issues_path(@journal), notice: 'Issue was successfully destroyed.' }
+        format.html { redirect_to journal_issues_path(@journal), notice: "Issue was successfully destroyed." }
         format.json { head :no_content }
       else
         format.html { redirect_to journal_issues_path(@journal), notice: @issue.errors }
@@ -52,7 +52,7 @@ class IssuesController < ApplicationController
   def update
     respond_to do |format|
       if @issue.update(issue_params)
-        format.html { redirect_to journal_issues_path(@journal), notice: 'Issue was successfully updated.' }
+        format.html { redirect_to journal_issues_path(@journal), notice: "Issue was successfully updated." }
         format.json { render :show, status: :ok, location: @issue }
       else
         format.html { render :edit }

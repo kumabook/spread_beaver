@@ -1,8 +1,8 @@
 # frozen_string_literal: true
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe "Track Mix api", type: :request, autodoc: true do
-  context 'after login' do
+  context "after login" do
     before(:all) do
       setup()
       login()
@@ -46,8 +46,8 @@ RSpec.describe "Track Mix api", type: :request, autodoc: true do
             },
             headers: headers_for_login_user_api
         result = JSON.parse @response.body
-        expect(result['items'].count).to eq(ITEM_NUM)
-        expect(result['continuation']).to be_nil
+        expect(result["items"].count).to eq(ITEM_NUM)
+        expect(result["continuation"]).to be_nil
       end
 
       it "doesn't count mark out of term" do
@@ -59,8 +59,8 @@ RSpec.describe "Track Mix api", type: :request, autodoc: true do
             },
             headers: headers_for_login_user_api
         result = JSON.parse @response.body
-        expect(result['items'].count).to eq(0)
-        expect(result['continuation']).to be_nil
+        expect(result["items"].count).to eq(0)
+        expect(result["continuation"]).to be_nil
       end
     end
 
@@ -74,8 +74,8 @@ RSpec.describe "Track Mix api", type: :request, autodoc: true do
             },
             headers: headers_for_login_user_api
         result = JSON.parse @response.body
-        expect(result['items'].count).to eq(ITEM_NUM)
-        expect(result['continuation']).to be_nil
+        expect(result["items"].count).to eq(ITEM_NUM)
+        expect(result["continuation"]).to be_nil
       end
 
       it "doesn't count mark out of term" do
@@ -87,8 +87,8 @@ RSpec.describe "Track Mix api", type: :request, autodoc: true do
             },
             headers: headers_for_login_user_api
         result = JSON.parse @response.body
-        expect(result['items'].count).to eq(0)
-        expect(result['continuation']).to be_nil
+        expect(result["items"].count).to eq(0)
+        expect(result["continuation"]).to be_nil
       end
     end
 
@@ -102,8 +102,8 @@ RSpec.describe "Track Mix api", type: :request, autodoc: true do
             },
             headers: headers_for_login_user_api
         result = JSON.parse @response.body
-        expect(result['items'].count).to eq(PER_PAGE)
-        expect(result['continuation']).not_to be_nil
+        expect(result["items"].count).to eq(PER_PAGE)
+        expect(result["continuation"]).not_to be_nil
       end
 
       it "doesn't count mark out of term" do
@@ -115,8 +115,8 @@ RSpec.describe "Track Mix api", type: :request, autodoc: true do
             },
             headers: headers_for_login_user_api
         result = JSON.parse @response.body
-        expect(result['items'].count).to eq(0)
-        expect(result['continuation']).to be_nil
+        expect(result["items"].count).to eq(0)
+        expect(result["continuation"]).to be_nil
       end
     end
 
@@ -130,8 +130,8 @@ RSpec.describe "Track Mix api", type: :request, autodoc: true do
             },
             headers: headers_for_login_user_api
         result = JSON.parse @response.body
-        expect(result['items'].count).to eq(ITEM_NUM)
-        expect(result['continuation']).to be_nil
+        expect(result["items"].count).to eq(ITEM_NUM)
+        expect(result["continuation"]).to be_nil
       end
 
       it "doesn't count mark out of term" do
@@ -143,8 +143,8 @@ RSpec.describe "Track Mix api", type: :request, autodoc: true do
             },
             headers: headers_for_login_user_api
         result = JSON.parse @response.body
-        expect(result['items'].count).to eq(0)
-        expect(result['continuation']).to be_nil
+        expect(result["items"].count).to eq(0)
+        expect(result["continuation"]).to be_nil
       end
     end
 
@@ -158,10 +158,10 @@ RSpec.describe "Track Mix api", type: :request, autodoc: true do
             },
             headers: headers_for_login_user_api
         result = JSON.parse @response.body
-        expect(result['items'].count).to eq(PER_PAGE)
-        expect(result['continuation']).not_to be_nil
-        expect(result['items'][0]["engagement"]).not_to be_nil
-        expect(result['items'][0]["engagement"]).to be > 0
+        expect(result["items"].count).to eq(PER_PAGE)
+        expect(result["continuation"]).not_to be_nil
+        expect(result["items"][0]["engagement"]).not_to be_nil
+        expect(result["items"][0]["engagement"]).to be > 0
       end
     end
 
@@ -221,7 +221,7 @@ RSpec.describe "Track Mix api", type: :request, autodoc: true do
             },
             headers: headers_for_login_user_api
         result = JSON.parse @response.body
-        expect(result['items'].count).to eq(ITEM_NUM)
+        expect(result["items"].count).to eq(ITEM_NUM)
 
         get "/v3/mixes/#{@topic.escape.id}/tracks/contents",
             params: {
@@ -232,7 +232,7 @@ RSpec.describe "Track Mix api", type: :request, autodoc: true do
             },
             headers: headers_for_login_user_api
         result = JSON.parse @response.body
-        expect(result['items'].count).to eq(0)
+        expect(result["items"].count).to eq(0)
       end
     end
   end

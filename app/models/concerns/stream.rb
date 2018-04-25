@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-require('paginated_array')
+require("paginated_array")
 
 module Stream
   extend ActiveSupport::Concern

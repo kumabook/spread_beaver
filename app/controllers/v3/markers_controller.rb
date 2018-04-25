@@ -3,17 +3,17 @@ class V3::MarkersController < V3::ApiController
   before_action :doorkeeper_authorize!
   def mark
     @type     = params[:type]
-    @action   = request.request_parameters['action']
+    @action   = request.request_parameters["action"]
     case @type
-    when 'entries'
+    when "entries"
       mark_entries
-    when 'tracks'
+    when "tracks"
       mark_enclosures(:trackIds, Track.name)
-    when 'playlists'
+    when "playlists"
       mark_enclosures(:playlistIds, Playlist.name)
-    when 'albums'
+    when "albums"
       mark_enclosures(:albumIds, Album.name)
-    when 'feeds', 'categories', 'tags'
+    when "feeds", "categories", "tags"
       # TODO
     end
   end
@@ -22,17 +22,17 @@ class V3::MarkersController < V3::ApiController
     @ids = params[:entryIds] if params[:entryIds].present?
     @ids = @ids.select {|id| id.present? }
     case @action
-    when 'markAsLiked'
+    when "markAsLiked"
       mark_items(LikedEntry)
-    when 'markAsUnliked'
+    when "markAsUnliked"
       unmark_items(LikedEntry)
-    when 'markAsSaved'
+    when "markAsSaved"
       mark_items(SavedEntry)
-    when 'markAsUnsaved'
+    when "markAsUnsaved"
       unmark_items(SavedEntry)
-    when 'markAsRead'
+    when "markAsRead"
       mark_items(ReadEntry)
-    when 'keepUnread'
+    when "keepUnread"
       unmark_items(ReadEntry)
     end
   end
@@ -41,13 +41,13 @@ class V3::MarkersController < V3::ApiController
     @ids = params[ids_key] if params[ids_key].present?
     @ids = @ids.select {|id| id.present? }
     case @action
-    when 'markAsLiked'
+    when "markAsLiked"
       mark_items(LikedEnclosure, type)
-    when 'markAsUnliked'
+    when "markAsUnliked"
       unmark_items(LikedEnclosure, type)
-    when 'markAsSaved'
+    when "markAsSaved"
       mark_items(SavedEnclosure, type)
-    when 'markAsUnsaved'
+    when "markAsUnsaved"
       unmark_items(SavedEnclosure, type)
     when /markAsPlayed/
       mark_items_if_elapsed(PlayedEnclosure, type)

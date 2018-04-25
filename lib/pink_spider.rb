@@ -1,13 +1,13 @@
 # frozen_string_literal: true
-require 'rest_client'
-require 'json'
-require 'active_support'
-require 'active_support/core_ext'
+require "rest_client"
+require "json"
+require "active_support"
+require "active_support/core_ext"
 
 class PinkSpider
   attr_reader(:base_url)
   def initialize(url = nil)
-    @base_url = url || ENV["PINK_SPIDER_URL"] || 'http://localhost:8080'
+    @base_url = url || ENV["PINK_SPIDER_URL"] || "http://localhost:8080"
   end
 
   def create_feed(url)
@@ -41,7 +41,7 @@ class PinkSpider
     JSON.parse(response.body)
   end
 
-  def playlistify(url: '', force: false)
+  def playlistify(url: "", force: false)
     response = RestClient.get("#{base_url}/v1/playlistify",
                               params: {
                                 url:   url,
@@ -73,55 +73,55 @@ class PinkSpider
   end
 
   def fetch_track(id)
-    fetch_item(id, 'tracks')
+    fetch_item(id, "tracks")
   end
 
   def fetch_tracks(ids)
-    fetch_items(ids, 'tracks')
+    fetch_items(ids, "tracks")
   end
 
   def search_tracks(query, page, per_page)
-    search_items(query, page, per_page, 'tracks')
+    search_items(query, page, per_page, "tracks")
   end
 
   def create_track(params)
-    create_item('tracks', params)
+    create_item("tracks", params)
   end
 
   def fetch_playlist(id)
-    fetch_item(id, 'playlists')
+    fetch_item(id, "playlists")
   end
 
   def fetch_playlists(ids)
-    fetch_items(ids, 'playlists')
+    fetch_items(ids, "playlists")
   end
 
   def search_playlists(query, page, per_page)
-    search_items(query, page, per_page, 'playlists')
+    search_items(query, page, per_page, "playlists")
   end
 
   def create_playlist(params)
-    create_item('playlists', params)
+    create_item("playlists", params)
   end
 
   def update_playlist(id, params)
-    update_item('playlists', id, params)
+    update_item("playlists", id, params)
   end
 
   def fetch_album(id)
-    fetch_item(id, 'albums')
+    fetch_item(id, "albums")
   end
 
   def fetch_albums(ids)
-    fetch_items(ids, 'albums')
+    fetch_items(ids, "albums")
   end
 
   def search_albums(query, page, per_page)
-    search_items(query, page, per_page, 'albums')
+    search_items(query, page, per_page, "albums")
   end
 
   def create_album(params)
-    create_item('albums', params)
+    create_item("albums", params)
   end
 
   def fetch_item(id, resource_name)
