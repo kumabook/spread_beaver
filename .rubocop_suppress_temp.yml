@@ -149,8 +149,6 @@ Style/EachWithObject:
   Enabled: false
 Naming/VariableName:
   Enabled: false
-Style/InverseMethods:
-  Enabled: false
 Lint/UnusedMethodArgument:
   Enabled: false
 Layout/IndentationWidth:
