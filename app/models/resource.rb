@@ -57,7 +57,7 @@ class Resource < ApplicationRecord
       clazz = h[:clazz]
       if hash[type].present?
         clazz.stream_id(hash[type].map(&:stream_id)).each do |v|
-          hash[type].select {|r| r.stream_id == v.stream_id }.each do |r|
+          hash[type].select { |r| r.stream_id == v.stream_id }.each do |r|
             r.item = v
           end
         end
@@ -67,9 +67,9 @@ class Resource < ApplicationRecord
      { clazz: Track   , type: :track},
      { clazz: Album   , type: :album},
      { clazz: Playlist, type: :playlist}].each do |h|
-      ids = hash[h[:type]]&.map {|r| r.item_id }
+      ids = hash[h[:type]]&.map { |r| r.item_id }
       h[:clazz].where(id: ids).each do |e|
-        hash[h[:type]].select {|r| r.item_id == e.id }.each do |r|
+        hash[h[:type]].select { |r| r.item_id == e.id }.each do |r|
           r.item = e
         end
       end

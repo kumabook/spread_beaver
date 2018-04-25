@@ -2,8 +2,8 @@
 require "rails_helper"
 
 describe KeywordsController, type: :controller do
-  let! (:keyword) {     Keyword.create!(label: "keyword", description: "desc")}
-  let  (:user   ) { FactoryBot.create (:admin                               )}
+  let! (:keyword) {     Keyword.create!(label: "keyword", description: "desc") }
+  let  (:user   ) { FactoryBot.create (:admin                               ) }
 
   before(:each) do
     login_user user
@@ -24,7 +24,7 @@ describe KeywordsController, type: :controller do
     label       = "new_keyword"
     description = "desc"
     context "when succeeds in creating" do
-      before { post :create, params: { keyword: { label: label, description: description} }}
+      before { post :create, params: { keyword: { label: label, description: description} } }
       it { expect(response).to redirect_to keywords_url }
       it { expect(Keyword.find_by(label: label).label).to eq(label) }
     end
@@ -39,14 +39,14 @@ describe KeywordsController, type: :controller do
   end
 
   describe "GET edit" do
-    before { get :edit, params: { id: keyword.id }}
+    before { get :edit, params: { id: keyword.id } }
     it { expect(response).to render_template("edit") }
   end
 
   describe "POST update" do
     label = "changed"
     context "when succeeds in saving" do
-      before { post :update, params: { id: keyword.id, keyword: { label: label } }}
+      before { post :update, params: { id: keyword.id, keyword: { label: label } } }
       it { expect(response).to redirect_to keywords_url }
       it { expect(Keyword.find("keyword/changed").label).to eq(label) }
     end
@@ -61,7 +61,7 @@ describe KeywordsController, type: :controller do
 
   describe "DELETE destroy" do
     context "when succeeds in saving" do
-      before { delete :destroy, params: { id: keyword.id }}
+      before { delete :destroy, params: { id: keyword.id } }
       it { expect(response).to redirect_to keywords_url }
       it { expect(Keyword.find_by(id: keyword.id)).to be_nil }
     end

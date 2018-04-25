@@ -5,10 +5,10 @@ require "pink_spider_helper"
 describe Enclosure do
   Query = Mix::Query
   let (:feeds) {
-    5.times.map {|i| Feed.create!(id: "feed/http://test#{i}.com/rss" , title: "feed#{i}") }
+    5.times.map { |i| Feed.create!(id: "feed/http://test#{i}.com/rss" , title: "feed#{i}") }
   }
 
-  let (:entry) { FactoryBot.create(:normal_entry, feed: feeds[0] )}
+  let (:entry) { FactoryBot.create(:normal_entry, feed: feeds[0] ) }
   let (:playlistified_entry) {
     e = PinkSpiderHelper::entry_hash
     PlaylistifiedEntry.new(e[:id],
@@ -36,7 +36,7 @@ describe Enclosure do
   describe "::most_featured_items" do
     tracks = []
     before do
-      feeds.each {|feed|
+      feeds.each { |feed|
         feed.entries = 3.times.map { FactoryBot.create(:normal_entry, feed: feed) }
       }
       tracks = 5.times.map do |n|
@@ -74,7 +74,7 @@ describe Enclosure do
 
     context "multiple entries about feed" do
       before do
-        (1..2).each {|i|
+        (1..2).each { |i|
           EntryEnclosure.create!(entry:          feeds[1].entries[i],
                                  enclosure_id:   tracks[1].id,
                                  enclosure_type: Track.name,

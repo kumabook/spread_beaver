@@ -6,7 +6,7 @@ describe FeedsController, type: :controller do
   let  (:user  ) { FactoryBot.create(:admin) }
   let! (:feed  ) { Feed.create!(id: "feed/http://test.com/rss" , title: "feed") }
   let! (:feed2 ) { Feed.create!(id: "feed/http://test2.com/rss", title: "feed") }
-  let! (:topic ) { Topic.create!(label: "topic", description: "desc")}
+  let! (:topic ) { Topic.create!(label: "topic", description: "desc") }
   let  (:new_url) { "http://new.com/rss" }
   let  (:feedly_feed) { FeedlrHelper::feed("feed/#{new_url}") }
   let  (:pink_spider_feed) { PinkSpiderHelper.feed_hash(new_url) }
@@ -32,7 +32,7 @@ describe FeedsController, type: :controller do
   end
 
   describe "#show" do
-    before { get :show, params: { id: CGI.escape(feed.id) }}
+    before { get :show, params: { id: CGI.escape(feed.id) } }
     it { expect(response).to render_template("show") }
   end
 
@@ -115,7 +115,7 @@ describe FeedsController, type: :controller do
   end
 
   describe "#edit" do
-    before { get :edit, params: { id: CGI.escape(feed.id) }}
+    before { get :edit, params: { id: CGI.escape(feed.id) } }
     it { expect(response).to render_template("edit") }
   end
 
@@ -144,7 +144,7 @@ describe FeedsController, type: :controller do
 
   describe "#destroy" do
     context "when succeeds in saving" do
-      before { delete :destroy, params: { id: CGI.escape(feed.id) }}
+      before { delete :destroy, params: { id: CGI.escape(feed.id) } }
       it { expect(response).to redirect_to feeds_url }
       it { expect(Feed.find_by(id: feed.id)).to be_nil }
     end

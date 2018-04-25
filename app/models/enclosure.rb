@@ -141,8 +141,8 @@ class Enclosure < ApplicationRecord
                                      req_page,
                                      per_page)
     contents = res["items"]
-    enclosures = self.where(id: contents.map {|content| content["id"] }).each do |e|
-      e.content = contents.select {|c| c["id"] == e.id }.first
+    enclosures = self.where(id: contents.map { |content| content["id"] }).each do |e|
+      e.content = contents.select { |c| c["id"] == e.id }.first
     end
     PaginatedArray.new(enclosures, res["total"], res["page"] + 1, res["per_page"])
   end
@@ -151,7 +151,7 @@ class Enclosure < ApplicationRecord
     return enclosures if enclosures.blank?
     contents = fetch_contents(enclosures.map(&:id))
     enclosures.each do |e|
-      e.content = contents.select {|c| c["id"] == e.id }.first
+      e.content = contents.select { |c| c["id"] == e.id }.first
     end
     enclosures
   end
@@ -163,7 +163,7 @@ class Enclosure < ApplicationRecord
                           .limit(PARTIAL_ENTRIES_LIMIT)
                           .preload(:entry)
     enclosures.each do |e|
-      e.partial_entries = items.select {|item| item.enclosure_id == e.id }
+      e.partial_entries = items.select { |item| item.enclosure_id == e.id }
                                .map(&:entry)
     end
   end
@@ -183,7 +183,7 @@ class Enclosure < ApplicationRecord
     marks = clazz.where(user_id:      user.id,
                         enclosure_id: enclosures.map(&:id))
     enclosures.inject({}) do |h, e|
-      h[e] = marks.to_a.select {|l| e.id == l.enclosure_id }.first.present?
+      h[e] = marks.to_a.select { |l| e.id == l.enclosure_id }.first.present?
       h
     end
   end

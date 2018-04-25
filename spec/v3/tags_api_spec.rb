@@ -36,7 +36,7 @@ RSpec.describe "Tags api", type: :request, autodoc: true do
 
   it "delete tags" do
     tags = Tag.all
-    tag_ids = tags.map { |t| t.escape.id}.join(",")
+    tag_ids = tags.map { |t| t.escape.id }.join(",")
     delete "/v3/tags/#{tag_ids}",
            headers: headers_for_login_user_api
     expect(Tag.all.count).to eq(0)
@@ -44,7 +44,7 @@ RSpec.describe "Tags api", type: :request, autodoc: true do
 
   it "tag entry" do
     tags = Tag.all
-    tag_ids  = tags.map { |t| t.escape.id}.join(",")
+    tag_ids  = tags.map { |t| t.escape.id }.join(",")
     entry_id = @feed.entries[0].id
     put "/v3/tags/#{tag_ids}",
         params: { entryId: entry_id }.to_json,
@@ -55,7 +55,7 @@ RSpec.describe "Tags api", type: :request, autodoc: true do
   it "tag multiple entries" do
     tags      = Tag.all
     entries   = @feed.entries[0..1]
-    tag_ids   = tags.map { |t| t.escape.id}.join(",")
+    tag_ids   = tags.map { |t| t.escape.id }.join(",")
     entry_ids = entries.map(&:id).join(",")
     put "/v3/tags/#{tag_ids}/#{entry_ids}",
         headers: headers_for_login_user_api
@@ -72,7 +72,7 @@ RSpec.describe "Tags api", type: :request, autodoc: true do
       entry.update(tags: entry.tags + tags)
     end
 
-    tag_ids   = tags.map { |t| t.escape.id}.join(",")
+    tag_ids   = tags.map { |t| t.escape.id }.join(",")
     entry_ids = entries.map(&:id).join(",")
     delete "/v3/tags/#{tag_ids}/#{entry_ids}",
            headers: headers_for_login_user_api

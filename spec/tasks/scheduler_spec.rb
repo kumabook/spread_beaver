@@ -24,10 +24,10 @@ describe "rake task crawl" do
     context "type = :feeldr" do
       before do
         allow_any_instance_of(Feedlr::Client).to receive(:feeds) do |this, ids|
-          ids.map {|id| FeedlrHelper::feed(id) }
+          ids.map { |id| FeedlrHelper::feed(id) }
         end
         allow_any_instance_of(Feedlr::Client).to receive(:user_entries) do |this, ids|
-          ids.map {|id| FeedlrHelper::entry(id) }
+          ids.map { |id| FeedlrHelper::entry(id) }
         end
         allow_any_instance_of(Feedlr::Client).to receive(:stream_entries_contents) do
           FeedlrHelper::cursor

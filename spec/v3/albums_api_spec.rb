@@ -30,7 +30,7 @@ RSpec.describe "Albums  api", type: :request, autodoc: true do
     albums = JSON.parse @response.body
     expect(albums).not_to be_nil()
     expect(albums.count).to eq(ids.count)
-    albums.each_with_index {|t, i|
+    albums.each_with_index { |t, i|
       expect(ids).to include(t["id"])
     }
   end

@@ -3,7 +3,7 @@
 require "rails_helper"
 
 describe Keyword do
-  let! (:keyword) { Keyword.create!(label: "keyword", description: "desc")}
+  let! (:keyword) { Keyword.create!(label: "keyword", description: "desc") }
   let  (:entries) { FactoryBot.create(:feed).entries }
 
   before do

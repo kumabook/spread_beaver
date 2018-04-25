@@ -3,8 +3,8 @@
 require "rails_helper"
 
 describe Issue do
-  let! (:journal) {     Journal.create!(label: "journal", description: "desc")}
-  let! (:issue  ) {       Issue.create!(label: "issue"  , description: "desc", journal_id: journal.id)}
+  let! (:journal) {     Journal.create!(label: "journal", description: "desc") }
+  let! (:issue  ) {       Issue.create!(label: "issue"  , description: "desc", journal_id: journal.id) }
   let!  (:entries ) { FactoryBot.create(:feed).entries }
 
   before do
