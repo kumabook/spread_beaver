@@ -62,7 +62,6 @@ RSpec.describe "Feeds api", type: :request, autodoc: true do
     expect(result["hint"]).to eq("")
   end
 
-
   it "shows a feed by id" do
     id = @feeds[0].escape.id
     get "/v3/feeds/#{id}",

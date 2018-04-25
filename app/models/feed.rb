@@ -179,7 +179,6 @@ class Feed < ApplicationRecord
     false
   end
 
-
   def touch_topics
     Feed.eager_load(:topics).find(id).topics.each do |t|
       t.delete_cache_entries

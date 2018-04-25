@@ -4,7 +4,6 @@ class V3::SubscriptionsController < V3::ApiController
   before_action :set_feed, only: %i[create destroy]
   before_action :set_unescaped_feed, only: [:destroy]
 
-
   def index
     @subscriptions = Subscription.where(user: current_resource_owner).includes(:feed)
     render json: @subscriptions.map(&:feed).to_json, status: 200

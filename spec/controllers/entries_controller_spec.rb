@@ -28,7 +28,6 @@ describe EntriesController, type: :controller do
     )
   }
 
-
   before(:each) do
     login_user user
   end
