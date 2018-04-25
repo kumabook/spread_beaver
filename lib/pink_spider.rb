@@ -20,7 +20,7 @@ class PinkSpider
 
   def fetch_feed(id)
     response = RestClient.get "#{base_url}/v1/feeds/#{id}",
-                               accept: :json
+                              accept: :json
     return if response.code != 200
     JSON.parse(response.body)
   end

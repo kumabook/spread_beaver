@@ -41,7 +41,7 @@ Metrics/BlockLength:
 Metrics/ModuleLength:
   Enabled: false
 Layout/AlignParameters:
-  Enabled: false
+  Enabled: true
 Style/WordArray:
   Enabled: false
 Metrics/AbcSize:

@@ -58,7 +58,7 @@ RSpec.describe "Users api", type: :request, autodoc: true do
     end
     it "get info for updating" do
       get "/v3/profile/edit",
-           headers: headers_for_login_user_api
+          headers: headers_for_login_user_api
       me = JSON.parse @response.body
       expect(me["id"]).to    eq(@user.id)
       expect(me["email"]).to eq(@user.email)
@@ -73,7 +73,7 @@ RSpec.describe "Users api", type: :request, autodoc: true do
     it "get a user info" do
       user = FactoryBot.create (:member)
       get "/v3/profile/#{user.id}",
-           headers: headers_for_login_user_api
+          headers: headers_for_login_user_api
       u = JSON.parse @response.body
       expect(u["id"]).to    eq(user.id)
       expect(u["email"]).to eq(user.email)
