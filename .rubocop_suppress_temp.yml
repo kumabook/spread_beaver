@@ -153,8 +153,6 @@ Style/InverseMethods:
   Enabled: false
 Style/PerlBackrefs:
   Enabled: false
-Style/CommentAnnotation:
-  Enabled: false
 Lint/UnusedMethodArgument:
   Enabled: false
 Layout/IndentationWidth:

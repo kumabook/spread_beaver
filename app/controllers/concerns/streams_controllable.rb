@@ -156,7 +156,7 @@ module StreamsControllable
 
   def set_locale
     @locale = params[:locale]
-    @locale = @locale || "ja" # FIXME after client updates
+    @locale = @locale || "ja" # FIXME: after client updates
   end
 
   def set_provider
