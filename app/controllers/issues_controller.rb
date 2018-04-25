@@ -54,7 +54,7 @@ class IssuesController < ApplicationController
         format.html { redirect_to journal_issues_path(@journal), notice: "Issue was successfully updated." }
         format.json { render :show, status: :ok, location: @issue }
       else
-        format.html { render :edit }
+        format.html { render "edit" }
         format.json { render json: @issue.errors, status: :unprocessable_entity }
       end
     end

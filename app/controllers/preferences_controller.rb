@@ -19,7 +19,7 @@ class PreferencesController < ApplicationController
       if @preference.save
         format.html { redirect_to user_preferences_path(@user), notice: "Preference was successfully created." }
       else
-        format.html { render :new }
+        format.html { render "new" }
       end
     end
   end
@@ -33,7 +33,7 @@ class PreferencesController < ApplicationController
       if @preference.update(preference_params)
         format.html { redirect_to user_preferences_path(@user), notice: "Preference was successfully updated." }
       else
-        format.html { render :edit }
+        format.html { render "edit" }
       end
     end
   end

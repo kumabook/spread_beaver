@@ -37,7 +37,7 @@ class UsersController < ApplicationController
         format.json { render :show, status: :created, location: @user }
       else
         flash[:notice] = "Failed to create: #{@user.errors}"
-        format.html { render :new }
+        format.html { render "new" }
         format.json { render json: @user.errors, status: :unprocessable_entity }
       end
     end
@@ -52,7 +52,7 @@ class UsersController < ApplicationController
         format.json { render :show, status: :ok, location: @user }
       else
         flash[:notice] = "Failed to update: #{@user.errors}"
-        format.html { render :edit }
+        format.html { render "edit" }
         format.json { render json: @user.errors, status: :unprocessable_entity }
       end
     end

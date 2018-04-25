@@ -37,7 +37,7 @@ class EnclosuresController < ApplicationController
     per_page    = Kaminari::config::default_per_page
     @enclosures = enclosure_class.search(@query, params[:page], per_page)
     enclosure_class.set_marks(current_user, @enclosures) if current_user.present?
-    render :index
+    render "index"
   end
 
   def actives
@@ -45,7 +45,7 @@ class EnclosuresController < ApplicationController
     @enclosures = Playlist.fetch_actives(page: params[:page].to_i, per_page: per_page)
     enclosure_class.set_marks(current_user, @enclosures) if current_user.present?
     enclosure_class.set_contents(@enclosures)
-    render :index
+    render "index"
   end
 
   def show
@@ -64,7 +64,7 @@ class EnclosuresController < ApplicationController
                       notice: "#{enclosure_class.name} #{@enclosure.id} was successfully created."
         }
       else
-        format.html { render :new }
+        format.html { render "new" }
       end
     end
   rescue RestClient::NotFound

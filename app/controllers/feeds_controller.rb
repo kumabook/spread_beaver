@@ -33,7 +33,7 @@ class FeedsController < ApplicationController
       if @feed.nil?
         @feed = Feed.new
         flash[:notice] = "The url is invalid"
-        format.html { render :new }
+        format.html { render "new" }
         format.json { render json: {}, status: :unprocessable_entity }
       elsif @feed.save
         format.html { redirect_to feeds_path, notice: "Feed was successfully created." }
