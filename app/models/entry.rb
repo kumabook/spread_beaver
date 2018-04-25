@@ -219,8 +219,8 @@ class Entry < ApplicationRecord
     end
     entries.each do |e|
       e.count_of = {
-        tracks:    count_hashes[   Track.name][e.id] || 0,
-        albums:    count_hashes[   Album.name][e.id] || 0,
+        tracks:    count_hashes[Track.name][e.id] || 0,
+        albums:    count_hashes[Album.name][e.id] || 0,
         playlists: count_hashes[Playlist.name][e.id] || 0,
       }
     end
