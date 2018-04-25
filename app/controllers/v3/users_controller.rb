@@ -55,7 +55,7 @@ class V3::UsersController < V3::ApiController
 
   def profile_params
     h = params.permit(:email, :name, :fullName, :locale, :twitter_user_id, :profile, :picture)
-    h.merge!({ name: h[:fullName] }) if h.has_key?(:fullName)
+    h[:name] = h[:fullName] if h.has_key?(:fullName)
     h.delete(:fullName)
     h
   end
