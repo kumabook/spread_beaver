@@ -24,17 +24,17 @@ class Enclosure < ApplicationRecord
   enum provider: %i[Raw Custom YouTube SoundCloud Spotify AppleMusic]
 
   has_many :entry_enclosures, dependent: :destroy
-  has_many :entries, ->{
+  has_many :entries, -> {
     order("entries.published DESC").limit(ENTRIES_LIMIT)
   }, through: :entry_enclosures
 
   has_many :containers      , dependent: :destroy   , class_name: "Pick"
-  has_many :pick_containers , ->{
+  has_many :pick_containers , -> {
     order("picks.updated_at DESC").limit(CONTAINERS_LIMIT)
   }, through: :containers, source: :container
 
   has_many :picks           , dependent: :destroy, foreign_key: "container_id"
-  has_many :pick_enclosures , ->{
+  has_many :pick_enclosures , -> {
     order("picks.updated_at DESC").limit(PICKS_LIMIT)
   }, through: :picks, source: :enclosure
 
