@@ -165,8 +165,6 @@ Layout/EmptyLinesAroundMethodBody:
   Enabled: false
 Style/NegatedIf:
   Enabled: false
-Layout/SpaceInsideArrayLiteralBrackets:
-  Enabled: false
 Layout/SpaceInsideReferenceBrackets:
   Enabled: false
 GitHub/RailsControllerRenderPathsExist:
