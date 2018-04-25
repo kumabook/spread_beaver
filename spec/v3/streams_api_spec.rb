@@ -210,7 +210,7 @@ RSpec.describe "Streams api", type: :request, autodoc: true do
 
     context "invalid stream_id" do
       it "returns not_found" do
-        get "/v3/streams/#{CGI.escape("tag/global.invalid")}/contents",
+        get "/v3/streams/#{CGI.escape('tag/global.invalid')}/contents",
             headers: headers_for_login_user_api
         expect(@response.status).to eq(404)
       end

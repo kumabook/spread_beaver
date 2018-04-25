@@ -109,7 +109,7 @@ class Enclosure < ApplicationRecord
                                        enclosure_id:       model.id,
                                        enclosure_type:     name,
                                        enclosure_provider: model.provider) do
-        logger.info("Add new #{name} #{i['id']} to entry #{entry.id} #{i["provider"]}")
+        logger.info("Add new #{name} #{i['id']} to entry #{entry.id} #{i['provider']}")
       end
       model
     end

@@ -117,7 +117,7 @@ class Feed < ApplicationRecord
   end
 
   def self.first_or_create_by_pink_spider(feed)
-    Feed.find_or_create_by(id: "feed/#{feed["url"]}") do |f|
+    Feed.find_or_create_by(id: "feed/#{feed['url']}") do |f|
       f.title       = feed["title"]
       f.description = feed["description"] || ""
       f.website     = feed["website"]

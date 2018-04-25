@@ -3,7 +3,7 @@ require "pink_spider"
 class Playlist < Enclosure
   def title
     fetch_content if @content.nil?
-    "#{@content["title"]} / #{@content["owner_name"]}"
+    "#{@content['title']} / #{@content['owner_name']}"
   end
 
   def permalink_url

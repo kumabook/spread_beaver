@@ -61,7 +61,7 @@ module Stream
       if since.nil?
         "entries_of_#{stream_id}-page(#{page})-per_page(#{per_page})}"
       else
-        "entries_of_#{stream_id}-page(#{page})-per_page(#{per_page})-since-#{since.strftime("%Y%m%d")}"
+        "entries_of_#{stream_id}-page(#{page})-per_page(#{per_page})-since-#{since.strftime('%Y%m%d')}"
       end
     end
 
@@ -69,7 +69,7 @@ module Stream
       if since.nil?
         "#{clazz.name.pluralize}_of_#{stream_id}-page(#{page})-per_page(#{per_page})}"
       else
-        "#{clazz.name.pluralize}_of_#{stream_id}-page(#{page})-per_page(#{per_page})-since-#{since.strftime("%Y%m%d")}"
+        "#{clazz.name.pluralize}_of_#{stream_id}-page(#{page})-per_page(#{per_page})-since-#{since.strftime('%Y%m%d')}"
       end
     end
 
