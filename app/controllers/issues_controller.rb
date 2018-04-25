@@ -48,7 +48,6 @@ class IssuesController < ApplicationController
     end
   end
 
-
   def update
     respond_to do |format|
       if @issue.update(issue_params)

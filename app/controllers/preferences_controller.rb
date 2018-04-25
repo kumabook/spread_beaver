@@ -12,7 +12,6 @@ class PreferencesController < ApplicationController
     @preference = Preference.new(user: @user)
   end
 
-
   def create
     @preference      = Preference.new(preference_params)
     @preference.user = @user

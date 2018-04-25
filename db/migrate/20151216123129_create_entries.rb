@@ -27,7 +27,6 @@ class CreateEntries < ActiveRecord::Migration[4.2]
       t.timestamp :published
       t.timestamp :updated
 
-
       t.timestamps null: false
       t.string :feed_id, null: false
     end

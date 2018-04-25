@@ -27,7 +27,6 @@ class Entry < ApplicationRecord
   has_many :albums          , through: :entry_enclosures, source: :enclosure, source_type: Album.name
   has_many :playlists       , through: :entry_enclosures, source: :enclosure, source_type: Playlist.name
 
-
   self.primary_key = :id
 
   before_save :normalize_visual
@@ -211,7 +210,6 @@ class Entry < ApplicationRecord
       h
     end
   end
-
 
   def self.set_count_of_enclosures(entries)
     count_hashes = [Track.name, Album.name, Playlist.name].inject({}) do |hash, type|

@@ -34,7 +34,6 @@ class SubscriptionsController < ApplicationController
     end
   end
 
-
   def destroy
     respond_as_destroy(@subscription)
   end

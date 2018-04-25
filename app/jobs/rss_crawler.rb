@@ -121,7 +121,6 @@ class RSSCrawler < ApplicationJob
     end
   end
 
-
   class Result
     attr_reader(:feed, :entries, :tracks, :playlists, :albums)
     def initialize(feed)

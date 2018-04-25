@@ -28,7 +28,6 @@ class V3::FeedsController < V3::ApiController
     end
   end
 
-
   def list
     if !@feeds.nil?
       render json: @feeds.to_json, status: 200
@@ -36,7 +35,6 @@ class V3::FeedsController < V3::ApiController
       render_not_found
     end
   end
-
 
   def set_feed
     @feed = Feed.includes(:topics).find(CGI.unescape params[:id])

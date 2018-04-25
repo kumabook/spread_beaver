@@ -48,7 +48,6 @@ TODO: reenable after client update
     expect(en_topics.count).to eq(2)
   end
 
-
   it "change the label of an existing topic" do
     topic = Topic.all[0]
     hash = {
