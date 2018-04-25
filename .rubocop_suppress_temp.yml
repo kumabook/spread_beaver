@@ -173,8 +173,6 @@ Layout/SpaceInsideReferenceBrackets:
   Enabled: false
 Layout/SpaceBeforeBlockBraces:
   Enabled: false
-Style/ClassMethods:
-  Enabled: false
 GitHub/RailsControllerRenderPathsExist:
   Enabled: false
 Layout/DefEndAlignment:
