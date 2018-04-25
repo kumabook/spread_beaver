@@ -177,7 +177,5 @@ Style/ClassMethods:
   Enabled: false
 GitHub/RailsControllerRenderPathsExist:
   Enabled: false
-GitHub/RailsControllerRenderActionSymbol:
-  Enabled: false
 Layout/DefEndAlignment:
   Enabled: false
