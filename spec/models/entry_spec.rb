@@ -42,7 +42,7 @@ describe Entry do
       top_of_last_3_days = Entry.latest_items(entries_per_feed: 1, since: 3.days.ago)
       expect(top_of_last_3_days.count).to eq(feed_num)
 
-      top_of_last_1_days = Entry.latest_items(entries_per_feed: 1, since: 1.days.ago)
+      top_of_last_1_days = Entry.latest_items(entries_per_feed: 1, since: 1.day.ago)
       expect(top_of_last_1_days.count).to eq(0)
 
       top3_of_last_3_days = Entry.latest_items(entries_per_feed: 3, since: 3.days.ago)
@@ -79,7 +79,7 @@ describe Entry do
       latest_popular = Entry.popular_items(query: Mix::Query.new(10.days.ago..Time.now))
       expect(latest_popular.count).to eq(ITEM_NUM)
 
-      latest_popular = Entry.popular_items(query: Mix::Query.new(1.years.ago..20.days.ago))
+      latest_popular = Entry.popular_items(query: Mix::Query.new(1.year.ago..20.days.ago))
       expect(latest_popular.count).to eq(ITEM_NUM)
     end
   end

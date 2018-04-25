@@ -21,8 +21,8 @@ describe EntriesController, type: :controller do
       fingerprint:     "",
       originId:        "",
 
-      crawled:         1.days.ago.to_time.to_i * 1000,
-      published:       1.days.ago.to_time.to_i * 1000,
+      crawled:         1.day.ago.to_time.to_i * 1000,
+      published:       1.day.ago.to_time.to_i * 1000,
       recrawled:       nil,
       updated:         nil
     )

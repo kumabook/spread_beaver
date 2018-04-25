@@ -23,7 +23,7 @@ FactoryBot.define do
     provider "Spotify"
     sequence(:created_at) { |n|
       if n % TRACK_PER_ENTRY == 0
-        1.days.ago
+        1.day.ago
       else
         5.days.ago
       end
@@ -35,7 +35,7 @@ FactoryBot.define do
     provider "Spotify"
     sequence(:created_at) { |n|
       if n % ALBUM_PER_ENTRY == 0
-        1.days.ago
+        1.day.ago
       else
         5.days.ago
       end
@@ -47,7 +47,7 @@ FactoryBot.define do
     provider "Spotify"
     sequence(:created_at) { |n|
       if n % PLAYLIST_PER_ENTRY == 0
-        1.days.ago
+        1.day.ago
       else
         5.days.ago
       end
@@ -71,7 +71,7 @@ FactoryBot.define do
     recrawled       nil
     sequence(:published) do |n|
       if n % ENTRY_PER_FEED == 0
-        1.days.ago
+        1.day.ago
       else
         5.days.ago
       end

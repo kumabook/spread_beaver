@@ -84,7 +84,7 @@ class Topic < ApplicationRecord
       .compact
   end
 
-  def mix_issues(mix_journal, period=2.week.ago..1.day.ago)
+  def mix_issues(mix_journal, period=2.weeks.ago..1.day.ago)
     daily_mix_issues(mix_journal, period) + [find_or_create_mix_issue(mix_journal)]
   end
 
