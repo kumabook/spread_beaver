@@ -182,9 +182,8 @@ class Enclosure < ApplicationRecord
   def self.marks_hash_of_user(clazz, user, enclosures)
     marks = clazz.where(user_id:      user.id,
                         enclosure_id: enclosures.map(&:id))
-    enclosures.inject({}) do |h, e|
+    enclosures.each_with_object({}) do |e, h|
       h[e] = marks.to_a.select { |l| e.id == l.enclosure_id }.first.present?
-      h
     end
   end
 

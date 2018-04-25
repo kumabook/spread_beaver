@@ -25,14 +25,12 @@ class UpdateEntryVisuals < ApplicationJob
   end
 
   def entry_and_feedlr_entry_hash(entries, feedlr_entries)
-    hash = entries.reduce({}) do |h, e|
+    hash = entries.each_with_object({}) do |e, h|
       h[e.id] = {} if h[e.id].nil?
       h[e.id][:entry] = e
-      h
     end
-    feedlr_entries.reduce(hash) do |h, e|
+    feedlr_entries.each_with_object(hash) do |e, h|
       h[e.id][:feedlr_entry] = e
-      h
     end
   end
 

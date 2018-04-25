@@ -170,13 +170,12 @@ module EnclosureEngagementScorer
       scores.map do |h|
         item = items.select { |t| t.id == h["id"] }.first
         item.engagement = h["score"].to_f
-        item.scores = score_tables.reduce({}) do |memo, t|
+        item.scores = score_tables.each_with_object({}) do |t, memo|
           value = h["#{t.table_name}_score"].to_f
           memo[t.table_name] = {
             value: value,
             count: value / SCORES_PER_MARK[t.table_name].to_f,
           }
-          memo
         end
         item
       end
