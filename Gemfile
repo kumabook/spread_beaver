@@ -4,53 +4,53 @@ ruby "2.3.3"
 
 gem "coveralls", require: false
 
-gem "rails", "~> 5.1.0"
-gem "rails_12factor", group: :production
-gem "rails-controller-testing"
-gem "sass-rails"
-gem "webpacker", "~> 3.4"
-gem "uglifier"
-gem "jquery-rails"
+gem "aws-sdk"
+gem "jbuilder"
 gem "jquery-fileupload-rails"
-gem "twitter-bootstrap-rails"
+gem "jquery-rails"
 gem "octicons-rails", github: "kumabook/octicons-rails"
+gem "puma"
+gem "rack-cors", require: "rack/cors"
+gem "rails", "~> 5.1.0"
+gem "rails-controller-testing"
+gem "rails_12factor", group: :production
+gem "sass-rails"
 gem "therubyracer"
 gem "turbolinks"
-gem "jbuilder"
-gem "puma"
-gem "aws-sdk"
-gem "rack-cors", require: "rack/cors"
+gem "twitter-bootstrap-rails"
+gem "uglifier"
+gem "webpacker", "~> 3.4"
 
-gem "pg"
+gem "active_model_serializers"
 gem "doorkeeper"
-gem "sorcery"
-gem "slim-rails"
+gem "encrypted_strings"
 gem "feedlr"
 gem "kaminari"
-gem "active_model_serializers"
+gem "pg"
+gem "slim-rails"
+gem "sorcery"
 gem "twitter"
-gem "encrypted_strings"
 
+gem "fastly-rails"
 gem "redis-rails"
 gem "rest-client"
-gem "fastly-rails"
 group :production do
   gem "newrelic_rpm"
 end
 
 group :development, :test do
-  gem "byebug"
-  gem "rspec-rails"
   gem "autodoc", group: :test
+  gem "bullet"
+  gem "byebug"
   gem "database_cleaner"
   gem "factory_bot"
   gem "factory_bot_rails"
-  gem "bullet"
+  gem "rspec-rails"
   gem "rubocop"       , require: false
   gem "rubocop-github", require: false
 end
 
 group :development do
-  gem "web-console"
   gem "spring"
+  gem "web-console"
 end
