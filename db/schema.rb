@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180329022001) do
+ActiveRecord::Schema.define(version: 20_180_329_022_001) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -340,7 +340,7 @@ ActiveRecord::Schema.define(version: 20180329022001) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "engagement", default: 0, null: false
-    t.integer "mix_duration", default: 259200, null: false
+    t.integer "mix_duration", default: 259_200, null: false
     t.string "locale"
     t.index ["id"], name: "index_topics_on_id", unique: true
     t.index ["label"], name: "index_topics_on_label", unique: true
