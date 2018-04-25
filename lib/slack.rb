@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require "faraday"
 
 def notify_slack(text)

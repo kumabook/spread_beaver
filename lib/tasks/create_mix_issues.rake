@@ -1,4 +1,5 @@
 # coding: utf-8
+# frozen_string_literal: true
 task :create_mix_issues => :environment do
   ids = [
     "topic/国内メディア",

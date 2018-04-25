@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class LikedEnclosure < ApplicationRecord
   include EnclosureMark
   include_stream_scopes

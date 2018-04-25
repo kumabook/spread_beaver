@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'pink_spider'
 class Playlist < Enclosure
   def title

@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class IssuesController < ApplicationController
   before_action :set_issue, only: [:edit, :destroy, :update, :collect_entries]
   before_action :set_journal

@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class V3::FeedsController < V3::ApiController
 #  before_action :doorkeeper_authorize!
   before_action :set_feed,  only: [:show]

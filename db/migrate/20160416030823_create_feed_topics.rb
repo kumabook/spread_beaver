@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class CreateFeedTopics < ActiveRecord::Migration[4.2]
   def change
     create_table :feed_topics do |t|

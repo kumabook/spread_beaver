@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class RSSCrawler < ApplicationJob
   WAITING_SEC_FOR_FEED = 0.25
   queue_as :default

@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class EntryIssuesController < ApplicationController
   before_action :set_entry_issue, only: [:show, :edit, :update, :destroy]
   before_action :set_entry      , only: [:show, :edit, :update, :destroy, :create]

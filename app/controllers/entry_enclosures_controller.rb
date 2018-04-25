@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class EntryEnclosuresController < ApplicationController
   before_action :set_entry_enclosure, only: [:destroy, :edit, :update]
   before_action :set_entry          , only: [:new, :create, :destroy, :edit, :update]

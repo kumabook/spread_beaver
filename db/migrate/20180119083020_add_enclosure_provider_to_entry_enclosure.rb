@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class AddEnclosureProviderToEntryEnclosure < ActiveRecord::Migration[5.0]
   def change
     add_column :entry_enclosures, :enclosure_provider, :integer, default: 0

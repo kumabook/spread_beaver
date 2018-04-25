@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class WallsController < ApplicationController
   before_action :set_wall, only: [:edit, :destroy, :update]
   before_action :require_admin, only: [:new, :create, :destroy, :update]

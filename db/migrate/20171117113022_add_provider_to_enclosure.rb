@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require "pink_spider"
 
 class AddProviderToEnclosure < ActiveRecord::Migration[5.0]

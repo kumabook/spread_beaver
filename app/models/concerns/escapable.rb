@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module Escapable
   extend ActiveSupport::Concern
   included do

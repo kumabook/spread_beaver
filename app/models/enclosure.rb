@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class Enclosure < ApplicationRecord
   LEGACY_PROVIDERS = ["YouTube", "SoundCloud"]
   attr_accessor :engagement

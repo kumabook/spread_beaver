@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class V3::EnclosuresController < V3::ApiController
   before_action :set_enclosure_class      , only: [:show, :list]
   before_action :set_enclosure            , only: [:show]

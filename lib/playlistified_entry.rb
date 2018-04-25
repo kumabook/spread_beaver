@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class PlaylistifiedEntry
   attr_reader(:id,
               :url,

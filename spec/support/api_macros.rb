@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module ApiMacros
   def setup()
     @oauth = OAuth2::Client.new('client_id', 'client_secret') do |b|

@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class PreferencesController < ApplicationController
   before_action :set_preference, only: [:show, :update, :edit, :destroy]
   before_action :set_user

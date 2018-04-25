@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class Range
   def interval
     be = self.begin == Float::INFINITY ? Time.now : self.begin

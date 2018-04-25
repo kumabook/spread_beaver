@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class V3::MarkersController < V3::ApiController
   before_action :doorkeeper_authorize!
   def mark

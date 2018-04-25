@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require "pink_spider"
 
 task :set_track_properties => :environment do

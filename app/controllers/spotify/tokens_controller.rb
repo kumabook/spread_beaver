@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class Spotify::TokensController < ApplicationController
   SPOTIFY_ACCOUNTS_ENDPOINT = URI.parse("https://accounts.spotify.com")
   CLIENT_ID                 = ENV["SPOTIFY_CLIENT_ID"]

@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class CreateTopics < ActiveRecord::Migration[4.2]
   def change
     create_table :topics, id: false, force: true do |t|

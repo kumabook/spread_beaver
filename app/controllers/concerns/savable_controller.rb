@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module SavableController
   extend ActiveSupport::Concern
   def self.included(base)

@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class EnclosureIssuesController < ApplicationController
   before_action :set_enclosure_issue, only: [:show, :edit, :update, :destroy]
   before_action :set_enclosure      , only: [:show, :edit, :update, :destroy, :create]

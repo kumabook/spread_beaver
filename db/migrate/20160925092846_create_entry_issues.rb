@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class CreateEntryIssues < ActiveRecord::Migration[4.2]
   def change
     create_table :entry_issues do |t|

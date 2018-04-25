@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class TagsController < ApplicationController
   before_action :set_tag, only: [:edit, :destroy, :update]
   def index

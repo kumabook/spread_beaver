@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require('pink_spider')
 require('paginated_array')
 class EnclosuresController < ApplicationController

@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class TopicsController < ApplicationController
   before_action :set_topic, only: [:edit, :destroy, :update, :mix_issue]
   before_action :require_admin, only: [:new, :create, :destroy, :update, :mix_issue]

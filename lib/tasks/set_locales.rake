@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 task :set_locales => :environment do
   Rails.logger.info("-------- Set locales --------")
   Topic.all.each do |t|

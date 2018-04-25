@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class Wall < ApplicationRecord
   has_many :resources, -> { order("engagement DESC") }, dependent: :destroy
 

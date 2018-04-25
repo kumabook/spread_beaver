@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class UpdateEntryVisuals < ApplicationJob
   WAITING_SEC_FOR_VISUAL = 0.5
   queue_as :default

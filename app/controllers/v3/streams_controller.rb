@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class V3::StreamsController < V3::ApiController
   include Pagination
   include StreamsControllable
