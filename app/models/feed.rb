@@ -103,7 +103,7 @@ class Feed < ApplicationRecord
       f.velocity    = feed.velocity
 
       if feed.topics.present?
-        f.topics = feed.topics.map {|t| Topic.find_or_create_by(label: t) }
+        f.topics = feed.topics.map { |t| Topic.find_or_create_by(label: t) }
       end
 
 =begin
@@ -128,7 +128,7 @@ class Feed < ApplicationRecord
       f.velocity    = feed["velocity"]
 
       if feed["topics"].present?
-        f.topics = feed["topics"].map {|t| Topic.find_or_create_by(label: t) }
+        f.topics = feed["topics"].map { |t| Topic.find_or_create_by(label: t) }
       end
     end
   end

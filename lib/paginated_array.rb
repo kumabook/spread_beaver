@@ -12,7 +12,7 @@ class PaginatedArray < Array
     total_count     = count_hash.keys.count
     start_index     = [0, page - 1].max * per_page
     end_index       = [total_count - 1, start_index + per_page - 1].min
-    count_hash.keys.map {|id|
+    count_hash.keys.map { |id|
       {
         id:    id,
         count: count_hash[id]

@@ -2,8 +2,8 @@
 require "rails_helper"
 
 describe TagsController, type: :controller do
-  let  (:user) { FactoryBot.create (:admin                               )}
-  let! (:tag ) { Tag.create!(label: "tag", description: "desc", user: user)}
+  let  (:user) { FactoryBot.create (:admin                               ) }
+  let! (:tag ) { Tag.create!(label: "tag", description: "desc", user: user) }
 
   before(:each) do
     login_user user
@@ -23,7 +23,7 @@ describe TagsController, type: :controller do
   describe "#create" do
     label = "new_tag"
     context "when succeeds in creating" do
-      before { post :create, params: { tag: { label: label, description: "desc"} }}
+      before { post :create, params: { tag: { label: label, description: "desc"} } }
       it { expect(response).to redirect_to tags_url }
       it { expect(Tag.find_by(label: label).label).to eq(label) }
     end
@@ -38,7 +38,7 @@ describe TagsController, type: :controller do
   end
 
   describe "#edit" do
-    before { get :edit, params: { id: tag.id }}
+    before { get :edit, params: { id: tag.id } }
     it { expect(response).to render_template("edit") }
   end
 

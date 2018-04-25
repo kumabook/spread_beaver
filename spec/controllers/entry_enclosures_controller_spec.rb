@@ -3,9 +3,9 @@ require "rails_helper"
 
 describe EntryEnclosuresController, type: :controller do
   let  (:feed  ) { Feed.create!(id: "feed/http://test.com/rss" , title: "feed") }
-  let! (:entry) { FactoryBot.create(:normal_entry, feed: feed )}
+  let! (:entry) { FactoryBot.create(:normal_entry, feed: feed ) }
   let! (:track) { FactoryBot.create(:track) }
-  let  (:user ) { FactoryBot.create(:admin       )}
+  let  (:user ) { FactoryBot.create(:admin       ) }
   let  (:entry_enclosure) {
     EntryEnclosure.create!(entry_id: entry.id, enclosure_id: track.id, enclosure_type: Track.name)
   }

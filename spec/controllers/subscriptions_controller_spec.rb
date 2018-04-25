@@ -2,7 +2,7 @@
 require "rails_helper"
 
 describe SubscriptionsController, type: :controller do
-  let! (:user        ) { FactoryBot.create (:admin )}
+  let! (:user        ) { FactoryBot.create (:admin ) }
   let! (:feed        ) { Feed.create!(id: "feed/http://test.com/rss"  , title: "feed") }
   let! (:feed2       ) { Feed.create!(id: "feed/http://test2.com/rss" , title: "feed") }
   let! (:subscription) { Subscription.create!(user: user, feed: feed) }
@@ -54,7 +54,7 @@ describe SubscriptionsController, type: :controller do
   end
 
   describe "#edit" do
-    before { get :edit, params: { id: subscription.id }}
+    before { get :edit, params: { id: subscription.id } }
     it { expect(response).to render_template("edit") }
   end
 

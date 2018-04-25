@@ -30,7 +30,7 @@ class Journal < ApplicationRecord
   end
 
   def self.create_daily_issues
-    Journal.all.select {|j| j.topic.present? }.map(&:create_daily_issue)
+    Journal.all.select { |j| j.topic.present? }.map(&:create_daily_issue)
   end
 
   def create_daily_issue(date=Time.now)

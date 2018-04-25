@@ -14,7 +14,7 @@ class Entry < ApplicationRecord
 
   belongs_to :feed            , touch: true
 
-  order_by_engagement = ->{order("entry_enclosures.engagement DESC") }
+  order_by_engagement = ->{ order("entry_enclosures.engagement DESC") }
 
   has_many :entry_enclosures, order_by_engagement, dependent: :destroy
   has_many :entry_tags      , dependent: :destroy
@@ -53,7 +53,7 @@ class Entry < ApplicationRecord
   scope :keyword,       ->        (k) { joins(:entry_keywords).where(entry_keywords: { keyword_id: k.id}).order(published: :desc).with_content }
   scope :tag,           ->        (t) { joins(:tags).where(tags: { id: t.id}).order(published: :desc).with_content }
   scope :topic,         ->    (topic) { joins(feed: :topics).where(topics: { id: topic.id }) }
-  scope :category,      -> (category) { joins(feed: { subscriptions: :categories }).where(categories: { id: category.id })}
+  scope :category,      -> (category) { joins(feed: { subscriptions: :categories }).where(categories: { id: category.id }) }
   scope :issue,         ->          (j) { joins(:issues).where(issues: { id: j.id}).order("entry_issues.engagement DESC").with_content }
   scope :period, -> (period) {
     where({ table_name.to_sym => { published:  period }})
@@ -206,7 +206,7 @@ class Entry < ApplicationRecord
     marks = clazz.where(user_id:  user.id,
                         entry_id: entries.map(&:id))
     entries.inject({}) do |h, e|
-      h[e] = marks.to_a.select {|l| e.id == l.entry_id }.first.present?
+      h[e] = marks.to_a.select { |l| e.id == l.entry_id }.first.present?
       h
     end
   end
@@ -238,7 +238,7 @@ class Entry < ApplicationRecord
   end
 
   def self.enclosures_of_entries(entries)
-    entries.flat_map {|e| [e.tracks, e.albums, e.playlists].flatten }
+    entries.flat_map { |e| [e.tracks, e.albums, e.playlists].flatten }
   end
 
   def self.set_partial_entries_of_enclosures(entries)
@@ -336,7 +336,7 @@ class Entry < ApplicationRecord
     hash["engagement"] = saved_count
     hash["tags"]       = nil
     hash["enclosure"]  = [tracks, playlists, albums].flat_map do |items|
-      items.select {|item| !only_legacy || item.legacy? }
+      items.select { |item| !only_legacy || item.legacy? }
            .map(&:as_enclosure)
     end
 

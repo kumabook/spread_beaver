@@ -2,8 +2,8 @@
 require "rails_helper"
 
 describe PreferencesController, type: :controller do
-  let  (:user       ) { FactoryBot.create (:admin                               )}
-  let! (:preference ) { Preference.create!(key: "key", value: "value", user: user)}
+  let  (:user       ) { FactoryBot.create (:admin                               ) }
+  let! (:preference ) { Preference.create!(key: "key", value: "value", user: user) }
 
   before(:each) do
     login_user user

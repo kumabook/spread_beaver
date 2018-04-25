@@ -30,7 +30,7 @@ module Mix
       if @provider.nil?
         self.dup
       else
-        Query.new(@period, @type, locale: nil, provider: @provider.select {|pr| pr != "SoundCloud" }, entries_per_feed: @entries_per_feed)
+        Query.new(@period, @type, locale: nil, provider: @provider.select { |pr| pr != "SoundCloud" }, entries_per_feed: @entries_per_feed)
       end
     end
 
@@ -160,15 +160,15 @@ module Mix
     end
 
     (0...entries_per_feed).to_a
-      .flat_map { |i| entries_list.map { |list| list[i] }}
+      .flat_map { |i| entries_list.map { |list| list[i] } }
       .select(&:present?)
   end
 
   def self.items_from_count_hash(clazz, count_hash, page: 1, per_page: PER_PAGE)
     total_count   = count_hash.keys.count
     sorted_hashes = PaginatedArray::sort_and_paginate_count_hash(count_hash, page: page, per_page: per_page)
-    items = clazz.with_content.find(sorted_hashes.map {|h| h[:id] })
-    sorted_items = sorted_hashes.map {|h|
+    items = clazz.with_content.find(sorted_hashes.map { |h| h[:id] })
+    sorted_items = sorted_hashes.map { |h|
       item = items.select { |t| t.id == h[:id] }.first
       item.engagement = count_hash[item.id]
       item

@@ -2,18 +2,18 @@
 require "rails_helper"
 
 describe EntryIssuesController, type: :controller do
-  let! (:journal    ) {     Journal.create!(label: "journal", description: "desc")}
-  let! (:issue      ) {       Issue.create!(label: "issue"  , description: "desc", journal_id: journal.id)}
-  let! (:entry      ) { FactoryBot.create (:entry                               )}
-  let  (:user       ) { FactoryBot.create (:admin                               )}
-  let  (:entry_issue) { EntryIssue.create!(entry_id: entry.id, issue_id: issue.id)}
+  let! (:journal    ) {     Journal.create!(label: "journal", description: "desc") }
+  let! (:issue      ) {       Issue.create!(label: "issue"  , description: "desc", journal_id: journal.id) }
+  let! (:entry      ) { FactoryBot.create (:entry                               ) }
+  let  (:user       ) { FactoryBot.create (:admin                               ) }
+  let  (:entry_issue) { EntryIssue.create!(entry_id: entry.id, issue_id: issue.id) }
 
   before(:each) do
     login_user user
   end
 
   describe "GET new" do
-    before { get :new, params: { issue_id: issue.id, entry_id: entry.id }}
+    before { get :new, params: { issue_id: issue.id, entry_id: entry.id } }
     it { expect(response).to render_template("new") }
   end
 

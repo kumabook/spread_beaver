@@ -2,10 +2,10 @@
 require "rails_helper"
 
 describe EnclosureIssuesController, type: :controller do
-  let! (:journal    ) {     Journal.create!(label: "journal", description: "desc")}
-  let! (:issue      ) {       Issue.create!(label: "issue"  , description: "desc", journal_id: journal.id)}
-  let! (:track      ) { FactoryBot.create (:track                               )}
-  let  (:user       ) { FactoryBot.create (:admin                               )}
+  let! (:journal    ) {     Journal.create!(label: "journal", description: "desc") }
+  let! (:issue      ) {       Issue.create!(label: "issue"  , description: "desc", journal_id: journal.id) }
+  let! (:track      ) { FactoryBot.create (:track                               ) }
+  let  (:user       ) { FactoryBot.create (:admin                               ) }
   let  (:track_issue) { EnclosureIssue.create!(enclosure_id:   track.id,
                                                enclosure_type: Track.name,
                                                issue_id: issue.id)}
@@ -15,7 +15,7 @@ describe EnclosureIssuesController, type: :controller do
   end
 
   describe "GET new" do
-    before { get :new, params: { issue_id: issue.id, enclosure_type: Track.name }}
+    before { get :new, params: { issue_id: issue.id, enclosure_type: Track.name } }
     it { expect(response).to render_template("new") }
   end
 

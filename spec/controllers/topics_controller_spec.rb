@@ -2,8 +2,8 @@
 require "rails_helper"
 
 describe TopicsController, type: :controller do
-  let! (:topic) {     Topic.create!(label: "topic", description: "desc")}
-  let  (:user ) { FactoryBot.create (:admin                           )}
+  let! (:topic) {     Topic.create!(label: "topic", description: "desc") }
+  let  (:user ) { FactoryBot.create (:admin                           ) }
 
   before(:each) do
     login_user user
@@ -24,7 +24,7 @@ describe TopicsController, type: :controller do
     label       = "new_topic"
     description = "desc"
     context "when succeeds in creating" do
-      before { post :create, params: { topic: { label: label, description: description} }}
+      before { post :create, params: { topic: { label: label, description: description} } }
       it { expect(response).to redirect_to topics_url }
       it { expect(Topic.find_by(label: label).label).to eq(label) }
     end
@@ -39,14 +39,14 @@ describe TopicsController, type: :controller do
   end
 
   describe "GET edit" do
-    before { get :edit, params: { id: topic.id }}
+    before { get :edit, params: { id: topic.id } }
     it { expect(response).to render_template("edit") }
   end
 
   describe "POST update" do
     label = "changed"
     context "when succeeds in saving" do
-      before { post :update, params: { id: topic.id, topic: { label: label } }}
+      before { post :update, params: { id: topic.id, topic: { label: label } } }
       it { expect(response).to redirect_to topics_url }
       it { expect(Topic.find("topic/changed").label).to eq(label) }
     end
@@ -61,7 +61,7 @@ describe TopicsController, type: :controller do
 
   describe "DELETE destroy" do
     context "when succeeds in saving" do
-      before { delete :destroy, params: { id: topic.id }}
+      before { delete :destroy, params: { id: topic.id } }
       it { expect(response).to redirect_to topics_url }
       it { expect(Topic.find_by(id: topic.id)).to be_nil }
     end

@@ -103,7 +103,7 @@ module EnclosureEngagementScorer
       select_mgr.limit  = per_page
 
       scores       = self.select_all(select_mgr, bind_values)
-      items        = self.with_content.find(scores.map {|h| h["id"] })
+      items        = self.with_content.find(scores.map { |h| h["id"] })
       sorted_items = self.sort_items(items, scores, score_tables)
       PaginatedArray.new(sorted_items, total_count, page, per_page)
     end

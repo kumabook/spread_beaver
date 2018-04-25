@@ -3,8 +3,8 @@ require "rails_helper"
 
 describe EntriesController, type: :controller do
   let  (:feed  ) { Feed.create!(id: "feed/http://test.com/rss" , title: "feed") }
-  let! (:entry) { FactoryBot.create(:normal_entry, feed: feed )}
-  let  (:user ) { FactoryBot.create(:admin       )}
+  let! (:entry) { FactoryBot.create(:normal_entry, feed: feed ) }
+  let  (:user ) { FactoryBot.create(:admin       ) }
   let  (:feedly_entry) {
     Hashie::Mash.new(
       title:           "title",
@@ -82,14 +82,14 @@ describe EntriesController, type: :controller do
   end
 
   describe "#edit" do
-    before { get :edit, params: { id: entry.id }}
+    before { get :edit, params: { id: entry.id } }
     it { expect(response).to render_template("edit") }
   end
 
   describe "#update" do
     title = "changed"
     context "when succeeds in saving" do
-      before { post :update, params: { id: entry.id, entry: { title: title } }}
+      before { post :update, params: { id: entry.id, entry: { title: title } } }
       it { expect(response).to redirect_to entry_url(entry) }
       it { expect(Entry.find(entry.id).title).to eq(title) }
     end
@@ -104,7 +104,7 @@ describe EntriesController, type: :controller do
 
   describe "#destroy" do
     context "when succeeds in saving" do
-      before { delete :destroy, params: { id: entry.id }}
+      before { delete :destroy, params: { id: entry.id } }
       it { expect(response).to redirect_to entries_url }
       it { expect(Entry.find_by(id: entry.id)).to be_nil }
     end
@@ -118,7 +118,7 @@ describe EntriesController, type: :controller do
   end
 
   describe "#like" do
-    before { post :like, params: { entry_id: entry.id }}
+    before { post :like, params: { entry_id: entry.id } }
     it { expect(response).to redirect_to entries_url }
     it { expect(LikedEntry.find_by(entry_id: entry.id, user_id: user.id)).not_to be_nil }
   end
@@ -134,7 +134,7 @@ describe EntriesController, type: :controller do
   end
 
   describe "#save" do
-    before { post :save, params: { entry_id: entry.id }}
+    before { post :save, params: { entry_id: entry.id } }
     it { expect(response).to redirect_to entries_url }
     it { expect(SavedEntry.find_by(entry_id: entry.id, user_id: user.id)).not_to be_nil }
   end
@@ -150,7 +150,7 @@ describe EntriesController, type: :controller do
   end
 
   describe "#read" do
-    before { post :read, params: { entry_id: entry.id }}
+    before { post :read, params: { entry_id: entry.id } }
     it { expect(response).to redirect_to entries_url }
     it { expect(ReadEntry.find_by(entry_id: entry.id, user_id: user.id)).not_to be_nil }
   end

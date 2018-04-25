@@ -52,6 +52,6 @@ end
 desc "Create latest entries as daily top keyword"
 task create_daily_issue: :environment do
   issues = Journal.create_daily_issues
-  labels = issues.map {|i| "#{i.journal.label}-#{i.label}" }.join(" ")
+  labels = issues.map { |i| "#{i.journal.label}-#{i.label}" }.join(" ")
   notify_slack "Successfully create daily issues: #{labels}"
 end

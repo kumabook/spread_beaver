@@ -2,8 +2,8 @@
 require "rails_helper"
 
 describe CategoriesController, type: :controller do
-  let  (:user) { FactoryBot.create (:admin                               )}
-  let! (:category ) { Category.create!(label: "category", description: "desc", user: user)}
+  let  (:user) { FactoryBot.create (:admin                               ) }
+  let! (:category ) { Category.create!(label: "category", description: "desc", user: user) }
 
   before(:each) do
     login_user user
@@ -23,7 +23,7 @@ describe CategoriesController, type: :controller do
   describe "POST create" do
     label = "new_category"
     context "when succeeds in creating" do
-      before { post :create, params: { category: { label: label, description: "desc"} }}
+      before { post :create, params: { category: { label: label, description: "desc"} } }
       it { expect(response).to redirect_to categories_url }
       it { expect(Category.find_by(label: label).label).to eq(label) }
     end
@@ -38,7 +38,7 @@ describe CategoriesController, type: :controller do
   end
 
   describe "GET edit" do
-    before { get :edit, params: { id: category.id }}
+    before { get :edit, params: { id: category.id } }
     it { expect(response).to render_template("edit") }
   end
 

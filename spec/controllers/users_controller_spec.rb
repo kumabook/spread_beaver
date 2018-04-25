@@ -2,7 +2,7 @@
 require "rails_helper"
 
 describe UsersController, type: :controller do
-  let (:user ) { FactoryBot.create (:admin)}
+  let (:user ) { FactoryBot.create (:admin) }
 
   before(:each) do
     login_user user
@@ -45,14 +45,14 @@ describe UsersController, type: :controller do
   end
 
   describe "GET edit" do
-    before { get :edit, params: { id: user.id }}
+    before { get :edit, params: { id: user.id } }
     it { expect(response).to render_template("edit") }
   end
 
   describe "POST update" do
     email = "changed@example.com"
     context "when succeeds in saving" do
-      before { post :update, params: { id: user.id, user: { email: email } }}
+      before { post :update, params: { id: user.id, user: { email: email } } }
       it { expect(response).to redirect_to user_url(user) }
       it { expect(User.find(user.id).email).to eq(email) }
     end
@@ -67,7 +67,7 @@ describe UsersController, type: :controller do
 
   describe "DELETE destroy" do
     context "when succeeds in saving" do
-      before { delete :destroy, params: { id: user.id }}
+      before { delete :destroy, params: { id: user.id } }
       it { expect(response).to redirect_to users_url }
       it { expect(User.find_by(id: user.id)).to be_nil }
     end
