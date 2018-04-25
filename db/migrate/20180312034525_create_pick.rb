@@ -9,7 +9,7 @@ class CreatePick < ActiveRecord::Migration[5.1]
 
       t.timestamps null: false
     end
-    add_index :picks, [:enclosure_id, :container_id], unique: true
+    add_index :picks, %i[enclosure_id container_id], unique: true
     add_index :picks, :created_at
     add_index :picks, :updated_at
   end

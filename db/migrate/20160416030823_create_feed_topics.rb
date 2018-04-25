@@ -7,6 +7,6 @@ class CreateFeedTopics < ActiveRecord::Migration[4.2]
 
       t.timestamps null: false
     end
-    add_index :feed_topics, [:feed_id, :topic_id], unique: true
+    add_index :feed_topics, %i[feed_id topic_id], unique: true
   end
 end

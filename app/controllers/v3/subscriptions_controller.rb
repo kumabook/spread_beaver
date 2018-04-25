@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 class V3::SubscriptionsController < V3::ApiController
   before_action :doorkeeper_authorize!
-  before_action :set_feed, only: [:create, :destroy]
+  before_action :set_feed, only: %i[create destroy]
   before_action :set_unescaped_feed, only: [:destroy]
 
 

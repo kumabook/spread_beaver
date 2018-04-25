@@ -7,6 +7,6 @@ class CreateEntryKeywords < ActiveRecord::Migration[4.2]
 
       t.timestamps null: false
     end
-    add_index :entry_keywords, [:entry_id, :keyword_id], unique: true
+    add_index :entry_keywords, %i[entry_id keyword_id], unique: true
   end
 end

@@ -20,9 +20,9 @@ Rails.application.routes.draw do
     resources :albums   , controller: :enclosures, type: "Album"   , only: :index
     resources :playlists, controller: :enclosures, type: "Playlist", only: :index
 
-    resources :tracks   , controller: :entry_enclosures, type: "Track"   , only: [:new, :create, :destroy]
-    resources :albums   , controller: :entry_enclosures, type: "Album"   , only: [:new, :create, :destroy]
-    resources :playlists, controller: :entry_enclosures, type: "Playlist", only: [:new, :create, :destroy]
+    resources :tracks   , controller: :entry_enclosures, type: "Track"   , only: %i[new create destroy]
+    resources :albums   , controller: :entry_enclosures, type: "Album"   , only: %i[new create destroy]
+    resources :playlists, controller: :entry_enclosures, type: "Playlist", only: %i[new create destroy]
 
     post   "like"  , to: :like  , as: :likes
     delete "unlike", to: :unlike, as: :like
@@ -31,8 +31,8 @@ Rails.application.routes.draw do
     post   "read"  , to: :read  , as: :reads
     delete "unread", to: :unread, as: :read
   end
-  resources :entry_enclosures, only: [:create, :edit, :update, :destroy]
-  resources :read_entries , only: [:create, :destroy]
+  resources :entry_enclosures, only: %i[create edit update destroy]
+  resources :read_entries , only: %i[create destroy]
   resources :feeds, constraints: res_options, shallow: true do
     get "feedly", action: :show_feedly, on: :member
     resources :entries, only: [:index], constraints: uuid_options
@@ -46,7 +46,7 @@ Rails.application.routes.draw do
   resources :categories do
     resources :subscriptions, only: [:index]
   end
-  resources :tracks, controller: :enclosures, type: "Track", except: [:edit, :update] do
+  resources :tracks, controller: :enclosures, type: "Track", except: %i[edit update] do
     post   "like"  , to: :like  , as: :likes
     delete "unlike", to: :unlike, as: :like
     post   "save"  , to: :save  , as: :saves
@@ -54,7 +54,7 @@ Rails.application.routes.draw do
     post   "play"  , to: :play  , as: :plays
     get    "search", on: :collection
   end
-  resources :albums, controller: :enclosures, type: "Album", except: [:edit, :update] do
+  resources :albums, controller: :enclosures, type: "Album", except: %i[edit update] do
     post   "like"  , to: :like  , as: :likes
     delete "unlike", to: :unlike, as: :like
     post   "save"  , to: :save  , as: :saves
@@ -62,7 +62,7 @@ Rails.application.routes.draw do
     post   "play"  , to: :play  , as: :plays
     get    "search", on: :collection
   end
-  resources :playlists, controller: :enclosures, type: "Playlist", except: [:edit, :update] do
+  resources :playlists, controller: :enclosures, type: "Playlist", except: %i[edit update] do
     post   "like"  , to: :like  , as: :likes
     delete "unlike", to: :unlike, as: :like
     post   "save"  , to: :save  , as: :saves
@@ -85,7 +85,7 @@ Rails.application.routes.draw do
   resources :walls do
     resources :resources, only: [:new]
   end
-  resources :resources,  only: [:create, :edit, :update, :destroy]
+  resources :resources,  only: %i[create edit update destroy]
   resources :journals do
     resources :issues do
       post "daily", action: :create_daily, on: :collection
@@ -101,10 +101,10 @@ Rails.application.routes.draw do
     resources :albums   , controller: :enclosures, type: "Album"   , only: :index
     resources :playlists, controller: :enclosures, type: "Playlist", only: :index
   end
-  resources :entry_issues    , only: [:create, :edit, :update, :destroy]
-  resources :enclosure_issues, only: [:create, :edit, :update, :destroy]
+  resources :entry_issues    , only: %i[create edit update destroy]
+  resources :enclosure_issues, only: %i[create edit update destroy]
 
-  resources :mixes, only: [:index, :show], constraints: res_options do
+  resources :mixes, only: %i[index show], constraints: res_options do
     member do
       get ":enclosures" => "mixes/enclosures#show"
     end
@@ -124,7 +124,7 @@ Rails.application.routes.draw do
   end
 
   namespace :v3 do
-    resources :profile, controller: :users, only: [:show, :update] do
+    resources :profile, controller: :users, only: %i[show update] do
       collection do
         get  ""   , to: "users#me"
         put  ""   , to: "users#create"
@@ -170,7 +170,7 @@ Rails.application.routes.draw do
     end
     get "/search/feeds"         => "feeds#search"
 
-    resources :topics, only: [:index, :destroy], constraints: res_options do
+    resources :topics, only: %i[index destroy], constraints: res_options do
       post "", action: :update, on: :member
     end
 
@@ -178,9 +178,9 @@ Rails.application.routes.draw do
       post ".mget", action: :list, on: :collection
     end
 
-    resources :subscriptions, only: [:index, :create, :destroy], constraints: res_options
+    resources :subscriptions, only: %i[index create destroy], constraints: res_options
 
-    resources :categories, only: [:index, :destroy], constraints: res_options do
+    resources :categories, only: %i[index destroy], constraints: res_options do
       post "", action: :update, on: :member
     end
 
@@ -199,7 +199,7 @@ Rails.application.routes.draw do
       post ".mget", action: :list, on: :collection
     end
 
-    resources :keywords, only: [:index, :destroy], constraints: res_options do
+    resources :keywords, only: %i[index destroy], constraints: res_options do
       post "", action: :update, on: :member
     end
 

@@ -2,7 +2,7 @@
 class V3::EntriesController < V3::ApiController
   before_action :set_entry                , only: [:show]
   before_action :set_entries              , only: [:list]
-  before_action :set_cache_control_headers, only: [:show, :list]
+  before_action :set_cache_control_headers, only: %i[show list]
 
   def show
     set_surrogate_key_header @entry.record_key

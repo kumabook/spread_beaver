@@ -10,6 +10,6 @@ class CreateTags < ActiveRecord::Migration[4.2]
       t.timestamps null: false
     end
     add_index :tags, [:id], unique: true
-    add_index :tags, [:user_id, :label], unique: true
+    add_index :tags, %i[user_id label], unique: true
   end
 end

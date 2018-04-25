@@ -10,6 +10,6 @@ class CreateTracks < ActiveRecord::Migration[4.2]
       t.timestamps null: false
     end
     add_index :tracks, :id                     , unique: true
-    add_index :tracks, [:provider, :identifier], unique: true
+    add_index :tracks, %i[provider identifier], unique: true
   end
 end

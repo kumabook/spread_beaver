@@ -6,14 +6,14 @@ class EntriesController < ApplicationController
   include SavableController
   include ReadableController
 
-  before_action :set_entry    , only: [:show, :show_feedly, :crawl, :edit, :update, :destroy]
+  before_action :set_entry    , only: %i[show show_feedly crawl edit update destroy]
   before_action :set_feed     , only: [:index]
   before_action :set_keyword  , only: [:index]
   before_action :set_tag      , only: [:index]
   before_action :set_issue    , only: [:index]
   before_action :set_query    , only: [:index]
   before_action :set_entries  , only: [:index]
-  before_action :require_admin, only: [:new, :create, :destroy, :update]
+  before_action :require_admin, only: %i[new create destroy update]
 
   def index
     Entry.set_count_of_enclosures(@entries)

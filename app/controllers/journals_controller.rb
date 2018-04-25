@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 class JournalsController < ApplicationController
-  before_action :set_journal, only: [:edit, :destroy, :update]
-  before_action :require_admin, only: [:new, :create, :destroy, :update]
+  before_action :set_journal, only: %i[edit destroy update]
+  before_action :require_admin, only: %i[new create destroy update]
   def index
     @journals = Journal.order("label ASC").page(params[:page])
   end

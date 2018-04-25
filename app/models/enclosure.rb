@@ -21,7 +21,7 @@ class Enclosure < ApplicationRecord
   after_destroy :purge, :purge_all
   after_touch :purge
 
-  enum provider: [:Raw, :Custom, :YouTube, :SoundCloud, :Spotify, :AppleMusic]
+  enum provider: %i[Raw Custom YouTube SoundCloud Spotify AppleMusic]
 
   has_many :entry_enclosures, dependent: :destroy
   has_many :entries, ->{
@@ -218,7 +218,7 @@ class Enclosure < ApplicationRecord
     hash["entriesCount"] = entries_count
     hash["pickCount"]    = pick_count
     hash.delete("users")
-    [:is_liked, :is_saved, :is_played, :engagement].each do |method|
+    %i[is_liked is_saved is_played engagement].each do |method|
       v = self.public_send(method)
       hash[method.to_s] = v if !v.nil?
     end

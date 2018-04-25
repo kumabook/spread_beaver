@@ -7,8 +7,8 @@ class EnclosuresController < ApplicationController
   include SavableController
   include PlayableController
   before_action :set_type
-  before_action :set_enclosure      , only: [:show, :destroy, :crawl, :activate, :deactivate]
-  before_action :set_content        , only: [:show, :edit]
+  before_action :set_enclosure      , only: %i[show destroy crawl activate deactivate]
+  before_action :set_content        , only: %i[show edit]
   before_action :set_entry_and_issue, only: [:index]
   before_action :set_query          , only: [:search]
 
@@ -127,7 +127,7 @@ class EnclosuresController < ApplicationController
 
     def set_enclosure
       @enclosure = enclosure_class
-                     .eager_load(entries: { feed: [:feed_topics, :topics] })
+                     .eager_load(entries: { feed: %i[feed_topics topics] })
                      .find(params[:id])
     end
 

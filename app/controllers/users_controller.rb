@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 class UsersController < ApplicationController
-  before_action :set_user, only: [:show, :edit, :update, :destroy]
-  before_action :set_s3_direct_post, only: [:new, :edit, :create, :update]
-  skip_before_action :require_login, only: [:new, :create]
+  before_action :set_user, only: %i[show edit update destroy]
+  before_action :set_s3_direct_post, only: %i[new edit create update]
+  skip_before_action :require_login, only: %i[new create]
   before_action :require_admin, only: [:index]
 
   # GET /users

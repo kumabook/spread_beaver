@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 class EnclosureIssuesController < ApplicationController
-  before_action :set_enclosure_issue, only: [:show, :edit, :update, :destroy]
-  before_action :set_enclosure      , only: [:show, :edit, :update, :destroy, :create]
-  before_action :set_issue          , only: [:new, :show, :edit, :update, :destroy, :create]
-  before_action :set_journal        , only: [:new, :show, :edit, :update, :destroy, :create]
+  before_action :set_enclosure_issue, only: %i[show edit update destroy]
+  before_action :set_enclosure      , only: %i[show edit update destroy create]
+  before_action :set_issue          , only: %i[new show edit update destroy create]
+  before_action :set_journal        , only: %i[new show edit update destroy create]
   before_action :require_admin
 
   def new

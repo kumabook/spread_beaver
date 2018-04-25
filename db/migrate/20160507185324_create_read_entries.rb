@@ -7,6 +7,6 @@ class CreateReadEntries < ActiveRecord::Migration[4.2]
 
       t.timestamps null: false
     end
-    add_index :read_entries, [:user_id, :entry_id], unique: true
+    add_index :read_entries, %i[user_id entry_id], unique: true
   end
 end

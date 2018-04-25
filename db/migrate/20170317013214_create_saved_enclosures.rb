@@ -8,7 +8,7 @@ class CreateSavedEnclosures < ActiveRecord::Migration[5.0]
 
       t.timestamps null: false
     end
-    add_index :saved_enclosures, [:user_id, :enclosure_id], unique: true
+    add_index :saved_enclosures, %i[user_id enclosure_id], unique: true
 
     add_column :enclosures, :saved_count, :integer, null: false, default: 0
   end
