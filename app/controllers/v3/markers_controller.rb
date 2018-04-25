@@ -20,7 +20,7 @@ class V3::MarkersController < V3::ApiController
 
   def mark_entries
     @ids = params[:entryIds] if params[:entryIds].present?
-    @ids = @ids.select {|id| id.present? }
+    @ids = @ids.select(&:present?)
     case @action
     when "markAsLiked"
       mark_items(LikedEntry)
@@ -39,7 +39,7 @@ class V3::MarkersController < V3::ApiController
 
   def mark_enclosures(ids_key, type)
     @ids = params[ids_key] if params[ids_key].present?
-    @ids = @ids.select {|id| id.present? }
+    @ids = @ids.select(&:present?)
     case @action
     when "markAsLiked"
       mark_items(LikedEnclosure, type)

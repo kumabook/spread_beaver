@@ -31,7 +31,7 @@ class Issue < ApplicationRecord
     entries = Entry.topic(topic)
                    .period(period)
                    .order(published: :desc)
-                   .select { |entry| entry.has_visual? }
+                   .select(&:has_visual?)
     entries = Mix::mix_up_and_paginate(entries,
                                        Topic::LATEST_ENTRIES_PER_FEED,
                                        1,

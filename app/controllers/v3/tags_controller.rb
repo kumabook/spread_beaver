@@ -43,9 +43,7 @@ class V3::TagsController < V3::ApiController
   end
 
   def destroy
-    @tags.each do |tag|
-      tag.destroy
-    end
+    @tags.each(&:destroy)
     render json: {}, status: 200
   end
 

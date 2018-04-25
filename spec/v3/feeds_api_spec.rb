@@ -74,7 +74,7 @@ RSpec.describe "Feeds api", type: :request, autodoc: true do
   end
 
   it "shows feeds list by id list" do
-    ids = @feeds.map { |t| t.id }
+    ids = @feeds.map(&:id)
     ids.push "feed/unknown"
     post "/v3/feeds/.mget",
          params: ids.to_json,

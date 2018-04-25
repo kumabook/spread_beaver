@@ -56,7 +56,7 @@ RSpec.describe "Tags api", type: :request, autodoc: true do
     tags      = Tag.all
     entries   = @feed.entries[0..1]
     tag_ids   = tags.map { |t| t.escape.id}.join(",")
-    entry_ids = entries.map { |e| e.id }.join(",")
+    entry_ids = entries.map(&:id).join(",")
     put "/v3/tags/#{tag_ids}/#{entry_ids}",
         headers: headers_for_login_user_api
     entries.each do |entry|
@@ -73,7 +73,7 @@ RSpec.describe "Tags api", type: :request, autodoc: true do
     end
 
     tag_ids   = tags.map { |t| t.escape.id}.join(",")
-    entry_ids = entries.map { |e| e.id }.join(",")
+    entry_ids = entries.map(&:id).join(",")
     delete "/v3/tags/#{tag_ids}/#{entry_ids}",
            headers: headers_for_login_user_api
     entries.each do |entry|

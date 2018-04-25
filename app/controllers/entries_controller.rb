@@ -18,11 +18,11 @@ class EntriesController < ApplicationController
   def index
     Entry.set_count_of_enclosures(@entries)
     @liked_entries = LikedEntry.where(user_id: current_user.id,
-                                      entry_id: @entries.map { |e| e.id })
+                                      entry_id: @entries.map(&:id))
     @saved_entries = SavedEntry.where(user_id: current_user.id,
-                                      entry_id: @entries.map { |e| e.id })
+                                      entry_id: @entries.map(&:id))
     @read_entries  = ReadEntry.where(user_id: current_user.id,
-                                     entry_id: @entries.map { |e| e.id })
+                                     entry_id: @entries.map(&:id))
     @entries = [] if @entries.nil?
   end
 

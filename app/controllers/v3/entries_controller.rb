@@ -15,9 +15,7 @@ class V3::EntriesController < V3::ApiController
 
   def list
     if !@entries.nil?
-      render json: @entries.map {|e|
-        e.as_detail_json
-      }.to_json, status: 200
+      render json: @entries.map(&:as_detail_json).to_json, status: 200
     else
       render_not_found
     end

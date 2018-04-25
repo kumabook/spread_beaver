@@ -21,7 +21,7 @@ RSpec.describe "Entries api", type: :request, autodoc: true do
   end
 
   it "shows entries list by id list" do
-    ids = @entries.map { |e| e.id }
+    ids = @entries.map(&:id)
     ids.push "unknown_id"
     post "/v3/entries/.mget",
          params: ids.to_json,

@@ -56,7 +56,7 @@ class Resource < ApplicationRecord
       type = h[:type]
       clazz = h[:clazz]
       if hash[type].present?
-        clazz.stream_id(hash[type].map {|r| r.stream_id }).each do |v|
+        clazz.stream_id(hash[type].map(&:stream_id)).each do |v|
           hash[type].select {|r| r.stream_id == v.stream_id }.each do |r|
             r.item = v
           end

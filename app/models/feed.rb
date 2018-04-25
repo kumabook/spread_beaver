@@ -156,7 +156,7 @@ class Feed < ApplicationRecord
   def as_json(options = {})
     h                = super(options)
     h["lastUpdated"] = lastUpdated.present? ? lastUpdated.to_time.to_i * 1000 : nil
-    h["topics"]      = topics.map { |topic| topic.label }
+    h["topics"]      = topics.map(&:label)
     h
   end
 

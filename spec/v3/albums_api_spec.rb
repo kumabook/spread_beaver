@@ -23,7 +23,7 @@ RSpec.describe "Albums  api", type: :request, autodoc: true do
   end
 
   it "shows album list by id list" do
-    ids = @feeds[0].entries[0].albums.map { |t| t.id }
+    ids = @feeds[0].entries[0].albums.map(&:id)
     post "/v3/albums/.mget",
          params: ids.to_json,
          headers: headers_for_login_user_api
