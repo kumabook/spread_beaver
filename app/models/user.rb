@@ -85,7 +85,7 @@ class User < ApplicationRecord
     hash
   end
 
-  def User.delete_cache_of_entries_of_all_user
+  def self.delete_cache_of_entries_of_all_user
     Rails.cache.delete_matched("entries_of_user_subscription-*")
   end
 end
