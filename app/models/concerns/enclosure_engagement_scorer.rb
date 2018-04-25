@@ -132,7 +132,7 @@ module EnclosureEngagementScorer
       pick_query = query.no_locale.twice_past.exclude_sound_cloud
       pick_stream = nil
       if query.use_stream_for_pick
-        if stream.kind_of?(Topic)
+        if stream.is_a?(Topic)
           # NOTE: In order to improve performance,
           # cache playlist of a topic to mix_issues of the topic
           mix_journal = stream.mix_journal
