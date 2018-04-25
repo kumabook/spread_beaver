@@ -140,4 +140,3 @@ class RSSCrawler < ApplicationJob
   end
 
 end
-
