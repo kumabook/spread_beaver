@@ -151,8 +151,6 @@ Naming/VariableName:
   Enabled: false
 Style/InverseMethods:
   Enabled: false
-Style/PerlBackrefs:
-  Enabled: false
 Lint/UnusedMethodArgument:
   Enabled: false
 Layout/IndentationWidth:
