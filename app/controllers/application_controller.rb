@@ -51,7 +51,7 @@ class ApplicationController < ActionController::Base
         format.html { redirect_to index_path(item), notice: "#{item.class.name} was successfully updated." }
         format.json { render :show, status: :ok, location: item }
       else
-        format.html { render :edit }
+        format.html { render "edit" }
         format.json { render json: item.errors, status: :unprocessable_entity }
       end
     end

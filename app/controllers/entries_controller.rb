@@ -56,7 +56,7 @@ class EntriesController < ApplicationController
         format.json { render :show, status: :created, location: @entry }
       else
         flash[:notice] = "Failed to create"
-        format.html { render :new }
+        format.html { render "new" }
         format.json { render json: @entry.errors, status: :unprocessable_entity }
       end
     end
@@ -88,7 +88,7 @@ class EntriesController < ApplicationController
         format.html { redirect_to entry_path(@entry), notice: "Entry was successfully updated." }
         format.json { render :show, status: :ok, location: @entry }
       else
-        format.html { render :edit }
+        format.html { render "edit" }
         format.json { render json: @entry.errors, status: :unprocessable_entity }
       end
     end
