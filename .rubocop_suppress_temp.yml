@@ -181,7 +181,5 @@ GitHub/RailsControllerRenderActionSymbol:
   Enabled: false
 Rails/PluralizationGrammar:
   Enabled: false
-GitHub/RailsControllerRenderShorthand:
-  Enabled: false
 Layout/DefEndAlignment:
   Enabled: false
