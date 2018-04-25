@@ -8,8 +8,8 @@ class Issue < ApplicationRecord
 
   enum state: { draft: 0, published: 1 }
 
-  has_many :entry_issues    , ->{ order("entry_issues.engagement DESC") }    , dependent: :destroy
-  has_many :enclosure_issues, ->{ order("enclosure_issues.engagement DESC") }, dependent: :destroy
+  has_many :entry_issues    , -> { order("entry_issues.engagement DESC") }    , dependent: :destroy
+  has_many :enclosure_issues, -> { order("enclosure_issues.engagement DESC") }, dependent: :destroy
   has_many :entries         , through: :entry_issues
   has_many :enclosures      , through: :enclosure_issues
   has_many :tracks          , through: :enclosure_issues, source: :enclosure, source_type: Track.name
