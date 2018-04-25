@@ -97,7 +97,7 @@ module StreamsControllable
     _, @resource, type = GLOBAL_RESOURCE_REGEXES.find do |regex, _resource, _type|
       @stream_id =~ regex
     end
-    @user = User.find($1) if type == :user
+    @user = User.find(Regexp.last_match(1)) if type == :user
   end
 
   def set_need_visual
