@@ -141,8 +141,6 @@ Style/IfInsideElse:
   Enabled: false
 Style/Alias:
   Enabled: false
-Style/ClassCheck:
-  Enabled: false
 Naming/AccessorMethodName:
   Enabled: false
 Naming/VariableName:

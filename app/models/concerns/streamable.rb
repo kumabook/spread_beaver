@@ -4,19 +4,19 @@ module Streamable
 
   included do
     scope :stream, -> (s) {
-      if s.kind_of?(Feed)
+      if s.is_a?(Feed)
         feed(s)
-      elsif s.kind_of?(Keyword)
+      elsif s.is_a?(Keyword)
         keyword(s)
-      elsif s.kind_of?(Tag)
+      elsif s.is_a?(Tag)
         tag(s)
-      elsif s.kind_of?(Topic)
+      elsif s.is_a?(Topic)
         topic(s)
-      elsif s.kind_of?(Category)
+      elsif s.is_a?(Category)
         category(s)
-      elsif s.kind_of?(Issue)
+      elsif s.is_a?(Issue)
         issue(s)
-      elsif s.kind_of?(Enumerable) && s[0].kind_of?(Issue)
+      elsif s.is_a?(Enumerable) && s[0].is_a?(Issue)
         issues(s)
       else
         all
