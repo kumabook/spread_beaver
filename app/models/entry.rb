@@ -205,17 +205,15 @@ class Entry < ApplicationRecord
   def self.marks_hash_of_user(clazz, user, entries)
     marks = clazz.where(user_id:  user.id,
                         entry_id: entries.map(&:id))
-    entries.inject({}) do |h, e|
+    entries.each_with_object({}) do |e, h|
       h[e] = marks.to_a.select { |l| e.id == l.entry_id }.first.present?
-      h
     end
   end
 
   def self.set_count_of_enclosures(entries)
-    count_hashes = [Track.name, Album.name, Playlist.name].inject({}) do |hash, type|
+    count_hashes = [Track.name, Album.name, Playlist.name].each_with_object({}) do |type, hash|
       hash[type] = EntryEnclosure.where(entry_id:       entries.map(&:id),
                                         enclosure_type: type).enclosure_count
-      hash
     end
     entries.each do |e|
       e.count_of = {

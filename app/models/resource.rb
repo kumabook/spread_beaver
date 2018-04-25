@@ -42,10 +42,9 @@ class Resource < ApplicationRecord
   end
 
   def self.set_item_of_stream_resources(resources)
-    hash = resources.reduce({}) do |h, i|
+    hash = resources.each_with_object({}) do |i, h|
       h[i.item_type] = [] if h[i.item_type].nil?
       h[i.item_type].push i
-      h
     end
     [{ clazz: Journal , type: :journal },
      { clazz: Topic   , type: :topic },

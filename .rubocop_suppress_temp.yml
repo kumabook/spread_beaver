@@ -145,8 +145,6 @@ Style/ClassCheck:
   Enabled: false
 Naming/AccessorMethodName:
   Enabled: false
-Style/EachWithObject:
-  Enabled: false
 Naming/VariableName:
   Enabled: false
 Lint/UnusedMethodArgument:
