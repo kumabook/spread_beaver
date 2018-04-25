@@ -167,8 +167,6 @@ Style/NegatedIf:
   Enabled: false
 Layout/SpaceInsideArrayLiteralBrackets:
   Enabled: false
-Style/MethodDefParentheses:
-  Enabled: false
 Layout/SpaceInsideReferenceBrackets:
   Enabled: false
 GitHub/RailsControllerRenderPathsExist:
