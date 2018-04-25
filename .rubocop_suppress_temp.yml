@@ -24,8 +24,6 @@ Layout/Tab:
   Enabled: false
 Layout/SpaceAroundOperators:
   Enabled: false
-Style/HashSyntax:
-  Enabled: false
 Style/SymbolProc:
   Enabled: false
 Style/NumericLiterals:
