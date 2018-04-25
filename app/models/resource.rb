@@ -21,8 +21,8 @@ class Resource < ApplicationRecord
 
   RESOURCE_REGEXES = [
     [/journal\/.*/                               , :journal],
-    [/topic\/.*/                                 , :topic  ],
-    [/feed\/.*/                                  , :feed   ],
+    [/topic\/.*/                                 , :topic],
+    [/feed\/.*/                                  , :feed],
     [/keyword\/.*/                               , :keyword],
     [/user\/.*\/tag\/.*/                         , :tag],
     [/user\/.*\/category\/.*/                    , :category],
