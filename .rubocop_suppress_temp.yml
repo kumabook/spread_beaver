@@ -179,7 +179,5 @@ GitHub/RailsControllerRenderPathsExist:
   Enabled: false
 GitHub/RailsControllerRenderActionSymbol:
   Enabled: false
-Rails/PluralizationGrammar:
-  Enabled: false
 Layout/DefEndAlignment:
   Enabled: false
