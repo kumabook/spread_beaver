@@ -105,14 +105,6 @@ class Feed < ApplicationRecord
       if feed.topics.present?
         f.topics = feed.topics.map { |t| Topic.find_or_create_by(label: t) }
       end
-
-=begin
-      f.facebookLikes     = feed.facebookLikes,
-      f.facebookUsername  = feed.facebookUsername,
-      f.feedId            = feed.feedId,
-      f.twitterFollowers  = feed.twitterFollowers,
-      f.twitterScreenName = feed.twitterScreenName,
-=end
     end
   end
 

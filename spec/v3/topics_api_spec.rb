@@ -21,15 +21,13 @@ RSpec.describe "Topics api", type: :request, autodoc: true do
   end
 
   it "get list of all topics" do
-=begin
-TODO: reenable after client update
-    get "/v3/topics", {
-          params:  { locale: nil },
-          headers: headers_for_login_user_api
-        }
-    topics = JSON.parse @response.body
-    expect(topics.count).to eq(5)
-=end
+# TODO: reenable after client update
+#     get "/v3/topics", {
+#           params:  { locale: nil },
+#           headers: headers_for_login_user_api
+#         }
+#     topics = JSON.parse @response.body
+#     expect(topics.count).to eq(5)
   end
 
   it "get list of specified locale topics" do
