@@ -17,7 +17,7 @@ RSpec.describe "Wall api", :type => :request, autodoc: true do
   end
 
   it "get resources of a specified collection" do
-    get "/v3/walls/#{CGI.escape("ios/news")}",
+    get "/v3/walls/#{CGI.escape('ios/news')}",
         headers: headers_for_login_user_api
     wall = JSON.parse @response.body
     expect(wall["resources"].count).to eq(5)

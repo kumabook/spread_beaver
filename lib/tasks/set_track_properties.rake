@@ -9,7 +9,7 @@ task :set_track_properties => :environment do
     items.each do |item|
       t = tracks.find {|track| track["id"] == item.id }
       item.update_columns(title: t["title"], provider: t["provider"])
-      puts "update track #{t["title"]} #{t["id"]}"
+      puts "update track #{t['title']} #{t['id']}"
     end
   end
 
@@ -18,7 +18,7 @@ task :set_track_properties => :environment do
     items.each do |item|
       a = albums.find {|album| album["id"] == item.id }
       item.update_columns(title: a["title"], provider: a["provider"])
-      puts "update album #{a["title"]} #{a["id"]}"
+      puts "update album #{a['title']} #{a['id']}"
     end
   end
 
@@ -27,7 +27,7 @@ task :set_track_properties => :environment do
     items.each do |item|
       pl = playlists.find {|playlist| playlist["id"] == item.id }
       item.update_columns(title:  pl["title"], provider: pl["provider"])
-      puts "update playlist #{pl["title"]} #{pl["id"]}"
+      puts "update playlist #{pl['title']} #{pl['id']}"
     end
   end
 end

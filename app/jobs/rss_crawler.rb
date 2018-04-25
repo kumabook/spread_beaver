@@ -50,7 +50,7 @@ class RSSCrawler < ApplicationJob
     crawler_result.append(e, e.crawl)
     update_feed_last_updated(feed, e)
   rescue => err
-    logger.error("Failed to fetch #{entry["url"]}  #{err}")
+    logger.error("Failed to fetch #{entry['url']}  #{err}")
     logger.error(err.backtrace)
   end
 
