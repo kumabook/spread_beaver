@@ -20,7 +20,7 @@ module Playable
     def play_class
       "Played#{table_name.singularize.capitalize}".constantize
     end
-    alias view_class play_class
+    alias_method :view_class, :play_class
 
     def user_played_hash(user, items)
       marks_hash_of_user(play_class, user, items)
