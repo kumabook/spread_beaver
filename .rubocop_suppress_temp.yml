@@ -183,7 +183,5 @@ Rails/PluralizationGrammar:
   Enabled: false
 GitHub/RailsControllerRenderShorthand:
   Enabled: false
-Performance/RedundantMerge:
-  Enabled: false
 Layout/DefEndAlignment:
   Enabled: false
