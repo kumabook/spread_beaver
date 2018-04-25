@@ -47,14 +47,14 @@ class FeedlrHelper
     entry                = Feedlr::Base.new()
     entry.alternate      = [alternate]
     entry.content        = content
-    entry.crawled        = 1458303643798
+    entry.crawled        = 1_458_303_643_798
     entry.engagement     = 143
     entry.engagementRate = 11.0
     entry.fingerprint    = "38c6513d"
     entry.id             = id
     entry.origin         =  origin
     entry.originId       = "http://test.com/1"
-    entry.published      = 1458303643798
+    entry.published      = 1_458_303_643_798
     entry.title          = "title"
     entry.unread         = true
     entry.visual         = visual

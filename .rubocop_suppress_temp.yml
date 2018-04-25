@@ -27,7 +27,7 @@ Layout/SpaceAroundOperators:
 Style/SymbolProc:
   Enabled: true
 Style/NumericLiterals:
-  Enabled: false
+  Enabled: true
 Style/Encoding:
   Enabled: false
 Layout/EmptyLines:
