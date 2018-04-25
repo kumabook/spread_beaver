@@ -30,7 +30,7 @@ module Mix
       if @provider.nil?
         self.dup
       else
-        Query.new(@period, @type, locale: nil, provider: @provider.select { |pr| pr != "SoundCloud" }, entries_per_feed: @entries_per_feed)
+        Query.new(@period, @type, locale: nil, provider: @provider.reject { |pr| pr == "SoundCloud" }, entries_per_feed: @entries_per_feed)
       end
     end
 

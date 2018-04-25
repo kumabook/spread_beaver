@@ -54,7 +54,7 @@ class FeedsController < ApplicationController
   end
 
   def update
-    topics = Topic.find((feed_params[:topics] || []).select { |t| !t.blank? })
+    topics = Topic.find((feed_params[:topics] || []).reject(&:blank?))
     @feed.update_attributes(feed_params.merge({topics: topics}))
     if @feed.save
       redirect_to feed_path(@feed.escape), notice: "Feed was successfully updated."

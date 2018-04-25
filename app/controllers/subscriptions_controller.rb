@@ -21,7 +21,7 @@ class SubscriptionsController < ApplicationController
   end
 
   def update
-    categories = Category.find((subscription_params[:categories] || []).select { |c| !c.blank? })
+    categories = Category.find((subscription_params[:categories] || []).reject(&:blank?))
     @subscription.update_attributes(subscription_params.merge({categories: categories}))
     respond_to do |format|
       if @subscription.save
