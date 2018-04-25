@@ -9,7 +9,7 @@ RSpec.describe "Tracks api", type: :request, autodoc: true do
     @like = LikedEnclosure.create!(enclosure: @feeds[0].entries[0].tracks[0],
                                    user: @user)
     @feeds[0].entries[1].tracks << @feeds[0].entries[0].tracks[0]
-    @feeds[0].entries[0].update!(published: 1.days.ago)
+    @feeds[0].entries[0].update!(published: 1.day.ago)
     @feeds[0].entries[1].update!(published: 2.days.ago)
     @pick = Pick.create!(enclosure_id:   @feeds[0].entries[0].tracks[0].id,
                          enclosure_type: Track.name,

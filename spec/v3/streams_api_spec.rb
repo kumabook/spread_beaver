@@ -27,17 +27,17 @@ RSpec.describe "Streams api", type: :request, autodoc: true do
       (0...ITEM_NUM).to_a.each { |n|
         LikedEntry.create! user: @user,
                            entry: @feed.entries[n],
-                           created_at: 1.days.ago
+                           created_at: 1.day.ago
       }
       (0...ITEM_NUM).to_a.each { |n|
         SavedEntry.create! user: @user,
                            entry: @feed.entries[n],
-                           created_at: 1.days.ago
+                           created_at: 1.day.ago
       }
       (0...ITEM_NUM).to_a.each { |n|
         ReadEntry.create! user: @user,
                           entry: @feed.entries[n],
-                          created_at: 1.days.ago
+                          created_at: 1.day.ago
       }
       (0...ITEM_NUM).to_a.each { |n|
         LikedEnclosure.create! user: @user,

@@ -16,7 +16,7 @@ FactoryBot.define do
     originId        ""
     crawled         DateTime.now
     recrawled       nil
-    published       1.days.ago
+    published       1.day.ago
     updated         nil
   end
 end

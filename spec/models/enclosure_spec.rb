@@ -78,8 +78,8 @@ describe Enclosure do
           EntryEnclosure.create!(entry:          feeds[1].entries[i],
                                  enclosure_id:   tracks[1].id,
                                  enclosure_type: Track.name,
-                                 created_at:     1.days.ago,
-                                 updated_at:     1.days.ago)
+                                 created_at:     1.day.ago,
+                                 updated_at:     1.day.ago)
         }
       end
       it "should calcurated by feed count (not entry count" do
