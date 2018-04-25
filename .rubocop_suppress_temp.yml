@@ -189,5 +189,3 @@ Layout/TrailingBlankLines:
   Enabled: false
 Layout/DefEndAlignment:
   Enabled: false
-Bundler/OrderedGems:
-  Enabled: false
