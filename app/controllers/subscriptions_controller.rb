@@ -9,7 +9,7 @@ class SubscriptionsController < ApplicationController
     else
       @subscriptions = Subscription.where(user_id: current_user.id).includes(:feed)
     end
-    @feeds = @subscriptions.map { |s| s.feed }
+    @feeds = @subscriptions.map(&:feed)
   end
 
   def create

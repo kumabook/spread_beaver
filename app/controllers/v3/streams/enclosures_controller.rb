@@ -22,13 +22,13 @@ class V3::Streams::EnclosuresController < V3::ApiController
     @enclosure_class.set_contents(@items)
     @enclosure_class.set_partial_entries(@items)
     if api_version == 0
-      @items = @items.select {|i| i.legacy? }
+      @items = @items.select(&:legacy?)
     end
     h = {
       direction: "ltr",
       continuation: continuation,
       alternate: [],
-      items: @items.map { |t| t.as_content_json }
+      items: @items.map(&:as_content_json)
     }
     if @stream.present?
       h[:updated] = @stream.updated_at.to_time.to_i * 1000

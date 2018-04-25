@@ -49,7 +49,7 @@ class Entry < ApplicationRecord
       where(published: since..Float::INFINITY).order(published: :desc).with_content
     end
   }
-  scope :subscriptions, ->       (ss) { where(feed: ss.map { |s| s.feed_id }).order(published: :desc).with_content }
+  scope :subscriptions, ->       (ss) { where(feed: ss.map(&:feed_id)).order(published: :desc).with_content }
   scope :feed,          ->     (feed) { where(feed: feed).order(published: :desc).with_content }
   scope :keyword,       ->        (k) { joins(:entry_keywords).where(entry_keywords: { keyword_id: k.id}).order(published: :desc).with_content }
   scope :tag,           ->        (t) { joins(:tags).where(tags: { id: t.id}).order(published: :desc).with_content }
@@ -163,9 +163,7 @@ class Entry < ApplicationRecord
     new_playlists = Playlist.create_items_of(self, playlistified_entry.playlists)
     new_albums    = Album.create_items_of(self, playlistified_entry.albums)
 
-    new_playlists.each do |playlist|
-      playlist.fetch_tracks
-    end
+    new_playlists.each(&:fetch_tracks)
 
     add_playlists_to_mix_issue(new_playlists)
 
@@ -207,7 +205,7 @@ class Entry < ApplicationRecord
 
   def self.marks_hash_of_user(clazz, user, entries)
     marks = clazz.where(user_id:  user.id,
-                        entry_id: entries.map { |e| e.id })
+                        entry_id: entries.map(&:id))
     entries.inject({}) do |h, e|
       h[e] = marks.to_a.select {|l| e.id == l.entry_id }.first.present?
       h
@@ -217,7 +215,7 @@ class Entry < ApplicationRecord
 
   def self.set_count_of_enclosures(entries)
     count_hashes = [Track.name, Album.name, Playlist.name].inject({}) do |hash, type|
-      hash[type] = EntryEnclosure.where(entry_id:       entries.map {|e| e.id},
+      hash[type] = EntryEnclosure.where(entry_id:       entries.map(&:id),
                                         enclosure_type: type).enclosure_count
       hash
     end
@@ -231,9 +229,9 @@ class Entry < ApplicationRecord
   end
 
   def self.set_contents_of_enclosures(entries)
-    track_items    = entries.flat_map {|e| e.tracks }
-    album_items    = entries.flat_map {|e| e.albums }
-    playlist_items = entries.flat_map {|e| e.playlists }
+    track_items    = entries.flat_map(&:tracks)
+    album_items    = entries.flat_map(&:albums)
+    playlist_items = entries.flat_map(&:playlists)
     {
       tracks:    Track.set_contents(track_items),
       albums:    Album.set_contents(album_items),
@@ -341,7 +339,7 @@ class Entry < ApplicationRecord
     hash["tags"]       = nil
     hash["enclosure"]  = [tracks, playlists, albums].flat_map do |items|
       items.select {|item| !only_legacy || item.legacy? }
-           .map { |item| item.as_enclosure }
+           .map(&:as_enclosure)
     end
 
     hash["tracks"]    = tracks.map(&enclosure_as_json)
@@ -373,7 +371,7 @@ class Entry < ApplicationRecord
   def as_detail_json
     hash             = as_content_json
     hash["tags"]     = []
-    hash["keywords"] = keywords.map { |k| k.label }
+    hash["keywords"] = keywords.map(&:label)
     hash
   end
 end

@@ -7,7 +7,7 @@ class V3::SubscriptionsController < V3::ApiController
 
   def index
     @subscriptions = Subscription.where(user: current_resource_owner).includes(:feed)
-    render json: @subscriptions.map {|s| s.feed }.to_json, status: 200
+    render json: @subscriptions.map(&:feed).to_json, status: 200
   end
 
   def create

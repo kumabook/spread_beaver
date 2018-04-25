@@ -16,9 +16,7 @@ class V3::EnclosuresController < V3::ApiController
 
   def list
     if !@enclosures.nil?
-      render json: @enclosures.map {|t|
-        t.as_detail_json
-      }.to_json, status: 200
+      render json: @enclosures.map(&:as_detail_json).to_json, status: 200
     else
       render_not_found
     end

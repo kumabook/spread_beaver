@@ -86,7 +86,7 @@ class RSSCrawler < ApplicationJob
 
   def update_feed_visuals(feeds)
     client = Feedlr::Client.new
-    feedlr_feeds = client.feeds(feeds.map { |f| f.id })
+    feedlr_feeds = client.feeds(feeds.map(&:id))
     return [] if feedlr_feeds.nil?
     feedlr_feeds.map do |feedlr_feed|
       feeds.select { |f| f.id == feedlr_feed.id }.each do |feed|

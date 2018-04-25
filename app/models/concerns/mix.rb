@@ -153,7 +153,7 @@ module Mix
   end
 
   def self.sort_one_by_one_by_feed(entries, entries_per_feed)
-    entries_list = entries.map { |entry| entry.feed_id }
+    entries_list = entries.map(&:feed_id)
                           .uniq
                           .map do |id|
       entries.select { |e| e.feed_id == id }.first(entries_per_feed)
@@ -161,7 +161,7 @@ module Mix
 
     (0...entries_per_feed).to_a
       .flat_map { |i| entries_list.map { |list| list[i] }}
-      .select   { |a| a.present? }
+      .select(&:present?)
   end
 
   def self.items_from_count_hash(clazz, count_hash, page: 1, per_page: PER_PAGE)

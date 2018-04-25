@@ -149,7 +149,7 @@ class Enclosure < ApplicationRecord
 
   def self.set_contents(enclosures)
     return enclosures if enclosures.blank?
-    contents = fetch_contents(enclosures.map {|t| t.id })
+    contents = fetch_contents(enclosures.map(&:id))
     enclosures.each do |e|
       e.content = contents.select {|c| c["id"] == e.id }.first
     end
@@ -157,14 +157,14 @@ class Enclosure < ApplicationRecord
   end
 
   def self.set_partial_entries(enclosures)
-    items = EntryEnclosure.where(enclosure_id: enclosures.map {|e| e.id })
+    items = EntryEnclosure.where(enclosure_id: enclosures.map(&:id))
                           .order("entries.published DESC")
                           .joins(:entry)
                           .limit(PARTIAL_ENTRIES_LIMIT)
                           .preload(:entry)
     enclosures.each do |e|
       e.partial_entries = items.select {|item| item.enclosure_id == e.id }
-                               .map {|item| item.entry }
+                               .map(&:entry)
     end
   end
 
@@ -181,7 +181,7 @@ class Enclosure < ApplicationRecord
 
   def self.marks_hash_of_user(clazz, user, enclosures)
     marks = clazz.where(user_id:      user.id,
-                        enclosure_id: enclosures.map { |e| e.id })
+                        enclosure_id: enclosures.map(&:id))
     enclosures.inject({}) do |h, e|
       h[e] = marks.to_a.select {|l| e.id == l.enclosure_id }.first.present?
       h
@@ -228,7 +228,7 @@ class Enclosure < ApplicationRecord
     end
 
     if !@partial_entries.nil?
-      hash["entries"] = @partial_entries.map { |e| e.as_partial_json }
+      hash["entries"] = @partial_entries.map(&:as_partial_json)
     end
     hash
   end
