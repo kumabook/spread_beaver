@@ -19,7 +19,7 @@ module Readable
     def read_class
       "Read#{table_name.singularize.capitalize}".constantize
     end
-    alias view_class read_class
+    alias_method :view_class, :read_class
 
     def user_read_hash(user, items)
       marks_hash_of_user(read_class, user, items)

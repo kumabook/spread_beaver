@@ -139,8 +139,6 @@ Style/NumericPredicate:
   Enabled: false
 Style/IfInsideElse:
   Enabled: false
-Style/Alias:
-  Enabled: false
 Naming/AccessorMethodName:
   Enabled: false
 Naming/VariableName:
