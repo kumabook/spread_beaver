@@ -46,7 +46,7 @@ describe EnclosureEngagementScorer do
     context "with topic" do
       before do
         japan_mix_journal = Journal.create_topic_mix_journal(japan)
-        global_mix_journal = Journal.create_topic_mix_journal(global)
+        _global_mix_journal = Journal.create_topic_mix_journal(global)
         issue = japan.find_or_create_mix_issue(japan_mix_journal)
         issue.playlists << playlist
         create_pick(today)
