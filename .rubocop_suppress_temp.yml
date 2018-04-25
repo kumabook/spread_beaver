@@ -16,8 +16,6 @@ Style/TrailingCommaInHashLiteral:
   Enabled: false
 Layout/SpaceAroundEqualsInParameterDefault:
   Enabled: false
-Layout/SpaceInsideBlockBraces:
-  Enabled: false
 Style/BracesAroundHashParameters:
   Enabled: false
 Layout/Tab:
