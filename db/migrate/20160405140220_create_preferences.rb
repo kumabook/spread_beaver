@@ -8,6 +8,6 @@ class CreatePreferences < ActiveRecord::Migration[4.2]
 
       t.timestamps null: false
     end
-    add_index :preferences, [:user_id, :key], unique: true
+    add_index :preferences, %i[user_id key], unique: true
   end
 end

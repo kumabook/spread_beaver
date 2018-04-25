@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 class V3::EnclosuresController < V3::ApiController
-  before_action :set_enclosure_class      , only: [:show, :list]
+  before_action :set_enclosure_class      , only: %i[show list]
   before_action :set_enclosure            , only: [:show]
   before_action :set_enclosures           , only: [:list]
-  before_action :set_cache_control_headers, only: [:show, :list]
+  before_action :set_cache_control_headers, only: %i[show list]
 
   def show
     set_surrogate_key_header @enclosure.record_key

@@ -7,6 +7,6 @@ class CreateUserEntries < ActiveRecord::Migration[4.2]
 
       t.timestamps null: false
     end
-    add_index :user_entries, [:user_id, :entry_id], unique: true
+    add_index :user_entries, %i[user_id entry_id], unique: true
   end
 end

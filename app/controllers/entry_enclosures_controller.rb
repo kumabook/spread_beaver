@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 class EntryEnclosuresController < ApplicationController
-  before_action :set_entry_enclosure, only: [:destroy, :edit, :update]
-  before_action :set_entry          , only: [:new, :create, :destroy, :edit, :update]
+  before_action :set_entry_enclosure, only: %i[destroy edit update]
+  before_action :set_entry          , only: %i[new create destroy edit update]
   before_action :require_admin
 
   def new

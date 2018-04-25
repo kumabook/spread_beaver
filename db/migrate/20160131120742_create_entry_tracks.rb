@@ -7,6 +7,6 @@ class CreateEntryTracks < ActiveRecord::Migration[4.2]
 
       t.timestamps null: false
     end
-    add_index :entry_tracks, [:entry_id, :track_id], unique: true
+    add_index :entry_tracks, %i[entry_id track_id], unique: true
   end
 end

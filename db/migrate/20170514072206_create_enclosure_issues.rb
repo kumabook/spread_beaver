@@ -8,6 +8,6 @@ class CreateEnclosureIssues < ActiveRecord::Migration[5.0]
       t.integer :engagement    , null: false, default: 0
       t.timestamps
     end
-    add_index :enclosure_issues, [:enclosure_id, :issue_id], unique: true
+    add_index :enclosure_issues, %i[enclosure_id issue_id], unique: true
   end
 end

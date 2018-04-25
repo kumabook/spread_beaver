@@ -7,7 +7,7 @@ class CreateLikedEntries < ActiveRecord::Migration[5.0]
 
       t.timestamps null: false
     end
-    add_index :liked_entries, [:user_id, :entry_id], unique: true
+    add_index :liked_entries, %i[user_id entry_id], unique: true
 
     add_column :entries, :likes_count, :integer, null: false, default: 0
   end

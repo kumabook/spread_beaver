@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 class CategoriesController < ApplicationController
-  before_action :set_category, only: [:edit, :destroy, :update]
+  before_action :set_category, only: %i[edit destroy update]
   def index
     @categories = Category.all
   end

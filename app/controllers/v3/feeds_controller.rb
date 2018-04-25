@@ -3,7 +3,7 @@ class V3::FeedsController < V3::ApiController
 #  before_action :doorkeeper_authorize!
   before_action :set_feed,  only: [:show]
   before_action :set_feeds, only: [:list]
-  before_action :set_cache_control_headers, only: [:search, :show, :list]
+  before_action :set_cache_control_headers, only: %i[search show list]
 
   def search
     @feeds = Feed.search_by(query: search_params[:query],

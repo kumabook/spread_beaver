@@ -2,7 +2,7 @@
 class EntryEnclosure < ApplicationRecord
   include EntryMark
 
-  enum enclosure_provider: [:Raw, :Custom, :YouTube, :SoundCloud, :Spotify, :AppleMusic]
+  enum enclosure_provider: %i[Raw Custom YouTube SoundCloud Spotify AppleMusic]
 
   has_one :entry, autosave: false
   belongs_to :entry

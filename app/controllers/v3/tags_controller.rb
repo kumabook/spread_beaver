@@ -3,8 +3,8 @@ class V3::TagsController < V3::ApiController
   before_action :doorkeeper_authorize!
   before_action :set_tag    , only: [:update]
   before_action :set_entry  , only: [:tag_entry]
-  before_action :set_entries, only: [:tag_entries, :untag_entries]
-  before_action :set_tags   , only: [:tag_entry, :tag_entries, :untag_entries, :destroy]
+  before_action :set_entries, only: %i[tag_entries untag_entries]
+  before_action :set_tags   , only: %i[tag_entry tag_entries untag_entries destroy]
 
   def index
     @tags = Tag.order("label ASC").all

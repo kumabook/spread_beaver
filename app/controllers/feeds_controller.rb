@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 class FeedsController < ApplicationController
-  before_action :set_feed, only: [:show, :show_feedly, :edit, :update, :destroy]
+  before_action :set_feed, only: %i[show show_feedly edit update destroy]
   before_action :set_topic, only: [:index]
-  before_action :require_admin, only: [:new, :create, :destroy, :update]
+  before_action :require_admin, only: %i[new create destroy update]
 
   def index
     @title = "Feeds"

@@ -8,6 +8,6 @@ class CreateEntryIssues < ActiveRecord::Migration[4.2]
 
       t.timestamps null: false
     end
-    add_index :entry_issues, [:entry_id, :issue_id], unique: true
+    add_index :entry_issues, %i[entry_id issue_id], unique: true
   end
 end

@@ -10,6 +10,6 @@ class CreateIssues < ActiveRecord::Migration[4.2]
       t.timestamps null: false
     end
     add_index :issues, [:id]                , unique: true
-    add_index :issues, [:journal_id, :label], unique: true
+    add_index :issues, %i[journal_id label], unique: true
   end
 end

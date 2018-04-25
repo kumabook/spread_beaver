@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 class IssuesController < ApplicationController
-  before_action :set_issue, only: [:edit, :destroy, :update, :collect_entries]
+  before_action :set_issue, only: %i[edit destroy update collect_entries]
   before_action :set_journal
   before_action :set_entries, only: [:edit]
-  before_action :require_admin, only: [:new, :create, :destroy, :update, :create_daily]
+  before_action :require_admin, only: %i[new create destroy update create_daily]
   def index
     @issues = Issue.order("label DESC").where(journal: @journal).page(params[:page])
   end
