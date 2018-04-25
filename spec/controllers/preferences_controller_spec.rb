@@ -58,7 +58,7 @@ describe PreferencesController, type: :controller do
       }
       it { expect(response).to redirect_to user_preferences_url(user) }
       it { expect(Preference.find_by(user: user, key: "key").value).to eq("changed") }
-    end
+     end
     context "when fails to save" do
       before {
         allow_any_instance_of(Preference).to receive(:update).and_return(false)

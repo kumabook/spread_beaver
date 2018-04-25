@@ -157,8 +157,6 @@ Style/CommentAnnotation:
   Enabled: false
 Lint/UnusedMethodArgument:
   Enabled: false
-Layout/BlockAlignment:
-  Enabled: false
 Layout/IndentationWidth:
   Enabled: false
 Layout/EmptyLinesAroundMethodBody:
