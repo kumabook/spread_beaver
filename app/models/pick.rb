@@ -5,7 +5,7 @@ class Pick < ApplicationRecord
   belongs_to :container , class_name: "Enclosure", foreign_key: "container_id"
 
   scope :pick_count, -> {
-    group(:enclosure_id).order('count_container_id DESC').count('container_id')
+    group(:enclosure_id).order("count_container_id DESC").count("container_id")
   }
 
   scope :feed, -> (feed) {

@@ -18,7 +18,7 @@ class PreferencesController < ApplicationController
     @preference.user = @user
     respond_to do |format|
       if @preference.save
-        format.html { redirect_to user_preferences_path(@user), notice: 'Preference was successfully created.' }
+        format.html { redirect_to user_preferences_path(@user), notice: "Preference was successfully created." }
       else
         format.html { render :new }
       end
@@ -32,7 +32,7 @@ class PreferencesController < ApplicationController
     @preference = Preference.find(params[:id])
     respond_to do |format|
       if @preference.update(preference_params)
-        format.html { redirect_to user_preferences_path(@user), notice: 'Preference was successfully updated.' }
+        format.html { redirect_to user_preferences_path(@user), notice: "Preference was successfully updated." }
       else
         format.html { render :edit }
       end
@@ -42,7 +42,7 @@ class PreferencesController < ApplicationController
   def destroy
     respond_to do |format|
       if @preference.destroy
-        format.html { redirect_to user_preferences_path, notice: 'Preference was successfully destroyed.' }
+        format.html { redirect_to user_preferences_path, notice: "Preference was successfully destroyed." }
       else
         format.html { redirect_to user_preferences_path, notice: @preference.errors }
       end

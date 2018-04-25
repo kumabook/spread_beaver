@@ -1,6 +1,6 @@
 # frozen_string_literal: true
-require('pink_spider')
-require('paginated_array')
+require("pink_spider")
+require("paginated_array")
 class EnclosuresController < ApplicationController
   include MarkControllable
   include LikableController
@@ -20,13 +20,13 @@ class EnclosuresController < ApplicationController
                           .page(params[:page])
     elsif @issue.present?
       @enclosure_issues = @issue.enclosure_issues
-                            .order('engagement DESC')
+                            .order("engagement DESC")
                             .page(params[:page])
       @enclosures = @issue.public_send(index_method)
-                          .order('engagement DESC')
+                          .order("engagement DESC")
                           .page(params[:page])
     else
-      @enclosures = enclosure_class.order('created_at DESC').page(params[:page])
+      @enclosures = enclosure_class.order("created_at DESC").page(params[:page])
     end
 
     enclosure_class.set_marks(current_user, @enclosures) if current_user.present?

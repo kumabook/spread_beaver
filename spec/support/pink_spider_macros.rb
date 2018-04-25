@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-require 'pink_spider_helper'
+require "pink_spider_helper"
 
 module PinkSpiderMacros
   def mock_up_pink_spider
@@ -12,7 +12,7 @@ module PinkSpiderMacros
         page:     0,
         per_page: 1,
         total:    1,
-        items:    [PinkSpiderHelper::entry_hash(url: 'http://example.com/entry1')]
+        items:    [PinkSpiderHelper::entry_hash(url: "http://example.com/entry1")]
       }.with_indifferent_access
     end
 
@@ -85,8 +85,8 @@ module PinkSpiderMacros
         playlist_id: playlist_id,
         track_id: track[:id],
         track: track,
-        created_at: '2018-04-13T05:37:02.807854+00:00',
-        updated_at: '2018-04-13T05:37:02.807854+00:00',
+        created_at: "2018-04-13T05:37:02.807854+00:00",
+        updated_at: "2018-04-13T05:37:02.807854+00:00",
       }
       {
         "items": [playlist_track]

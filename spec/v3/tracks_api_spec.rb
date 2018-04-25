@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe "Tracks api", :type => :request, autodoc: true do
   before(:all) do
@@ -21,20 +21,20 @@ RSpec.describe "Tracks api", :type => :request, autodoc: true do
     id = @feeds[0].entries[0].tracks[0].id
     get "/v3/tracks/#{id}", headers: headers_for_login_user_api
     track = JSON.parse @response.body
-    es = track['entries']
+    es = track["entries"]
     expect(track).not_to be_nil()
-    expect(track['id']).to eq(id)
-    expect(track['entries']).not_to be_nil()
-    expect(track['entries'].count).to be(2)
-    expect(track['entries'][0]["summary"]).to be_nil
-    expect(es[0]['published'] > es[1]['published']).to be_truthy
-    expect(track['likesCount']).to eq(1)
-    expect(track['entriesCount']).not_to be_nil()
-    expect(track['playlists'].count).to be > 0
-    expect(track['playlists'][0]).not_to be_nil
-    expect(track['playlists'][0]['entriesCount']).not_to be_nil
-    expect(track['playlists'][0]['entries'].count).not_to be_nil
-    expect(track['playlists'][0]['entries'][0]).not_to be_nil
+    expect(track["id"]).to eq(id)
+    expect(track["entries"]).not_to be_nil()
+    expect(track["entries"].count).to be(2)
+    expect(track["entries"][0]["summary"]).to be_nil
+    expect(es[0]["published"] > es[1]["published"]).to be_truthy
+    expect(track["likesCount"]).to eq(1)
+    expect(track["entriesCount"]).not_to be_nil()
+    expect(track["playlists"].count).to be > 0
+    expect(track["playlists"][0]).not_to be_nil
+    expect(track["playlists"][0]["entriesCount"]).not_to be_nil
+    expect(track["playlists"][0]["entries"].count).not_to be_nil
+    expect(track["playlists"][0]["entries"][0]).not_to be_nil
   end
 
   it "shows track list by id list" do
@@ -47,9 +47,9 @@ RSpec.describe "Tracks api", :type => :request, autodoc: true do
     items = JSON.parse @response.body
     expect(items).not_to be_nil()
     expect(items.count).to eq(tracks.count)
-    expect(items[0]['entries'][0]["summary"]).to be_nil
+    expect(items[0]["entries"][0]["summary"]).to be_nil
     items.each_with_index {|t, i|
-      expect(ids).to include(t['id'])
+      expect(ids).to include(t["id"])
     }
   end
 end

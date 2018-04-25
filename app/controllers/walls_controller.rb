@@ -16,7 +16,7 @@ class WallsController < ApplicationController
   end
 
   def edit
-    @resources = @wall.resources.page(params[:page]).order('engagement DESC')
+    @resources = @wall.resources.page(params[:page]).order("engagement DESC")
     Resource.set_item_of_stream_resources(@resources)
   end
 

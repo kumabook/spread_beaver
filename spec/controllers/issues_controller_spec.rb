@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-require 'rails_helper'
+require "rails_helper"
 
 describe IssuesController, type: :controller do
   let! (:topic) {   Topic.create!(label: "highlight", description: "desc")}
@@ -11,18 +11,18 @@ describe IssuesController, type: :controller do
     login_user user
   end
 
-  describe 'GET index' do
+  describe "GET index" do
     before { get :index, params: { journal_id: journal.id }}
     it { expect(assigns(:issues)).to eq([issue])  }
     it { expect(response).to render_template("index") }
   end
 
-  describe 'GET new' do
+  describe "GET new" do
     before { get :new, params: { journal_id: journal.id }}
     it { expect(response).to render_template("new") }
   end
 
-  describe 'POST create' do
+  describe "POST create" do
     label       = "new_journal"
     description = "desc"
     before { post :create, params: {
@@ -34,12 +34,12 @@ describe IssuesController, type: :controller do
     it { expect(Issue.find_by(label: label).label).to eq(label) }
   end
 
-  describe 'GET edit' do
+  describe "GET edit" do
     before { get :edit, params: { id: issue.id, journal_id: journal.id }}
     it { expect(response).to render_template("edit") }
   end
 
-  describe 'POST update' do
+  describe "POST update" do
     label = "changed"
     before { post :update, params: { id: issue.id, journal_id: journal.id, issue: { label: label }}}
     it { expect(response).to redirect_to journal_issues_url(journal) }

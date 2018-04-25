@@ -1,8 +1,8 @@
 # frozen_string_literal: true
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe "Subscriptions api", type: :request, autodoc: true do
-  context 'after login' do
+  context "after login" do
     before(:all) do
       setup()
       login()

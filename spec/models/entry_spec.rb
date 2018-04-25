@@ -1,11 +1,11 @@
 # coding: utf-8
 # frozen_string_literal: true
-require 'rails_helper'
-require 'feedlr_helper'
+require "rails_helper"
+require "feedlr_helper"
 
 describe Entry do
   it "is created by feeldr entry" do
-    feed_id = 'feed/http://test.com/rss'
+    feed_id = "feed/http://test.com/rss"
     entry   = FeedlrHelper::entry(feed_id)
     feed    = Feed.first_or_create(id: feed_id)
     e       = Entry.first_or_create_by_feedlr(entry, feed)

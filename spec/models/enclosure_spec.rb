@@ -1,6 +1,6 @@
 # frozen_string_literal: true
-require 'rails_helper'
-require 'pink_spider_helper'
+require "rails_helper"
+require "pink_spider_helper"
 
 describe Enclosure do
   Query = Mix::Query

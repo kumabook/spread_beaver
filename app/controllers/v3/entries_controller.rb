@@ -35,8 +35,8 @@ class V3::EntriesController < V3::ApiController
   end
 
   def set_entries
-    @entries = Entry.with_detail.where(id: params['_json'])
-    @entries = params['_json'].flat_map { |id|
+    @entries = Entry.with_detail.where(id: params["_json"])
+    @entries = params["_json"].flat_map { |id|
       @entries.select { |v| v.id == id }
     }
     Entry.set_partial_entries_of_enclosures(@entries)

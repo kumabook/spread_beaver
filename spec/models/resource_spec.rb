@@ -1,6 +1,6 @@
 # coding: utf-8
 # frozen_string_literal: true
-require 'rails_helper'
+require "rails_helper"
 
 describe Resource do
   let (:user) { FactoryBot.create(:default) }

@@ -1,13 +1,13 @@
 # frozen_string_literal: true
-require 'rails_helper'
-require 'feedlr_helper'
-require 'rake'
+require "rails_helper"
+require "feedlr_helper"
+require "rake"
 
-describe 'rake task recrawl' do
+describe "rake task recrawl" do
   before(:all) do
     @rake = Rake::Application.new
     Rake.application = @rake
-    Rake.application.rake_require 'tasks/recrawl'
+    Rake.application.rake_require "tasks/recrawl"
     Rake::Task.define_task(:environment)
   end
 
@@ -26,9 +26,9 @@ describe 'rake task recrawl' do
     FactoryBot.create(:topic)
   end
 
-  describe 'recrawl' do
-    let(:task) { 'recrawl' }
-    it 'is succeed.' do
+  describe "recrawl" do
+    let(:task) { "recrawl" }
+    it "is succeed." do
       expect(@rake[task].invoke).to be_truthy
     end
   end

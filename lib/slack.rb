@@ -11,7 +11,7 @@ def notify_slack(text)
 
   conn.post do |req|
     req.url uri.path
-    req.headers['Content-Type'] = 'application/json'
+    req.headers["Content-Type"] = "application/json"
     req.body = "{ \"text\": \"#{text}\" }"
   end
 

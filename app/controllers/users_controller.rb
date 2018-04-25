@@ -33,7 +33,7 @@ class UsersController < ApplicationController
     @user.becomes(User)
     respond_to do |format|
       if @user.save
-        format.html { redirect_to @user, notice: 'User was successfully created.' }
+        format.html { redirect_to @user, notice: "User was successfully created." }
         format.json { render :show, status: :created, location: @user }
       else
         flash[:notice] = "Failed to create: #{@user.errors}"
@@ -48,7 +48,7 @@ class UsersController < ApplicationController
   def update
     respond_to do |format|
       if @user.update(user_params)
-        format.html { redirect_to @user, notice: 'User was successfully updated.' }
+        format.html { redirect_to @user, notice: "User was successfully updated." }
         format.json { render :show, status: :ok, location: @user }
       else
         flash[:notice] = "Failed to update: #{@user.errors}"
@@ -63,7 +63,7 @@ class UsersController < ApplicationController
   def destroy
     @user.destroy
     respond_to do |format|
-      format.html { redirect_to users_url, notice: 'User was successfully destroyed.' }
+      format.html { redirect_to users_url, notice: "User was successfully destroyed." }
       format.json { head :no_content }
     end
   end
@@ -86,6 +86,6 @@ class UsersController < ApplicationController
 
   def set_s3_direct_post
     id = @user.present? ? @user.id : SecureRandom.uuid
-    @s3_direct_post = S3_BUCKET.presigned_post(key: "profiles/picture/#{id}", success_action_status: '201', acl: 'public-read')
+    @s3_direct_post = S3_BUCKET.presigned_post(key: "profiles/picture/#{id}", success_action_status: "201", acl: "public-read")
   end
 end

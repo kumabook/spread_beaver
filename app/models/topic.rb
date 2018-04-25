@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-require('paginated_array')
+require("paginated_array")
 
 class Topic < ApplicationRecord
   include Escapable
@@ -93,7 +93,7 @@ class Topic < ApplicationRecord
     Rails.cache.fetch(key) {
       Topic.locale(locale)
            .order("engagement DESC")
-           .where('engagement >= 0').to_a
+           .where("engagement >= 0").to_a
     }
   end
 

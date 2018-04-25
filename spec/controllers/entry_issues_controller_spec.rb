@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-require 'rails_helper'
+require "rails_helper"
 
 describe EntryIssuesController, type: :controller do
   let! (:journal    ) {     Journal.create!(label: "journal", description: "desc")}
@@ -12,12 +12,12 @@ describe EntryIssuesController, type: :controller do
     login_user user
   end
 
-  describe 'GET new' do
+  describe "GET new" do
     before { get :new, params: { issue_id: issue.id, entry_id: entry.id }}
     it { expect(response).to render_template("new") }
   end
 
-  describe 'POST create' do
+  describe "POST create" do
     before do
       post :create, params: {
              entry_issue: {
@@ -31,14 +31,14 @@ describe EntryIssuesController, type: :controller do
     it { expect(EntryIssue.find_by(entry_id: entry.id, issue_id: issue.id)).not_to be_nil }
   end
 
-  describe 'GET edit' do
+  describe "GET edit" do
     before do
       get :edit, params: { id: entry_issue.id, issue_id: issue.id }
     end
     it { expect(response).to render_template("edit") }
   end
 
-  describe 'POST update' do
+  describe "POST update" do
     before do
       post :update, params: {
         id: entry_issue.id,

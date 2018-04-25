@@ -5,11 +5,11 @@ class FeedsController < ApplicationController
   before_action :require_admin, only: [:new, :create, :destroy, :update]
 
   def index
-    @title = 'Feeds'
+    @title = "Feeds"
     if @topic.present?
-      @feeds = @topic.feeds.order('velocity DESC')
+      @feeds = @topic.feeds.order("velocity DESC")
     else
-      @feeds = Feed.all.order('velocity DESC')
+      @feeds = Feed.all.order("velocity DESC")
     end
     @subscriptions = Subscription.where(user_id: current_user.id)
   end
@@ -32,11 +32,11 @@ class FeedsController < ApplicationController
     respond_to do |format|
       if @feed.nil?
         @feed = Feed.new
-        flash[:notice] = 'The url is invalid'
+        flash[:notice] = "The url is invalid"
         format.html { render :new }
         format.json { render json: {}, status: :unprocessable_entity }
       elsif @feed.save
-        format.html { redirect_to feeds_path, notice: 'Feed was successfully created.' }
+        format.html { redirect_to feeds_path, notice: "Feed was successfully created." }
         format.json { render :show, status: :created, location: @feed }
       else
         format.html { redirect_to feeds_path, notice: @feed.errors }
@@ -47,7 +47,7 @@ class FeedsController < ApplicationController
 
   def destroy
     if @feed.destroy
-      redirect_to feeds_path, notice: 'Feed was successfully destroyed.'
+      redirect_to feeds_path, notice: "Feed was successfully destroyed."
     else
       redirect_to feeds_path, notice: @feed.errors
     end
@@ -57,7 +57,7 @@ class FeedsController < ApplicationController
     topics = Topic.find((feed_params[:topics] || []).select { |t| !t.blank? })
     @feed.update_attributes(feed_params.merge({topics: topics}))
     if @feed.save
-      redirect_to feed_path(@feed.escape), notice: 'Feed was successfully updated.'
+      redirect_to feed_path(@feed.escape), notice: "Feed was successfully updated."
     else
       render :edit, formats: :html, notice: @feed.errors
     end

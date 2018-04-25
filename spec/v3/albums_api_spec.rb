@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe "Albums  api", :type => :request, autodoc: true do
   before(:all) do
@@ -16,10 +16,10 @@ RSpec.describe "Albums  api", :type => :request, autodoc: true do
     get "/v3/albums/#{id}", headers: headers_for_login_user_api
     album = JSON.parse @response.body
     expect(album).not_to be_nil()
-    expect(album['id']).to eq(id)
-    expect(album['entries']).not_to be_nil()
-    expect(album['likesCount']).to eq(1)
-    expect(album['entriesCount']).not_to be_nil()
+    expect(album["id"]).to eq(id)
+    expect(album["entries"]).not_to be_nil()
+    expect(album["likesCount"]).to eq(1)
+    expect(album["entriesCount"]).not_to be_nil()
   end
 
   it "shows album list by id list" do
@@ -31,7 +31,7 @@ RSpec.describe "Albums  api", :type => :request, autodoc: true do
     expect(albums).not_to be_nil()
     expect(albums.count).to eq(ids.count)
     albums.each_with_index {|t, i|
-      expect(ids).to include(t['id'])
+      expect(ids).to include(t["id"])
     }
   end
 end

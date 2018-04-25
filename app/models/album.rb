@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-require 'pink_spider'
+require "pink_spider"
 class Album < Enclosure
   def title
     fetch_content if @content.nil?
@@ -9,8 +9,8 @@ class Album < Enclosure
   def permalink_url
     fetch_content if @content.nil?
     case @content["provider"]
-    when 'Spotify'
-      s = @content["url"].split(':')
+    when "Spotify"
+      s = @content["url"].split(":")
       "http://open.spotify.com/album/#{s[2]}"
     else
       @content["url"]

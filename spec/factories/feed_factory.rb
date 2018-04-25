@@ -57,8 +57,8 @@ FactoryBot.define do
   factory :entry, class: Entry do
     sequence(:id) { |n| "entry#{n}" }
     sequence(:title) { |n| "entry #{n}" }
-    content         "{\"content\":\"content\"}"
-    summary         "{\"content\":\"summary\"}"
+    content         '{"content":"content"}'
+    summary         '{"content":"summary"}'
     author          nil
     alternate       "[]"
     origin          "{}"

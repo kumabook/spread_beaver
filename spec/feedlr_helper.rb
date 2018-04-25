@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-require 'securerandom'
+require "securerandom"
 
 class FeedlrHelper
   def self.cursor
@@ -10,16 +10,16 @@ class FeedlrHelper
   def self.feed(id)
     Hashie::Mash.new(
       id:     id,
-      title: 'title',
-      description: '',
-      website:     '',
-      visualUrl:   '',
-      coverUrl:    '',
-      iconUrl:     '',
-      language:    '',
-      partial:     '',
-      coverColor:  '',
-      contentType: '',
+      title: "title",
+      description: "",
+      website:     "",
+      visualUrl:   "",
+      coverUrl:    "",
+      iconUrl:     "",
+      language:    "",
+      partial:     "",
+      coverColor:  "",
+      contentType: "",
       subscribers: 10,
       velocity:    10
     )

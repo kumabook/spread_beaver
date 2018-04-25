@@ -7,7 +7,7 @@ class V3::TagsController < V3::ApiController
   before_action :set_tags   , only: [:tag_entry, :tag_entries, :untag_entries, :destroy]
 
   def index
-    @tags = Tag.order('label ASC').all
+    @tags = Tag.order("label ASC").all
     render json: @tags.to_json, status: 200
   end
 

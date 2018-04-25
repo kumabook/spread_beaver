@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-require('pink_spider')
+require("pink_spider")
 class Feed < ApplicationRecord
   include Escapable
   include Stream
@@ -55,16 +55,16 @@ class Feed < ApplicationRecord
     Feed.delete_cache_of_search_results
   end
 
-  def self.search_by(query: '', locale: 'ja', page: 1, per_page: 15)
+  def self.search_by(query: "", locale: "ja", page: 1, per_page: 15)
     key = "feeds_of_search_by-page(#{page})-page_page(#{per_page})-#{query}-#{locale}"
     Rails.cache.fetch(key) do
       Feed.page(page)
           .per(per_page)
           .search(query)
           .locale(locale)
-          .where('velocity >= 0')
+          .where("velocity >= 0")
           .includes([:feed_topics])
-          .order('velocity DESC').to_a
+          .order("velocity DESC").to_a
     end
   end
 
@@ -90,7 +90,7 @@ class Feed < ApplicationRecord
   def self.first_or_create_by_feedlr(feed)
     Feed.find_or_create_by(id: feed.id) do |f|
       f.title       = feed.title
-      f.description = feed.description || ''
+      f.description = feed.description || ""
       f.website     = feed.website
       f.visualUrl   = feed.visualUrl
       f.coverUrl    = feed.coverUrl
@@ -119,7 +119,7 @@ class Feed < ApplicationRecord
   def self.first_or_create_by_pink_spider(feed)
     Feed.find_or_create_by(id: "feed/#{feed["url"]}") do |f|
       f.title       = feed["title"]
-      f.description = feed["description"] || ''
+      f.description = feed["description"] || ""
       f.website     = feed["website"]
       f.visualUrl   = feed["visual_url"]
       f.coverUrl    = feed["cover_url"]
@@ -155,8 +155,8 @@ class Feed < ApplicationRecord
 
   def as_json(options = {})
     h                = super(options)
-    h['lastUpdated'] = lastUpdated.present? ? lastUpdated.to_time.to_i * 1000 : nil
-    h['topics']      = topics.map { |topic| topic.label }
+    h["lastUpdated"] = lastUpdated.present? ? lastUpdated.to_time.to_i * 1000 : nil
+    h["topics"]      = topics.map { |topic| topic.label }
     h
   end
 

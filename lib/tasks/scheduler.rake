@@ -1,6 +1,6 @@
 # coding: utf-8
 # frozen_string_literal: true
-require 'slack'
+require "slack"
 
 desc "Crawl sites of feeds and collect latest entries"
 task :crawl, [:type]  => :environment do |_, args|

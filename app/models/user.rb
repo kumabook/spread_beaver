@@ -2,8 +2,8 @@
 class User < ApplicationRecord
   include Escapable
   include Stream
-  MEMBER = 'Member'
-  ADMIN  = 'Admin'
+  MEMBER = "Member"
+  ADMIN  = "Admin"
 
   has_many :preferences     , dependent: :destroy
   has_many :subscriptions    , dependent: :destroy
@@ -67,10 +67,10 @@ class User < ApplicationRecord
 
   def as_json(options = { need_picture_put_url: false })
     hash = super(options.merge({ except: [:crypted_password, :salt] }))
-    hash['twitterUserId'] = hash['twitter_user_id']
-    hash.delete('twitter_user_id')
-    hash['fullName'] = hash['name']
-    hash['created'] = self.created_at.to_time.to_i * 1000
+    hash["twitterUserId"] = hash["twitter_user_id"]
+    hash.delete("twitter_user_id")
+    hash["fullName"] = hash["name"]
+    hash["created"] = self.created_at.to_time.to_i * 1000
 
     if options[:need_picture_put_url]
       key = "profiles/picture/#{id}"
@@ -79,8 +79,8 @@ class User < ApplicationRecord
                                     key:    key,
                                     acl:    "public-read"
                                    )
-      hash['picture_put_url'] = url
-      hash['picture_url']     = "https://#{URI(url).host}/#{key}"
+      hash["picture_put_url"] = url
+      hash["picture_url"]     = "https://#{URI(url).host}/#{key}"
     end
     hash
   end

@@ -8,6 +8,6 @@ class CreateSubscriptionCategories < ActiveRecord::Migration[4.2]
       t.timestamps null: false
     end
     add_index :subscription_categories, [:subscription_id, :category_id],
-              unique: true, name: 'subscription_categories_index'
+              unique: true, name: "subscription_categories_index"
   end
 end

@@ -1,8 +1,8 @@
 # coding: utf-8
 # frozen_string_literal: true
-require('pink_spider')
-require('paginated_array')
-require('playlistified_entry')
+require("pink_spider")
+require("paginated_array")
+require("playlistified_entry")
 
 class Entry < ApplicationRecord
   include Streamable
@@ -55,7 +55,7 @@ class Entry < ApplicationRecord
   scope :tag,           ->        (t) { joins(:tags).where(tags: { id: t.id}).order(published: :desc).with_content }
   scope :topic,         ->    (topic) { joins(feed: :topics).where(topics: { id: topic.id }) }
   scope :category,      -> (category) { joins(feed: { subscriptions: :categories }).where(categories: { id: category.id })}
-  scope :issue,         ->          (j) { joins(:issues).where(issues: { id: j.id}).order('entry_issues.engagement DESC').with_content }
+  scope :issue,         ->          (j) { joins(:issues).where(issues: { id: j.id}).order("entry_issues.engagement DESC").with_content }
   scope :period, -> (period) {
     where({ table_name.to_sym => { published:  period }})
   }
@@ -67,7 +67,7 @@ class Entry < ApplicationRecord
     end
   }
 
-  JSON_ATTRS = ['content', 'categories', 'summary', 'alternate', 'origin', 'visual']
+  JSON_ATTRS = ["content", "categories", "summary", "alternate", "origin", "visual"]
   PER_PAGE = Kaminari::config::default_per_page
 
   def entry_enclosure_type=(class_name)
@@ -257,13 +257,13 @@ class Entry < ApplicationRecord
 
   def url
     items = JSON.load(alternate)
-    items.present? && items[0]['href']
+    items.present? && items[0]["href"]
   end
 
   def visual_url
     visual = JSON.load(self.visual)
-    if visual.present? && visual['url'].present?
-      visual['url']
+    if visual.present? && visual["url"].present?
+      visual["url"]
     else
       nil
     end
@@ -272,7 +272,7 @@ class Entry < ApplicationRecord
   def normalize_visual
     return if self.visual.nil?
     v = JSON.load(self.visual)
-    if v.blank? || v['url'].blank? || v['url'] == "none"
+    if v.blank? || v["url"].blank? || v["url"] == "none"
       logger.info("Clear the visual of #{self.url}")
       self.visual = nil
     end
@@ -283,7 +283,7 @@ class Entry < ApplicationRecord
   end
 
   def has_visual?
-    visual_url.present? && visual_url != 'none'
+    visual_url.present? && visual_url != "none"
   end
 
   alias has_thumbnail? has_visual?
@@ -302,32 +302,32 @@ class Entry < ApplicationRecord
   def playlistify(force: false)
     hash = PinkSpider.new.playlistify url: url, force: force
     return if hash.nil?
-    PlaylistifiedEntry.new(hash['id'],
-                           hash['url'],
-                           hash['title'],
-                           hash['description'],
-                           hash['visual_url'],
-                           hash['locale'],
-                           hash['tracks'],
-                           hash['playlists'],
-                           hash['albums'],
+    PlaylistifiedEntry.new(hash["id"],
+                           hash["url"],
+                           hash["title"],
+                           hash["description"],
+                           hash["visual_url"],
+                           hash["locale"],
+                           hash["tracks"],
+                           hash["playlists"],
+                           hash["albums"],
                            self)
   end
 
   def as_partial_json()
-    as_json(except: ['content', 'summary'])
+    as_json(except: ["content", "summary"])
   end
 
   def as_json(options = {})
     h               = super(options)
-    h['crawled']    = crawled&.to_time.to_i * 1000
-    h['published']  = published&.to_time.to_i * 1000
-    h['recrawled']  = recrawled&.to_time&.to_i&.* 1000
-    h['updated']    = updated&.to_time&.to_i&.* 1000
-    h['categories'] = []
-    h['keywords']   = nil
-    h['origin']     ||= {}
-    h.delete('saved_count')
+    h["crawled"]    = crawled&.to_time.to_i * 1000
+    h["published"]  = published&.to_time.to_i * 1000
+    h["recrawled"]  = recrawled&.to_time&.to_i&.* 1000
+    h["updated"]    = updated&.to_time&.to_i&.* 1000
+    h["categories"] = []
+    h["keywords"]   = nil
+    h["origin"]     ||= {}
+    h.delete("saved_count")
 
     JSON_ATTRS.each do |key|
       h[key] = JSON.load(h[key]) if h[key].present?
@@ -337,34 +337,34 @@ class Entry < ApplicationRecord
 
   def as_content_json(only_legacy: false, enclosure_as_json: :as_content_json)
     hash               = as_json
-    hash['engagement'] = saved_count
-    hash['tags']       = nil
-    hash['enclosure']  = [tracks, playlists, albums].flat_map do |items|
+    hash["engagement"] = saved_count
+    hash["tags"]       = nil
+    hash["enclosure"]  = [tracks, playlists, albums].flat_map do |items|
       items.select {|item| !only_legacy || item.legacy? }
            .map { |item| item.as_enclosure }
     end
 
-    hash['tracks']    = tracks.map(&enclosure_as_json)
-    hash['playlists'] = playlists.map(&enclosure_as_json)
-    hash['albums']    = albums.map(&enclosure_as_json)
+    hash["tracks"]    = tracks.map(&enclosure_as_json)
+    hash["playlists"] = playlists.map(&enclosure_as_json)
+    hash["albums"]    = albums.map(&enclosure_as_json)
 
     if !is_liked.nil?
-      hash['is_liked'] = is_liked
+      hash["is_liked"] = is_liked
     end
     if !is_saved.nil?
-      hash['is_saved'] = is_saved
+      hash["is_saved"] = is_saved
     end
     if !is_read.nil?
-      hash['unread'] = !is_read
+      hash["unread"] = !is_read
     end
     if !likes_count.nil?
-      hash['likes_count'] = likes_count
+      hash["likes_count"] = likes_count
     end
     if !saved_count.nil?
-      hash['saved_count'] = saved_count
+      hash["saved_count"] = saved_count
     end
     if !read_count.nil?
-      hash['read_count'] = read_count
+      hash["read_count"] = read_count
     end
 
     hash
@@ -372,8 +372,8 @@ class Entry < ApplicationRecord
 
   def as_detail_json
     hash             = as_content_json
-    hash['tags']     = []
-    hash['keywords'] = keywords.map { |k| k.label }
+    hash["tags"]     = []
+    hash["keywords"] = keywords.map { |k| k.label }
     hash
   end
 end

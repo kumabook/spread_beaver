@@ -5,9 +5,9 @@ class RenameTracksToEnclosures < ActiveRecord::Migration[5.0]
     rename_table :track_likes , :liked_enclosures
     rename_table :entry_tracks, :entry_enclosures
 
-    add_column :enclosures      , :type, :string, null: false, default: 'Track'
-    add_column :liked_enclosures, :enclosure_type, :string, null: false, default: 'Track'
-    add_column :entry_enclosures, :enclosure_type, :string, null: false, default: 'Track'
+    add_column :enclosures      , :type, :string, null: false, default: "Track"
+    add_column :liked_enclosures, :enclosure_type, :string, null: false, default: "Track"
+    add_column :entry_enclosures, :enclosure_type, :string, null: false, default: "Track"
 
     add_index :enclosures      , :type
     add_index :liked_enclosures, :enclosure_type

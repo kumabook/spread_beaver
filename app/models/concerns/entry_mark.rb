@@ -7,7 +7,7 @@ module EntryMark
       where({ table_name.to_sym => { created_at: period }})
     }
     scope :user_count, -> {
-      group(:entry_id).order('count_user_id DESC').count('user_id')
+      group(:entry_id).order("count_user_id DESC").count("user_id")
     }
     scope :locale, -> (locale) {
       joins(:user).where({ users: { locale: locale} }) if locale.present?

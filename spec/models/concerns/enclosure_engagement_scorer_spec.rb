@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-require 'rails_helper'
+require "rails_helper"
 
 describe EnclosureEngagementScorer do
   let (:track) { FactoryBot.create(:track) }
@@ -10,7 +10,7 @@ describe EnclosureEngagementScorer do
   let (:japan) { Topic.create!(label: "japan") }
   let (:global) { Topic.create!(label: "global") }
 
-  pick_score = EnclosureEngagementScorer::SCORES_PER_MARK['picks']
+  pick_score = EnclosureEngagementScorer::SCORES_PER_MARK["picks"]
 
   def create_pick(time)
     Pick.create!(enclosure_id:   track.id,
