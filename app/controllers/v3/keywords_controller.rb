@@ -30,6 +30,6 @@ class V3::KeywordsController < V3::ApiController
   end
 
   def set_keyword
-    @keyword = Keyword.find(CGI.unescape params[:id])
+    @keyword = Keyword.find(CGI.unescape(params[:id]))
   end
 end

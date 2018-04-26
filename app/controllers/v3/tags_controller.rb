@@ -50,27 +50,27 @@ class V3::TagsController < V3::ApiController
   private
 
   def set_tag
-    @tag = Tag.find(CGI.unescape params[:id])
+    @tag = Tag.find(CGI.unescape(params[:id]))
   end
 
   def set_tags
     @tags = []
     if params[:tag_ids].present?
       @tags = params[:tag_ids].split(",").map do |id|
-        Tag.find(CGI.unescape id)
+        Tag.find(CGI.unescape(id))
       end
     end
   end
 
   def set_entry
-    @entry = Entry.find(CGI.unescape params[:entryId])
+    @entry = Entry.find(CGI.unescape(params[:entryId]))
   end
 
   def set_entries
     @entries = []
     if params[:entry_ids].present?
       @entries = params[:entry_ids].split(",").map do |id|
-        Entry.find(CGI.unescape id)
+        Entry.find(CGI.unescape(id))
       end
     end
   end

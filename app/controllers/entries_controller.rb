@@ -130,7 +130,7 @@ class EntriesController < ApplicationController
   end
 
   def set_feed
-    @feed = Feed.find(CGI.unescape params[:feed_id]) if params[:feed_id].present?
+    @feed = Feed.find(CGI.unescape(params[:feed_id])) if params[:feed_id].present?
   end
 
   def set_keyword
