@@ -149,7 +149,7 @@ class Entry < ApplicationRecord
   def crawl(force: false)
     begin
       playlistified_entry = playlistify(force: force)
-    rescue
+    rescue StandardError
       Rails.logger.info("Entry #{id} no longer exist")
       return
     end

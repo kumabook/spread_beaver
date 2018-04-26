@@ -81,6 +81,6 @@ end
 def update(client, tweet)
   client.update(tweet.chomp)
   puts tweet
-rescue => e
+rescue StandardError => e
   Rails.logger.error "<<twitter.rake::tweet.update ERROR : #{e.message}>>"
 end

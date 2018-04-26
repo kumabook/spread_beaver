@@ -14,7 +14,7 @@ module Pagination
       dec.decrypt
       dec.pkcs5_keyivgen(CONTINUATION_SALT)
       JSON.parse (dec.update(Array.new([str]).pack("H*")) + dec.final)
-    rescue
+    rescue StandardError
       {}
     end
 
@@ -29,7 +29,7 @@ module Pagination
       enc.encrypt
       enc.pkcs5_keyivgen(CONTINUATION_SALT)
       (enc.update(str) + enc.final).unpack("H*")[0].to_s
-    rescue
+    rescue StandardError
       false
     end
   end

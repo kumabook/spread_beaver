@@ -23,7 +23,7 @@ class Issue < ApplicationRecord
 
   def date
     Time.zone.strptime(label, "%Y%m%d")
-  rescue
+  rescue StandardError
     nil
   end
 

@@ -35,7 +35,7 @@ class RSSCrawler < ApplicationJob
     end
     feed.update(crawled: DateTime.now)
     crawler_result
-  rescue
+  rescue StandardError
     crawler_result
   end
 
@@ -48,7 +48,7 @@ class RSSCrawler < ApplicationJob
     logger.info("Fetch tracks of #{e.url}")
     crawler_result.append(e, e.crawl)
     update_feed_last_updated(feed, e)
-  rescue => err
+  rescue StandardError => err
     logger.error("Failed to fetch #{entry['url']}  #{err}")
     logger.error(err.backtrace)
   end
@@ -76,7 +76,7 @@ class RSSCrawler < ApplicationJob
     logger.info("Fetch tracks of #{e.url}")
     crawler_result.append(e, e.crawl)
     update_feed_last_updated(feed, e)
-  rescue => err
+  rescue StandardError => err
     logger.error("Failed to fetch #{e.url}  #{err}")
     logger.error(err.backtrace)
   end
@@ -96,7 +96,7 @@ class RSSCrawler < ApplicationJob
     Feed.all.each do |f|
       begin
         Feed.find_or_create_by_url(f.url)
-      rescue
+      rescue StandardError
         puts "#{f.url} seems to be dead"
       end
     end
