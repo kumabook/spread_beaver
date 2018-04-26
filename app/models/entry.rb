@@ -167,7 +167,7 @@ class Entry < ApplicationRecord
 
     add_playlists_to_mix_issue(new_playlists)
 
-    self.save
+    save
     {
       tracks:    new_tracks,
       playlists: new_playlists,
@@ -241,7 +241,7 @@ class Entry < ApplicationRecord
   end
 
   def self.set_partial_entries_of_enclosures(entries)
-    enclosures = self.enclosures_of_entries(entries)
+    enclosures = enclosures_of_entries(entries)
     Enclosure.set_partial_entries(enclosures)
   end
 
@@ -265,16 +265,16 @@ class Entry < ApplicationRecord
   end
 
   def normalize_visual
-    return if self.visual.nil?
-    v = JSON.load(self.visual)
+    return if visual.nil?
+    v = JSON.load(visual)
     if v.blank? || v["url"].blank? || v["url"] == "none"
-      logger.info("Clear the visual of #{self.url}")
+      logger.info("Clear the visual of #{url}")
       self.visual = nil
     end
   end
 
   def origin_hash
-    JSON.load(self.origin)
+    JSON.load(origin)
   end
 
   def has_visual?

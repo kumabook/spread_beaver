@@ -78,7 +78,7 @@ class PinkSpiderHelper
       updated_at:   "2017-03-16T05:37:02.807854+00:00",
       state:        "alive",
       artists:      [],
-      playlists:    shallow ? nil : [self.playlist_hash],
+      playlists:    shallow ? nil : [playlist_hash],
     }.with_indifferent_access
   end
 
@@ -121,7 +121,7 @@ class PinkSpiderHelper
       tracks:    [{
                     playlist_id: SecureRandom.uuid,
                     track_id:    PLAYLIST_TRACK_ID,
-                    track:       self.track_hash(shallow: true)
+                    track:       track_hash(shallow: true)
                   }],
     }.with_indifferent_access
   end

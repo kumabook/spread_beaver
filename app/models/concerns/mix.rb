@@ -30,7 +30,7 @@ module Mix
 
     def exclude_sound_cloud
       if @provider.nil?
-        self.dup
+        dup
       else
         Query.new(@period, @type, locale: nil, provider: @provider.reject { |pr| pr == "SoundCloud" }, entries_per_feed: @entries_per_feed)
       end

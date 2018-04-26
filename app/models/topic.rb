@@ -101,7 +101,7 @@ class Topic < ApplicationRecord
   private
 
   def set_id
-    self.id = "topic/#{self.label}"
+    self.id = "topic/#{label}"
   end
 
   def delete_cache

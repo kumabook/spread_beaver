@@ -129,9 +129,9 @@ class Feed < ApplicationRecord
   def update_visuals_with_feedlr(feed, force=false)
     %w[visualUrl coverUrl iconUrl].each do |url_method|
       url = feed.public_send(url_method)
-      if url.present? && (self.public_send(url_method.to_sym).blank? || force)
+      if url.present? && (public_send(url_method.to_sym).blank? || force)
         logger.info("Update #{url_method} of #{feed.id}: #{url}")
-        self.public_send("#{url_method}=".to_sym, feed.visualUrl)
+        public_send("#{url_method}=".to_sym, feed.visualUrl)
       end
     end
     save

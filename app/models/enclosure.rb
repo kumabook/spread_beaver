@@ -142,7 +142,7 @@ class Enclosure < ApplicationRecord
                                      req_page,
                                      per_page)
     contents = res["items"]
-    enclosures = self.where(id: contents.map { |content| content["id"] }).each do |e|
+    enclosures = where(id: contents.map { |content| content["id"] }).each do |e|
       e.content = contents.select { |c| c["id"] == e.id }.first
     end
     PaginatedArray.new(enclosures, res["total"], res["page"] + 1, res["per_page"])
@@ -190,18 +190,18 @@ class Enclosure < ApplicationRecord
 
   def self.most_featured_items(stream: nil, query: {}, page: 1, per_page: 10)
     # doesn't support locale, use stream filter instead
-    count_hash = self.query_for_best_items(EntryEnclosure, stream, query.no_locale).feed_count
+    count_hash = query_for_best_items(EntryEnclosure, stream, query.no_locale).feed_count
     Mix.items_from_count_hash(self, count_hash, page: page, per_page: per_page)
   end
 
   def self.most_picked_items(stream: nil, query: {}, page: 1, per_page: 10)
     # doesn't support locale, use stream filter instead
-    count_hash = self.query_for_best_items(Pick, stream, query.no_locale).pick_count
+    count_hash = query_for_best_items(Pick, stream, query.no_locale).pick_count
     Mix.items_from_count_hash(self, count_hash, page: page, per_page: per_page)
   end
 
   def self.query_for_best_items(clazz, stream, query=nil)
-    clazz.where(enclosure_type: self.name)
+    clazz.where(enclosure_type: name)
          .stream(stream)
          .period(query.period)
          .locale(query.locale)
@@ -219,7 +219,7 @@ class Enclosure < ApplicationRecord
     hash["pickCount"]    = pick_count
     hash.delete("users")
     %i[is_liked is_saved is_played engagement].each do |method|
-      v = self.public_send(method)
+      v = public_send(method)
       hash[method.to_s] = v if !v.nil?
     end
 

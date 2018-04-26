@@ -10,7 +10,7 @@ class Setting
   end
 
   def self.define_class_method(name, value)
-    self.extend Module.new {
+    extend Module.new {
       define_method name.to_sym do
         value
       end
