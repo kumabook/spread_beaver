@@ -5,7 +5,7 @@ class UpdateEntryVisuals < ApplicationJob
 
   def perform(max=50)
     Entry.order("published DESC").page(0).per(max)
-        .where(visual: nil).find_in_batches(batch_size: 20) do |entries|
+         .where(visual: nil).find_in_batches(batch_size: 20) do |entries|
       client = Feedlr::Client.new(sandbox: false)
       sleep(WAITING_SEC_FOR_VISUAL)
       feedlr_entries = client.user_entries(entries.map(&:id))

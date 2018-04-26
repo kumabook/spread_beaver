@@ -84,9 +84,9 @@ module EnclosureEngagementScorer
                                        period.twice_past,
                                        1.day.to_i)
       marks.join(table_alias, Join).on(marks[:id].eq(table_alias[:id]))
-        .project("#{score} as score, #{table_name}.enclosure_id")
-        .group(marks[:enclosure_id])
-        .as("#{table_name}_score")
+           .project("#{score} as score, #{table_name}.enclosure_id")
+           .group(marks[:enclosure_id])
+           .as("#{table_name}_score")
     end
 
     def most_engaging_items(stream: nil, query: Mix::Query.new, page: 1, per_page: 10)
@@ -110,21 +110,21 @@ module EnclosureEngagementScorer
 
     def score_table_queries(stream, query)
       played    = self.query_for_best_items(PlayedEnclosure, nil, query)
-                    .select("COUNT(played_enclosures.enclosure_id) * #{score_per(PlayedEnclosure)} as score, played_enclosures.enclosure_id")
-                    .group("enclosure_id")
+                      .select("COUNT(played_enclosures.enclosure_id) * #{score_per(PlayedEnclosure)} as score, played_enclosures.enclosure_id")
+                      .group("enclosure_id")
       liked     = self.query_for_best_items(LikedEnclosure, nil, query)
-                    .select("COUNT(liked_enclosures.enclosure_id) * #{score_per(LikedEnclosure)} as score, liked_enclosures.enclosure_id")
-                    .group("enclosure_id")
+                      .select("COUNT(liked_enclosures.enclosure_id) * #{score_per(LikedEnclosure)} as score, liked_enclosures.enclosure_id")
+                      .group("enclosure_id")
       saved     = self.query_for_best_items(SavedEnclosure, nil, query)
-                    .select("COUNT(saved_enclosures.enclosure_id) * #{score_per(SavedEnclosure)} as score, saved_enclosures.enclosure_id")
-                    .group("enclosure_id")
+                      .select("COUNT(saved_enclosures.enclosure_id) * #{score_per(SavedEnclosure)} as score, saved_enclosures.enclosure_id")
+                      .group("enclosure_id")
       # doesn't support locale, use stream filter instead
       featured  = self.query_for_best_items(EntryEnclosure, stream, query.no_locale)
-                    .joins(:entry)
-                    .distinct()
-                    .select("COUNT(entries.feed_id) * #{score_per(EntryEnclosure)} as score, entry_enclosures.enclosure_id")
-                    .group("entries.feed_id")
-                    .group(:enclosure_id)
+                      .joins(:entry)
+                      .distinct()
+                      .select("COUNT(entries.feed_id) * #{score_per(EntryEnclosure)} as score, entry_enclosures.enclosure_id")
+                      .group("entries.feed_id")
+                      .group(:enclosure_id)
       # Pick doesn't support locale,
       # don't use stream,
       # excludes sound cloud from provider,
@@ -144,7 +144,7 @@ module EnclosureEngagementScorer
         end
       end
       picked = self.query_for_best_items(Pick, pick_stream, pick_query)
-                 .distinct(:container_id)
+                   .distinct(:container_id)
       [
         { type: :count       , query: played  , clazz: PlayedEnclosure },
         { type: :count       , query: liked   , clazz: LikedEnclosure },

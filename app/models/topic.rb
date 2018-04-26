@@ -79,9 +79,9 @@ class Topic < ApplicationRecord
 
   def daily_mix_issues(mix_journal, period)
     (period.begin.to_i..period.end.to_i).step(1.day)
-      .map { |i| Time.zone.at(i) }
-      .map { |time| find_daily_mix_issue(mix_journal, time) }
-      .compact
+                                        .map { |i| Time.zone.at(i) }
+                                        .map { |time| find_daily_mix_issue(mix_journal, time) }
+                                        .compact
   end
 
   def mix_issues(mix_journal, period=2.weeks.ago..1.day.ago)

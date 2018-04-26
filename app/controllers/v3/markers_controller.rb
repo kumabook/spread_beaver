@@ -79,10 +79,10 @@ class V3::MarkersController < V3::ApiController
     def mark_items_if_elapsed(mark_class, type, duration=1.day.ago)
       @ids.each do |id|
         recent_play = mark_class
-                        .period(duration..Float::INFINITY)
-                        .where(user: current_resource_owner, enclosure_id: id)
-                        .limit(1)
-                        .first
+                      .period(duration..Float::INFINITY)
+                      .where(user: current_resource_owner, enclosure_id: id)
+                      .limit(1)
+                      .first
         if recent_play.nil?
           @mark = mark_class.new(user:           current_resource_owner,
                                  enclosure_id:   id,

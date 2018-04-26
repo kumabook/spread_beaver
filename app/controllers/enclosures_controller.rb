@@ -15,13 +15,13 @@ class EnclosuresController < ApplicationController
   def index
     if @entry.present?
       @entry_enclosures = @entry.entry_enclosures
-                            .page(params[:page])
+                                .page(params[:page])
       @enclosures = @entry.public_send(index_method)
                           .page(params[:page])
     elsif @issue.present?
       @enclosure_issues = @issue.enclosure_issues
-                            .order("engagement DESC")
-                            .page(params[:page])
+                                .order("engagement DESC")
+                                .page(params[:page])
       @enclosures = @issue.public_send(index_method)
                           .order("engagement DESC")
                           .page(params[:page])
@@ -126,8 +126,8 @@ class EnclosuresController < ApplicationController
 
     def set_enclosure
       @enclosure = enclosure_class
-                     .eager_load(entries: { feed: %i[feed_topics topics] })
-                     .find(params[:id])
+                   .eager_load(entries: { feed: %i[feed_topics topics] })
+                   .find(params[:id])
     end
 
     def set_content
