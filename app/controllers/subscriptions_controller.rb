@@ -17,8 +17,7 @@ class SubscriptionsController < ApplicationController
     respond_as_create(@subscription)
   end
 
-  def edit
-  end
+  def edit; end
 
   def update
     categories = Category.find((subscription_params[:categories] || []).reject(&:blank?))

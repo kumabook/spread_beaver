@@ -24,8 +24,7 @@ class PreferencesController < ApplicationController
     end
   end
 
-  def edit
-  end
+  def edit; end
 
   def update
     @preference = Preference.find(params[:id])

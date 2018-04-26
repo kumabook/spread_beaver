@@ -105,8 +105,6 @@ Style/Lambda:
   Enabled: false
 Style/NestedParenthesizedCalls:
   Enabled: false
-Style/EmptyMethod:
-  Enabled: false
 Style/RescueStandardError:
   Enabled: false
 Style/DateTime:

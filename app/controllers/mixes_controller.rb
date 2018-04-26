@@ -9,8 +9,7 @@ class MixesController < ApplicationController
   before_action :set_period  , only: [:show]
   before_action :set_items   , only: [:show]
 
-  def index
-  end
+  def index; end
 
   def show
     Entry.set_contents_of_enclosures(@items)
