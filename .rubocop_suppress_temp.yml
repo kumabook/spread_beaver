@@ -69,8 +69,6 @@ Layout/FirstParameterIndentation:
   Enabled: false
 Layout/MultilineMethodCallBraceLayout:
   Enabled: false
-Style/UnneededInterpolation:
-  Enabled: false
 Style/MethodCallWithoutArgsParentheses:
   Enabled: false
 Layout/EmptyLineBetweenDefs:
