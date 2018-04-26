@@ -310,7 +310,7 @@ class Entry < ApplicationRecord
                            self)
   end
 
-  def as_partial_json()
+  def as_partial_json
     as_json(except: %w[content summary])
   end
 

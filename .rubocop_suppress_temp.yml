@@ -95,8 +95,6 @@ Layout/RescueEnsureAlignment:
   Enabled: false
 Layout/CommentIndentation:
   Enabled: false
-Style/DefWithParentheses:
-  Enabled: false
 Style/TrailingCommaInArrayLiteral:
   Enabled: false
 Style/EmptyElse:
