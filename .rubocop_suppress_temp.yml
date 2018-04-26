@@ -97,8 +97,6 @@ Style/GuardClause:
   Enabled: false
 Layout/EmptyLinesAroundAccessModifier:
   Enabled: false
-Layout/BlockEndNewline:
-  Enabled: false
 Layout/EmptyLineAfterMagicComment:
   Enabled: false
 Style/Lambda:

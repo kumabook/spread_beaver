@@ -42,7 +42,8 @@ describe Track do
     let! (:pick)     { Pick.create!(enclosure_id:   track.id,
                                    enclosure_type: Track.name,
                                    container_id:   playlist.id,
-                                   container_type: Playlist.name) }
+                                   container_type: Playlist.name)
+    }
     let! (:user)     { FactoryBot.create(:default) }
     before do
       mock_up_pink_spider

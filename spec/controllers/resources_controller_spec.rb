@@ -32,7 +32,8 @@ describe ResourcesController, type: :controller do
     }
     it { expect(response).to redirect_to edit_wall_url(wall) }
     it { expect(Resource.find_by(resource_id: resource_id,
-                                 wall_id: wall.id)).not_to be_nil }
+                                 wall_id: wall.id)).not_to be_nil
+    }
   end
 
   describe "GET edit" do
