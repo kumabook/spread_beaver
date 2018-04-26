@@ -90,7 +90,7 @@ Style/SelfAssignment:
 Style/MutableConstant:
   Enabled: false
 Style/TrailingCommaInArguments:
-  Enabled: false
+  Enabled: true
 Layout/RescueEnsureAlignment:
   Enabled: false
 Layout/CommentIndentation:
