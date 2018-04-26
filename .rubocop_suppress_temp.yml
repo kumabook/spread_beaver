@@ -110,7 +110,7 @@ Naming/VariableName:
 Lint/UnusedMethodArgument:
   Enabled: false
 Layout/IndentationWidth:
-  Enabled: false
+  Enabled: true
 Layout/EmptyLinesAroundMethodBody:
   Enabled: false
 Style/NegatedIf:

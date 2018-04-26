@@ -10,7 +10,7 @@ Doorkeeper.configure do
   end
 
   resource_owner_from_credentials do |_routes|
-     User.authenticate(params[:email], params[:password])
+    User.authenticate(params[:email], params[:password])
   end
 
   admin_authenticator do
