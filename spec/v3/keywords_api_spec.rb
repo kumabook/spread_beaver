@@ -6,7 +6,7 @@ RSpec.describe "Keywords api", type: :request, autodoc: true do
     setup()
     login()
     (0...5).each do |i|
-      Keyword.create!       label: "keyword-#{i}",
+      Keyword.create! label: "keyword-#{i}",
                       description: "description #{i}"
     end
   end

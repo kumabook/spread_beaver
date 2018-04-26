@@ -3,7 +3,7 @@
 require "rails_helper"
 
 describe Topic do
-  let!  (:feed) { FactoryBot.create(:feed) }
+  let! (:feed) { FactoryBot.create(:feed) }
   let! (:topic) { Topic.create!(label: "topic", description: "desc", feeds: [feed]) }
 
   describe "Topic#delete_cache_entries" do

@@ -76,7 +76,7 @@ FactoryBot.define do
         5.days.ago
       end
     end
-    updated         nil
+    updated nil
     feed
     after(:create) do |e|
       TRACK_PER_ENTRY.times {
@@ -97,7 +97,7 @@ FactoryBot.define do
   factory :feed, class: Feed do
     sequence(:id) { |n| "feed/http://test#{n}.com/rss" }
     sequence(:title) { |n| "Test feed #{n}" }
-    description  "description"
+    description "description"
     sequence(:website)      { |n| "http://test#{n}.com" }
     sequence(:visualUrl)    { |n| "http://test#{n}.com/visual" }
     sequence(:coverUrl)     { |n| "http://test#{n}.com/cover" }

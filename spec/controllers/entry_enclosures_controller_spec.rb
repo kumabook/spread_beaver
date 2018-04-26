@@ -9,7 +9,7 @@ describe EntryEnclosuresController, type: :controller do
   let  (:entry_enclosure) {
     EntryEnclosure.create!(entry_id: entry.id, enclosure_id: track.id, enclosure_type: Track.name)
   }
-  let  (:entry_enclosure_params) {
+  let (:entry_enclosure_params) {
     {
       entry_enclosure: {
         entry_id:       entry.id,
