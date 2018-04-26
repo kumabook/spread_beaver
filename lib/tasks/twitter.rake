@@ -55,29 +55,29 @@ end
 def get_popular_track_tweet
   duration = Setting.duration_for_ranking.days
   from     = duration.ago
-	  to       = from + duration
-	  tracks   = Track.hot_items(period: from..to, per_page: per_page)
-	  Track.set_contents(tracks)
+	 to       = from + duration
+	 tracks   = Track.hot_items(period: from..to, per_page: per_page)
+	 Track.set_contents(tracks)
 
-	  if tracks.blank?
+	 if tracks.blank?
 	    puts "Not found popular tracks."
 	    return
 	  end
 
-	  track = tracks[0]
+	 track = tracks[0]
 
-	  if title.present? && url.present?
+	 if title.present? && url.present?
 	    body  = "🎧[Today's Hot Track] #{track.title}"
 	    body  = (body.length > 116) ? body[0..115].to_s : body
 	    tweet = "#{body} #{track.url}"
 	    tweet.chomp
-	  else
+	 else
 	    puts "Not found title or url of track."
 	    nil
 	  end
 	end
 
-	def update(client, tweet)
+def update(client, tweet)
 	  client.update(tweet.chomp)
 	  puts tweet
 	rescue => e

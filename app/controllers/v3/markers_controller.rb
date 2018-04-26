@@ -56,40 +56,40 @@ class V3::MarkersController < V3::ApiController
 
   private
 
-    def mark_items(mark_class, type=nil)
-      @ids.each do |id|
-        begin
-          params = mark_class.marker_params(current_resource_owner, id, type)
-          @mark  = mark_class.create(params)
-        rescue ActiveRecord::RecordNotUnique
-        end
-      end
-      render json: {}, status: 200
-    end
-
-    def unmark_items(mark_class, type=nil)
-      @ids.each do |id|
+  def mark_items(mark_class, type=nil)
+    @ids.each do |id|
+      begin
         params = mark_class.marker_params(current_resource_owner, id, type)
-        @mark  = mark_class.find_by(params)
-        @mark.destroy if @mark.present?
+        @mark  = mark_class.create(params)
+      rescue ActiveRecord::RecordNotUnique
       end
-      render json: {}, status: 200
     end
+    render json: {}, status: 200
+  end
 
-    def mark_items_if_elapsed(mark_class, type, duration=1.day.ago)
-      @ids.each do |id|
-        recent_play = mark_class
-                      .period(duration..Float::INFINITY)
-                      .where(user: current_resource_owner, enclosure_id: id)
-                      .limit(1)
-                      .first
-        if recent_play.nil?
-          @mark = mark_class.new(user:           current_resource_owner,
-                                 enclosure_id:   id,
-                                 enclosure_type: type)
-          @mark.save
-        end
-      end
-      render json: {}, status: 200
+  def unmark_items(mark_class, type=nil)
+    @ids.each do |id|
+      params = mark_class.marker_params(current_resource_owner, id, type)
+      @mark  = mark_class.find_by(params)
+      @mark.destroy if @mark.present?
     end
+    render json: {}, status: 200
+  end
+
+  def mark_items_if_elapsed(mark_class, type, duration=1.day.ago)
+    @ids.each do |id|
+      recent_play = mark_class
+                    .period(duration..Float::INFINITY)
+                    .where(user: current_resource_owner, enclosure_id: id)
+                    .limit(1)
+                    .first
+      if recent_play.nil?
+        @mark = mark_class.new(user:           current_resource_owner,
+                               enclosure_id:   id,
+                               enclosure_type: type)
+        @mark.save
+      end
+    end
+    render json: {}, status: 200
+  end
 end

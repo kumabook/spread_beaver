@@ -47,8 +47,6 @@ Lint/ParenthesesAsGroupedExpression:
   Enabled: false
 Layout/IndentHash:
   Enabled: false
-Layout/IndentationConsistency:
-  Enabled: false
 Style/ExpandPathArguments:
   Enabled: false
 Style/RedundantParentheses:

@@ -60,17 +60,17 @@ describe PreferencesController, type: :controller do
       it { expect(response).to redirect_to user_preferences_url(user) }
       it { expect(Preference.find_by(user: user, key: "key").value).to eq("changed") }
      end
-    context "when fails to save" do
-      before {
-        allow_any_instance_of(Preference).to receive(:update).and_return(false)
-        post :update, params: {
-               id:         preference.id,
-               user_id:    user.id,
-               preference: { key: "key", value: "changed" }
-             }
-      }
-      it { expect(response).to render_template("edit") }
-    end
+     context "when fails to save" do
+       before {
+         allow_any_instance_of(Preference).to receive(:update).and_return(false)
+         post :update, params: {
+                id:         preference.id,
+                user_id:    user.id,
+                preference: { key: "key", value: "changed" }
+              }
+       }
+       it { expect(response).to render_template("edit") }
+     end
   end
 
   describe "#destroy" do

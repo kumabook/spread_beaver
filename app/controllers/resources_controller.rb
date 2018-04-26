@@ -49,25 +49,25 @@ class ResourcesController < ApplicationController
 
   private
 
-    def set_resource
-      @resource = Resource.find(params[:id])
-    end
+  def set_resource
+    @resource = Resource.find(params[:id])
+  end
 
-    def set_wall
-      if @resource.present?
-        @wall = @resource.wall
-      elsif params[:wall_id].present?
-        @wall = Wall.find(params[:wall_id])
-      elsif resource_params[:wall_id].present?
-        @wall = Wall.find(resource_params[:wall_id])
-      end
+  def set_wall
+    if @resource.present?
+      @wall = @resource.wall
+    elsif params[:wall_id].present?
+      @wall = Wall.find(params[:wall_id])
+    elsif resource_params[:wall_id].present?
+      @wall = Wall.find(resource_params[:wall_id])
     end
+  end
 
-    def resource_params
-      params.require(:resource).permit(:resource_id,
-                                       :resource_type,
-                                       :engagement,
-                                       :options,
-                                       :wall_id)
-    end
+  def resource_params
+    params.require(:resource).permit(:resource_id,
+                                     :resource_type,
+                                     :engagement,
+                                     :options,
+                                     :wall_id)
+  end
 end

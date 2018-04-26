@@ -105,59 +105,59 @@ class EnclosuresController < ApplicationController
 
   private
 
-    def enclosure_class
-      case @type
-      when "Track"
-        Track
-      when "Album"
-        Album
-      when "Playlist"
-        Playlist
-      end
+  def enclosure_class
+    case @type
+    when "Track"
+      Track
+    when "Album"
+      Album
+    when "Playlist"
+      Playlist
     end
+  end
 
-    def index_method
-      @type.downcase.pluralize.to_sym
-    end
+  def index_method
+    @type.downcase.pluralize.to_sym
+  end
 
-    def set_type
-      @type = params[:type]
-    end
+  def set_type
+    @type = params[:type]
+  end
 
-    def set_enclosure
-      @enclosure = enclosure_class
-                   .eager_load(entries: { feed: %i[feed_topics topics] })
-                   .find(params[:id])
-    end
+  def set_enclosure
+    @enclosure = enclosure_class
+                 .eager_load(entries: { feed: %i[feed_topics topics] })
+                 .find(params[:id])
+  end
 
-    def set_content
-      @content = @enclosure.fetch_content
-    end
+  def set_content
+    @content = @enclosure.fetch_content
+  end
 
-    def set_entry_and_issue
-      @entry = Entry.find(params[:entry_id]) if params[:entry_id].present?
-      @issue = Issue.find(params[:issue_id]) if params[:issue_id].present?
-    end
+  def set_entry_and_issue
+    @entry = Entry.find(params[:entry_id]) if params[:entry_id].present?
+    @issue = Issue.find(params[:issue_id]) if params[:issue_id].present?
+  end
 
-    def set_query
-      @query = params[:query]
-    end
+  def set_query
+    @query = params[:query]
+  end
 
-    def user_item_params
-      target_id  = params["#{enclosure_class.name.downcase}_id"]
-      target_key = "#{enclosure_class.table_name.singularize}_id".to_sym
-      {
-        :user_id        => current_user.id,
-        target_key      => target_id,
-        :enclosure_type => enclosure_class.name
-      }
-    end
+  def user_item_params
+    target_id  = params["#{enclosure_class.name.downcase}_id"]
+    target_key = "#{enclosure_class.table_name.singularize}_id".to_sym
+    {
+      :user_id        => current_user.id,
+      target_key      => target_id,
+      :enclosure_type => enclosure_class.name
+    }
+  end
 
-    def enclosure_params
-      params.require(@type.underscore.to_sym).permit(:id,
-                                                     :identifier,
-                                                     :provider,
-                                                     :owner_id,
-                                                     :url)
-    end
+  def enclosure_params
+    params.require(@type.underscore.to_sym).permit(:id,
+                                                   :identifier,
+                                                   :provider,
+                                                   :owner_id,
+                                                   :url)
+  end
 end

@@ -42,33 +42,33 @@ class EntryIssuesController < ApplicationController
 
   private
 
-    def set_entry_issue
-      @entry_issue = EntryIssue.find(params[:id])
-    end
+  def set_entry_issue
+    @entry_issue = EntryIssue.find(params[:id])
+  end
 
-    def set_entry
-      if @entry_issue.present?
-        @entry = @entry_issue.entry
-      else
-        @entry = Entry.find(entry_issue_params[:entry_id])
-      end
+  def set_entry
+    if @entry_issue.present?
+      @entry = @entry_issue.entry
+    else
+      @entry = Entry.find(entry_issue_params[:entry_id])
     end
+  end
 
-    def set_issue
-      if @entry_issue.present?
-        @issue = @entry_issue.issue
-      elsif params[:issue_id].present?
-        @issue = Issue.find(params[:issue_id])
-      else
-        @issue = Issue.find(entry_issue_params[:issue_id])
-      end
+  def set_issue
+    if @entry_issue.present?
+      @issue = @entry_issue.issue
+    elsif params[:issue_id].present?
+      @issue = Issue.find(params[:issue_id])
+    else
+      @issue = Issue.find(entry_issue_params[:issue_id])
     end
+  end
 
-    def set_journal
-      @journal = @issue.journal if @issue.present?
-    end
+  def set_journal
+    @journal = @issue.journal if @issue.present?
+  end
 
-    def entry_issue_params
-      params.require(:entry_issue).permit(:entry_id, :issue_id, :engagement)
-    end
+  def entry_issue_params
+    params.require(:entry_issue).permit(:entry_id, :issue_id, :engagement)
+  end
 end
