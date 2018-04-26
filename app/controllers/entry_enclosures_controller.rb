@@ -23,8 +23,7 @@ class EntryEnclosuresController < ApplicationController
     end
   end
 
-  def edit
-  end
+  def edit; end
 
   def update
     @entry_enclosure = EntryEnclosure.find(params[:id])

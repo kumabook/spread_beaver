@@ -63,8 +63,7 @@ class FeedsController < ApplicationController
     end
   end
 
-  def edit
-  end
+  def edit; end
 
   private
 

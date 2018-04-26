@@ -48,8 +48,7 @@ class EnclosuresController < ApplicationController
     render "index"
   end
 
-  def show
-  end
+  def show; end
 
   def new
     @enclosure = enclosure_class.new
