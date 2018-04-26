@@ -189,7 +189,6 @@ class Entry < ApplicationRecord
         end
       end
     end
-
   end
 
   def self.set_marks(user, entries)

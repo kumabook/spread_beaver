@@ -15,5 +15,4 @@ def notify_slack(text)
     req.headers["Content-Type"] = "application/json"
     req.body = "{ \"text\": \"#{text}\" }"
   end
-
 end

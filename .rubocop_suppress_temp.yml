@@ -112,7 +112,7 @@ Lint/UnusedMethodArgument:
 Layout/IndentationWidth:
   Enabled: true
 Layout/EmptyLinesAroundMethodBody:
-  Enabled: false
+  Enabled: true
 Style/NegatedIf:
   Enabled: false
 GitHub/RailsControllerRenderPathsExist:
