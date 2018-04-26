@@ -9,7 +9,7 @@ describe ResourcesController, type: :controller do
                                   wall_id:       wall.id,
                                   engagement:    0)
   }
-  let  (:user) { FactoryBot.create (:admin) }
+  let  (:user) { FactoryBot.create :admin }
 
   before(:each) do
     login_user user

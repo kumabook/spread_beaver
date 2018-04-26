@@ -2,7 +2,7 @@
 require "rails_helper"
 
 describe SubscriptionsController, type: :controller do
-  let! (:user) { FactoryBot.create (:admin) }
+  let! (:user) { FactoryBot.create :admin }
   let! (:feed) { Feed.create!(id: "feed/http://test.com/rss"  , title: "feed") }
   let! (:feed2) { Feed.create!(id: "feed/http://test2.com/rss" , title: "feed") }
   let! (:subscription) { Subscription.create!(user: user, feed: feed) }

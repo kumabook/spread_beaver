@@ -5,7 +5,7 @@ describe IssuesController, type: :controller do
   let! (:topic) {   Topic.create!(label: "highlight", description: "desc") }
   let! (:journal) { Journal.create!(label: "highlight", description: "desc") }
   let! (:issue) { Issue.create!(label: "20170407", description: "desc", journal_id: journal.id) }
-  let  (:user) { FactoryBot.create (:admin) }
+  let  (:user) { FactoryBot.create :admin }
 
   before(:each) do
     login_user user

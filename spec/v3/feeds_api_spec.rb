@@ -35,7 +35,7 @@ RSpec.describe "Feeds api", type: :request, autodoc: true do
 
   it "searches feeds with url" do
     count = Feed.count
-    query = (@feeds.first.website).to_s
+    query = @feeds.first.website.to_s
     get "/v3/search/feeds",
         params: { query: query, count: count, locale: "ja" },
         headers: headers_for_login_user_api

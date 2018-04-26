@@ -2,7 +2,7 @@
 require "rails_helper"
 
 describe CategoriesController, type: :controller do
-  let  (:user) { FactoryBot.create (:admin) }
+  let  (:user) { FactoryBot.create :admin }
   let! (:category) { Category.create!(label: "category", description: "desc", user: user) }
 
   before(:each) do

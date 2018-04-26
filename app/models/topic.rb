@@ -57,7 +57,7 @@ class Topic < ApplicationRecord
   end
 
   def daily_mix_issue_label(time=Time.zone.now)
-    time_str = (time.strftime("%Y%m%d")).to_s
+    time_str = time.strftime("%Y%m%d").to_s
     "#{id}-#{time_str}"
   end
 

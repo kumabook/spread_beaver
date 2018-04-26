@@ -50,7 +50,7 @@ Layout/IndentHash:
 Style/ExpandPathArguments:
   Enabled: true
 Style/RedundantParentheses:
-  Enabled: false
+  Enabled: true
 Layout/SpaceBeforeFirstArg:
   Enabled: false
 Layout/MultilineMethodCallBraceLayout:
