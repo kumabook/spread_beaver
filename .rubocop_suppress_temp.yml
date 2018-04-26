@@ -40,8 +40,6 @@ Metrics/ModuleLength:
   Enabled: false
 Layout/AlignParameters:
   Enabled: true
-Style/WordArray:
-  Enabled: false
 Metrics/AbcSize:
   Enabled: false
 

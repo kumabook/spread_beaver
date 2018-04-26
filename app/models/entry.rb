@@ -66,7 +66,7 @@ class Entry < ApplicationRecord
     end
   }
 
-  JSON_ATTRS = ["content", "categories", "summary", "alternate", "origin", "visual"]
+  JSON_ATTRS = %w[content categories summary alternate origin visual]
   PER_PAGE = Kaminari.config.default_per_page
 
   def entry_enclosure_type=(class_name)
@@ -309,7 +309,7 @@ class Entry < ApplicationRecord
   end
 
   def as_partial_json()
-    as_json(except: ["content", "summary"])
+    as_json(except: %w[content summary])
   end
 
   def as_json(options = {})

@@ -53,7 +53,7 @@ module Mix
   extend ActiveSupport::Concern
 
   def self.mix_types
-    ["engaging", "hot", "popular", "featured", "picked"]
+    %w[engaging hot popular featured picked]
   end
 
   def self.stream_ids

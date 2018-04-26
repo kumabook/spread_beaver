@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 class Enclosure < ApplicationRecord
-  LEGACY_PROVIDERS = ["YouTube", "SoundCloud"]
+  LEGACY_PROVIDERS = %w[YouTube SoundCloud]
   attr_accessor :engagement
   attr_accessor :content
   attr_accessor :partial_entries
