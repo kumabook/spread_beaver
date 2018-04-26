@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 FactoryBot.define do
   factory :normal_entry, class: Entry do
     sequence(:id) { |n| "entry#{n}" }

@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require "pink_spider"
 class Track < Enclosure
   def permalink_url

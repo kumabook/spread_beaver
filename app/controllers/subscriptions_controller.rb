@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 class SubscriptionsController < ApplicationController
   before_action :set_subscription, only: %i[show edit update destroy]
   before_action :set_category, only: [:index]

@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 class SavedEnclosure < ApplicationRecord
   include EnclosureMark
   include_stream_scopes

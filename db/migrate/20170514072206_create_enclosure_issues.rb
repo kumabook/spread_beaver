@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 class CreateEnclosureIssues < ActiveRecord::Migration[5.0]
   def change
     create_table :enclosure_issues do |t|

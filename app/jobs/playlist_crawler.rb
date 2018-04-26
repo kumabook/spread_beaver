@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 class PlaylistCrawler < ApplicationJob
   queue_as :default
 

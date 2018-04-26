@@ -1,5 +1,6 @@
 # coding: utf-8
 # frozen_string_literal: true
+
 class V3::Mixes::EnclosuresController < V3::ApiController
   include Pagination
   include StreamsControllable

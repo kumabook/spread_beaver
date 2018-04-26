@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 class CreateTracks < ActiveRecord::Migration[4.2]
   def change
     create_table :tracks, id: :uuid, default: "uuid_generate_v4()", force: true do |t|

@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 class PaginatedArray < Array
   attr_reader(:total_count, :page, :per_page)
   def initialize(values, total_count, page = 1, per_page = 25)

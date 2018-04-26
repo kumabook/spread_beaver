@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 class V3::ApiController < ActionController::API
   include ActionController::Serialization
   include Sorcery::Controller

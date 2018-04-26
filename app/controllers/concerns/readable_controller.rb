@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module ReadableController
   extend ActiveSupport::Concern
   def self.included(base)

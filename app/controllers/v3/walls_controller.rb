@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 class V3::WallsController < V3::ApiController
   before_action :set_wall
   before_action :set_cache_control_headers, only: [:show]

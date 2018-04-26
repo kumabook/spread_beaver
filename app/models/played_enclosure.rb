@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 class PlayedEnclosure < ApplicationRecord
   include EnclosureMark
   include_stream_scopes

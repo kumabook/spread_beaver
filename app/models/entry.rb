@@ -1,5 +1,6 @@
 # coding: utf-8
 # frozen_string_literal: true
+
 require("pink_spider")
 require("paginated_array")
 require("playlistified_entry")

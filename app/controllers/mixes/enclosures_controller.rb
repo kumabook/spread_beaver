@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 class Mixes::EnclosuresController < ApplicationController
   include Pagination
   include StreamsControllable

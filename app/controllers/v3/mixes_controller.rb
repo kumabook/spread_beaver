@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 class V3::MixesController < V3::ApiController
   include Pagination
   include StreamsControllable

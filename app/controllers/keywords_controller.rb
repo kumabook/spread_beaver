@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 class KeywordsController < ApplicationController
   before_action :set_keyword, only: %i[edit destroy update]
   before_action :require_admin, only: %i[new create destroy update]

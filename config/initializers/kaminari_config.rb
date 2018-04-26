@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 Kaminari.configure do |config|
   if Rails.env.test?
     config.default_per_page = 4

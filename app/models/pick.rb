@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 class Pick < ApplicationRecord
   include EnclosureMark
   belongs_to :enclosure , counter_cache: :pick_count, touch: true

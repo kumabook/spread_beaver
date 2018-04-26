@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 Feedlr.configure do |config|
 #  config.oauth_access_token = 'oauth access token'
   config.sandbox = Setting.feedly_target == "sandbox"
