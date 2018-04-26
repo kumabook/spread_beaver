@@ -257,11 +257,7 @@ class Entry < ApplicationRecord
 
   def visual_url
     visual = JSON.load(self.visual)
-    if visual.present? && visual["url"].present?
-      visual["url"]
-    else
-      nil
-    end
+    visual["url"] if visual.present? && visual["url"].present?
   end
 
   def normalize_visual
