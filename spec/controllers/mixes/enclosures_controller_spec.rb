@@ -2,7 +2,7 @@
 require "rails_helper"
 
 describe Mixes::EnclosuresController, type: :controller do
-  let  (:user) { FactoryBot.create(:admin) }
+  let (:user) { FactoryBot.create(:admin) }
   before(:all) do
     @feed  = FactoryBot.create(:feed)
     @topic = FactoryBot.create(:topic)

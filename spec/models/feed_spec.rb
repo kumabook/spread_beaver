@@ -3,7 +3,7 @@
 require "rails_helper"
 
 describe Feed do
-  let!  (:feed) { FactoryBot.create(:feed) }
+  let! (:feed) { FactoryBot.create(:feed) }
   describe "Feed#delete_cache_of_search_results" do
     context "when feeds are created" do
       it {

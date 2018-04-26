@@ -51,8 +51,6 @@ Style/ExpandPathArguments:
   Enabled: true
 Style/RedundantParentheses:
   Enabled: true
-Layout/SpaceBeforeFirstArg:
-  Enabled: false
 Layout/MultilineMethodCallBraceLayout:
   Enabled: false
 Style/MethodCallWithoutArgsParentheses:

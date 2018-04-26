@@ -17,7 +17,7 @@ RSpec.describe "Users api", type: :request, autodoc: true do
             password_confirmation: password
           }
       me = JSON.parse @response.body
-      expect(me["id"]).not_to    be_nil
+      expect(me["id"]).not_to be_nil
       expect(me["email"]).to eq(email)
     end
   end

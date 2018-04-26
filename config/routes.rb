@@ -74,7 +74,7 @@ Rails.application.routes.draw do
       get "activate"
       get "deactivate"
     end
-    get    "actives"   , on: :collection
+    get "actives"   , on: :collection
   end
   resources :keywords do
     resources :entries, only: [:index]
