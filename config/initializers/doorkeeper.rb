@@ -8,7 +8,7 @@ Doorkeeper.configure do
     current_user || redirect_to(login_url)
   end
 
-  resource_owner_from_credentials do |routes|
+  resource_owner_from_credentials do |_routes|
      User.authenticate(params[:email], params[:password])
   end
 
