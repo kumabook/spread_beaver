@@ -154,13 +154,13 @@ class Feed < ApplicationRecord
 
   def self.search_query(query)
     if query.blank?
-      return { type: :all }
+      { type: :all }
     elsif query.start_with? "#"
-      return { type: :topic, value: query[1..-1] }
+      { type: :topic, value: query[1..-1] }
     elsif is_url? query
-      return { type: :url, value: query }
+      { type: :url, value: query }
     else
-      return { type: :title, value: query }
+      { type: :title, value: query }
     end
   end
 

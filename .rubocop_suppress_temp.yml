@@ -85,8 +85,6 @@ Layout/MultilineMethodCallIndentation:
   Enabled: false
 Style/ClassAndModuleChildren:
   Enabled: false
-Style/RedundantReturn:
-  Enabled: false
 Style/IfUnlessModifier:
   Enabled: false
 Style/ConditionalAssignment:

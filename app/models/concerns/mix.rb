@@ -47,7 +47,7 @@ module Mix
     def time2key(time)
       return "inf" if time == Float::INFINITY
       return "neg_inf" if time == -Float::INFINITY
-      return time.strftime("%Y%m%d")
+      time.strftime("%Y%m%d")
     end
   end
   extend ActiveSupport::Concern
