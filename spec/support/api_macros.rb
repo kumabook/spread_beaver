@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module ApiMacros
-  def setup()
+  def setup
     @oauth = OAuth2::Client.new("client_id", "client_secret") do |b|
       b.request :url_encoded
       b.adapter :rack, Rails.application
@@ -19,7 +19,7 @@ module ApiMacros
     @admin_password = "test_password"
   end
 
-  def login()
+  def login
     post "/v3/oauth/token.json", params: {
            grant_type:  "password",
            client_id: @app.uid,
@@ -30,7 +30,7 @@ module ApiMacros
     @token = JSON.parse @response.body
   end
 
-  def login_as_admin()
+  def login_as_admin
     post "/v3/oauth/token.json", params: {
            grant_type:  "password",
            client_id: @app.uid,
