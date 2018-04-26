@@ -27,8 +27,8 @@ describe PinkSpider do
   describe "#fetch_track" do
     it do
       expect(RestClient).to receive(:get).with(
-                              "http://localhost:8080/v1/tracks/id",
-                              header,
+        "http://localhost:8080/v1/tracks/id",
+        header,
                             )
       @pink_spider.fetch_track("id")
     end
@@ -36,40 +36,40 @@ describe PinkSpider do
   describe "#fetch_tracks" do
     it do
       expect(RestClient).to receive(:post).with(
-                              "http://localhost:8080/v1/tracks/.mget",
-                              ["id"].to_json, mget_header)
+        "http://localhost:8080/v1/tracks/.mget",
+        ["id"].to_json, mget_header)
       @pink_spider.fetch_tracks(["id"])
     end
   end
   describe "#fetch_playlist" do
     it do
       expect(RestClient).to receive(:get).with(
-                              "http://localhost:8080/v1/playlists/id",
-                              header)
+        "http://localhost:8080/v1/playlists/id",
+        header)
       @pink_spider.fetch_playlist("id")
     end
   end
   describe "#fetch_playlists" do
     it do
       expect(RestClient).to receive(:post).with(
-                              "http://localhost:8080/v1/playlists/.mget",
-                              ["id"].to_json, mget_header)
+        "http://localhost:8080/v1/playlists/.mget",
+        ["id"].to_json, mget_header)
       @pink_spider.fetch_playlists(["id"])
     end
   end
   describe "#fetch_album" do
     it do
       expect(RestClient).to receive(:get).with(
-                              "http://localhost:8080/v1/albums/id",
-                              header)
+        "http://localhost:8080/v1/albums/id",
+        header)
       @pink_spider.fetch_album("id")
     end
   end
   describe "#fetch_albums" do
     it do
       expect(RestClient).to receive(:post).with(
-                              "http://localhost:8080/v1/albums/.mget",
-                              ["id"].to_json, mget_header)
+        "http://localhost:8080/v1/albums/.mget",
+        ["id"].to_json, mget_header)
       @pink_spider.fetch_albums(["id"])
     end
   end

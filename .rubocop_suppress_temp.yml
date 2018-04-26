@@ -65,8 +65,6 @@ Layout/SpaceAfterColon:
   Enabled: false
 Layout/SpaceBeforeFirstArg:
   Enabled: false
-Layout/FirstParameterIndentation:
-  Enabled: false
 Layout/MultilineMethodCallBraceLayout:
   Enabled: false
 Style/MethodCallWithoutArgsParentheses:
