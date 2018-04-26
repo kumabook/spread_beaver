@@ -98,7 +98,7 @@ Layout/CommentIndentation:
 Style/TrailingCommaInArrayLiteral:
   Enabled: false
 Style/EmptyElse:
-  Enabled: false
+  Enabled: true
 Style/NumericPredicate:
   Enabled: false
 Style/IfInsideElse:

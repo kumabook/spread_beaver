@@ -59,8 +59,6 @@ class V3::Streams::EnclosuresController < V3::ApiController
       items_of_mix_resource(@resource)
     when :liked, :saved, :played
       items_of_user_mark(@resource)
-    else
-      nil
     end
   end
 
