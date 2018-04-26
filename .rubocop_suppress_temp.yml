@@ -81,8 +81,6 @@ Lint/UnusedBlockArgument:
   Enabled: false
 Style/RegexpLiteral:
   Enabled: false
-Layout/MultilineMethodCallIndentation:
-  Enabled: false
 Style/ClassAndModuleChildren:
   Enabled: false
 Style/IfUnlessModifier:

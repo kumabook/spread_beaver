@@ -161,8 +161,8 @@ module Mix
     end
 
     (0...entries_per_feed).to_a
-      .flat_map { |i| entries_list.map { |list| list[i] } }
-      .select(&:present?)
+                          .flat_map { |i| entries_list.map { |list| list[i] } }
+                          .select(&:present?)
   end
 
   def self.items_from_count_hash(clazz, count_hash, page: 1, per_page: PER_PAGE)

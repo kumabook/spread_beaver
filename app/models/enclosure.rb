@@ -201,10 +201,10 @@ class Enclosure < ApplicationRecord
 
   def self.query_for_best_items(clazz, stream, query=nil)
     clazz.where(enclosure_type: self.name)
-      .stream(stream)
-      .period(query.period)
-      .locale(query.locale)
-      .provider(query.provider)
+         .stream(stream)
+         .period(query.period)
+         .locale(query.locale)
+         .provider(query.provider)
   end
 
   def legacy?

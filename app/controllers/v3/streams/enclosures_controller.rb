@@ -55,9 +55,9 @@ class V3::Streams::EnclosuresController < V3::ApiController
     case @resource
     when :latest
       @enclosure_class.latest(newer_than_from_param_or_default.ago)
-        .page(@page)
-        .per(@per_page)
-        .provider(@provider)
+                      .page(@page)
+                      .per(@per_page)
+                      .provider(@provider)
     when :hot, :popular, :featured
       items_of_mix_resource(@resource)
     when :liked, :saved, :played
