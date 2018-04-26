@@ -75,7 +75,7 @@ class Feed < ApplicationRecord
     else
       Feed.find_or_create_by_url_on_pink_spider(url)
     end
-  rescue
+  rescue StandardError
     nil
   end
 

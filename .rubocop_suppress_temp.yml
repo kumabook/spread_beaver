@@ -78,7 +78,7 @@ Layout/EmptyLineAfterMagicComment:
 Style/Lambda:
   Enabled: false
 Style/RescueStandardError:
-  Enabled: false
+  Enabled: true
 Style/DateTime:
   Enabled: false
 Layout/SpaceInLambdaLiteral:
