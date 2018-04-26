@@ -167,7 +167,7 @@ module Mix
 
   def self.items_from_count_hash(clazz, count_hash, page: 1, per_page: PER_PAGE)
     total_count   = count_hash.keys.count
-    sorted_hashes = PaginatedArray::sort_and_paginate_count_hash(count_hash, page: page, per_page: per_page)
+    sorted_hashes = PaginatedArray.sort_and_paginate_count_hash(count_hash, page: page, per_page: per_page)
     items = clazz.with_content.find(sorted_hashes.map { |h| h[:id] })
     sorted_items = sorted_hashes.map { |h|
       item = items.select { |t| t.id == h[:id] }.first

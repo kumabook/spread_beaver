@@ -3,7 +3,7 @@ class Setting
 
   def self.load
     path = "#{Rails.root}/config/settings.yml"
-    YAML::load(ERB.new(IO.read(path)).result).each do |name, value|
+    YAML.load(ERB.new(IO.read(path)).result).each do |name, value|
       define_class_method(name, value)
     end
   end

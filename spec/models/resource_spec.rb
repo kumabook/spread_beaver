@@ -46,7 +46,7 @@ describe Resource do
       res("tag/global.popular")
       res("tag/global.featured")
       resources = Wall.find(wall.id).resources
-      Resource::set_item_of_stream_resources(resources)
+      Resource.set_item_of_stream_resources(resources)
     end
     it do
       resources.each do |r|
@@ -57,7 +57,7 @@ describe Resource do
   end
 
   def res(resource_id)
-    Resource::create!(resource_id:   resource_id,
+    Resource.create!(resource_id:   resource_id,
                       resource_type: "stream",
                       engagement:    0,
                       wall_id:       wall.id)

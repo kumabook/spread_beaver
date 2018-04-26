@@ -27,7 +27,7 @@ module Likable
 
     def popular_items(stream: nil, query: nil, page: 1, per_page: PER_PAGE)
       count_hash = self.query_for_best_items(self.like_class, stream, query).user_count
-      Mix::items_from_count_hash(self, count_hash, page: page, per_page: per_page)
+      Mix.items_from_count_hash(self, count_hash, page: page, per_page: per_page)
     end
   end
 end

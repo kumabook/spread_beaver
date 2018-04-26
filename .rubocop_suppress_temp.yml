@@ -51,8 +51,6 @@ Layout/IndentHash:
   Enabled: false
 Layout/IndentationConsistency:
   Enabled: false
-Style/ColonMethodCall:
-  Enabled: false
 Style/ExpandPathArguments:
   Enabled: false
 Style/RedundantParentheses:

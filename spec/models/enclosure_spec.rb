@@ -10,7 +10,7 @@ describe Enclosure do
 
   let (:entry) { FactoryBot.create(:normal_entry, feed: feeds[0]) }
   let (:playlistified_entry) {
-    e = PinkSpiderHelper::entry_hash
+    e = PinkSpiderHelper.entry_hash
     PlaylistifiedEntry.new(e[:id],
                            e[:url],
                            e[:title],

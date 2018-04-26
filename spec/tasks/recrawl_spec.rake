@@ -14,10 +14,10 @@ describe "rake task recrawl" do
   before(:each) do
     id = "http://new.com/rss"
     allow_any_instance_of(Feedlr::Client).to receive(:feeds) do
-      [FeedlrHelper::feed(id)]
+      [FeedlrHelper.feed(id)]
     end
     allow_any_instance_of(Feedlr::Client).to receive(:user_entry) do |this|
-      FeedlrHelper::entry(id)
+      FeedlrHelper.entry(id)
     end
     @rake[task].reenable
     FactoryBot.create(:feed)

@@ -34,10 +34,10 @@ class Topic < ApplicationRecord
     else
       entries = Entry.topic(self).latest(mix_newer_than)
     end
-    items = Mix::mix_up_and_paginate(entries,
-                                     LATEST_ENTRIES_PER_FEED,
-                                     page,
-                                     per_page)
+    items = Mix.mix_up_and_paginate(entries,
+                                    LATEST_ENTRIES_PER_FEED,
+                                    page,
+                                    per_page)
     PaginatedArray.new(items, entries.count, page, per_page)
   end
 
