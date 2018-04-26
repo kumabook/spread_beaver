@@ -24,7 +24,7 @@ class Topic < ApplicationRecord
 
   LATEST_ENTRIES_PER_FEED = Setting.latest_entries_per_feed || 3
 
-  scope :locale, -> (locale) {
+  scope :locale, ->(locale) {
     where(locale: locale) if locale.present?
   }
 

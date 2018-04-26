@@ -82,7 +82,7 @@ Style/RescueStandardError:
 Style/DateTime:
   Enabled: false
 Layout/SpaceInLambdaLiteral:
-  Enabled: false
+  Enabled: true
 Style/RedundantSelf:
   Enabled: false
 Style/SelfAssignment:

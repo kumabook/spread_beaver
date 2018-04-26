@@ -4,7 +4,7 @@ module Streamable
   extend ActiveSupport::Concern
 
   included do
-    scope :stream, -> (s) {
+    scope :stream, ->(s) {
       if s.is_a?(Feed)
         feed(s)
       elsif s.is_a?(Keyword)

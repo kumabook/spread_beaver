@@ -12,7 +12,7 @@ module Playable
     has_many plays, dependent: :destroy
 
     scope :hot,    ->        { joins(:users).order("play_count DESC") }
-    scope :played, -> (user) {
+    scope :played, ->(user) {
       joins(plays).where(plays => { user_id: user.id }).order("#{plays}.created_at DESC")
     }
   end

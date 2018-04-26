@@ -42,10 +42,10 @@ class Enclosure < ApplicationRecord
   has_many :enclosure_issues, dependent: :destroy
   has_many :issues          , through: :enclosure_issues
 
-  scope :provider, -> (provider) {
+  scope :provider, ->(provider) {
     where(provider: provider) if provider.present?
   }
-  scope :latest, -> (since) {
+  scope :latest, ->(since) {
     if since.nil?
       order(created_at: :desc)
     else
@@ -60,28 +60,28 @@ class Enclosure < ApplicationRecord
       .eager_load(:pick_enclosures)
   }
 
-  scope :issue , -> (issue) {
+  scope :issue , ->(issue) {
     joins(:enclosure_issues)
       .where(enclosure_issues: { issue: issue })
       .order("enclosure_issues.engagement DESC")
   }
-  scope :feed, -> (feed) {
+  scope :feed, ->(feed) {
     joins(:entries).where(entries: { feed_id: feed.id })
   }
-  scope :keyword, -> (keyword) {
+  scope :keyword, ->(keyword) {
     joins(entries: :keywords).where(keywords: { id: keyword.id })
   }
-  scope :tag, -> (tag) {
+  scope :tag, ->(tag) {
     joins(entries: :tags).where(tags: { id: tag.id })
   }
-  scope :topic, -> (topic) {
+  scope :topic, ->(topic) {
     joins(entries: {feed: :topics }).where(topics: { id: topic.id })
   }
-  scope :category, -> (category) {
+  scope :category, ->(category) {
     joins(entries: {feed: { subscriptions: :categories }})
       .where(categories: { id: category.id })
   }
-  scope :period, -> (period) {
+  scope :period, ->(period) {
     where({ table_name.to_sym => { created_at:  period }})
   }
 

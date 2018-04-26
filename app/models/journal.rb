@@ -7,7 +7,7 @@ class Journal < ApplicationRecord
   after_initialize :set_stream_id, if: :new_record?
   before_save      :set_stream_id
 
-  scope :stream_id, ->  (stream_id) {
+  scope :stream_id, ->(stream_id) {
     where(stream_id: stream_id)
   }
 

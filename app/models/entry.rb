@@ -42,24 +42,24 @@ class Entry < ApplicationRecord
   scope :with_detail, -> {
     with_content().eager_load(:keywords)
   }
-  scope :latest,        ->    (since) {
+  scope :latest,        ->(since) {
     if since.nil?
       order(published: :desc).with_content
     else
       where(published: since..Float::INFINITY).order(published: :desc).with_content
     end
   }
-  scope :subscriptions, ->       (ss) { where(feed: ss.map(&:feed_id)).order(published: :desc).with_content }
-  scope :feed,          ->     (feed) { where(feed: feed).order(published: :desc).with_content }
-  scope :keyword,       ->        (k) { joins(:entry_keywords).where(entry_keywords: { keyword_id: k.id}).order(published: :desc).with_content }
-  scope :tag,           ->        (t) { joins(:tags).where(tags: { id: t.id}).order(published: :desc).with_content }
-  scope :topic,         ->    (topic) { joins(feed: :topics).where(topics: { id: topic.id }) }
-  scope :category,      -> (category) { joins(feed: { subscriptions: :categories }).where(categories: { id: category.id }) }
-  scope :issue,         ->          (j) { joins(:issues).where(issues: { id: j.id}).order("entry_issues.engagement DESC").with_content }
-  scope :period, -> (period) {
+  scope :subscriptions, ->(ss) { where(feed: ss.map(&:feed_id)).order(published: :desc).with_content }
+  scope :feed,          ->(feed) { where(feed: feed).order(published: :desc).with_content }
+  scope :keyword,       ->(k) { joins(:entry_keywords).where(entry_keywords: { keyword_id: k.id}).order(published: :desc).with_content }
+  scope :tag,           ->(t) { joins(:tags).where(tags: { id: t.id}).order(published: :desc).with_content }
+  scope :topic,         ->(topic) { joins(feed: :topics).where(topics: { id: topic.id }) }
+  scope :category,      ->(category) { joins(feed: { subscriptions: :categories }).where(categories: { id: category.id }) }
+  scope :issue,         ->(j) { joins(:issues).where(issues: { id: j.id}).order("entry_issues.engagement DESC").with_content }
+  scope :period, ->(period) {
     where({ table_name.to_sym => { published:  period }})
   }
-  scope :search, -> (query) {
+  scope :search, ->(query) {
     if query.present?
       where("title ILIKE ?", "%#{query}%")
     else
