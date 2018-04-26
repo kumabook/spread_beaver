@@ -6,7 +6,7 @@ require "playlistified_entry"
 
 describe PlaylistifiedEntry do
   let (:entry_hash) {
-    PinkSpiderHelper::entry_hash
+    PinkSpiderHelper.entry_hash
   }
   let (:playlistified_entry) {
     e = entry_hash

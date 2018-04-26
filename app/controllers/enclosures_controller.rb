@@ -34,14 +34,14 @@ class EnclosuresController < ApplicationController
   end
 
   def search
-    per_page    = Kaminari::config::default_per_page
+    per_page    = Kaminari.config.default_per_page
     @enclosures = enclosure_class.search(@query, params[:page], per_page)
     enclosure_class.set_marks(current_user, @enclosures) if current_user.present?
     render "index"
   end
 
   def actives
-    per_page    = Kaminari::config::default_per_page
+    per_page    = Kaminari.config.default_per_page
     @enclosures = Playlist.fetch_actives(page: params[:page].to_i, per_page: per_page)
     enclosure_class.set_marks(current_user, @enclosures) if current_user.present?
     enclosure_class.set_contents(@enclosures)

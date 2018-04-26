@@ -67,7 +67,7 @@ class Entry < ApplicationRecord
   }
 
   JSON_ATTRS = ["content", "categories", "summary", "alternate", "origin", "visual"]
-  PER_PAGE = Kaminari::config::default_per_page
+  PER_PAGE = Kaminari.config.default_per_page
 
   def entry_enclosure_type=(class_name)
     super(class_name.constantize.base_class.to_s)
@@ -287,7 +287,7 @@ class Entry < ApplicationRecord
                         entries_per_feed: 3,
                         page: 1, per_page: nil)
     entries = Entry.latest(since)
-    Mix::mix_up_and_paginate(entries, entries_per_feed, page, per_page)
+    Mix.mix_up_and_paginate(entries, entries_per_feed, page, per_page)
   end
   def self.query_for_best_items(clazz, stream, query={})
     clazz.stream(stream).period(query.period).locale(query.locale)

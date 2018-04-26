@@ -6,7 +6,7 @@ require "feedlr_helper"
 describe Entry do
   it "is created by feeldr entry" do
     feed_id = "feed/http://test.com/rss"
-    entry   = FeedlrHelper::entry(feed_id)
+    entry   = FeedlrHelper.entry(feed_id)
     feed    = Feed.first_or_create(id: feed_id)
     e       = Entry.first_or_create_by_feedlr(entry, feed)
     expect(e).not_to be_nil()
@@ -17,7 +17,7 @@ describe Entry do
   describe "::set_count_of_enclosures" do
     let (:feed) { FactoryBot.create(:feed) }
     before do
-      Entry::set_count_of_enclosures(feed.entries)
+      Entry.set_count_of_enclosures(feed.entries)
     end
     it {
       expect(feed.entries[0].count_of).not_to be_nil

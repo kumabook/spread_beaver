@@ -36,9 +36,9 @@ module Pagination
   def set_page
     @newer_than = params[:newerThan]&.to_i&.to_time
     @older_than = params[:olderThan]&.to_i&.to_time
-    pagination  = V3::StreamsController::pagination(params[:continuation])
+    pagination  = V3::StreamsController.pagination(params[:continuation])
     @page       = pagination["page"] || params[:page]&.to_i || 1
-    @per_page   = pagination["per_page"] || params[:count]&.to_i || Kaminari::config::default_per_page
+    @per_page   = pagination["per_page"] || params[:count]&.to_i || Kaminari.config.default_per_page
     @older_than = pagination["olderThan"] if pagination["olderThan"].present?
     @newer_than = pagination["newerThan"] if pagination["newerThan"].present?
   end

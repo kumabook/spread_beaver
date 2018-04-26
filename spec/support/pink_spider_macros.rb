@@ -3,16 +3,16 @@ require "pink_spider_helper"
 
 module PinkSpiderMacros
   def mock_up_pink_spider
-    track    = PinkSpiderHelper::track_hash
-    album    = PinkSpiderHelper::album_hash
-    playlist = PinkSpiderHelper::playlist_hash
+    track    = PinkSpiderHelper.track_hash
+    album    = PinkSpiderHelper.album_hash
+    playlist = PinkSpiderHelper.playlist_hash
 
     allow_any_instance_of(PinkSpider).to receive(:fetch_entries_of_feed) do
       {
         page:     0,
         per_page: 1,
         total:    1,
-        items:    [PinkSpiderHelper::entry_hash(url: "http://example.com/entry1")]
+        items:    [PinkSpiderHelper.entry_hash(url: "http://example.com/entry1")]
       }.with_indifferent_access
     end
 
@@ -37,7 +37,7 @@ module PinkSpiderMacros
       { items: [track.clone], total: 1, page: 0, per_page: 25 }.with_indifferent_access
     end
     allow_any_instance_of(PinkSpider).to receive(:create_track) do |this|
-      PinkSpiderHelper::track_hash
+      PinkSpiderHelper.track_hash
     end
 
     allow_any_instance_of(PinkSpider).to receive(:fetch_album) do |this, id|
@@ -56,7 +56,7 @@ module PinkSpiderMacros
       { items: [album.clone], total: 1, page: 0, per_page: 25 }.with_indifferent_access
     end
     allow_any_instance_of(PinkSpider).to receive(:create_album) do |this|
-      PinkSpiderHelper::album_hash
+      PinkSpiderHelper.album_hash
     end
 
     allow_any_instance_of(PinkSpider).to receive(:fetch_playlist) do |this, id|
@@ -75,10 +75,10 @@ module PinkSpiderMacros
       { items: [playlist.clone], total: 1, page: 0, per_page: 25 }.with_indifferent_access
     end
     allow_any_instance_of(PinkSpider).to receive(:create_playlist) do |this|
-      PinkSpiderHelper::playlist_hash
+      PinkSpiderHelper.playlist_hash
     end
     allow_any_instance_of(PinkSpider).to receive(:update_playlist) do |this|
-      PinkSpiderHelper::playlist_hash
+      PinkSpiderHelper.playlist_hash
     end
     allow_any_instance_of(PinkSpider).to receive(:fetch_tracks_of_playlist) do |this, playlist_id|
       playlist_track = {

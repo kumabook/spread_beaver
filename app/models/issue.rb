@@ -32,10 +32,10 @@ class Issue < ApplicationRecord
                    .period(period)
                    .order(published: :desc)
                    .select(&:has_visual?)
-    entries = Mix::mix_up_and_paginate(entries,
-                                       Topic::LATEST_ENTRIES_PER_FEED,
-                                       1,
-                                       nil)
+    entries = Mix.mix_up_and_paginate(entries,
+                                      Topic::LATEST_ENTRIES_PER_FEED,
+                                      1,
+                                      nil)
     if entries.empty?
       logger.info("Failed to create journal because there is no entry")
       return

@@ -137,7 +137,7 @@ class Feed < ApplicationRecord
   end
 
   def self.find_or_create_by_url_on_pink_spider(url)
-    feed = PinkSpider::new.create_feed(url)
+    feed = PinkSpider.new.create_feed(url)
     Feed.first_or_create_by_pink_spider(feed)
   end
 
