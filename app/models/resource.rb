@@ -36,8 +36,8 @@ class Resource < ApplicationRecord
 
   def as_json(options = {})
     h = super(options)
-    h["item_type"] = self.item_type
-    h["item"]      = self.item
+    h["item_type"] = item_type
+    h["item"]      = item
     h["options"]   = JSON.load(self.options)
     h
   end

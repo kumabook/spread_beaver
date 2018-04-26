@@ -6,14 +6,14 @@ module Escapable
   end
 
   def escape
-    clone = self.dup
-    clone.id = CGI.escape self.id
+    clone = dup
+    clone.id = CGI.escape id
     clone
   end
 
   def unescape
-    clone = self.dup
-    clone.id = CGI.unescape self.id
+    clone = dup
+    clone.id = CGI.unescape id
     clone
   end
 

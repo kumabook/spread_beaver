@@ -84,7 +84,7 @@ Style/DateTime:
 Layout/SpaceInLambdaLiteral:
   Enabled: true
 Style/RedundantSelf:
-  Enabled: false
+  Enabled: true
 Style/SelfAssignment:
   Enabled: false
 Style/MutableConstant:

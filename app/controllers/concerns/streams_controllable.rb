@@ -33,7 +33,7 @@ module StreamsControllable
     def calculate_continuation(items, page, per_page)
       if items.respond_to?(:total_count)
         if items.total_count >= per_page * page + 1
-          return self.continuation(page + 1, per_page)
+          return continuation(page + 1, per_page)
         end
       end
       nil

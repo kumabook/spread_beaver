@@ -71,7 +71,7 @@ class User < ApplicationRecord
     hash["twitterUserId"] = hash["twitter_user_id"]
     hash.delete("twitter_user_id")
     hash["fullName"] = hash["name"]
-    hash["created"] = self.created_at.to_time.to_i * 1000
+    hash["created"] = created_at.to_time.to_i * 1000
 
     if options[:need_picture_put_url]
       key = "profiles/picture/#{id}"
