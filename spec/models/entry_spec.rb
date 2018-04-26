@@ -30,7 +30,7 @@ describe Entry do
   describe "::latest_items" do
     feed_num = 5
     before(:each) do
-      feeds = (0..feed_num-1).map { |i| FactoryBot.create(:feed) }
+      feeds = (0..feed_num-1).map { |_i| FactoryBot.create(:feed) }
       feeds.each do |f|
         f.entries.each do |e|
           e.published = 2.days.ago

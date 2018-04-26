@@ -20,67 +20,67 @@ module PinkSpiderMacros
       PinkSpiderHelper.entry_hash
     end
 
-    allow_any_instance_of(PinkSpider).to receive(:fetch_track) do |this, id|
+    allow_any_instance_of(PinkSpider).to receive(:fetch_track) do |_this, id|
       track["id"] = id
       track["provider"] = Track.find(id).provider
       track
     end
-    allow_any_instance_of(PinkSpider).to receive(:fetch_tracks) do |this, ids|
+    allow_any_instance_of(PinkSpider).to receive(:fetch_tracks) do |_this, ids|
       ids.map { |id|
         track["id"] = id
         track["provider"] = Track.find(id).provider
         track.clone
       }
     end
-    allow_any_instance_of(PinkSpider).to receive(:search_tracks) do |this, query|
+    allow_any_instance_of(PinkSpider).to receive(:search_tracks) do |_this, _query|
       track["id"] = Track.first.id
       { items: [track.clone], total: 1, page: 0, per_page: 25 }.with_indifferent_access
     end
-    allow_any_instance_of(PinkSpider).to receive(:create_track) do |this|
+    allow_any_instance_of(PinkSpider).to receive(:create_track) do |_this|
       PinkSpiderHelper.track_hash
     end
 
-    allow_any_instance_of(PinkSpider).to receive(:fetch_album) do |this, id|
+    allow_any_instance_of(PinkSpider).to receive(:fetch_album) do |_this, id|
       album["id"] = id
       album["provider"] = Album.find(id).provider
       album.clone
     end
-    allow_any_instance_of(PinkSpider).to receive(:fetch_albums) do |this, ids|
+    allow_any_instance_of(PinkSpider).to receive(:fetch_albums) do |_this, ids|
       ids.map { |id|
         album["id"] = id
         album["provider"] = Album.find(id).provider
         album.clone
       }
     end
-    allow_any_instance_of(PinkSpider).to receive(:search_albums) do |this, query|
+    allow_any_instance_of(PinkSpider).to receive(:search_albums) do |_this, _query|
       { items: [album.clone], total: 1, page: 0, per_page: 25 }.with_indifferent_access
     end
-    allow_any_instance_of(PinkSpider).to receive(:create_album) do |this|
+    allow_any_instance_of(PinkSpider).to receive(:create_album) do |_this|
       PinkSpiderHelper.album_hash
     end
 
-    allow_any_instance_of(PinkSpider).to receive(:fetch_playlist) do |this, id|
+    allow_any_instance_of(PinkSpider).to receive(:fetch_playlist) do |_this, id|
       playlist["id"] = id
       playlist["provider"] = Playlist.find(id).provider
       playlist
     end
-    allow_any_instance_of(PinkSpider).to receive(:fetch_playlists) do |this, ids|
+    allow_any_instance_of(PinkSpider).to receive(:fetch_playlists) do |_this, ids|
       ids.map { |id|
         playlist["id"] = id
         playlist["provider"] = Playlist.find(id).provider
         playlist.clone
       }
     end
-    allow_any_instance_of(PinkSpider).to receive(:search_playlists) do |this, query|
+    allow_any_instance_of(PinkSpider).to receive(:search_playlists) do |_this, _query|
       { items: [playlist.clone], total: 1, page: 0, per_page: 25 }.with_indifferent_access
     end
-    allow_any_instance_of(PinkSpider).to receive(:create_playlist) do |this|
+    allow_any_instance_of(PinkSpider).to receive(:create_playlist) do |_this|
       PinkSpiderHelper.playlist_hash
     end
-    allow_any_instance_of(PinkSpider).to receive(:update_playlist) do |this|
+    allow_any_instance_of(PinkSpider).to receive(:update_playlist) do |_this|
       PinkSpiderHelper.playlist_hash
     end
-    allow_any_instance_of(PinkSpider).to receive(:fetch_tracks_of_playlist) do |this, playlist_id|
+    allow_any_instance_of(PinkSpider).to receive(:fetch_tracks_of_playlist) do |_this, playlist_id|
       playlist_track = {
         playlist_id: playlist_id,
         track_id: track[:id],

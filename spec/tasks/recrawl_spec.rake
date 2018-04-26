@@ -16,7 +16,7 @@ describe "rake task recrawl" do
     allow_any_instance_of(Feedlr::Client).to receive(:feeds) do
       [FeedlrHelper.feed(id)]
     end
-    allow_any_instance_of(Feedlr::Client).to receive(:user_entry) do |this|
+    allow_any_instance_of(Feedlr::Client).to receive(:user_entry) do |_this|
       FeedlrHelper.entry(id)
     end
     @rake[task].reenable

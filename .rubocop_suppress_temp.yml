@@ -60,7 +60,7 @@ Layout/EmptyLineBetweenDefs:
 Layout/AlignHash:
   Enabled: true
 Lint/UnusedBlockArgument:
-  Enabled: false
+  Enabled: true
 Style/RegexpLiteral:
   Enabled: false
 Style/ClassAndModuleChildren:

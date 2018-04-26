@@ -48,7 +48,7 @@ RSpec.describe "Tracks api", type: :request, autodoc: true do
     expect(items).not_to be_nil()
     expect(items.count).to eq(tracks.count)
     expect(items[0]["entries"][0]["summary"]).to be_nil
-    items.each_with_index { |t, i|
+    items.each_with_index { |t, _i|
       expect(ids).to include(t["id"])
     }
   end

@@ -41,7 +41,7 @@ RSpec.describe "Playlists api", type: :request, autodoc: true do
     playlists = JSON.parse @response.body
     expect(playlists).not_to be_nil()
     expect(playlists.count).to eq(ids.count)
-    playlists.each_with_index { |t, i|
+    playlists.each_with_index { |t, _i|
       expect(ids).to include(t["id"])
     }
   end
