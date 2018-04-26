@@ -29,7 +29,7 @@ describe PinkSpider do
     it do
       expect(RestClient).to receive(:get).with(
         "http://localhost:8080/v1/tracks/id",
-        header,
+        header
                             )
       @pink_spider.fetch_track("id")
     end
