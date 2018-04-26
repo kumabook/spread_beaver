@@ -46,7 +46,6 @@ class PreferencesController < ApplicationController
         format.html { redirect_to user_preferences_path, notice: @preference.errors }
       end
     end
-
   end
 
   private
