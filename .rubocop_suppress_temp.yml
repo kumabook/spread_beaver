@@ -59,8 +59,6 @@ Style/RedundantParentheses:
   Enabled: false
 Layout/SpaceInsideParens:
   Enabled: false
-Layout/MultilineBlockLayout:
-  Enabled: false
 Layout/SpaceBeforeFirstArg:
   Enabled: false
 Layout/MultilineMethodCallBraceLayout:

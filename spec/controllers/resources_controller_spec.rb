@@ -3,7 +3,8 @@ require "rails_helper"
 
 describe ResourcesController, type: :controller do
   let! (:wall) { Wall.create!(label: "news", description: "news tab") }
-  let! (:item) { Resource.create!(resource_id:   "journal/highlight",
+  let! (:item) {
+    Resource.create!(resource_id:   "journal/highlight",
                                   resource_type: "stream",
                                   wall_id:       wall.id,
                                   engagement:    0)
@@ -21,7 +22,8 @@ describe ResourcesController, type: :controller do
 
   describe "POST create" do
     resource_id   = "journal/fujirock"
-    before { post :create, params: {
+    before {
+      post :create, params: {
                     resource: {
                       resource_id: resource_id,
                       resource_type: "stream",
@@ -31,7 +33,8 @@ describe ResourcesController, type: :controller do
                   }
     }
     it { expect(response).to redirect_to edit_wall_url(wall) }
-    it { expect(Resource.find_by(resource_id: resource_id,
+    it {
+      expect(Resource.find_by(resource_id: resource_id,
                                  wall_id: wall.id)).not_to be_nil
     }
   end
