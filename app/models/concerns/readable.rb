@@ -11,7 +11,7 @@ module Readable
     reads = "read_#{table_name}".to_sym
     has_many reads, dependent: :destroy
     scope :hot , ->      { joins(:users).order("read_count DESC") }
-    scope :read, -> (user) {
+    scope :read, ->(user) {
       joins(reads).where(reads => { user_id: user.id }).order("#{reads}.created_at DESC")
     }
   end

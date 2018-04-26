@@ -10,7 +10,7 @@ module Stream
     after_update  :delete_cache_entries
     after_destroy :delete_cache_entries
 
-    scope :stream_id, ->  (stream_id) {
+    scope :stream_id, ->(stream_id) {
       where(id: stream_id)
     }
   end

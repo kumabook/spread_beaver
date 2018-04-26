@@ -9,28 +9,28 @@ class Pick < ApplicationRecord
     group(:enclosure_id).order("count_container_id DESC").count("container_id")
   }
 
-  scope :feed, -> (feed) {
+  scope :feed, ->(feed) {
     joins(container: :entries).where(entries: { feed_id: feed.id })
   }
-  scope :keyword, -> (keyword) {
+  scope :keyword, ->(keyword) {
     joins(container: { entries: :keywords })
       .where(keywords: { id: keyword.id })
   }
-  scope :tag, -> (tag) {
+  scope :tag, ->(tag) {
     joins(container: { entries: :tags }).where(tags: { id: tag.id })
   }
-  scope :topic,      -> (topic)    {
+  scope :topic,      ->(topic)    {
     joins(container: { entries: { feed: :topics }})
       .where(topics: { id: topic.id })
   }
-  scope :category, -> (category) {
+  scope :category, ->(category) {
     joins(container: { entries: { feed: { subscriptions: :categories }}})
       .where(categories: { id: category.id })
   }
-  scope :issue, -> (issue) {
+  scope :issue, ->(issue) {
     joins(container: :issues).where(issues: { id: issue.id })
   }
-  scope :issues, -> (issues) {
+  scope :issues, ->(issues) {
     joins(container: :issues).where(issues: { id: issues.map(&:id) })
   }
 end

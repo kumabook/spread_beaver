@@ -11,7 +11,7 @@ module Savable
     has_many saves, dependent: :destroy
     has_many :saved_users, through: saves, source: :user
 
-    scope :saved, ->  (user) {
+    scope :saved, ->(user) {
       joins(:saved_users).where(users: { id: user.id }).order("#{saves}.created_at DESC")
     }
   end

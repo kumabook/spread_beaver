@@ -17,10 +17,10 @@ class EntryEnclosure < ApplicationRecord
       .order("count_entries_feed_id DESC")
       .distinct.count("entries.feed_id")
   }
-  scope :locale, -> (locale) {
+  scope :locale, ->(locale) {
     joins(entry: :feed).where(feeds: { language: locale}) if locale.present?
   }
-  scope :provider, -> (provider) {
+  scope :provider, ->(provider) {
     where(enclosure_provider: provider) if provider.present?
   }
 end

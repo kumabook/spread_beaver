@@ -16,7 +16,7 @@ class Feed < ApplicationRecord
 
   self.primary_key = :id
 
-  scope :search, -> (query) {
+  scope :search, ->(query) {
     q = search_query(query)
     case q[:type]
     when :all
@@ -32,7 +32,7 @@ class Feed < ApplicationRecord
     end
   }
 
-  scope :locale, -> (locale) {
+  scope :locale, ->(locale) {
     where(language: locale) if locale.present?
   }
 
