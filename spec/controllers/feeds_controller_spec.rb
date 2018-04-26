@@ -3,10 +3,10 @@ require "rails_helper"
 require "feedlr_helper"
 
 describe FeedsController, type: :controller do
-  let  (:user  ) { FactoryBot.create(:admin) }
-  let! (:feed  ) { Feed.create!(id: "feed/http://test.com/rss" , title: "feed") }
-  let! (:feed2 ) { Feed.create!(id: "feed/http://test2.com/rss", title: "feed") }
-  let! (:topic ) { Topic.create!(label: "topic", description: "desc") }
+  let  (:user) { FactoryBot.create(:admin) }
+  let! (:feed) { Feed.create!(id: "feed/http://test.com/rss" , title: "feed") }
+  let! (:feed2) { Feed.create!(id: "feed/http://test2.com/rss", title: "feed") }
+  let! (:topic) { Topic.create!(label: "topic", description: "desc") }
   let  (:new_url) { "http://new.com/rss" }
   let  (:feedly_feed) { FeedlrHelper::feed("feed/#{new_url}") }
   let  (:pink_spider_feed) { PinkSpiderHelper.feed_hash(new_url) }

@@ -4,7 +4,7 @@ require "rails_helper"
 
 describe Track do
   let (:entries) { FactoryBot.create(:feed).entries }
-  let (:track  ) { entries[0].tracks[0] }
+  let (:track) { entries[0].tracks[0] }
   before do
   end
 

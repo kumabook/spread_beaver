@@ -194,7 +194,7 @@ class Entry < ApplicationRecord
   def self.set_marks(user, entries)
     liked_hash  = Entry.user_liked_hash(user, entries)
     saved_hash  = Entry.user_saved_hash(user, entries)
-    read_hash   = Entry.user_read_hash( user, entries)
+    read_hash   = Entry.user_read_hash(user, entries)
     entries.each do |e|
       e.is_liked  = liked_hash[e]
       e.is_saved  = saved_hash[e]

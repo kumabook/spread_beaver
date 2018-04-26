@@ -8,7 +8,7 @@ describe Enclosure do
     5.times.map { |i| Feed.create!(id: "feed/http://test#{i}.com/rss" , title: "feed#{i}") }
   }
 
-  let (:entry) { FactoryBot.create(:normal_entry, feed: feeds[0] ) }
+  let (:entry) { FactoryBot.create(:normal_entry, feed: feeds[0]) }
   let (:playlistified_entry) {
     e = PinkSpiderHelper::entry_hash
     PlaylistifiedEntry.new(e[:id],
@@ -24,8 +24,8 @@ describe Enclosure do
   }
   describe "::create_items_of" do
     before do
-      Track.create_items_of(   entry, playlistified_entry.tracks)
-      Album.create_items_of(   entry, playlistified_entry.albums)
+      Track.create_items_of(entry, playlistified_entry.tracks)
+      Album.create_items_of(entry, playlistified_entry.albums)
       Playlist.create_items_of(entry, playlistified_entry.playlists)
     end
     it { expect(Track.count).to eq(1) }
@@ -63,7 +63,7 @@ describe Enclosure do
       expect(old_items[3]).to eq(tracks[1])
       expect(old_items[4]).to eq(tracks[0])
 
-      items     = Track.most_featured_items(query:    Query.new(  3.days.ago..Time.now),
+      items     = Track.most_featured_items(query:    Query.new(3.days.ago..Time.now),
                                             page:     1,
                                             per_page: 10)
       expect(items.count).to eq(3)

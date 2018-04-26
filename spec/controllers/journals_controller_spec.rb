@@ -3,7 +3,7 @@ require "rails_helper"
 
 describe JournalsController, type: :controller do
   let! (:journal) {     Journal.create!(label: "journal", description: "desc") }
-  let  (:user   ) { FactoryBot.create (:admin                               ) }
+  let  (:user) { FactoryBot.create (:admin) }
 
   before(:each) do
     login_user user

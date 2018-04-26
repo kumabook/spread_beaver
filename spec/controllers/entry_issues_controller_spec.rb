@@ -2,10 +2,10 @@
 require "rails_helper"
 
 describe EntryIssuesController, type: :controller do
-  let! (:journal    ) {     Journal.create!(label: "journal", description: "desc") }
-  let! (:issue      ) {       Issue.create!(label: "issue"  , description: "desc", journal_id: journal.id) }
-  let! (:entry      ) { FactoryBot.create (:entry                               ) }
-  let  (:user       ) { FactoryBot.create (:admin                               ) }
+  let! (:journal) {     Journal.create!(label: "journal", description: "desc") }
+  let! (:issue) {       Issue.create!(label: "issue"  , description: "desc", journal_id: journal.id) }
+  let! (:entry) { FactoryBot.create (:entry) }
+  let  (:user) { FactoryBot.create (:admin) }
   let  (:entry_issue) { EntryIssue.create!(entry_id: entry.id, issue_id: issue.id) }
 
   before(:each) do

@@ -25,16 +25,16 @@ describe PlaylistifiedEntry do
     it "should creates a instance" do
       e    = playlistified_entry
       hash = entry_hash
-      expect(e.id         ).to eq(hash[:id])
-      expect(e.url        ).to eq(hash[:url])
-      expect(e.title      ).to eq(hash[:title])
+      expect(e.id).to eq(hash[:id])
+      expect(e.url).to eq(hash[:url])
+      expect(e.title).to eq(hash[:title])
       expect(e.description).to eq(hash[:description])
-      expect(e.visual_url ).to eq(hash[:visual_url])
-      expect(e.locale     ).to eq(hash[:locale])
-      expect(e.tracks     ).to eq(hash[:tracks])
-      expect(e.playlists  ).to eq(hash[:playlists])
-      expect(e.albums     ).to eq(hash[:albums])
-      expect(e.entry      ).to eq(hash)
+      expect(e.visual_url).to eq(hash[:visual_url])
+      expect(e.locale).to eq(hash[:locale])
+      expect(e.tracks).to eq(hash[:tracks])
+      expect(e.playlists).to eq(hash[:playlists])
+      expect(e.albums).to eq(hash[:albums])
+      expect(e.entry).to eq(hash)
     end
   end
 end
