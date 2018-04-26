@@ -14,7 +14,7 @@ module Pagination
       dec.pkcs5_keyivgen(CONTINUATION_SALT)
       JSON.parse (dec.update(Array.new([str]).pack("H*")) + dec.final)
     rescue
-      return {}
+      {}
     end
 
     def continuation(page=0, per_page = nil, newer_than = nil, older_than = nil)

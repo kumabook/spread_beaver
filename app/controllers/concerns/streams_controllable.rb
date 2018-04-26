@@ -35,7 +35,7 @@ module StreamsControllable
           return self.continuation(page + 1, per_page)
         end
       end
-      return nil
+      nil
     end
   end
 
