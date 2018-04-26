@@ -185,17 +185,17 @@ Rails.application.routes.draw do
     end
 
     resources :tracks, controller: :enclosures, type: "Track",
-                             only: [:show], constraints: uuid_options do
+                       only: [:show], constraints: uuid_options do
       post ".mget", action: :list, on: :collection
     end
 
     resources :albums, controller: :enclosures, type: "Album",
-                             only: [:show], constraints: uuid_options do
+                       only: [:show], constraints: uuid_options do
       post ".mget", action: :list, on: :collection
     end
 
     resources :playlists, controller: :enclosures, type: "Playlist",
-                                only: [:show], constraints: uuid_options do
+                          only: [:show], constraints: uuid_options do
       post ".mget", action: :list, on: :collection
     end
 

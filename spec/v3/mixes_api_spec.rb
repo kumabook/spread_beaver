@@ -17,7 +17,7 @@ RSpec.describe "Mixes api", type: :request, autodoc: true do
       @journal      = Journal.create!(label: "highlight")
       @issue         = Issue.create!(label: "1",
                                      state: Issue.states[:published],
-                                journal_id: @journal.id)
+                                     journal_id: @journal.id)
       (0...ITEM_NUM).to_a.each { |n|
         LikedEntry.create! user: @user,
                            entry: @feed.entries[n],

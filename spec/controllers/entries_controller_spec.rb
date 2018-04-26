@@ -158,7 +158,7 @@ describe EntriesController, type: :controller do
   describe "#unread" do
     before do
       like = ReadEntry.create!(user_id:  user.id,
-                                entry_id: entry.id)
+                               entry_id: entry.id)
       delete :unread, params: { id: like.id, entry_id: entry.id }
     end
     it { expect(response).to redirect_to entries_url }

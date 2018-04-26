@@ -58,8 +58,8 @@ describe Resource do
 
   def res(resource_id)
     Resource.create!(resource_id:   resource_id,
-                      resource_type: "stream",
-                      engagement:    0,
-                      wall_id:       wall.id)
+                     resource_type: "stream",
+                     engagement:    0,
+                     wall_id:       wall.id)
   end
 end

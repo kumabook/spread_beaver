@@ -12,7 +12,7 @@ class V3::KeywordsController < V3::ApiController
 
   def update
     if @keyword.update(label: params[:label],
-                 description: params[:description])
+                       description: params[:description])
       render json: @keyword.to_json, status: 200
     else
       render json: {}, status: :unprocessable_entity
