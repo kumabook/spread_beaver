@@ -16,6 +16,7 @@ class Keyword < ApplicationRecord
   after_save :purge
 
   private
+
   def set_id
     self.id = "keyword/#{label}"
   end

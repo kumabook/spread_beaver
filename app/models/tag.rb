@@ -14,6 +14,7 @@ class Tag < ApplicationRecord
   before_save      :set_id
 
   private
+
   def set_id
     self.id = "user/#{user.id}/tag/#{label}"
   end

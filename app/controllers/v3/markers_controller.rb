@@ -55,6 +55,7 @@ class V3::MarkersController < V3::ApiController
   end
 
   private
+
     def mark_items(mark_class, type=nil)
       @ids.each do |id|
         begin

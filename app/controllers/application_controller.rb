@@ -6,6 +6,7 @@ class ApplicationController < ActionController::Base
   before_action :require_login
 
   protected
+
   def admin?
     current_user && current_user.admin?
   end
@@ -17,6 +18,7 @@ class ApplicationController < ActionController::Base
   end
 
   private
+
   def not_authenticated
     redirect_to login_path, alert: "Please login first"
   end

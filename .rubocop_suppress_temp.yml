@@ -95,8 +95,6 @@ Metrics/CyclomaticComplexity:
   Enabled: false
 Style/GuardClause:
   Enabled: false
-Layout/EmptyLinesAroundAccessModifier:
-  Enabled: false
 Layout/EmptyLineAfterMagicComment:
   Enabled: false
 Style/Lambda:

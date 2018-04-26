@@ -53,6 +53,7 @@ class Journal < ApplicationRecord
   end
 
   private
+
   def set_stream_id
     self.stream_id = "journal/#{label}"
   end
