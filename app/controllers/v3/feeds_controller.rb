@@ -12,7 +12,7 @@ class V3::FeedsController < V3::ApiController
                             per_page: search_params[:count])
     result = {
       related: [],
-         hint: "",
+      hint: "",
       results: @feeds
     }
     set_surrogate_key_header Feed.table_key, @feeds.map(&:record_key)

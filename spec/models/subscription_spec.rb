@@ -8,11 +8,11 @@ describe Subscription do
   let! (:feed2) { FactoryBot.create(:feed) }
   let! (:subscription1) {
     Subscription.create! user: user,
-                                               feed: feed1
+                         feed: feed1
   }
   let! (:subscription2) {
     Subscription.create! user: user,
-                                               feed: feed2
+                         feed: feed2
   }
 
   describe "Subscription.of" do

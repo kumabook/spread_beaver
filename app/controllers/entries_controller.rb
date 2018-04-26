@@ -81,7 +81,7 @@ class EntriesController < ApplicationController
     end
     @entry.update_attributes(entry_params.merge({
                                                   keywords: keywords,
-                                                      tags: tags
+                                                  tags: tags
                                                 }))
     respond_to do |format|
       if @entry.save

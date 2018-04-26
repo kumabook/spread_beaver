@@ -58,7 +58,7 @@ Style/MethodCallWithoutArgsParentheses:
 Layout/EmptyLineBetweenDefs:
   Enabled: true
 Layout/AlignHash:
-  Enabled: false
+  Enabled: true
 Lint/UnusedBlockArgument:
   Enabled: false
 Style/RegexpLiteral:

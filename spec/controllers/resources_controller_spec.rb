@@ -5,9 +5,9 @@ describe ResourcesController, type: :controller do
   let! (:wall) { Wall.create!(label: "news", description: "news tab") }
   let! (:item) {
     Resource.create!(resource_id:   "journal/highlight",
-                                  resource_type: "stream",
-                                  wall_id:       wall.id,
-                                  engagement:    0)
+                     resource_type: "stream",
+                     wall_id:       wall.id,
+                     engagement:    0)
   }
   let (:user) { FactoryBot.create :admin }
 
@@ -35,7 +35,7 @@ describe ResourcesController, type: :controller do
     it { expect(response).to redirect_to edit_wall_url(wall) }
     it {
       expect(Resource.find_by(resource_id: resource_id,
-                                 wall_id: wall.id)).not_to be_nil
+                              wall_id: wall.id)).not_to be_nil
     }
   end
 

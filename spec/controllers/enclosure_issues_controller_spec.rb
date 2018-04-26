@@ -8,8 +8,8 @@ describe EnclosureIssuesController, type: :controller do
   let  (:user) { FactoryBot.create :admin }
   let  (:track_issue) {
     EnclosureIssue.create!(enclosure_id:   track.id,
-                                               enclosure_type: Track.name,
-                                               issue_id: issue.id)
+                           enclosure_type: Track.name,
+                           issue_id: issue.id)
   }
 
   before(:each) do

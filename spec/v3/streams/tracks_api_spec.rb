@@ -14,8 +14,8 @@ RSpec.describe "Track Stream api", type: :request, autodoc: true do
       @subscription = Subscription.create! user: @user,
                                            feed: @subscribed
       @category     = Category.create! subscriptions: [@subscription],
-                                               label: "category",
-                                               user: @user
+                                       label: "category",
+                                       user: @user
       @tag          = Tag.create! user: @user,
                                   label: "tag",
                                   entries: @feed.entries
@@ -23,7 +23,7 @@ RSpec.describe "Track Stream api", type: :request, autodoc: true do
       @journal      = Journal.create!(label: "highlight")
       @issue        = Issue.create!(label: "1",
                                     state: Issue.states[:published],
-                               journal_id: @journal.id)
+                                    journal_id: @journal.id)
       (0...ITEM_NUM).to_a.each { |n|
         d = (n * 150).days.ago
         SavedEnclosure.create! user:           @user,

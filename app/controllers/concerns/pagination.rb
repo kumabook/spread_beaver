@@ -20,9 +20,9 @@ module Pagination
     def continuation(page=0, per_page = nil, newer_than = nil, older_than = nil)
       str = {
               page: page,
-          per_page: per_page,
-        newer_than: newer_than,
-        older_than: older_than
+              per_page: per_page,
+              newer_than: newer_than,
+              older_than: older_than
       }.to_json
       enc = OpenSSL::Cipher::Cipher.new("aes256")
       enc.encrypt

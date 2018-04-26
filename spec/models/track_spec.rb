@@ -41,9 +41,9 @@ describe Track do
     let! (:playlist) { Playlist.create!(id: SecureRandom.uuid) }
     let! (:pick)     {
       Pick.create!(enclosure_id:   track.id,
-                                   enclosure_type: Track.name,
-                                   container_id:   playlist.id,
-                                   container_type: Playlist.name)
+                   enclosure_type: Track.name,
+                   container_id:   playlist.id,
+                   container_type: Playlist.name)
     }
     let! (:user)     { FactoryBot.create(:default) }
     before do

@@ -18,7 +18,7 @@ RSpec.describe "Track Mix api", type: :request, autodoc: true do
       @journal       = Journal.create!(label: "highlight")
       @issue         = Issue.create!(label: "1",
                                      state: Issue.states[:published],
-                                journal_id: @journal.id)
+                                     journal_id: @journal.id)
       (0...ITEM_NUM).to_a.each { |n|
         LikedEnclosure.create! user:           @user,
                                enclosure:      @feed.entries[0].tracks[n],
