@@ -11,9 +11,7 @@ class V3::StreamsController < V3::ApiController
     # TODO: currently visual is json string,
     # so we cannot check if the entry has visual or not.
     # Visual table should be created and check with where clause
-    if @need_visual
-      @items = @items.select(&:has_visual?)
-    end
+    @items = @items.select(&:has_visual?) if @need_visual
     Entry.set_contents_of_enclosures(@items)
     if current_resource_owner.present?
       Entry.set_marks(current_resource_owner, @items)
@@ -26,9 +24,7 @@ class V3::StreamsController < V3::ApiController
       alternate: [],
       items: @items.map { |en| en.as_content_json(only_legacy: only_legacy) }
     }
-    if @stream.present?
-      h[:updated] = @stream.updated_at.to_time.to_i * 1000
-    end
+    h[:updated] = @stream.updated_at.to_time.to_i * 1000 if @stream.present?
     h[:title] = @title
     set_surrogate_key_header Entry.table_key, @items.map(&:record_key)
     render json: h, status: 200

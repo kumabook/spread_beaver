@@ -10,9 +10,7 @@ class RSSCrawler < ApplicationJob
       sleep(WAITING_SEC_FOR_FEED)
       fetch_latest_entries(type, f)
     end
-    if type == :feedlr
-      update_feed_visuals(feeds)
-    end
+    update_feed_visuals(feeds) if type == :feedlr
     results
   end
 
@@ -72,9 +70,7 @@ class RSSCrawler < ApplicationJob
 
   def handle_feedlr_entry(crawler_result, feed, entry)
     sleep(WAITING_SEC_FOR_FEED)
-    if Entry.find_by(feed_id: feed.id, originId: entry.originId).present?
-      return
-    end
+    return if Entry.find_by(feed_id: feed.id, originId: entry.originId).present?
     e = Entry.first_or_create_by_feedlr(entry, feed)
     logger.info("Fetch tracks of #{e.url}")
     crawler_result.append(e, e.crawl)

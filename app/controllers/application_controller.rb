@@ -12,9 +12,7 @@ class ApplicationController < ActionController::Base
   end
 
   def require_admin
-    unless admin?
-      redirect_to root_path
-    end
+    redirect_to root_path unless admin?
   end
 
   private

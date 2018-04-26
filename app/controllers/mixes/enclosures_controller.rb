@@ -12,13 +12,9 @@ class Mixes::EnclosuresController < ApplicationController
   before_action :set_items
 
   def show
-    if @items.nil? || @enclosure_class.nil?
-      return
-    end
+    return if @items.nil? || @enclosure_class.nil?
 
-    if current_user.present?
-      @enclosure_class.set_marks(current_user, @items)
-    end
+    @enclosure_class.set_marks(current_user, @items) if current_user.present?
     @enclosure_class.set_contents(@items)
   end
 

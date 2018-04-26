@@ -22,9 +22,7 @@ class V3::MixesController < V3::ApiController
       alternate:    [],
       items:        @items,
     }
-    if @stream.present?
-      h[:updated] = @stream.updated_at.to_time.to_i * 1000
-    end
+    h[:updated] = @stream.updated_at.to_time.to_i * 1000 if @stream.present?
     h[:title] = @title
     set_surrogate_key_header Entry.table_key, @items.map(&:record_key)
     render json: h, status: 200

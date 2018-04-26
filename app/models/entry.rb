@@ -343,24 +343,12 @@ class Entry < ApplicationRecord
     hash["playlists"] = playlists.map(&enclosure_as_json)
     hash["albums"]    = albums.map(&enclosure_as_json)
 
-    if !is_liked.nil?
-      hash["is_liked"] = is_liked
-    end
-    if !is_saved.nil?
-      hash["is_saved"] = is_saved
-    end
-    if !is_read.nil?
-      hash["unread"] = !is_read
-    end
-    if !likes_count.nil?
-      hash["likes_count"] = likes_count
-    end
-    if !saved_count.nil?
-      hash["saved_count"] = saved_count
-    end
-    if !read_count.nil?
-      hash["read_count"] = read_count
-    end
+    hash["is_liked"] = is_liked if !is_liked.nil?
+    hash["is_saved"] = is_saved if !is_saved.nil?
+    hash["unread"] = !is_read if !is_read.nil?
+    hash["likes_count"] = likes_count if !likes_count.nil?
+    hash["saved_count"] = saved_count if !saved_count.nil?
+    hash["read_count"] = read_count if !read_count.nil?
 
     hash
   end
