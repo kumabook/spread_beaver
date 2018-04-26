@@ -289,6 +289,7 @@ class Entry < ApplicationRecord
     entries = Entry.latest(since)
     Mix.mix_up_and_paginate(entries, entries_per_feed, page, per_page)
   end
+
   def self.query_for_best_items(clazz, stream, query={})
     clazz.stream(stream).period(query.period).locale(query.locale)
   end
