@@ -50,6 +50,7 @@ class V3::Streams::EnclosuresController < V3::ApiController
   end
 
   private
+
   def items_of_global_resource
     case @resource
     when :latest

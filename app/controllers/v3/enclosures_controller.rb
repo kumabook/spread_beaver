@@ -23,6 +23,7 @@ class V3::EnclosuresController < V3::ApiController
   end
 
   private
+
     def set_enclosure
       @enclosure = @enclosure_class.with_detail.find(params[:id])
       @enclosure_class.set_contents([@enclosure])

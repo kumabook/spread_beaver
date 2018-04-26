@@ -14,6 +14,7 @@ class Category < ApplicationRecord
   before_save      :set_id
 
   private
+
   def set_id
     self.id = "user/#{user.id}/category/#{label}"
   end

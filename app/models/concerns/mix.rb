@@ -43,6 +43,7 @@ module Mix
     end
 
     private
+
     def time2key(time)
       return "inf" if time == Float::INFINITY
       return "neg_inf" if time == -Float::INFINITY

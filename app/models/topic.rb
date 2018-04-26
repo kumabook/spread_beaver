@@ -98,6 +98,7 @@ class Topic < ApplicationRecord
   end
 
   private
+
   def set_id
     self.id = "topic/#{self.label}"
   end

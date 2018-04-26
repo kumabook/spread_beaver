@@ -30,6 +30,7 @@ class WallsController < ApplicationController
   end
 
   private
+
   def set_wall
     @wall = Wall.find(params[:id])
   end
