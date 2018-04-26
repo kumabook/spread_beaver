@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 class CreateLikedEntries < ActiveRecord::Migration[5.0]
   def change
     create_table :liked_entries do |t|

@@ -1,5 +1,6 @@
 # coding: utf-8
 # frozen_string_literal: true
+
 require "slack"
 
 desc "Crawl sites of feeds and collect latest entries"

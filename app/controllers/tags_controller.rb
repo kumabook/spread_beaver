@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 class TagsController < ApplicationController
   before_action :set_tag, only: %i[edit destroy update]
   def index

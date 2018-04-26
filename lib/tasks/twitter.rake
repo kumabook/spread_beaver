@@ -1,5 +1,6 @@
 # coding: utf-8
 # frozen_string_literal: true
+
 namespace :twitter do
   desc "This task is called by the Heroku scheduler add-on"
   task tweet_hot_entry: :environment do

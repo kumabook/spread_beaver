@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 class V3::TagsController < V3::ApiController
   before_action :doorkeeper_authorize!
   before_action :set_tag    , only: [:update]

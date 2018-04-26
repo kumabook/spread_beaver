@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 class CreateSubscriptionCategories < ActiveRecord::Migration[4.2]
   def change
     create_table :subscription_categories do |t|

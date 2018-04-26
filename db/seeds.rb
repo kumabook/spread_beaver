@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require "rest-client"
 
 admin = User.find_or_create_by(email: "admin@example.com", type: Admin.name) do |user|

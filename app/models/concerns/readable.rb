@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require("paginated_array")
 
 module Readable

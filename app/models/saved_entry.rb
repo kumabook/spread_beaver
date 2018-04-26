@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 class SavedEntry < ApplicationRecord
   include EntryMark
   belongs_to :user

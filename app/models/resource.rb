@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 class Resource < ApplicationRecord
   belongs_to :wall, touch: true
   attr_accessor :item

@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 class Enclosure < ApplicationRecord
   LEGACY_PROVIDERS = %w[YouTube SoundCloud]
   attr_accessor :engagement

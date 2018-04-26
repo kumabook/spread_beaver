@@ -74,7 +74,7 @@ Metrics/CyclomaticComplexity:
 Style/GuardClause:
   Enabled: false
 Layout/EmptyLineAfterMagicComment:
-  Enabled: false
+  Enabled: true
 Style/Lambda:
   Enabled: false
 Style/RescueStandardError:
