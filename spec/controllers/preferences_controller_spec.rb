@@ -22,7 +22,8 @@ describe PreferencesController, type: :controller do
 
   describe "#create" do
     context "when succeeds in creating" do
-      before { post :create, params: {
+      before {
+        post :create, params: {
                       user_id:    user.id,
                       preference: { key: "new_key", value: "new_value"},
                     }

@@ -23,7 +23,8 @@ describe UsersController, type: :controller do
     email    = "new_user@example.com"
     password = "password123"
     context "when succeeds in creating" do
-      before { post :create, params: {
+      before {
+        post :create, params: {
                       user: {
                         email:                 email,
                         password:              password,

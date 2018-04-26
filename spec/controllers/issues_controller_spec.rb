@@ -25,7 +25,8 @@ describe IssuesController, type: :controller do
   describe "POST create" do
     label       = "new_journal"
     description = "desc"
-    before { post :create, params: {
+    before {
+      post :create, params: {
                     journal_id: journal.id,
                     issue: { label: label, description: description}
                   }

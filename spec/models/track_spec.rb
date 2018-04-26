@@ -39,7 +39,8 @@ describe Track do
   describe "#as_detail_json" do
     let! (:track)    { Track.create!(id: SecureRandom.uuid) }
     let! (:playlist) { Playlist.create!(id: SecureRandom.uuid) }
-    let! (:pick)     { Pick.create!(enclosure_id:   track.id,
+    let! (:pick)     {
+      Pick.create!(enclosure_id:   track.id,
                                    enclosure_type: Track.name,
                                    container_id:   playlist.id,
                                    container_type: Playlist.name)
