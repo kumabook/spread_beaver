@@ -7,6 +7,7 @@ class FeedlrHelper
       items: [entry(SecureRandom.uuid)]
     )
   end
+
   def self.feed(id)
     Hashie::Mash.new(
       id:     id,

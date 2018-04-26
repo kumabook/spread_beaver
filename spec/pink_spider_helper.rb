@@ -26,6 +26,7 @@ class PinkSpiderHelper
       updated_at:  "2017-03-16T05:37:02.807854+00:00",
     }.with_indifferent_access
   end
+
   def self.entry_hash(url: "http://example.com")
     {
       id:          SecureRandom.uuid,
@@ -56,6 +57,7 @@ class PinkSpiderHelper
       albums:      [album_hash],
     }.with_indifferent_access
   end
+
   def self.track_hash(shallow: false)
     {
       id:           SecureRandom.uuid,
@@ -78,6 +80,7 @@ class PinkSpiderHelper
       playlists:    shallow ? nil : [self.playlist_hash],
     }.with_indifferent_access
   end
+
   def self.album_hash
     {
       id:           SecureRandom.uuid,
@@ -97,6 +100,7 @@ class PinkSpiderHelper
       artists:      [],
     }.with_indifferent_access
   end
+
   def self.playlist_hash
     {
       id:           SecureRandom.uuid,

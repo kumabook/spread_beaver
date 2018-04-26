@@ -18,6 +18,7 @@ module Mix
       @entries_per_feed = entries_per_feed
       @use_stream_for_pick = true
     end
+
     def no_locale
       Query.new(@period, @type, locale: nil, provider: @provider, entries_per_feed: @entries_per_feed)
     end

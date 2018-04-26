@@ -56,7 +56,7 @@ Layout/MultilineMethodCallBraceLayout:
 Style/MethodCallWithoutArgsParentheses:
   Enabled: false
 Layout/EmptyLineBetweenDefs:
-  Enabled: false
+  Enabled: true
 Layout/AlignHash:
   Enabled: false
 Lint/UnusedBlockArgument:
