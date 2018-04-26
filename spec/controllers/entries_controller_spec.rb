@@ -2,9 +2,9 @@
 require "rails_helper"
 
 describe EntriesController, type: :controller do
-  let  (:feed  ) { Feed.create!(id: "feed/http://test.com/rss" , title: "feed") }
-  let! (:entry) { FactoryBot.create(:normal_entry, feed: feed ) }
-  let  (:user ) { FactoryBot.create(:admin       ) }
+  let  (:feed) { Feed.create!(id: "feed/http://test.com/rss" , title: "feed") }
+  let! (:entry) { FactoryBot.create(:normal_entry, feed: feed) }
+  let  (:user) { FactoryBot.create(:admin) }
   let  (:feedly_entry) {
     Hashie::Mash.new(
       title:           "title",

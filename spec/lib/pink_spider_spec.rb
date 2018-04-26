@@ -4,7 +4,7 @@ require "rails_helper"
 require "pink_spider"
 
 describe PinkSpider do
-  let (:header     ) { { accept: :json } }
+  let (:header) { { accept: :json } }
   let (:mget_header) { { content_type: :json, accept: :json } }
   before do
     @pink_spider = PinkSpider.new(nil)

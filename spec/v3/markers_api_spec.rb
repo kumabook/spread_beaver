@@ -5,7 +5,7 @@ RSpec.describe "Markers api", type: :request, autodoc: true do
   ENTRY_NUM     = 4
   ENCLOSURE_NUM = 4
   MARKED_NUM    = 2
-  let (:feed   ) { Feed.create!(id: "feed/http://test.com/rss" , title: "feed") }
+  let (:feed) { Feed.create!(id: "feed/http://test.com/rss" , title: "feed") }
   let (:entries) {
     ENTRY_NUM.times.map { FactoryBot.create(:normal_entry, feed: feed) }
   }

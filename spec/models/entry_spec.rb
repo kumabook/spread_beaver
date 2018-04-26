@@ -20,9 +20,9 @@ describe Entry do
       Entry::set_count_of_enclosures(feed.entries)
     end
     it {
-      expect(feed.entries[0].count_of            ).not_to be_nil
-      expect(feed.entries[0].count_of[:tracks]   ).to eq(TRACK_PER_ENTRY)
-      expect(feed.entries[0].count_of[:albums]   ).to eq(ALBUM_PER_ENTRY)
+      expect(feed.entries[0].count_of).not_to be_nil
+      expect(feed.entries[0].count_of[:tracks]).to eq(TRACK_PER_ENTRY)
+      expect(feed.entries[0].count_of[:albums]).to eq(ALBUM_PER_ENTRY)
       expect(feed.entries[0].count_of[:playlists]).to eq(PLAYLIST_PER_ENTRY)
     }
   end
