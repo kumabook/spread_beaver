@@ -222,9 +222,7 @@ class Enclosure < ApplicationRecord
       hash[method.to_s] = v if !v.nil?
     end
 
-    if !@content.nil?
-      hash.merge! @content
-    end
+    hash.merge! @content if !@content.nil?
 
     if !@partial_entries.nil?
       hash["entries"] = @partial_entries.map(&:as_partial_json)

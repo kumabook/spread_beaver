@@ -32,9 +32,7 @@ class V3::Mixes::EnclosuresController < V3::ApiController
       alternate: [],
       items: @items.map(&:as_content_json)
     }
-    if @stream.present?
-      h[:updated] = @stream.updated_at.to_time.to_i * 1000
-    end
+    h[:updated] = @stream.updated_at.to_time.to_i * 1000 if @stream.present?
     h[:title] = @title
     set_surrogate_key_header @enclosure_class.table_key, @items.map(&:record_key)
     render json: h, status: 200

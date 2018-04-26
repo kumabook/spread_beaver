@@ -21,18 +21,14 @@ class V3::Streams::EnclosuresController < V3::ApiController
     end
     @enclosure_class.set_contents(@items)
     @enclosure_class.set_partial_entries(@items)
-    if api_version == 0
-      @items = @items.select(&:legacy?)
-    end
+    @items = @items.select(&:legacy?) if api_version == 0
     h = {
       direction: "ltr",
       continuation: continuation,
       alternate: [],
       items: @items.map(&:as_content_json)
     }
-    if @stream.present?
-      h[:updated] = @stream.updated_at.to_time.to_i * 1000
-    end
+    h[:updated] = @stream.updated_at.to_time.to_i * 1000 if @stream.present?
     h[:title] = @title
     set_surrogate_key_header Entry.table_key, @items.map(&:record_key)
     render json: h, status: 200
