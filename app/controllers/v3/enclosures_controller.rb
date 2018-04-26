@@ -24,31 +24,31 @@ class V3::EnclosuresController < V3::ApiController
 
   private
 
-    def set_enclosure
-      @enclosure = @enclosure_class.with_detail.find(params[:id])
-      @enclosure_class.set_contents([@enclosure])
-      enclosures = [] + @enclosure.pick_enclosures + @enclosure.pick_containers
-      @enclosure_class.set_partial_entries(enclosures)
-      if current_resource_owner.present?
-        @enclosure_class.set_marks(current_resource_owner, [@enclosure])
-      end
+  def set_enclosure
+    @enclosure = @enclosure_class.with_detail.find(params[:id])
+    @enclosure_class.set_contents([@enclosure])
+    enclosures = [] + @enclosure.pick_enclosures + @enclosure.pick_containers
+    @enclosure_class.set_partial_entries(enclosures)
+    if current_resource_owner.present?
+      @enclosure_class.set_marks(current_resource_owner, [@enclosure])
     end
+  end
 
-    def set_enclosures
-      @enclosures = @enclosure_class.with_detail.where(id: params["_json"])
-      @enclosures = params["_json"].flat_map { |id|
-        @enclosures.select { |v| v.id == id }
-      }
-      enclosures = @enclosures.flat_map { |e| [] + e.pick_enclosures + e.pick_containers }
-      @enclosure_class.set_partial_entries(enclosures)
-      @enclosure_class.set_contents(@enclosures)
-      if current_resource_owner.present?
-        @enclosure_class.set_marks(current_resource_owner, @enclosures)
-      end
+  def set_enclosures
+    @enclosures = @enclosure_class.with_detail.where(id: params["_json"])
+    @enclosures = params["_json"].flat_map { |id|
+      @enclosures.select { |v| v.id == id }
+    }
+    enclosures = @enclosures.flat_map { |e| [] + e.pick_enclosures + e.pick_containers }
+    @enclosure_class.set_partial_entries(enclosures)
+    @enclosure_class.set_contents(@enclosures)
+    if current_resource_owner.present?
+      @enclosure_class.set_marks(current_resource_owner, @enclosures)
     end
+  end
 
-    def set_enclosure_class
-      @enclosure_class = params[:type].constantize
-    end
+  def set_enclosure_class
+    @enclosure_class = params[:type].constantize
+  end
 
 end

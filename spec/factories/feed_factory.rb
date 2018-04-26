@@ -96,7 +96,7 @@ FactoryBot.define do
 
   factory :feed, class: Feed do
     sequence(:id) { |n| "feed/http://test#{n}.com/rss" }
-     sequence(:title) { |n| "Test feed #{n}" }
+    sequence(:title) { |n| "Test feed #{n}" }
     description  "description"
     sequence(:website)      { |n| "http://test#{n}.com" }
     sequence(:visualUrl)    { |n| "http://test#{n}.com/visual" }
