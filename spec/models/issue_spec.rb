@@ -40,5 +40,4 @@ describe Issue do
       }
     end
   end
-
 end

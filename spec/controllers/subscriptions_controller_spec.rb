@@ -102,5 +102,4 @@ describe SubscriptionsController, type: :controller do
       it { expect(response).to redirect_to subscriptions_url }
     end
   end
-
 end

@@ -44,8 +44,6 @@ Style/WordArray:
   Enabled: false
 Metrics/AbcSize:
   Enabled: false
-Layout/EmptyLinesAroundBlockBody:
-  Enabled: false
 
 Lint/ParenthesesAsGroupedExpression:
   Enabled: false
