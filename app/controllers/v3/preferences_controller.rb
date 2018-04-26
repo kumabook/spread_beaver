@@ -20,10 +20,8 @@ class V3::PreferencesController < V3::ApiController
         else
           pref.update value: value
         end
-      else
-        if value != Preference::DELETE_VALUE
-          Preference.create key: key, value: value, user: current_resource_owner
-        end
+      elsif value != Preference::DELETE_VALUE
+        Preference.create key: key, value: value, user: current_resource_owner
       end
     end
 
