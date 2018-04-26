@@ -40,7 +40,7 @@ class SubscriptionsController < ApplicationController
   private
 
   def set_subscription
-    @subscription = Subscription.find(CGI.unescape params[:id])
+    @subscription = Subscription.find(CGI.unescape(params[:id]))
   end
 
   def set_category

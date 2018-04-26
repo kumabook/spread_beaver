@@ -103,8 +103,6 @@ Layout/EmptyLineAfterMagicComment:
   Enabled: false
 Style/Lambda:
   Enabled: false
-Style/NestedParenthesizedCalls:
-  Enabled: false
 Style/RescueStandardError:
   Enabled: false
 Style/DateTime:

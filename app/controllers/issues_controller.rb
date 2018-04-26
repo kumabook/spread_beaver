@@ -29,7 +29,7 @@ class IssuesController < ApplicationController
 
   def create_daily
     if params[:date].present?
-      @journal.create_daily_issue(Date.parse params[:date])
+      @journal.create_daily_issue(Date.parse(params[:date]))
     else
       @journal.create_daily_issue
     end

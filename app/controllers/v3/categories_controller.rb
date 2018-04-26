@@ -27,6 +27,6 @@ class V3::CategoriesController < V3::ApiController
   end
 
   def set_category
-    @category = Category.find(CGI.unescape params[:id])
+    @category = Category.find(CGI.unescape(params[:id]))
   end
 end

@@ -37,7 +37,7 @@ class V3::FeedsController < V3::ApiController
   end
 
   def set_feed
-    @feed = Feed.includes(:topics).find(CGI.unescape params[:id])
+    @feed = Feed.includes(:topics).find(CGI.unescape(params[:id]))
   end
 
   def set_feeds
