@@ -61,8 +61,6 @@ Layout/SpaceInsideParens:
   Enabled: false
 Layout/MultilineBlockLayout:
   Enabled: false
-Layout/SpaceAfterColon:
-  Enabled: false
 Layout/SpaceBeforeFirstArg:
   Enabled: false
 Layout/MultilineMethodCallBraceLayout:
