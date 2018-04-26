@@ -93,6 +93,5 @@ RSpec.describe "Playlist Stream api", type: :request, autodoc: true do
       expect(result["items"].count).to eq(ITEM_NUM)
       expect(result["continuation"]).to be_nil
     end
-
   end
 end

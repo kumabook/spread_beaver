@@ -25,5 +25,4 @@ describe Mixes::EnclosuresController, type: :controller do
     it { expect(assigns(:items)).not_to be_nil }
     it { expect(response).to render_template("show") }
   end
-
 end

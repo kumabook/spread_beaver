@@ -4,7 +4,6 @@ require "slack"
 
 desc "Crawl sites of feeds and collect latest entries"
 task :crawl, [:type]  => :environment do |_, args|
-
   args.with_defaults(type: "pink_spider")
   crawler_type = args[:type].to_sym
 
