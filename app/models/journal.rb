@@ -34,7 +34,7 @@ class Journal < ApplicationRecord
   end
 
   def create_daily_issue(date=Time.now)
-    date_str = "#{date.strftime('%Y%m%d')}"
+    date_str = (date.strftime("%Y%m%d")).to_s
     issue = Issue.find_or_create_by(journal_id: id, label: date_str) do |i|
       i.description = "#{label} entries at #{date_str}"
     end
