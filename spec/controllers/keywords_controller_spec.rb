@@ -3,7 +3,7 @@ require "rails_helper"
 
 describe KeywordsController, type: :controller do
   let! (:keyword) {     Keyword.create!(label: "keyword", description: "desc") }
-  let  (:user) { FactoryBot.create (:admin) }
+  let  (:user) { FactoryBot.create :admin }
 
   before(:each) do
     login_user user

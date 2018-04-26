@@ -2,7 +2,7 @@
 require "rails_helper"
 
 describe UsersController, type: :controller do
-  let (:user) { FactoryBot.create (:admin) }
+  let (:user) { FactoryBot.create :admin }
 
   before(:each) do
     login_user user

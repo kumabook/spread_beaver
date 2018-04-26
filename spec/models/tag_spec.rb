@@ -3,7 +3,7 @@
 require "rails_helper"
 
 describe Tag do
-  let (:user) { FactoryBot.create (:admin) }
+  let (:user) { FactoryBot.create :admin }
   let (:tag) { Tag.create!(label: "tag", description: "desc", user: user) }
   let (:entries) { FactoryBot.create(:feed).entries }
 
