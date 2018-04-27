@@ -139,19 +139,6 @@ class Entry < ApplicationRecord
     en
   end
 
-  def self.find_or_create_dummy_for_feed(feed)
-    id = Digest::MD5.hexdigest(feed.id)
-    entry = Entry.find_or_create_by(id: id) do |e|
-      e.title       =  "dummy for #{feed.id}"
-      e.engagement  = -1
-      e.fingerprint = ""
-      e.originId    = id
-    end
-    entry.feed = feed
-    entry.save
-    entry
-  end
-
   def self.crawl(period: 1.month.ago..Time.now)
     Entry.where("created_at >= ?", period.begin)
          .where("created_at <= ?", period.end).find_each do |entry|
