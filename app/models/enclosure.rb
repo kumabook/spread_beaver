@@ -54,7 +54,7 @@ class Enclosure < ApplicationRecord
 
   scope :with_content, -> { eager_load(:entry_enclosures).eager_load(:entries) }
   scope :with_detail, -> {
-    eager_load(:entries).where("entries.engagement >= 0")
+    eager_load(:entries)
       .eager_load(:pick_containers)
       .eager_load(:pick_enclosures)
   }
@@ -160,7 +160,6 @@ class Enclosure < ApplicationRecord
     items = EntryEnclosure.where(enclosure_id: enclosures.map {|e| e.id })
                           .order('entries.published DESC')
                           .joins(:entry)
-                          .where("entries.engagement >= 0")
                           .limit(PARTIAL_ENTRIES_LIMIT)
                           .preload(:entry)
     enclosures.each do |e|
