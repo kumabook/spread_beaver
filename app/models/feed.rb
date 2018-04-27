@@ -78,13 +78,6 @@ class Feed < ApplicationRecord
     nil
   end
 
-  def self.find_or_create_dummy_for_topic(topic)
-    Feed.find_or_create_by(id: "feed/#{topic.id}") do |f|
-      f.title    =  "dummy for #{topic.id}"
-      f.velocity = -1
-    end
-  end
-
   def self.find_or_create_by_ids_with_feedlr(feed_ids)
     client = Feedlr::Client.new(sandbox: false)
     feeds = client.feeds(feed_ids)
