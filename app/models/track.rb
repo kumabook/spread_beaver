@@ -12,8 +12,9 @@ class Track < Enclosure
     end
   end
 
-  def playlists
-    pick_containers.select { |enc| enc.type == Playlist.name }
+  def playlists(per_page: 9)
+    items = pick_containers.select { |enc| enc.type == Playlist.name }
+    items.take(per_page) if per_page.present?
   end
 
   def as_detail_json
