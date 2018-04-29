@@ -4,7 +4,7 @@ require "faraday"
 def notify_slack(text)
   return if ENV["SLACK_URL"].nil?
   uri = URI.parse(ENV["SLACK_URL"])
-  conn = Faraday.new(:url => "#{uri.scheme}://#{uri.host}") do |faraday|
+  conn = Faraday.new(url: "#{uri.scheme}://#{uri.host}") do |faraday|
     faraday.request  :url_encoded
     faraday.adapter  Faraday.default_adapter
   end

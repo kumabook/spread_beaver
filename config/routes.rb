@@ -4,11 +4,11 @@ Rails.application.routes.draw do
   uuid_regex         = /[a-zA-Z0-9\-]+/
   res_options        = { id: resource_id_regex }
   uuid_options       = { id: uuid_regex }
-  root :to => "feeds#index"
+  root to: "feeds#index"
 
   resources :user_sessions, only: [:create]
-  get  "login",  to: "user_sessions#new"    , :as => :login
-  post "logout", to: "user_sessions#destroy", :as => :logout
+  get  "login",  to: "user_sessions#new"    , as: :login
+  post "logout", to: "user_sessions#destroy", as: :logout
   resources :users do
     resources :entries, only: [:index], constraints: res_options
     resources :preferences, except: [:show]

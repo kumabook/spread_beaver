@@ -2,7 +2,7 @@
 # frozen_string_literal: true
 namespace :twitter do
   desc "This task is called by the Heroku scheduler add-on"
-  task :tweet_hot_entry => :environment do
+  task tweet_hot_entry: :environment do
     puts "Start making tweet of hot entry"
     client = get_twitter_client
     tweet  = get_hot_entry_tweet
@@ -10,7 +10,7 @@ namespace :twitter do
   end
 
   desc "This task is called by the Heroku scheduler add-on"
-  task :tweet_popular_track => :environment do
+  task tweet_popular_track: :environment do
     puts "Start making tweet of popular track"
     client = get_twitter_client
     tweet  = get_popular_track_tweet

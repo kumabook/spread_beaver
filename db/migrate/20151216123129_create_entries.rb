@@ -14,12 +14,12 @@ class CreateEntries < ActiveRecord::Migration[4.2]
       t.text      :visual
       t.text      :tags
       t.text      :categories
-      t.boolean   :unread,         :null => false
+      t.boolean   :unread,         null: false
       t.integer   :engagement
       t.integer   :actionTimestamp
       t.text      :enclosure
-      t.text      :fingerprint,   :null => false
-      t.string    :originId,      :null => false
+      t.text      :fingerprint,   null: false
+      t.string    :originId,      null: false
       t.string    :sid
 
       t.timestamp :crawled
@@ -29,7 +29,7 @@ class CreateEntries < ActiveRecord::Migration[4.2]
 
 
       t.timestamps null: false
-      t.string :feed_id, :null => false
+      t.string :feed_id, null: false
     end
     add_index :entries, :id, unique: true
   end

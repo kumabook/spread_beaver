@@ -36,7 +36,7 @@ task :crawl, [:type]  => :environment do |_, args|
 end
 
 desc "Crawl playlists"
-task :crawl_playlists => :environment do
+task crawl_playlists: :environment do
   Rails.logger.info("Start crawling playlists")
   notify_slack "Start crawling playlists"
 
@@ -50,7 +50,7 @@ task :crawl_playlists => :environment do
 end
 
 desc "Create latest entries as daily top keyword"
-task :create_daily_issue => :environment do
+task create_daily_issue: :environment do
   issues = Journal.create_daily_issues
   labels = issues.map {|i| "#{i.journal.label}-#{i.label}" }.join(" ")
   notify_slack "Successfully create daily issues: #{labels}"
