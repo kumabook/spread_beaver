@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 require "rails_helper"
 
-RSpec.describe "Entries api", :type => :request, autodoc: true do
+RSpec.describe "Entries api", type: :request, autodoc: true do
   before(:all) do
     setup()
     login()

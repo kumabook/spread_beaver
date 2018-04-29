@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 require "pink_spider"
 
-task :set_track_properties => :environment do
+task set_track_properties: :environment do
   batch_size = 100
   pink_spider = PinkSpider.new
   Track.where(provider: nil).find_in_batches(batch_size: batch_size) do |items|
