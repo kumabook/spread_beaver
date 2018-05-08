@@ -47,6 +47,18 @@ class V3::Mixes::EnclosuresController < V3::ApiController
                                       page:     @page,
                                       per_page: @per_page,
                                       query:    query)
+      set_previous_rank(query) if query.type == :engaging
+    end
+  end
+
+  def set_previous_rank(query)
+    @previous = @stream.mix_enclosures(@enclosure_class,
+                                       page:     1,
+                                       per_page: 100,
+                                       query:    query.previous(1.day))
+    @previous.each_with_index do |val, index|
+      item = @items.find { |v| v.id == val.id }
+      item.previous_rank = index + 1 if item.present?
     end
   end
 end
