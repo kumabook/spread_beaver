@@ -6,6 +6,7 @@ class Enclosure < ApplicationRecord
   attr_accessor :content
   attr_accessor :partial_entries
   attr_accessor :scores
+  attr_accessor :previous_rank
   include Streamable
   include Likable
   include Savable
@@ -214,6 +215,7 @@ class Enclosure < ApplicationRecord
 
   def as_content_json
     hash = as_json
+    hash["previous_rank"] = previous_rank
     hash["likesCount"]   = likes_count
     hash["entriesCount"] = entries_count
     hash["pickCount"]    = pick_count

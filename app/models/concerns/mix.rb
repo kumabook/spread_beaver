@@ -28,6 +28,10 @@ module Mix
       Query.new(@period.twice_past, @type, locale: nil, provider: @provider, entries_per_feed: @entries_per_feed)
     end
 
+    def previous(duration)
+      Query.new(@period.previous(duration), @type, locale: nil, provider: @provider, entries_per_feed: @entries_per_feed)
+    end
+
     def exclude_sound_cloud
       if @provider.nil?
         dup
