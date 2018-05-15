@@ -41,7 +41,7 @@ class V3::Mixes::EnclosuresController < V3::ApiController
 
   def set_items
     query = Mix::Query.new(@period, @type, locale: @locale, provider: @provider)
-    query.use_stream_for_pick = false
+
     if @stream.present?
       @items = @stream.mix_enclosures(@enclosure_class,
                                       page:     @page,

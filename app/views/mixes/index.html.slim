@@ -28,11 +28,6 @@ form.form.form-horizontal#mix_form
     = label_tag :provider, nil, :class => 'control-label col-lg-2'
     .col-lg-4
       = select_tag :provider, options_for_select(['youtube', 'others']), class: 'form-control'
-  .form-group
-    = label_tag :use_stream_for_pick, nil, :class => 'control-label col-lg-2'
-    .col-lg-4
-      = select_tag :use_stream_for_pick, options_for_select(['true', 'false']), class: 'form-control'
-
 
   .form-group
     .col-lg-offset-2.col-lg-10

@@ -17,7 +17,7 @@ function providers(value) {
   }
 }
 
-function mixParams(type, locale, period, provider, use_stream_for_pick) {
+function mixParams(type, locale, period, provider) {
   const { newerThan, olderThan } = fromToday(period);
   return {
     type,
@@ -25,8 +25,7 @@ function mixParams(type, locale, period, provider, use_stream_for_pick) {
     newerThan,
     olderThan,
     period,
-    provider,
-    use_stream_for_pick
+    provider
   };
 }
 
@@ -38,16 +37,13 @@ var period     = document.getElementById("period");
 var provider   = document.getElementById("provider");
 var mixForm    = document.getElementById("mix_form");
 
-var use_stream_for_pick = document.getElementById("use_stream_for_pick");
-
 mixForm.addEventListener('submit', function(e) {
   e.preventDefault();
   var url   = mixUrl(streamId.value, streamType.value);
   var params = mixParams(mixType.value,
                          locale.value,
                          period.value,
-                         providers(provider.value),
-                         use_stream_for_pick.value);
+                         providers(provider.value));
   var query = qs.stringify(params, { arrayFormat: 'brackets' });
   document.location.href = `${url}?${query}`;
 });
