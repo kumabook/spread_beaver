@@ -29,17 +29,6 @@ module StreamsControllable
     [/user\/(.*)\/(tag|playlist)\/global\.played/, :played  , :user],
   ]
 
-  class_methods do
-    def calculate_continuation(items, page, per_page)
-      if items.respond_to?(:total_count)
-        if items.total_count >= per_page * page + 1
-          return continuation(page + 1, per_page)
-        end
-      end
-      nil
-    end
-  end
-
   def mix_query_for_stream
     duration_for_ranking = Setting.duration_for_ranking&.days || 3.days
     from   = @newer_than.present? ? @newer_than : duration_for_ranking.ago
