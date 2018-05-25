@@ -26,9 +26,9 @@ class Playlist < Enclosure
     hash = super
     hash["tracks"] ||= []
     if tracks.present?
-      hash["tracks"] = hash["tracks"].map do |playlist_track|
-        track = tracks.find { |t| t.id == playlist_track["track_id"] }
-        next nil if track.nil?
+      hash["tracks"] = tracks.map do |track|
+        playlist_track = hash["tracks"].find { |h| h["track_id"] == track.id }
+        return playlist_track if playlist_track.nil?
         track.content = playlist_track["track"]
         playlist_track["track"] = track.as_content_json
         playlist_track

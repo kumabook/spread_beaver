@@ -14,8 +14,8 @@ class Enclosure < ApplicationRecord
 
   ENTRIES_LIMIT         = 100
   PARTIAL_ENTRIES_LIMIT = 100
-  PICKS_LIMIT           = 100
-  CONTAINERS_LIMIT      = 100
+  PICKS_LIMIT           = 9
+  CONTAINERS_LIMIT      = 25
 
   after_create :purge_all
   after_save :purge
