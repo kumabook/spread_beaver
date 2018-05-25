@@ -31,12 +31,12 @@ class Enclosure < ApplicationRecord
 
   has_many :containers      , dependent: :destroy   , class_name: "Pick"
   has_many :pick_containers , -> {
-    order("picks.updated_at DESC").limit(CONTAINERS_LIMIT)
+    order("picks.created_at DESC").limit(CONTAINERS_LIMIT)
   }, through: :containers, source: :container
 
   has_many :picks           , dependent: :destroy, foreign_key: "container_id"
   has_many :pick_enclosures , -> {
-    order("picks.updated_at DESC").limit(PICKS_LIMIT)
+    order("picks.created_at DESC").limit(PICKS_LIMIT)
   }, through: :picks, source: :enclosure
 
   has_many :enclosure_issues, dependent: :destroy
