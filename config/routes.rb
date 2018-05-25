@@ -188,6 +188,7 @@ Rails.application.routes.draw do
     resources :tracks, controller: :enclosures, type: "Track",
                        only: [:show], constraints: uuid_options do
       post ".mget", action: :list, on: :collection
+      resources :playlists, only: [:index], controller: :enclosures, type: "Playlist"
     end
 
     resources :albums, controller: :enclosures, type: "Album",
@@ -198,6 +199,7 @@ Rails.application.routes.draw do
     resources :playlists, controller: :enclosures, type: "Playlist",
                           only: [:show], constraints: uuid_options do
       post ".mget", action: :list, on: :collection
+      resources :tracks, only: [:index], controller: :enclosures, type: "Track"
     end
 
     resources :keywords, only: %i[index destroy], constraints: res_options do

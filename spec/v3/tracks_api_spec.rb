@@ -53,4 +53,20 @@ RSpec.describe "Tracks api", type: :request, autodoc: true do
       expect(ids).to include(t["id"])
     }
   end
+
+  it "shows playlists of a track" do
+    id = @feeds[0].entries[0].tracks[0].id
+    get "/v3/tracks/#{id}/playlists", headers: headers_for_login_user_api
+    result = JSON.parse @response.body
+    expect(result).not_to be_nil()
+    expect(result["items"].count).to eq(1)
+  end
+
+  it "shows tracks of a playlist" do
+    id = Playlist.first.id
+    get "/v3/playlists/#{id}/tracks", headers: headers_for_login_user_api
+    result = JSON.parse @response.body
+    expect(result).not_to be_nil()
+    expect(result["items"].count).to eq(1)
+  end
 end
