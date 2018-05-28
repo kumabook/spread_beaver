@@ -114,6 +114,7 @@ module Mix
                                                     page:     page,
                                                     per_page: per_page,
                                                     query:    query)
+    key = "engaging-mix-#{key}" if query.period.present? && query.type == :engaging
     PaginatedArray.from_cache(
       Rails.cache.fetch(key, cache_options) do
         enclosures_of_mix(clazz, page: page, per_page: per_page, query: query)&.to_cache
