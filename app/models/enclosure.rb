@@ -213,6 +213,10 @@ class Enclosure < ApplicationRecord
     type == Track.name && @content && LEGACY_PROVIDERS.include?(@content["provider"])
   end
 
+  def web_url
+    "https://typica.mu/#{self.class.name.downcase}/#{id}"
+  end
+
   def as_content_json
     hash = as_json
     hash["previous_rank"] = previous_rank
