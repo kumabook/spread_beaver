@@ -91,4 +91,16 @@ class User < ApplicationRecord
   def self.delete_cache_of_entries_of_all_user
     Rails.cache.delete_matched("entries_of_user_subscription-*")
   end
+
+  def spotify_authentication
+    authentications.select(&:spotify?).first
+  end
+
+  def connect_with_spotify_account(auth)
+    authentication = Authentication.find_or_initialize_by(user_id:  id,
+                                                          provider: auth.provider,
+                                                          uid:      auth.uid)
+    authentication.update_with_spotify_auth(auth)
+    authentication
+  end
 end

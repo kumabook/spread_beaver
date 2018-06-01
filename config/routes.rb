@@ -10,10 +10,12 @@ Rails.application.routes.draw do
   resources :user_sessions, only: [:create]
   get  "login",  to: "user_sessions#new"    , as: :login
   post "logout", to: "user_sessions#destroy", as: :logout
+  get "/auth/:provider/callback", to: "authentications#callback"
   resources :users do
     resources :entries, only: [:index], constraints: res_options
     resources :preferences, except: [:show]
   end
+  resources :authentications, only: [:destroy]
   resources :entries do
     get "feedly", action: :show_feedly, on: :member
     get "crawl" , action: :crawl      , on: :member
