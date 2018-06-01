@@ -2,6 +2,7 @@
 
 class CreateAuthentications < ActiveRecord::Migration[5.1]
   def change
+    remove_column :users, :twitter_user_id
     create_table :authentications do |t|
       t.uuid :user_id  , null: false, foreign_key: true
       t.integer :provider, null: false

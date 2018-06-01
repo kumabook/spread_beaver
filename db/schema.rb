@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -358,7 +360,7 @@ ActiveRecord::Schema.define(version: 20_180_530_073_219) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "engagement", default: 0, null: false
-    t.integer "mix_duration", default: 259200, null: false
+    t.integer "mix_duration", default: 259_200, null: false
     t.string "locale"
     t.index ["id"], name: "index_topics_on_id", unique: true
     t.index ["label"], name: "index_topics_on_label", unique: true
@@ -375,11 +377,9 @@ ActiveRecord::Schema.define(version: 20_180_530_073_219) do
     t.string "name"
     t.string "picture"
     t.string "locale"
-    t.string "twitter_user_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["id"], name: "index_users_on_id", unique: true
     t.index ["name"], name: "index_users_on_name", unique: true
-    t.index ["twitter_user_id"], name: "index_users_on_twitter_user_id", unique: true
   end
 
   create_table "walls", id: :serial, force: :cascade do |t|

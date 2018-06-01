@@ -13,10 +13,6 @@ p
   br
   = @user.locale || "None"
 p
-  strong twitter user id
-  br
-  = @user.twitter_user_id || "None"
-p
   strong picture
   br
   = thumbnail_image_link(@user.picture, size: 150, alt: "broken image")
