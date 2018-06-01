@@ -6,7 +6,9 @@ class User < ApplicationRecord
   MEMBER = "Member"
   ADMIN  = "Admin"
 
-  has_many :preferences     , dependent: :destroy
+  has_many :authentications  , dependent: :destroy
+
+  has_many :preferences      , dependent: :destroy
   has_many :subscriptions    , dependent: :destroy
   has_many :categories       , dependent: :destroy
   has_many :tags             , dependent: :destroy

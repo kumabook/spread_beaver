@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -12,10 +10,30 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20_180_329_022_001) do
+ActiveRecord::Schema.define(version: 20_180_530_073_219) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "uuid-ossp"
+
+  create_table "authentications", force: :cascade do |t|
+    t.uuid "user_id", null: false
+    t.integer "provider", null: false
+    t.string "uid", null: false
+    t.string "name"
+    t.string "nickname"
+    t.string "email"
+    t.string "url"
+    t.string "image_url"
+    t.string "description"
+    t.text "others"
+    t.text "credentials"
+    t.text "raw_info"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index %w[provider uid], name: "index_authentications_on_provider_and_uid", unique: true
+    t.index ["provider"], name: "index_authentications_on_provider"
+    t.index %w[user_id provider], name: "index_authentications_on_user_id_and_provider", unique: true
+  end
 
   create_table "categories", id: false, force: :cascade do |t|
     t.string "id", null: false
@@ -340,7 +358,7 @@ ActiveRecord::Schema.define(version: 20_180_329_022_001) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "engagement", default: 0, null: false
-    t.integer "mix_duration", default: 259_200, null: false
+    t.integer "mix_duration", default: 259200, null: false
     t.string "locale"
     t.index ["id"], name: "index_topics_on_id", unique: true
     t.index ["label"], name: "index_topics_on_label", unique: true
