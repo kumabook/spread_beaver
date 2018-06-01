@@ -950,6 +950,7 @@ DEPENDENCIES
   kaminari
   newrelic_rpm
   octicons-rails!
+  omniauth
   pg
   puma
   rack-cors
