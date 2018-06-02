@@ -43,14 +43,14 @@ RSpec.describe AuthenticationsController, type: :controller do
       end
       context "not connected" do
         it "returns a success response" do
-          get :spotify, params: { action: "connect" }
+          get :callback, params: { action: "connect", provider: "spotify" }
           expect(response).to redirect_to(edit_user_path(user))
         end
       end
       context "already connected with another user" do
         before(:each) { Authentication.create! other_auth }
         it "returns a success response" do
-          get :spotify, params: { action: "connect" }
+          get :callback, params: { action: "connect", provider: "spotify" }
           expect(response).to redirect_to(edit_user_path(user))
         end
       end
@@ -62,14 +62,14 @@ RSpec.describe AuthenticationsController, type: :controller do
       end
       context "not connected" do
         it do
-          get :spotify, params: { action: "login" }
+          get :callback, params: { action: "login", provider: "spotify" }
           expect(response).to redirect_to(root_path)
         end
       end
       context "already connected" do
         before(:each) { Authentication.create! auth }
         it do
-          get :spotify, params: { action: "login" }
+          get :callback, params: { action: "login", provider: "spotify" }
           expect(response).to redirect_to(:users)
         end
       end

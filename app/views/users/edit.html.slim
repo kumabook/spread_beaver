@@ -5,11 +5,15 @@
 h3 Social accounts
 div.row
   div class="col-lg-offset-2 col-lg-10"
-      = content_tag(:i, nil, class: 'fab fa-spotify fa-lg')
-      '
-      - if @spotify_authentication.present?
-        = link_to 'Show', @spotify_authentication.url, class: ['btn', 'btn-primary']
+      - Authentication.providers.each do |provider, _index|
+        = content_tag(:i, nil, class: "fab fa-#{provider} fa-lg")
         '
-        = link_to 'Disconnect', @spotify_authentication, method: :delete, class: ['btn', 'btn-primary']
-      - else
-        = link_to 'Connect', '/auth/spotify?action=connect', class: ['btn', 'btn-primary']
+        - auth = @user.authentications.select { |a| a.provider == provider }.first
+        - if auth.present?
+          = link_to 'Show', auth.url, class: ['btn', 'btn-primary']
+          '
+          = link_to 'Disconnect', auth, method: :delete, class: ['btn', 'btn-primary']
+        - else
+          = link_to 'Connect', "/auth/#{provider}?action=connect", class: ['btn', 'btn-primary']
+        br
+        br

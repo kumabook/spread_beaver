@@ -22,7 +22,7 @@ class V3::UsersController < V3::ApiController
   end
 
   def show
-    @user = User.find(params[:id])
+    @user = User.includes(:authentications).find(params[:id])
     render json: @user.to_json, status: :ok
   end
 

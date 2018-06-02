@@ -3,4 +3,6 @@
 
   = render 'form'
   br
-  = link_to 'Sign in with Spotify', '/auth/spotify?action=login', class: ['btn', 'btn-primary']
+  - Authentication.providers.each do |provider, _|
+    = link_to "Sign in with #{provider}", "/auth/#{provider}?action=login", class: ['btn', 'btn-primary']
+    '

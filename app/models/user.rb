@@ -94,11 +94,20 @@ class User < ApplicationRecord
     authentications.select(&:spotify?).first
   end
 
-  def connect_with_spotify_account(auth)
+  def twitter_authentication
+    authentications.select(&:twitter?).first
+  end
+
+  def connect_with_auth(auth)
     authentication = Authentication.find_or_initialize_by(user_id:  id,
                                                           provider: auth.provider,
                                                           uid:      auth.uid)
-    authentication.update_with_spotify_auth(auth)
+    case auth.provider
+    when "spotify"
+      authentication.update_with_spotify_auth(auth)
+    when "twitter"
+      authentication.update_with_twitter_auth(auth)
+    end
     authentication
   end
 end
