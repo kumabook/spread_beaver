@@ -70,6 +70,9 @@ class User < ApplicationRecord
 
   def as_json(options = { need_picture_put_url: false })
     hash = super(options.merge({ except: %i[crypted_password salt] }))
+    hash["twitterUserId"] = twitter_authentication&.uid
+    hash["twitter"]       = twitter_authentication&.nickname
+    hash["spotifyUserId"] = spotify_authentication&.uid
     hash["fullName"] = hash["name"]
     hash["created"] = created_at.to_time.to_i * 1000
 
