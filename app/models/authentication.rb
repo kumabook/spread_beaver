@@ -9,6 +9,21 @@ class Authentication < ApplicationRecord
     find_by(provider: auth.provider, uid: auth.uid)
   end
 
+  def find_or_create_access_token(application)
+    access_token = Doorkeeper::AccessToken.find_or_create_for(
+      application,
+      user.id,
+      "",
+      nil,
+      true
+    )
+    {
+      access_token: access_token.token,
+      token_type:   "bearer",
+      created_at:   access_token.created_at
+    }
+  end
+
   def update_with_auth(auth)
     case auth.provider
     when "spotify"

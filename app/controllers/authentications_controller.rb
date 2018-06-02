@@ -17,14 +17,21 @@ class AuthenticationsController < ApplicationController
       user.connect_with_auth(auth)
       redirect_to edit_user_path(user), notice: "Account was successfully connected."
     when "login"
-      authentication = Authentication.find_by_auth(auth)
+      credential_type = request.env["omniauth.params"]["credential_type"]
+      authentication  = Authentication.find_by_auth(auth)
       if authentication.nil? || authentication.user.nil?
         redirect_to root_path, notice: "This account isn't connected any user"
         return
       end
       authentication.update_with_auth(auth)
-      auto_login(authentication.user)
-      redirect_back_or_to(:users, notice: "Login successful")
+      case credential_type
+      when "oauth"
+        application = request.env["omniauth.params"]["application"]
+        render json: authentication.find_or_create_access_token(application).to_json
+      else
+        auto_login(authentication.user)
+        redirect_back_or_to(:users, notice: "Login successful")
+      end
     end
   rescue ActiveRecord::RecordNotUnique
     redirect_to edit_user_path(user), notice: "This account connected with another user"
