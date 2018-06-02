@@ -134,6 +134,9 @@ Rails.application.routes.draw do
         post ""   , to: "users#update"
         get "edit", to: "users#edit"
       end
+      member do
+        delete ":provider", to: "authentications#destroy"
+      end
     end
 
     resources :preferences, only: [:index] do
