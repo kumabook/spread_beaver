@@ -13,3 +13,10 @@ twitter_access_secret: <%= ENV["TWITTER_ACCESS_SECRET"] %>
 
 youtube_data_api_key:  <%= ENV["YOUTUBE_DATA_API_KEY"] %>
 soundcloud_client_id:  <%= ENV["SOUNDCLOUD_CLIENT_ID"] %>
+
+spotify_client_id:     <%= ENV['SPOTIFY_CLIENT_ID'] %>
+spotify_client_secret: <%= ENV['SPOTIFY_CLIENT_SECRET'] %>
+spotify_callback_url:  <%= ENV['SPOTIFY_CALLBACK_URL'] || "typica://callback" %>
+
+spotify_playlist_owner_email: ""
+playlist_name_of_topic: {}
