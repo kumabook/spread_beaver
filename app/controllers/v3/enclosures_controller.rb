@@ -73,7 +73,7 @@ class V3::EnclosuresController < V3::ApiController
   def set_enclosure
     @enclosure = @enclosure_class.with_detail.find(params[:id])
     @enclosure_class.set_contents([@enclosure])
-    enclosures = [] + @enclosure.pick_enclosures + @enclosure.pick_containers
+    enclosures = [@enclosure] + @enclosure.pick_enclosures + @enclosure.pick_containers
     @enclosure_class.set_partial_entries(enclosures)
     if current_resource_owner.present?
       @enclosure_class.set_marks(current_resource_owner, [@enclosure])

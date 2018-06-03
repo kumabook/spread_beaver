@@ -28,7 +28,7 @@ RSpec.describe "Tracks api", type: :request, autodoc: true do
     expect(track["entries"]).not_to be_nil()
     expect(track["entries"].count).to be(2)
     expect(track["entries"][0]["summary"]).to be_nil
-    expect(es[0]["published"] > es[1]["published"]).to be_truthy
+    expect(es[0]["published"]).to be > es[1]["published"]
     expect(track["likesCount"]).to eq(1)
     expect(track["entriesCount"]).not_to be_nil()
     expect(track["playlists"].count).to be > 0
