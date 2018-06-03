@@ -6,20 +6,23 @@ class PlaylistUpdater < ApplicationJob
 
   def perform(*args)
     logger.info("PlaylistUpdater start")
-    topic_id = args[0]
-    playlist = PlaylistUpdater.update_playlist(topic_id)
+    email    = args[0]
+    topic_id = args[1]
+    user     = User.find_by(email: email)
+    topic    = Topic.find(topic_id)
+    playlist = PlaylistUpdater.update_playlist(user, topic)
     logger.info("Update playlist #{playlist.name}")
     logger.info("PlaylistUpdater end")
+    playlist
   end
 
-  def self.update_playlist(topic_id)
-    user           = User.find_by(email: Setting.spotify_playlist_owner_email)
+  def self.update_playlist(user, topic)
     authentication = user.spotify_authentication
     spotify_user   = authentication.spotify_user
-    playlist_name  = Setting.playlist_name_of_topic[topic_id] || Topic.find(topic_id).label
+    playlist_name  = Setting.playlist_name_of_topic[topic.id] || topic.label
     playlist       = find_or_create_spotify_playlist(spotify_user, playlist_name)
     Rails.logger.info("#{playlist_name} is created")
-    tracks = chart_tracks(topic_id).select do |track|
+    tracks = chart_tracks(topic).select do |track|
       track.provider == "Spotify"
     end
     clear_playlist(playlist)
@@ -28,15 +31,14 @@ class PlaylistUpdater < ApplicationJob
     playlist
   end
 
-  def self.chart_tracks(topic_id)
+  def self.chart_tracks(topic)
     today            = Time.now.beginning_of_day
     week_ago         = today - 7.days
     entries_per_feed = Setting.latest_entries_per_feed
     query = Mix::Query.new(week_ago..today, :engaging,
                            locale: "ja",
                            entries_per_feed: entries_per_feed)
-    stream = Topic.find(topic_id)
-    tracks = stream.mix_enclosures(Track, page: 1, per_page: 100, query: query)
+    tracks = topic.mix_enclosures(Track, page: 1, per_page: 100, query: query)
     Track.set_contents(tracks)
     tracks
   end
