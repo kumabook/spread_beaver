@@ -5,9 +5,10 @@ require "slack"
 
 namespace :spotify do
   desc "Update a spotify playlist"
-  task update_playlist: :environment do
+  task update_mix_playlists: :environment do
     email = Setting.spotify_playlist_owner_email
-    PlaylistUpdater.perform_now(email, "topic/海外メディア")
-    PlaylistUpdater.perform_now(email, "topic/国内メディア")
+    Setting.spotify_mix_playlists.each do |h|
+      SpotifyMixPlaylistUpdater.perform_now(email, h["topic"], h["name"])
+    end
   end
 end

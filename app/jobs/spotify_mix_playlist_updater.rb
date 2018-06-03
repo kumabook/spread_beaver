@@ -1,25 +1,26 @@
 # coding: utf-8
 # frozen_string_literal: true
 
-class PlaylistUpdater < ApplicationJob
+class SpotifyMixPlaylistUpdater < ApplicationJob
   queue_as :default
 
   def perform(*args)
-    logger.info("PlaylistUpdater start")
+    logger.info("SpotifyMixPlaylistUpdater start")
     email    = args[0]
     topic_id = args[1]
+    name     = args[2]
     user     = User.find_by(email: email)
     topic    = Topic.find(topic_id)
-    playlist = PlaylistUpdater.update_playlist(user, topic)
+    playlist = SpotifyMixPlaylistUpdater.update_playlist(user, topic, name)
     logger.info("Update playlist #{playlist.name}")
-    logger.info("PlaylistUpdater end")
+    logger.info("SpotifyMixPlaylistUpdater end")
     playlist
   end
 
-  def self.update_playlist(user, topic)
+  def self.update_playlist(user, topic, name)
     authentication = user.spotify_authentication
     spotify_user   = authentication.spotify_user
-    playlist_name  = Setting.playlist_name_of_topic[topic.id] || topic.label
+    playlist_name  = name
     playlist       = find_or_create_spotify_playlist(spotify_user, playlist_name)
     Rails.logger.info("#{playlist_name} is created")
     tracks = chart_tracks(topic).select do |track|

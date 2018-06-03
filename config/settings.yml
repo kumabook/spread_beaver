@@ -19,4 +19,4 @@ spotify_client_secret: <%= ENV['SPOTIFY_CLIENT_SECRET'] %>
 spotify_callback_url:  <%= ENV['SPOTIFY_CALLBACK_URL'] || "typica://callback" %>
 
 spotify_playlist_owner_email: ""
-playlist_name_of_topic: {}
+spotify_mix_playlists: []

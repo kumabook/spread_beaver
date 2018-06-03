@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-describe "PlaylistUpdater" do
+describe "SpotifyMixPlaylistUpdater" do
   let(:user) { FactoryBot.create(:admin) }
   let(:topic) { Topic.create!(label: "topic", description: "desc") }
   let (:track) { FactoryBot.create(:track) }
@@ -42,7 +42,7 @@ describe "PlaylistUpdater" do
       expect(playlist).to receive(:add_tracks!)
       allow(playlist).to receive(:name) { "name" }
       email = Setting.spotify_playlist_owner_email
-      result = PlaylistUpdater.perform_now(user.email, topic.id)
+      result = SpotifyMixPlaylistUpdater.perform_now(user.email, topic.id)
       expect(playlist).to be(result)
     end
   end
