@@ -33,7 +33,7 @@ class SpotifyMixPlaylistUpdater < ApplicationJob
   end
 
   def self.chart_tracks(topic)
-    today            = Time.now.beginning_of_day
+    today            = Time.zone.now.beginning_of_day
     week_ago         = today - 7.days
     entries_per_feed = Setting.latest_entries_per_feed
     query = Mix::Query.new(week_ago..today, :engaging,
