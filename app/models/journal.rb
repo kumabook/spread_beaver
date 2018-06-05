@@ -38,6 +38,7 @@ class Journal < ApplicationRecord
     date_str = date.strftime("%Y%m%d").to_s
     issue = Issue.find_or_create_by(journal_id: id, label: date_str) do |i|
       i.description = "#{label} entries at #{date_str}"
+      i.state       = :published
     end
     issue.collect_entries_of_topic(topic) if topic.present?
     issue
