@@ -60,9 +60,19 @@ class Authentication < ApplicationRecord
   def spotify_user
     RSpotify::User.new({
       display_name: name,
-      email: email,
-      credentials: JSON.parse(credentials),
-      info: JSON.parse(raw_info),
+      email:        email,
+      credentials:  JSON.parse(credentials),
+      info:         JSON.parse(raw_info),
     }.with_indifferent_access)
+  end
+
+  def twitter_client
+    cred = JSON.parse(credentials)
+    Twitter::REST::Client.new do |config|
+      config.consumer_key        = ENV["TWITTER_CONSUMER_KEY"]
+      config.consumer_secret     = ENV["TWITTER_CONSUMER_SECRET"]
+      config.access_token        = cred["token"]
+      config.access_token_secret = cred["secret"]
+    end
   end
 end
