@@ -4,10 +4,7 @@ require "rails_helper"
 
 describe "SpotifyMixPlaylistUpdater" do
   let(:user) { FactoryBot.create(:admin) }
-  let(:topic) { Topic.create!(label: "topic", description: "desc") }
-  let (:track) { FactoryBot.create(:track) }
-  let (:playlist) { FactoryBot.create(:playlist) }
-  let (:today) { Time.now.beginning_of_day }
+  let(:mix_topic) { FactoryBot.create(:mix) }
 
   let(:auth) {
     {
@@ -21,15 +18,6 @@ describe "SpotifyMixPlaylistUpdater" do
   before(:each) do
     mock_up_pink_spider
     authentication = Authentication.create! auth
-    Pick.create!(enclosure_id:   track.id,
-                 enclosure_type: Track.name,
-                 container_id:   playlist.id,
-                 container_type: Playlist.name,
-                 created_at:     today,
-                 updated_at:     today)
-    topic_mix_journal = Journal.create_topic_mix_journal(topic)
-    issue = topic.find_or_create_mix_issue(topic_mix_journal)
-    issue.playlists << playlist
   end
 
   describe "#perform" do
@@ -42,7 +30,7 @@ describe "SpotifyMixPlaylistUpdater" do
       expect(playlist).to receive(:add_tracks!)
       allow(playlist).to receive(:name) { "name" }
       email = Setting.spotify_playlist_owner_email
-      result = SpotifyMixPlaylistUpdater.perform_now(user.email, topic.id)
+      result = SpotifyMixPlaylistUpdater.perform_now(user.email, mix_topic.id)
       expect(playlist).to be(result)
     end
   end
