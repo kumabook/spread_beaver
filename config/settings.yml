@@ -20,3 +20,4 @@ spotify_callback_url:  <%= ENV['SPOTIFY_CALLBACK_URL'] || "typica://callback" %>
 
 spotify_playlist_owner_email: ""
 spotify_mix_playlists: []
+twitter_bots: {}

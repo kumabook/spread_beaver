@@ -1,86 +1,47 @@
 # coding: utf-8
 # frozen_string_literal: true
 
+require "slack"
+
+def twitter_bot_setting(args)
+  Setting.twitter_bots[args.name]
+end
+
 namespace :twitter do
   desc "This task is called by the Heroku scheduler add-on"
-  task tweet_hot_entry: :environment do
-    puts "Start making tweet of hot entry"
-    client = get_twitter_client
-    tweet  = get_hot_entry_tweet
-    update(client, tweet) if tweet.present?
+  task :tweet_daily_hot_entry, %w[name] => :environment do |_task, args|
+    TwitterBot.perform_now("daily_hot_entry", twitter_bot_setting(args))
   end
 
   desc "This task is called by the Heroku scheduler add-on"
-  task tweet_popular_track: :environment do
-    puts "Start making tweet of popular track"
-    client = get_twitter_client
-    tweet  = get_popular_track_tweet
-    update(client, tweet) if tweet.present?
-  end
-end
-
-def get_twitter_client
-  Twitter::REST::Client.new do |config|
-    config.consumer_key        = Setting.twitter_consumer_key
-    config.consumer_secret     = Setting.twitter_consumer_secret
-    config.access_token        = Setting.twitter_access_token
-    config.access_token_secret = Setting.twitter_access_secret
-  end
-end
-
-def get_hot_entry_tweet
-  duration = Setting.duration_for_ranking.days
-  from     = duration.ago
-  to       = from + duration
-  entries = Entry.hot_items(period: from..to, per_page: per_page)
-
-  if entries.blank?
-    puts "Not found hot entries."
-    return
+  task :tweet_weekly_hot_entry, %w[name] => :environment do |_task, args|
+    TwitterBot.perform_now("weekly_hot_entry", twitter_bot_setting(args))
   end
 
-  entry  = entries[0]
-  origin = JSON.load(entry.origin)
-
-  if origin.present? && origin["title"].present?
-    body  = "✏[Today's Hot Entry] #{entry.title} by #{origin['title']}"
-    body  = (body.length > 116) ? body[0..115].to_s : body
-    tweet = "#{body} #{entry.originId}"
-    tweet.chomp
-  else
-    puts "Not found origin of entry."
-    nil
-  end
-end
-
-def get_popular_track_tweet
-  duration = Setting.duration_for_ranking.days
-  from     = duration.ago
-  to       = from + duration
-  tracks   = Track.hot_items(period: from..to, per_page: per_page)
-  Track.set_contents(tracks)
-
-  if tracks.blank?
-    puts "Not found popular tracks."
-    return
+  desc "This task is called by the Heroku scheduler add-on"
+  task :tweet_monthly_hot_entry, %w[name] => :environment do |_task, args|
+    TwitterBot.perform_now("monthly_hot_entry", twitter_bot_setting(args))
   end
 
-  track = tracks[0]
-
-  if title.present? && url.present?
-    body  = "🎧[Today's Hot Track] #{track.title}"
-    body  = (body.length > 116) ? body[0..115].to_s : body
-    tweet = "#{body} #{track.url}"
-    tweet.chomp
-  else
-    puts "Not found title or url of track."
-    nil
+  desc "This task is called by the Heroku scheduler add-on"
+  task :tweet_daily_hot_track, %w[name] => :environment do |_task, args|
+    TwitterBot.perform_now("daily_hot_track", twitter_bot_setting(args))
   end
-end
 
-def update(client, tweet)
-  client.update(tweet.chomp)
-  puts tweet
-rescue StandardError => e
-  Rails.logger.error "<<twitter.rake::tweet.update ERROR : #{e.message}>>"
+  desc "This task is called by the Heroku scheduler add-on"
+  task :tweet_weekly_hot_track, %w[name] => :environment do |_task, args|
+    TwitterBot.perform_now("weekly_hot_track", twitter_bot_setting(args))
+  end
+
+  desc "This task is called by the Heroku scheduler add-on"
+  task :tweet_monthly_hot_track, %w[name] => :environment do |_task, args|
+    TwitterBot.perform_now("monthly_hot_track", twitter_bot_setting(args))
+  end
+
+  desc "tweet today's chart"
+  task :tweet_chart, %w[name index topic_id] => :environment do |_task, args|
+    index    = args.index.to_i
+    options  = { index: index }
+    TwitterBot.perform_now("chart_track", twitter_bot_setting(args), options)
+  end
 end
