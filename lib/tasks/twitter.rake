@@ -39,7 +39,7 @@ namespace :twitter do
   end
 
   desc "tweet today's chart"
-  task :tweet_chart, %w[name index topic_id] => :environment do |_task, args|
+  task :tweet_chart, %w[name index] => :environment do |_task, args|
     index    = args.index.to_i
     options  = { index: index }
     TwitterBot.perform_now("chart_track", twitter_bot_setting(args), options)
