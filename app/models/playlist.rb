@@ -22,12 +22,17 @@ class Playlist < Enclosure
     pick_enclosures.select { |enc| enc.type == Track.name }
   end
 
+  def as_content_json
+    hash = super
+    hash["tracks"] = nil
+    hash
+  end
+
   def as_detail_json
     hash = super
-    hash["tracks"] ||= []
     if tracks.present?
       hash["tracks"] = tracks.map do |track|
-        playlist_track = hash["tracks"].find { |h| h["track_id"] == track.id }
+        playlist_track = @content["tracks"].find { |h| h["track_id"] == track.id }
         return playlist_track if playlist_track.nil?
         track.content = playlist_track["track"]
         playlist_track["track"] = track.as_content_json
