@@ -5,3 +5,11 @@ en:
   saved_enclosures:  "saved"
   entry_enclosures:  "feed"
   picks:             "playlist"
+
+  twitter_bot:
+    daily: "Daily"
+    weekly: "Weekly"
+    monthly: "Monthly"
+    hot_entry_tweet: "✍️[%{label} Ranking/Hot Entry/No.%{rank}] "
+    hot_track_tweet: "🎧[%{label} Ranking/Hot Track/No.%{rank}]"
+    chart_track_tweet: "🎧[Chart/%{chart_name}/No.%{rank}]"
