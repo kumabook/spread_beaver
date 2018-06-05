@@ -17,7 +17,7 @@ describe "SpotifyMixPlaylistUpdater" do
   }
   before(:each) do
     mock_up_pink_spider
-    authentication = Authentication.create! auth
+    Authentication.create! auth
   end
 
   describe "#perform" do
@@ -29,7 +29,6 @@ describe "SpotifyMixPlaylistUpdater" do
       expect(playlist).to receive(:remove_tracks!)
       expect(playlist).to receive(:add_tracks!)
       allow(playlist).to receive(:name) { "name" }
-      email = Setting.spotify_playlist_owner_email
       result = SpotifyMixPlaylistUpdater.perform_now(user.email, mix_topic.id)
       expect(playlist).to be(result)
     end

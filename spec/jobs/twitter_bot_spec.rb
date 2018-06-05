@@ -25,7 +25,7 @@ describe "TwitterBot" do
   before(:each) do
     mock_up_pink_spider
     allow_any_instance_of(Twitter::REST::Client).to receive(:update) { [] }
-    authentication = Authentication.create! auth
+    Authentication.create! auth
   end
 
   describe "chart_track" do

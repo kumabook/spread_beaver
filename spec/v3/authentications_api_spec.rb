@@ -18,7 +18,7 @@ RSpec.describe "Authentications api", type: :request, autodoc: true do
 
   describe "DELETE /v3/profile/:profile/:provider" do
     it "destroys the requested identity" do
-      authentication = Authentication.create! auth
+      Authentication.create! auth
       expect {
         delete "/v3/profile/#{@user.id}/spotify",
                headers: headers_for_login_user_api
