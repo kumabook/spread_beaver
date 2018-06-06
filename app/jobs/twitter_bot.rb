@@ -140,7 +140,7 @@ class TwitterBot < ApplicationJob
   def build_chart_spotify_playlist_tweet(playlist)
     body  = t("chart_spotify_playlist_tweet", { name: playlist.name })
     body  = (body.length > 116) ? body[0..115].to_s : body
-    tweet = "#{body} #{playlist.external_urls.first}"
+    tweet = "#{body} #{playlist.external_urls['spotify']}"
     tweet.chomp
   end
 end
