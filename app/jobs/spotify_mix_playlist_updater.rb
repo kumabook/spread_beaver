@@ -1,6 +1,8 @@
 # coding: utf-8
 # frozen_string_literal: true
 
+require "slack"
+
 class SpotifyMixPlaylistUpdater < ApplicationJob
   queue_as :default
 
@@ -14,6 +16,7 @@ class SpotifyMixPlaylistUpdater < ApplicationJob
     playlist = SpotifyMixPlaylistUpdater.update_playlist(user, topic, name)
     logger.info("Update playlist #{playlist.name}")
     logger.info("SpotifyMixPlaylistUpdater end")
+    notify_slack("Update playlist #{playlist.name}")
     playlist
   end
 
