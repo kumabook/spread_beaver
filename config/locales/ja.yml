@@ -6,3 +6,4 @@ ja:
     hot_entry_tweet: "✍️[%{label}ランキング/人気の記事/No.%{rank}] "
     hot_track_tweet: "🎧[%{label}ランキング/人気の曲/No.%{rank}]"
     chart_track_tweet: "🎧[チャート/%{chart_name}/No.%{rank}]"
+    chart_spotify_playlist_tweet: "🎧[チャート/%{name}] Spotify Playlistはこちら"

@@ -48,6 +48,9 @@ class TwitterBot < ApplicationJob
       index = options[:index]
       track = chart_tracks(topic)[index]
       [build_chart_track_tweet(track, topic, index)]
+    when "chart_spotify_playlist"
+      playlist = find_or_create_spotify_playlist(options[:user], options[:name])
+      [build_chart_spotify_playlist_tweet(playlist)]
     else
       []
     end
@@ -95,6 +98,10 @@ class TwitterBot < ApplicationJob
     SpotifyMixPlaylistUpdater.chart_tracks(topic)
   end
 
+  def find_or_create_spotify_playlist(user, name)
+    SpotifyMixPlaylistUpdater.find_or_create_spotify_playlist(user, name)
+  end
+
   def build_entry_tweet(entry, header)
     origin = JSON.load(entry.origin)
     if origin.present? && origin["title"].present?
@@ -128,5 +135,12 @@ class TwitterBot < ApplicationJob
   def build_chart_track_tweet(track, topic, index)
     prefix = t("chart_track_tweet", rank: index + 1, chart_name: t(topic.id, default: topic.label))
     build_track_tweet(track, prefix)
+  end
+
+  def build_chart_spotify_playlist_tweet(playlist)
+    body  = t("chart_spotify_playlist_tweet", { name: playlist.name })
+    body  = (body.length > 116) ? body[0..115].to_s : body
+    tweet = "#{body} #{playlist.external_urls.first}"
+    tweet.chomp
   end
 end

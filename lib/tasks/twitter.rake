@@ -44,4 +44,17 @@ namespace :twitter do
     options  = { index: index }
     TwitterBot.perform_now("chart_track", twitter_bot_setting(args), options)
   end
+
+  desc "tweet chart spotify playlist"
+  task :tweet_chart_spotify_playlist, %w[name] => :environment do |_task, args|
+    email        = Setting.spotify_playlist_owner_email
+    user         = User.find_by(email: email)
+    spotify_user = user&.spotify_authentication&.spotify_user
+    bot_setting  = twitter_bot_setting(args)
+    mix_setting  = Setting.spotify_mix_playlists.find do |h|
+      h["topic"] == bot_setting["topic"]
+    end
+    options = { name: mix_setting["name"], user: spotify_user }
+    TwitterBot.perform_now("chart_spotify_playlist", bot_setting, options)
+  end
 end
