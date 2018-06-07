@@ -7,6 +7,14 @@ def twitter_bot_setting(args)
   Setting.twitter_bots[args.name]
 end
 
+def spotify_updater_setting(args)
+  Setting.spotify_playlist_updaters[args.name]
+end
+
+def spotify_user(email)
+  User.find_by(email: email)&.spotify_authentication&.spotify_user
+end
+
 namespace :twitter do
   desc "tweet daily hot entry"
   task :tweet_daily_hot_entry, %w[name] => :environment do |_task, args|
@@ -46,15 +54,12 @@ namespace :twitter do
   end
 
   desc "tweet chart spotify playlist"
-  task :tweet_chart_spotify_playlist, %w[name] => :environment do |_task, args|
-    email        = Setting.spotify_playlist_owner_email
-    user         = User.find_by(email: email)
-    spotify_user = user&.spotify_authentication&.spotify_user
-    bot_setting  = twitter_bot_setting(args)
-    mix_setting  = Setting.spotify_mix_playlists.find do |h|
-      h["topic"] == bot_setting["topic"]
-    end
-    options = { name: mix_setting["name"], user: spotify_user }
+  task :tweet_chart_spotify_playlist, %w[name mix] => :environment do |_task, args|
+    bot_setting     = twitter_bot_setting(args)
+    spotify_setting = spotify_updater_setting(args)
+    mix_setting     = spotify_setting["mix_playlists"][args.mix]
+    email           = spotify_setting["email"]
+    options         = { name: mix_setting["name"], user: spotify_user(email) }
     TwitterBot.perform_now("chart_spotify_playlist", bot_setting, options)
   end
 end
