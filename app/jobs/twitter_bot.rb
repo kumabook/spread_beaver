@@ -14,11 +14,12 @@ class TwitterBot < ApplicationJob
     options = args[2]
 
     user    = User.find_by(email: setting["email"])
-    client  = user.twitter_authentication.twitter_client
+    auth    = user.twitter_authentication
+    client  = auth.twitter_client
     topic   = Topic.find(setting["topic"])
     @locale = setting["locale"]
     result  = tweets(type, topic, options).each do |tweet|
-      post_tweet(client, tweet)
+      post_tweet(client, tweet, auth.nickname)
     end
 
     logger.info("TwitterBot end")
@@ -68,13 +69,14 @@ class TwitterBot < ApplicationJob
     }
   end
 
-  def post_tweet(client, tweet)
+  def post_tweet(client, tweet, name)
     client.update(tweet.chomp)
-    Rails.logger.info(tweet)
-    notify_slack tweet
+    message = "@#{name} tweeted:\n#{tweet}"
+    Rails.logger.info(message)
+    notify_slack message
   rescue StandardError => e
     Rails.logger.error "<<twitter.rake::tweet.update ERROR : #{e.message}>>"
-    notify_slack "Fail to tweet : #{e.message}"
+    notify_slack "@#{name} failed to tweet : #{e.message}"
   end
 
   def hot_entries(topic, duration = 1, count = 1)
