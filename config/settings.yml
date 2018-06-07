@@ -16,6 +16,15 @@ spotify_client_id:     <%= ENV['SPOTIFY_CLIENT_ID'] %>
 spotify_client_secret: <%= ENV['SPOTIFY_CLIENT_SECRET'] %>
 spotify_callback_url:  <%= ENV['SPOTIFY_CALLBACK_URL'] || "typica://callback" %>
 
-spotify_playlist_owner_email: ""
-spotify_mix_playlists: []
-twitter_bots: {}
+spotify_playlist_updaters:
+  name:
+    email: "email@xxx.com"
+    mix_playlists:
+      id:
+        topic: "topic/xxx"
+        name: "Top 100"
+twitter_bots:
+  name:
+    email: "email@xxx.com"
+    locale: "ja"
+    topic: "topic/xxx"
