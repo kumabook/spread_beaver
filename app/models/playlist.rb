@@ -33,7 +33,7 @@ class Playlist < Enclosure
     if tracks.present?
       hash["tracks"] = tracks.map do |track|
         playlist_track = @content["tracks"].find { |h| h["track_id"] == track.id }
-        return playlist_track if playlist_track.nil?
+        next playlist_track if playlist_track.nil?
         track.content = playlist_track["track"]
         playlist_track["track"] = track.as_content_json
         playlist_track
