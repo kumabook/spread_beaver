@@ -19,7 +19,7 @@ class Playlist < Enclosure
   end
 
   def tracks
-    pick_enclosures.select { |enc| enc.type == Track.name }
+    pick_enclosures.limit(PICKS_LIMIT).select { |enc| enc.type == Track.name }
   end
 
   def as_content_json
