@@ -59,11 +59,9 @@ class V3::MarkersController < V3::ApiController
 
   def mark_items(mark_class, type=nil)
     @ids.each do |id|
-      begin
-        params = mark_class.marker_params(current_resource_owner, id, type)
-        @mark  = mark_class.create(params)
-      rescue ActiveRecord::RecordNotUnique
-      end
+      params = mark_class.marker_params(current_resource_owner, id, type)
+      @mark  = mark_class.create(params)
+    rescue ActiveRecord::RecordNotUnique
     end
     render json: {}, status: 200
   end

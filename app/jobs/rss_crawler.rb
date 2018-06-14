@@ -94,11 +94,9 @@ class RSSCrawler < ApplicationJob
 
   def create_feeds_on_pink_spider
     Feed.all.each do |f|
-      begin
-        Feed.find_or_create_by_url(f.url)
-      rescue StandardError
-        puts "#{f.url} seems to be dead"
-      end
+      Feed.find_or_create_by_url(f.url)
+    rescue StandardError
+      puts "#{f.url} seems to be dead"
     end
   end
 

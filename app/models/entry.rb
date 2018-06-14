@@ -181,11 +181,9 @@ class Entry < ApplicationRecord
       if mix_journal.present?
         mix_issue = topic.find_or_create_daily_mix_issue(mix_journal, created_at)
         playlists.each do |playlist|
-          begin
-            mix_issue.playlists << playlist
-          rescue ActiveRecord::RecordNotUnique
-            # already exists
-          end
+          mix_issue.playlists << playlist
+        rescue ActiveRecord::RecordNotUnique
+          # already exists
         end
       end
     end
