@@ -1,6 +1,15 @@
 FROM ruby:2.3.3
 RUN apt-get update && \
-    apt-get install -qq -y build-essential nodejs libpq-dev postgresql-client --fix-missing --no-install-recommends
+    apt-get install -qq -y build-essential libpq-dev postgresql-client --fix-missing --no-install-recommends
+
+RUN curl -SL https://deb.nodesource.com/setup_10.x | bash
+RUN apt-get install -y nodejs
+
+RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
+RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
+
+RUN apt-get update && apt-get install -y yarn
+
 
 ENV INSTALL_PATH /app
 RUN mkdir -p $INSTALL_PATH
