@@ -1,6 +1,11 @@
 inherit_from:
   - .rubocop_suppress_temp.yml
-
+inherit_mode:
+  merge:
+    - Exclude
+AllCops:
+  Exclude:
+    - 'db/schema.rb'
 Style/StringLiterals:
   Enabled: true
   EnforcedStyle: double_quotes
