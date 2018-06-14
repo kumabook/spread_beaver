@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -12,7 +10,8 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20_180_530_073_219) do
+ActiveRecord::Schema.define(version: 20180530073219) do
+
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "uuid-ossp"
@@ -32,9 +31,9 @@ ActiveRecord::Schema.define(version: 20_180_530_073_219) do
     t.text "raw_info"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index %w[provider uid], name: "index_authentications_on_provider_and_uid", unique: true
+    t.index ["provider", "uid"], name: "index_authentications_on_provider_and_uid", unique: true
     t.index ["provider"], name: "index_authentications_on_provider"
-    t.index %w[user_id provider], name: "index_authentications_on_user_id_and_provider", unique: true
+    t.index ["user_id", "provider"], name: "index_authentications_on_user_id_and_provider", unique: true
   end
 
   create_table "categories", id: false, force: :cascade do |t|
@@ -55,7 +54,7 @@ ActiveRecord::Schema.define(version: 20_180_530_073_219) do
     t.integer "engagement", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index %w[enclosure_id issue_id], name: "index_enclosure_issues_on_enclosure_id_and_issue_id", unique: true
+    t.index ["enclosure_id", "issue_id"], name: "index_enclosure_issues_on_enclosure_id_and_issue_id", unique: true
   end
 
   create_table "enclosures", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -118,7 +117,7 @@ ActiveRecord::Schema.define(version: 20_180_530_073_219) do
     t.integer "enclosure_provider", default: 0
     t.index ["enclosure_id"], name: "index_entry_enclosures_on_enclosure_id"
     t.index ["enclosure_type"], name: "index_entry_enclosures_on_enclosure_type"
-    t.index %w[entry_id enclosure_id], name: "index_entry_enclosures_on_entry_id_and_enclosure_id", unique: true
+    t.index ["entry_id", "enclosure_id"], name: "index_entry_enclosures_on_entry_id_and_enclosure_id", unique: true
     t.index ["entry_id"], name: "index_entry_enclosures_on_entry_id"
   end
 
@@ -128,7 +127,7 @@ ActiveRecord::Schema.define(version: 20_180_530_073_219) do
     t.integer "engagement", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index %w[entry_id issue_id], name: "index_entry_issues_on_entry_id_and_issue_id", unique: true
+    t.index ["entry_id", "issue_id"], name: "index_entry_issues_on_entry_id_and_issue_id", unique: true
   end
 
   create_table "entry_keywords", id: :serial, force: :cascade do |t|
@@ -136,7 +135,7 @@ ActiveRecord::Schema.define(version: 20_180_530_073_219) do
     t.string "keyword_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index %w[entry_id keyword_id], name: "index_entry_keywords_on_entry_id_and_keyword_id", unique: true
+    t.index ["entry_id", "keyword_id"], name: "index_entry_keywords_on_entry_id_and_keyword_id", unique: true
   end
 
   create_table "entry_tags", id: :serial, force: :cascade do |t|
@@ -151,7 +150,7 @@ ActiveRecord::Schema.define(version: 20_180_530_073_219) do
     t.string "topic_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index %w[feed_id topic_id], name: "index_feed_topics_on_feed_id_and_topic_id", unique: true
+    t.index ["feed_id", "topic_id"], name: "index_feed_topics_on_feed_id_and_topic_id", unique: true
   end
 
   create_table "feeds", id: false, force: :cascade do |t|
@@ -183,7 +182,7 @@ ActiveRecord::Schema.define(version: 20_180_530_073_219) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["id"], name: "index_issues_on_id", unique: true
-    t.index %w[journal_id label], name: "index_issues_on_journal_id_and_label", unique: true
+    t.index ["journal_id", "label"], name: "index_issues_on_journal_id_and_label", unique: true
   end
 
   create_table "journals", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -213,7 +212,7 @@ ActiveRecord::Schema.define(version: 20_180_530_073_219) do
     t.datetime "updated_at", null: false
     t.string "enclosure_type", default: "Track", null: false
     t.index ["enclosure_type"], name: "index_liked_enclosures_on_enclosure_type"
-    t.index %w[user_id enclosure_id], name: "index_liked_enclosures_on_user_id_and_enclosure_id", unique: true
+    t.index ["user_id", "enclosure_id"], name: "index_liked_enclosures_on_user_id_and_enclosure_id", unique: true
   end
 
   create_table "liked_entries", id: :serial, force: :cascade do |t|
@@ -221,7 +220,7 @@ ActiveRecord::Schema.define(version: 20_180_530_073_219) do
     t.string "entry_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index %w[user_id entry_id], name: "index_liked_entries_on_user_id_and_entry_id", unique: true
+    t.index ["user_id", "entry_id"], name: "index_liked_entries_on_user_id_and_entry_id", unique: true
   end
 
   create_table "oauth_access_grants", id: :serial, force: :cascade do |t|
@@ -269,7 +268,7 @@ ActiveRecord::Schema.define(version: 20_180_530_073_219) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["created_at"], name: "index_picks_on_created_at"
-    t.index %w[enclosure_id container_id], name: "index_picks_on_enclosure_id_and_container_id", unique: true
+    t.index ["enclosure_id", "container_id"], name: "index_picks_on_enclosure_id_and_container_id", unique: true
     t.index ["updated_at"], name: "index_picks_on_updated_at"
   end
 
@@ -279,7 +278,7 @@ ActiveRecord::Schema.define(version: 20_180_530_073_219) do
     t.string "enclosure_type", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index %w[user_id enclosure_id], name: "index_played_enclosures_on_user_id_and_enclosure_id"
+    t.index ["user_id", "enclosure_id"], name: "index_played_enclosures_on_user_id_and_enclosure_id"
   end
 
   create_table "preferences", id: :serial, force: :cascade do |t|
@@ -288,7 +287,7 @@ ActiveRecord::Schema.define(version: 20_180_530_073_219) do
     t.text "value", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index %w[user_id key], name: "index_preferences_on_user_id_and_key", unique: true
+    t.index ["user_id", "key"], name: "index_preferences_on_user_id_and_key", unique: true
   end
 
   create_table "read_entries", id: :serial, force: :cascade do |t|
@@ -296,7 +295,7 @@ ActiveRecord::Schema.define(version: 20_180_530_073_219) do
     t.string "entry_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index %w[user_id entry_id], name: "index_read_entries_on_user_id_and_entry_id", unique: true
+    t.index ["user_id", "entry_id"], name: "index_read_entries_on_user_id_and_entry_id", unique: true
   end
 
   create_table "resources", id: :serial, force: :cascade do |t|
@@ -315,7 +314,7 @@ ActiveRecord::Schema.define(version: 20_180_530_073_219) do
     t.string "enclosure_type", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index %w[user_id enclosure_id], name: "index_saved_enclosures_on_user_id_and_enclosure_id", unique: true
+    t.index ["user_id", "enclosure_id"], name: "index_saved_enclosures_on_user_id_and_enclosure_id", unique: true
   end
 
   create_table "saved_entries", id: :serial, force: :cascade do |t|
@@ -323,7 +322,7 @@ ActiveRecord::Schema.define(version: 20_180_530_073_219) do
     t.string "entry_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index %w[user_id entry_id], name: "index_saved_entries_on_user_id_and_entry_id", unique: true
+    t.index ["user_id", "entry_id"], name: "index_saved_entries_on_user_id_and_entry_id", unique: true
   end
 
   create_table "subscription_categories", id: :serial, force: :cascade do |t|
@@ -331,7 +330,7 @@ ActiveRecord::Schema.define(version: 20_180_530_073_219) do
     t.string "category_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index %w[subscription_id category_id], name: "subscription_categories_index", unique: true
+    t.index ["subscription_id", "category_id"], name: "subscription_categories_index", unique: true
   end
 
   create_table "subscriptions", id: :serial, force: :cascade do |t|
@@ -339,7 +338,7 @@ ActiveRecord::Schema.define(version: 20_180_530_073_219) do
     t.string "feed_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index %w[user_id feed_id], name: "index_subscriptions_on_user_id_and_feed_id", unique: true
+    t.index ["user_id", "feed_id"], name: "index_subscriptions_on_user_id_and_feed_id", unique: true
   end
 
   create_table "tags", id: false, force: :cascade do |t|
@@ -350,7 +349,7 @@ ActiveRecord::Schema.define(version: 20_180_530_073_219) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["id"], name: "index_tags_on_id", unique: true
-    t.index %w[user_id label], name: "index_tags_on_user_id_and_label", unique: true
+    t.index ["user_id", "label"], name: "index_tags_on_user_id_and_label", unique: true
   end
 
   create_table "topics", id: false, force: :cascade do |t|
@@ -360,7 +359,7 @@ ActiveRecord::Schema.define(version: 20_180_530_073_219) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "engagement", default: 0, null: false
-    t.integer "mix_duration", default: 259_200, null: false
+    t.integer "mix_duration", default: 259200, null: false
     t.string "locale"
     t.index ["id"], name: "index_topics_on_id", unique: true
     t.index ["label"], name: "index_topics_on_label", unique: true
@@ -388,4 +387,5 @@ ActiveRecord::Schema.define(version: 20_180_530_073_219) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
+
 end
