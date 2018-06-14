@@ -108,10 +108,10 @@ See [Feedly Cloud API document](https://developer.feedly.com/v3/)
 - Restore database from backup
   - `heroku pg:backups:capture --app $APP`
   - `heroku pg:backups:download --app $APP -o spread_beaver.dump`
-  - `cat spread_beaver.dump | docker exec -i `docker-compose ps -q db` pg_restore --verbose  --clean -U postgres -d spread_beaver_development`
+  - `cat spread_beaver.dump | docker exec -i `docker-compose ps -q db` pg_restore --verbose  --clean --no-acl --no-owner -U postgres -d spread_beaver_development`
   - `heroku pg:backups:capture --app $PINK_SPIDER_APP`
   - `heroku pg:backups:download --app $PINK_SPIDER_APP -o pink_spider.dump`
-  - `cat pink_spider.dump | docker exec -i `docker-compose ps -q db` pg_restore --verbose --clean -U postgres -d pink_spider_production`
+  - `cat pink_spider.dump | docker exec -i `docker-compose ps -q db` pg_restore --verbose --clean --no-acl --no-owner -U postgres -d pink_spider_production`
 - Clear cache
   - `docker-compose run --rm web bundle exec rails r 'Rails.cache.clear'`
 
