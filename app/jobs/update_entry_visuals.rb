@@ -9,7 +9,7 @@ class UpdateEntryVisuals < ApplicationJob
          .where(visual: nil).find_in_batches(batch_size: 20) do |entries|
       client = Feedlr::Client.new(sandbox: false)
       sleep(WAITING_SEC_FOR_VISUAL)
-      feedlr_entries = client.user_entries(entries.map(&:id))
+      feedlr_entries = client.user_entries(entries.pluck(:id))
       hash = entry_and_feedlr_entry_hash(entries, feedlr_entries)
       hash.each do |_id, value|
         entry        = value[:entry]

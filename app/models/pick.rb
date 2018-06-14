@@ -31,6 +31,6 @@ class Pick < ApplicationRecord
     joins(container: :issues).where(issues: { id: issue.id })
   }
   scope :issues, ->(issues) {
-    joins(container: :issues).where(issues: { id: issues.map(&:id) })
+    joins(container: :issues).where(issues: { id: issues.pluck(:id) })
   }
 end

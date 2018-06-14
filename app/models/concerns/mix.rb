@@ -61,7 +61,7 @@ module Mix
   end
 
   def self.stream_ids
-    Topic.all.map(&:id)
+    Topic.all.pluck(:id)
   end
 
   included do
@@ -159,7 +159,7 @@ module Mix
   end
 
   def self.sort_one_by_one_by_feed(entries, entries_per_feed)
-    entries_list = entries.map(&:feed_id)
+    entries_list = entries.pluck(:feed_id)
                           .uniq
                           .map do |id|
       entries.select { |e| e.feed_id == id }.first(entries_per_feed)

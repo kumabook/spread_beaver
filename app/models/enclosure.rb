@@ -151,7 +151,7 @@ class Enclosure < ApplicationRecord
 
   def self.set_contents(enclosures)
     return enclosures if enclosures.blank?
-    contents = fetch_contents(enclosures.map(&:id))
+    contents = fetch_contents(enclosures.pluck(:id))
     enclosures.each do |e|
       e.content = contents.select { |c| c["id"] == e.id }.first
     end
@@ -159,7 +159,7 @@ class Enclosure < ApplicationRecord
   end
 
   def self.set_partial_entries(enclosures)
-    items = EntryEnclosure.where(enclosure_id: enclosures.map(&:id))
+    items = EntryEnclosure.where(enclosure_id: enclosures.pluck(:id))
                           .order("entries.published DESC")
                           .joins(:entry)
                           .limit(PARTIAL_ENTRIES_LIMIT)
@@ -183,7 +183,7 @@ class Enclosure < ApplicationRecord
 
   def self.marks_hash_of_user(clazz, user, enclosures)
     marks = clazz.where(user_id:      user.id,
-                        enclosure_id: enclosures.map(&:id))
+                        enclosure_id: enclosures.pluck(:id))
     enclosures.each_with_object({}) do |e, h|
       h[e] = marks.to_a.select { |l| e.id == l.enclosure_id }.first.present?
     end

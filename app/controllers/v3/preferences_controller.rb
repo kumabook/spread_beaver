@@ -6,7 +6,7 @@ class V3::PreferencesController < V3::ApiController
 
   def index
     @preferences = Preference.where(user: current_resource_owner)
-    preferences = @preferences.map { |p| [p.key, p.value] }
+    preferences = @preferences.pluck(:key, :value)
     render json: Hash[preferences], status: 200
   end
 
