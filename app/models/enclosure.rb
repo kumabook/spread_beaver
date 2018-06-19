@@ -181,6 +181,13 @@ class Enclosure < ApplicationRecord
     end
   end
 
+  def self.set_previous_ranks(enclosures, previous)
+    previous.each_with_index do |val, index|
+      item = enclosures.find { |v| v.id == val.id }
+      item.previous_rank = index + 1 if item.present?
+    end
+  end
+
   def self.marks_hash_of_user(clazz, user, enclosures)
     marks = clazz.where(user_id:      user.id,
                         enclosure_id: enclosures.pluck(:id))

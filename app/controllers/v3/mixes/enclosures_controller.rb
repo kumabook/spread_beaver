@@ -56,9 +56,6 @@ class V3::Mixes::EnclosuresController < V3::ApiController
                                        page:     1,
                                        per_page: 100,
                                        query:    query.previous(1.day))
-    @previous.each_with_index do |val, index|
-      item = @items.find { |v| v.id == val.id }
-      item.previous_rank = index + 1 if item.present?
-    end
+    @enclosure_class.set_previous_ranks(@items, @previous)
   end
 end
