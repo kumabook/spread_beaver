@@ -52,6 +52,10 @@ class TwitterBot < ApplicationJob
     when "chart_spotify_playlist"
       playlist = find_or_create_spotify_playlist(options[:user], options[:name])
       [build_chart_spotify_playlist_tweet(playlist)]
+    when "climb_up_track"
+      index = options[:index]
+      track = climb_up_tracks(topic)[index]
+      [build_climb_up_track(track)]
     else
       []
     end
@@ -100,6 +104,27 @@ class TwitterBot < ApplicationJob
     SpotifyMixPlaylistUpdater.chart_tracks(topic)
   end
 
+  def climb_up_tracks(topic)
+    today            = Time.zone.now.beginning_of_day
+    week_ago         = today - 7.days
+    entries_per_feed = Setting.latest_entries_per_feed
+    query = Mix::Query.new(week_ago..today, :engaging, entries_per_feed: entries_per_feed)
+    tracks   = topic.mix_enclosures(Track, page: 1, per_page: 100, query: query)
+    previous = topic.mix_enclosures(Track, page: 1, per_page: 100, query: query.previous(1.day))
+    Track.set_contents(tracks)
+    Track.set_previous_ranks(tracks, previous)
+    tracks.map.with_index { |val, index|
+      rank          = index + 1
+      previous_rank = val.previous_rank || 100
+      val.rank      = rank
+      [val, previous_rank - rank]
+    }.sort { |a, b|
+      b[1] <=> a[1]
+    }.map { |val, _rank_diff|
+      val
+    }
+  end
+
   def find_or_create_spotify_playlist(user, name)
     SpotifyMixPlaylistUpdater.find_or_create_spotify_playlist(user, name)
   end
@@ -143,6 +168,18 @@ class TwitterBot < ApplicationJob
     body  = t("chart_spotify_playlist_tweet", { name: playlist.name })
     body  = (body.length > 116) ? body[0..115].to_s : body
     tweet = "#{body} #{playlist.external_urls['spotify']}"
+    tweet.chomp
+  end
+
+  def build_climb_up_track(track)
+    body  = t("climb_up_track_tweet", {
+                artist:         track.content["owner_name"],
+                track:          track.title,
+                rank:           track.rank,
+                playlist_count: track.pick_count,
+              })
+    body  = (body.length > 116) ? body[0..115].to_s : body
+    tweet = "#{body}\n#{track.web_url}"
     tweet.chomp
   end
 end

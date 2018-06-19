@@ -6,6 +6,7 @@ class Enclosure < ApplicationRecord
   attr_accessor :content
   attr_accessor :partial_entries
   attr_accessor :scores
+  attr_accessor :rank
   attr_accessor :previous_rank
   include Streamable
   include Likable
