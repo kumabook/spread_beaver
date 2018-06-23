@@ -7,8 +7,8 @@ module Likable
   included do
     attr_accessor :is_liked
 
-    likes = "liked_#{table_name}".to_sym
-    has_many likes, dependent: :destroy
+    likes = like_class.table_name.to_sym
+    has_many likes, like_class.mark_has_many_options
     has_many :likers, through: likes, source: :user
 
     scope :popular, ->        { joins(:users).order("likes_count DESC") }
@@ -19,7 +19,11 @@ module Likable
 
   class_methods do
     def like_class
-      "Liked#{table_name.singularize.capitalize}".constantize
+      if self == Entry
+        LikedEntry
+      else
+        LikedEnclosure
+      end
     end
 
     def user_liked_hash(user, items)

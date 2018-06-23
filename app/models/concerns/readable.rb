@@ -8,8 +8,9 @@ module Readable
     include Viewable
     attr_accessor :is_read, :unread
 
-    reads = "read_#{table_name}".to_sym
-    has_many reads, dependent: :destroy
+    reads = read_class.table_name.to_sym
+    has_many reads, read_class.mark_has_many_options
+
     scope :hot , ->      { joins(:users).order("read_count DESC") }
     scope :read, ->(user) {
       joins(reads).where(reads => { user_id: user.id }).order("#{reads}.created_at DESC")
@@ -18,7 +19,11 @@ module Readable
 
   class_methods do
     def read_class
-      "Read#{table_name.singularize.capitalize}".constantize
+      if self == Entry
+        ReadEntry
+      else
+        ReadEnclosure
+      end
     end
     alias_method :view_class, :read_class
 

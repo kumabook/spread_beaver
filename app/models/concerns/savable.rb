@@ -7,8 +7,8 @@ module Savable
   included do
     attr_accessor :is_saved
 
-    saves = "saved_#{table_name}".to_sym
-    has_many saves, dependent: :destroy
+    saves = save_class.table_name.to_sym
+    has_many saves, save_class.mark_has_many_options
     has_many :saved_users, through: saves, source: :user
 
     scope :saved, ->(user) {
@@ -18,7 +18,11 @@ module Savable
 
   class_methods do
     def save_class
-      "Saved#{table_name.singularize.capitalize}".constantize
+      if self == Entry
+        SavedEntry
+      else
+        SavedEnclosure
+      end
     end
 
     def user_saved_hash(user, items)

@@ -8,8 +8,8 @@ module Playable
     include Viewable
     attr_accessor :is_played
 
-    plays = "played_#{table_name}".to_sym
-    has_many plays, dependent: :destroy
+    plays = play_class.table_name.to_sym
+    has_many plays, play_class.mark_has_many_options
 
     scope :hot,    ->        { joins(:users).order("play_count DESC") }
     scope :played, ->(user) {
@@ -19,7 +19,11 @@ module Playable
 
   class_methods do
     def play_class
-      "Played#{table_name.singularize.capitalize}".constantize
+      if self == Entry
+        PlayedEntry
+      else
+        PlayedEnclosure
+      end
     end
     alias_method :view_class, :play_class
 
