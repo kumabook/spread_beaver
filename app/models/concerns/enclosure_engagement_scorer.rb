@@ -35,7 +35,7 @@ module EnclosureEngagementScorer
 
     def score_bind_values(score_tables)
       score_tables.reduce([]) do |memo, t|
-        v = t.values[:where].binds.map { |bind|
+        v = (t.bind_values + t.values[:where].binds).map { |bind|
           ActiveRecord::Base.connection.quote(bind.value_for_database)
         }
         memo.concat v
