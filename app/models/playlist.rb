@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
 require "pink_spider"
-class Playlist < Enclosure
+class Playlist < ApplicationRecord
+  include EnclosureConcern
   def title
     fetch_content if @content.nil?
     "#{@content['title']} / #{@content['owner_name']}"
@@ -19,7 +20,7 @@ class Playlist < Enclosure
   end
 
   def tracks
-    pick_enclosures.limit(PICKS_LIMIT).select { |enc| enc.type == Track.name }
+    pick_enclosures.limit(PICKS_LIMIT)
   end
 
   def as_content_json

@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
 require "pink_spider"
-class Track < Enclosure
+class Track < ApplicationRecord
+  include EnclosureConcern
   def permalink_url
     fetch_content if @content.nil?
     case @content["provider"]
@@ -14,7 +15,7 @@ class Track < Enclosure
   end
 
   def playlists
-    pick_containers.select { |enc| enc.type == Playlist.name }
+    pick_containers
   end
 
   def as_content_json

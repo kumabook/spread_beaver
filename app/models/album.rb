@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
 require "pink_spider"
-class Album < Enclosure
+class Album < ApplicationRecord
+  include EnclosureConcern
   def title
     fetch_content if @content.nil?
     "#{@content['title']} / #{@content['owner_name']}"
