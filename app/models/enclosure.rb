@@ -2,6 +2,7 @@
 
 class Enclosure < ApplicationRecord
   LEGACY_PROVIDERS = %w[YouTube SoundCloud]
+  self.inheritance_column = :_type_disabled
   attr_accessor :engagement
   attr_accessor :content
   attr_accessor :partial_entries
