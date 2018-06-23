@@ -35,13 +35,9 @@ class V3::EnclosuresController < V3::ApiController
       @enclosures = @entry.public_send(index_method)
                           .page(params[:page])
     elsif @playlist.present? && @enclosure_class == Track
-      @enclosures = @playlist.pick_enclosures.where(type: Track.name)
-                             .page(@page)
-                             .per(@per_page)
+      @enclosures = @playlist.pick_enclosures.page(@page).per(@per_page)
     elsif @track.present? && @enclosure_class == Playlist
-      @enclosures = @track.pick_containers.where(type: Playlist.name)
-                          .page(@page)
-                          .per(@per_page)
+      @enclosures = @track.pick_containers.page(@page).per(@per_page)
     else
       @enclosures = []
     end
