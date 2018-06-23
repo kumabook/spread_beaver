@@ -4,7 +4,6 @@ require("paginated_array")
 module EnclosureEngagementScorer
   extend ActiveSupport::Concern
 
-  Enclosures = Enclosure.arel_table
   Join       = Arel::Nodes::OuterJoin
   SCORES_PER_MARK = {
     PlayedEnclosure.table_name => ENV.fetch("PLAYED_SCORE")   { 1 }.to_i,
@@ -45,11 +44,11 @@ module EnclosureEngagementScorer
     def score_select_mgr(score_queries, mix_query)
       score_columns = []
       score_names   = []
-      query         = Enclosures
+      query         = arel_table
       score_queries.each do |score_query|
         score_name = "#{score_query[:query].table_name}_score"
         scores     = score_table(score_query, mix_query)
-        query      = query.join(scores, Join).on(Enclosures[:id].eq(scores[:enclosure_id]))
+        query      = query.join(scores, Join).on(arel_table[:id].eq(scores[:enclosure_id]))
         column     = "COALESCE(#{scores[:score].sum().to_sql}, 0)"
         score_columns << column
         score_names << "#{column} as #{score_name}"
@@ -57,11 +56,10 @@ module EnclosureEngagementScorer
 
       score = score_columns.join(" + ")
       query
-        .project(Enclosures[:id], *score_names, "#{score} as score")
-        .where(Enclosures[:type].eq(name))
+        .project(arel_table[:id], *score_names, "#{score} as score")
         .order("score DESC")
-        .group(Enclosures[:id])
-      query.where(Enclosures[:provider].in(mix_query.provider)) if !mix_query.provider.nil?
+        .group(arel_table[:id])
+      query.where(arel_table[:provider].in(mix_query.provider)) if !mix_query.provider.nil?
       query
     end
 
