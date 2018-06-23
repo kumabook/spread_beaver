@@ -15,10 +15,7 @@ class EnclosureIssuesController < ApplicationController
   def create
     @enclosure_issue = EnclosureIssue.new(enclosure_issue_params)
     begin
-      if @enclosure.type != @enclosure_issue.enclosure_type
-        redirect_to(issue_items_path,
-                    notice: "enclosure type is invalid: #{@enclosure.type} != #{@enclosure_issue.enclosure_type}")
-      elsif @enclosure_issue.save
+      if @enclosure_issue.save
         redirect_to(issue_items_path)
       else
         redirect_to(issue_items_path,
@@ -47,6 +44,10 @@ class EnclosureIssuesController < ApplicationController
 
   private
 
+  def enclosure_class(name)
+    [Track, Album, Playlist].find { |clazz|  clazz.name == name }
+  end
+
   def set_enclosure_issue
     @enclosure_issue = EnclosureIssue.find_by(id: params[:id])
     if @enclosure_issue.nil?
@@ -59,7 +60,8 @@ class EnclosureIssuesController < ApplicationController
     if @enclosure_issue.present?
       @enclosure = @enclosure_issue.enclosure
     else
-      @enclosure = Enclosure.find(enclosure_issue_params[:enclosure_id])
+      clazz = enclosure_class(enclosure_issue_params[:enclosure_type])
+      @enclosure = clazz.find(enclosure_issue_params[:enclosure_id])
     end
   end
 
@@ -84,7 +86,6 @@ class EnclosureIssuesController < ApplicationController
   end
 
   def issue_items_path
-    items = @enclosure.type.downcase.pluralize
-    public_send("issue_#{items}_path".to_sym, @issue)
+    public_send("issue_#{@enclosure.class.table_name}_path".to_sym, @issue)
   end
 end
