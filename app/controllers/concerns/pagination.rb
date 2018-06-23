@@ -28,7 +28,7 @@ module Pagination
       enc = OpenSSL::Cipher::Cipher.new("aes256")
       enc.encrypt
       enc.pkcs5_keyivgen(CONTINUATION_SALT)
-      (enc.update(str) + enc.final).unpack("H*")[0].to_s
+      (enc.update(str) + enc.final).unpack1("H*").to_s
     rescue StandardError
       false
     end
