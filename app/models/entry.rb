@@ -285,7 +285,7 @@ class Entry < ApplicationRecord
   end
 
   def self.query_for_best_items(clazz, stream, query={})
-    clazz.stream(stream).period(query.period).locale(query.locale)
+    clazz.stream(stream, clazz).period(query.period).locale(query.locale)
   end
 
   def playlistify(force: false)

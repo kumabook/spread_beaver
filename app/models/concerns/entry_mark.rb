@@ -3,7 +3,25 @@
 module EntryMark
   extend ActiveSupport::Concern
   included do
-    include Streamable
+    scope :stream, ->(s, _) {
+      if s.is_a?(Feed)
+        feed(s)
+      elsif s.is_a?(Keyword)
+        keyword(s)
+      elsif s.is_a?(Tag)
+        tag(s)
+      elsif s.is_a?(Topic)
+        topic(s)
+      elsif s.is_a?(Category)
+        category(s)
+      elsif s.is_a?(Issue)
+        issue(s)
+      elsif s.is_a?(Enumerable) && s[0].is_a?(Issue)
+        issues(s)
+      else
+        all
+      end
+    }
     scope :period, ->(period) {
       where({ table_name.to_sym => { created_at: period }})
     }
@@ -40,6 +58,10 @@ module EntryMark
         user:     user,
         entry_id: id,
       }
+    end
+
+    def mark_has_many_options
+      { dependent: :destroy }
     end
   end
 end
