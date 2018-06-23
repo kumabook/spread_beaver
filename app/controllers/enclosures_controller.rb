@@ -146,7 +146,7 @@ class EnclosuresController < ApplicationController
 
   def user_item_params
     target_id  = params["#{enclosure_class.name.downcase}_id"]
-    target_key = "#{enclosure_class.table_name.singularize}_id".to_sym
+    target_key = "enclosure_id".to_sym
     {
       :user_id        => current_user.id,
       target_key      => target_id,
