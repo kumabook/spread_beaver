@@ -97,6 +97,14 @@ class PinkSpider
     fetch_items(ids, "playlists")
   end
 
+  def fetch_artist(id)
+    fetch_item(id, "artists")
+  end
+
+  def fetch_artists(ids)
+    fetch_items(ids, "artists")
+  end
+
   def search_playlists(query, page, per_page)
     search_items(query, page, per_page, "playlists")
   end
