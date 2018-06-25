@@ -108,6 +108,8 @@ module StreamsControllable
       @enclosure_class = Playlist
     when "albums"
       @enclosure_class = Album
+    when "artists"
+      @enclosure_class = Artist
     end
   end
 

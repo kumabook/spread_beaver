@@ -114,6 +114,8 @@ class EnclosuresController < ApplicationController
       Album
     when "Playlist"
       Playlist
+    when "Artist"
+      Artist
     end
   end
 

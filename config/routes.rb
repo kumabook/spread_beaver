@@ -65,6 +65,14 @@ Rails.application.routes.draw do
     post   "play"  , to: :play  , as: :plays
     get    "search", on: :collection
   end
+  resources :artists, controller: :enclosures, type: "Artist", except: %i[edit update] do
+    post   "like"  , to: :like  , as: :likes
+    delete "unlike", to: :unlike, as: :like
+    post   "save"  , to: :save  , as: :saves
+    delete "unsave", to: :unsave, as: :save
+    post   "play"  , to: :play  , as: :plays
+    get    "search", on: :collection
+  end
   resources :playlists, controller: :enclosures, type: "Playlist", except: %i[edit update] do
     post   "like"  , to: :like  , as: :likes
     delete "unlike", to: :unlike, as: :like
@@ -198,6 +206,11 @@ Rails.application.routes.draw do
 
     resources :albums, controller: :enclosures, type: "Album",
                        only: [:show], constraints: uuid_options do
+      post ".mget", action: :list, on: :collection
+    end
+
+    resources :artists, controller: :enclosures, type: "Artist",
+                        only: [:show], constraints: uuid_options do
       post ".mget", action: :list, on: :collection
     end
 
