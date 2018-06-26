@@ -3,6 +3,9 @@
 require "pink_spider"
 class Track < ApplicationRecord
   include EnclosureConcern
+  has_many :enclosure_artists, dependent: :destroy, as: :enclosure
+  has_many :artists, through: :enclosure_artists
+
   def permalink_url
     fetch_content if @content.nil?
     case @content["provider"]

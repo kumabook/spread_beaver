@@ -3,6 +3,9 @@
 require "pink_spider"
 class Album < ApplicationRecord
   include EnclosureConcern
+  has_many :enclosure_artists, dependent: :destroy, as: :enclosure
+  has_many :artists, through: :enclosure_artists
+
   def title
     fetch_content if @content.nil?
     "#{@content['title']} / #{@content['owner_name']}"
