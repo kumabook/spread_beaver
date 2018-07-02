@@ -163,7 +163,7 @@ class TwitterBot < ApplicationJob
   end
 
   def build_chart_tweet(tracks)
-    params = tracks[0..5].each_with_index.reduce({}) do |h, (t, i)|
+    params = tracks[0..5].each.with_index.each_with_object({}) do |(t, i), h|
       h["name#{i+1}".to_sym] = t.title
       h["artist_name#{i+1}".to_sym] = t.content["owner_name"]
       h
