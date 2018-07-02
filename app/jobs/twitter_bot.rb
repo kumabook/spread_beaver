@@ -134,10 +134,8 @@ class TwitterBot < ApplicationJob
   def build_entry_tweet(entry, header)
     origin = JSON.load(entry.origin)
     if origin.present? && origin["title"].present?
-      body  = "#{header} #{entry.title} by #{origin['title']}"
-      body  = (body.length > 116) ? body[0..115].to_s : body
-      tweet = "#{body} #{entry.url}"
-      tweet.chomp
+      body = "#{header} #{entry.title} by #{origin['title']}"
+      TwitterBot.truncate_tweet(body, suffix: entry.url)
     else
       Rails.logger.info("Not found origin of entry.")
       nil
@@ -146,9 +144,7 @@ class TwitterBot < ApplicationJob
 
   def build_track_tweet(track, prefix)
     body  = "#{prefix} #{track.title} / #{track.content['owner_name']}"
-    body  = (body.length > 116) ? body[0..115].to_s : body
-    tweet = "#{body} #{track.web_url}"
-    tweet.chomp
+    TwitterBot.truncate_tweet(body, suffix: track.web_url)
   end
 
   def build_hot_entry_tweet(entry, label, index)
@@ -173,19 +169,13 @@ class TwitterBot < ApplicationJob
       h
     end
     params[:date] = Date.current.strftime("%m/%d")
-    url   = t('chart_url')
-    l     = 280 - url.length - 1
-    body  = t("chart_tweet", params)
-    body  = (body.length > l) ? body[0..l].to_s : body
-    tweet = "#{body}\n#{url}"
-    tweet.chomp
+    url = t("chart_url")
+    TwitterBot.truncate_tweet(t("chart_tweet", params), suffix: url)
   end
 
   def build_chart_spotify_playlist_tweet(playlist)
     body  = t("chart_spotify_playlist_tweet", { name: playlist.name })
-    body  = (body.length > 116) ? body[0..115].to_s : body
-    tweet = "#{body} #{playlist.external_urls['spotify']}"
-    tweet.chomp
+    TwitterBot.truncate_tweet(body, suffix: playlist.external_urls["spotify"])
   end
 
   def build_climb_up_track(track)
