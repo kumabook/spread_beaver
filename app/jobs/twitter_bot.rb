@@ -195,8 +195,15 @@ class TwitterBot < ApplicationJob
                 rank:           track.rank,
                 playlist_count: track.pick_count,
               })
-    body  = (body.length > 116) ? body[0..115].to_s : body
-    tweet = "#{body}\n#{track.web_url}"
-    tweet.chomp
+    TwitterBot.truncate_tweet(body, suffix: track.web_url)
+  end
+
+  def self.truncate_tweet(body, suffix: "")
+    parse_result = Twitter::TwitterText::Validation.parse_tweet("#{suffix}\n#{body}")
+
+    return "#{body}\n#{suffix}" if parse_result[:valid]
+
+    body_end = parse_result[:valid_range_end] - suffix.length
+    "#{body.truncate(body_end)}\n#{suffix}"
   end
 end
