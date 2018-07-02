@@ -69,4 +69,10 @@ namespace :twitter do
     options  = { index: index }
     TwitterBot.perform_now("climb_up_track", twitter_bot_setting(args), options)
   end
+
+  desc "tweet chart"
+  task :tweet_chart, %w[name mix] => :environment do |_task, args|
+    bot_setting = twitter_bot_setting(args)
+    TwitterBot.perform_now("chart", bot_setting)
+  end
 end

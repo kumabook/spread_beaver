@@ -14,4 +14,13 @@ en:
     hot_track_tweet: "🎧[%{label} Ranking/Hot Track/No.%{rank}]"
     chart_track_tweet: "Chart / %{chart_name} / No.%{rank}] ▷ "
     chart_spotify_playlist_tweet: "%{name} Updated！\n\nCheck the Spotify Playlist 🎧"
+    chart_tweet: |-
+      Chart %m/%d
+
+      No.1 : %{name1} / %{artist_name1}
+      No.2 : %{name2} / %{artist_name2}
+      No.3 : %{name3} / %{artist_name3}
+      No.4 : %{name4} / %{artist_name4}
+      No.5 : %{name5} / %{artist_name5}
+    chart_url:
     climb_up_track_tweet: "%{name} of %{artist} climb up to Top %{rank}!\n%{playlist_count} playlists featured it"
