@@ -34,6 +34,7 @@ gem "rspotify"
 gem "slim-rails"
 gem "sorcery"
 gem "twitter"
+gem "twitter-text"
 
 gem "fastly-rails"
 gem "redis-rails"

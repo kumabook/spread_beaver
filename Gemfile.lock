@@ -657,6 +657,7 @@ GEM
     http_parser.rb (0.6.0)
     i18n (1.0.0)
       concurrent-ruby (~> 1.0)
+    idn-ruby (0.1.0)
     jaro_winkler (1.5.1)
     jbuilder (2.7.0)
       activesupport (>= 4.2.0)
@@ -908,6 +909,9 @@ GEM
       execjs (~> 2.7)
       less-rails (~> 2.8, >= 2.8.0)
       railties (~> 5.0, >= 5.0.1)
+    twitter-text (2.1.0)
+      idn-ruby
+      unf (~> 0.1.0)
     tzinfo (1.2.5)
       thread_safe (~> 0.1)
     uglifier (4.1.8)
@@ -975,6 +979,7 @@ DEPENDENCIES
   turbolinks
   twitter
   twitter-bootstrap-rails
+  twitter-text
   uglifier
   web-console
   webpacker (~> 3.4)
