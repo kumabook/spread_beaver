@@ -15,7 +15,7 @@ en:
     chart_track_tweet: "Chart / %{chart_name} / No.%{rank}] ▷ "
     chart_spotify_playlist_tweet: "%{name} Updated！\n\nCheck the Spotify Playlist 🎧"
     chart_tweet: |-
-      Chart %m/%d
+      Chart %{date}
 
       No.1 : %{name1} / %{artist_name1}
       No.2 : %{name2} / %{artist_name2}
