@@ -50,7 +50,9 @@ class TwitterBot < ApplicationJob
       track = chart_tracks(topic)[index]
       [build_chart_track_tweet(track, topic, index)]
     when "chart"
-      [build_chart_tweet(chart_tracks(topic))]
+      tracks = chart_tracks(topic)
+      range = options[:range]
+      [build_chart_tweet(tracks, range)]
     when "chart_spotify_playlist"
       playlist = find_or_create_spotify_playlist(options[:user], options[:name])
       [build_chart_spotify_playlist_tweet(playlist)]
@@ -162,10 +164,14 @@ class TwitterBot < ApplicationJob
     build_track_tweet(track, prefix)
   end
 
-  def build_chart_tweet(tracks)
-    params = tracks[0..5].each.with_index.each_with_object({}) do |(t, i), h|
-      h["name#{i+1}".to_sym] = t.title
-      h["artist_name#{i+1}".to_sym] = t.content["owner_name"]
+  def build_chart_tweet(tracks, range)
+    params = range.each_with_object({}) do |i, h|
+      t     = tracks[i]
+      index = i - range.first
+
+      h["rank#{index}".to_sym] = i + 1
+      h["name#{index}".to_sym] = t.title
+      h["artist_name#{index}".to_sym] = t.content["owner_name"]
       h
     end
     params[:date] = Date.current.strftime("%m/%d")

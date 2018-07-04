@@ -10,10 +10,10 @@ ja:
     chart_tweet: |-
       チャート %{date}
 
-      1位 : %{name1} / %{artist_name1}
-      2位 : %{name2} / %{artist_name2}
-      3位 : %{name3} / %{artist_name3}
-      4位 : %{name4} / %{artist_name4}
-      5位 : %{name5} / %{artist_name5}
+      %{rank0}位 : %{name0} / %{artist_name0}
+      %{rank1}位 : %{name1} / %{artist_name1}
+      %{rank2}位 : %{name2} / %{artist_name2}
+      %{rank3}位 : %{name3} / %{artist_name3}
+      %{rank4}位 : %{name4} / %{artist_name4}
     chart_url:
     climb_up_track_tweet: "%{artist} の %{track} がTop %{rank} にランクイン！\n%{playlist_count} つのプレイリストに追加されて注目度アップ。"

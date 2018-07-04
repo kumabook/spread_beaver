@@ -71,8 +71,11 @@ namespace :twitter do
   end
 
   desc "tweet chart"
-  task :tweet_chart, %w[name mix] => :environment do |_task, args|
+  task :tweet_chart, %w[name from to] => :environment do |_task, args|
     bot_setting = twitter_bot_setting(args)
-    TwitterBot.perform_now("chart", bot_setting)
+    from = args.from.to_i
+    to   = args.to.to_i
+    options  = { range: from..to }
+    TwitterBot.perform_now("chart", bot_setting, options)
   end
 end
