@@ -53,6 +53,11 @@ group :development, :test do
   gem "rspec-rails"
   gem "rubocop"       , require: false
   gem "rubocop-github", require: false
+
+  gem "pry-byebug"
+  gem "pry-doc"
+  gem "pry-rails"
+  gem "pry-stack_explorer"
 end
 
 group :development do
