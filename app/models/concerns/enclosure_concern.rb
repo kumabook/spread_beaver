@@ -91,16 +91,6 @@ module EnclosureConcern
   end
 
   class_methods do
-    def find_or_create_by_content(content)
-      model = find_or_create_by(id: content["id"]) do |m|
-        m.created_at = content["published_at"]
-        m.title      = content["title"]
-        m.provider   = content["provider"]
-      end
-      model.content = content
-      model
-    end
-
     def create_items_of(entry, items)
       models = items.map do |i|
         model = find_or_create_by_content(i)
