@@ -100,6 +100,12 @@ module EnclosureConcern
                                          enclosure_provider: model.provider) do
           logger.info("Add new #{name} #{i['id']} to entry #{entry.id} #{i['provider']}")
         end
+        i["artists"]&.each do |h|
+          a = Artist.find_or_create_by(id: h["id"], name: h["name"], provider: h["provider"])
+          EnclosureArtist.find_or_create_by(enclosure_id:   model.id,
+                                            enclosure_type: Track.name,
+                                            artist_id:      a.id)
+        end
         model
       end
       models
