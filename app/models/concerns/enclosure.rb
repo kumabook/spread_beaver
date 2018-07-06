@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module EnclosureConcern
+module Enclosure
   extend ActiveSupport::Concern
   LEGACY_PROVIDERS = %w[YouTube SoundCloud]
   ENTRIES_LIMIT         = 100

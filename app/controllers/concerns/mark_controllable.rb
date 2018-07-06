@@ -7,7 +7,12 @@ module MarkControllable
   end
 
   def model_class
-    controller_name.classify.constantize
+    case controller_name
+    when "entries"
+      Entry
+    when "enclosures"
+      enclosure_class
+    end
   end
 
   def mark(mark_class)

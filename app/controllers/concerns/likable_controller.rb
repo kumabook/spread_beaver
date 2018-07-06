@@ -6,10 +6,6 @@ module LikableController
     base.extend(ClassMethods)
   end
 
-  def model_class
-    controller_name.classify.constantize
-  end
-
   def like
     mark(:like_class)
   end

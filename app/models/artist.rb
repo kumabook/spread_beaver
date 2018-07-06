@@ -2,7 +2,7 @@
 
 require "pink_spider"
 class Artist < ApplicationRecord
-  include EnclosureConcern
+  include Enclosure
   has_many :enclosure_artists
   has_many :tracks, through: :enclosure_artists, source: :enclosure, source_type: Track.name
   has_many :albums, through: :enclosure_artists, source: :enclosure, source_type: Album.name

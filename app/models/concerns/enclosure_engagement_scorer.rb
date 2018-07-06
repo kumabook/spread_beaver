@@ -94,7 +94,7 @@ module EnclosureEngagementScorer
 
       bind_values   = score_bind_values(score_queries.map { |q| q[:query] })
 
-      total_count   = Enclosure.where(type: name).provider(query.provider).count
+      total_count   = provider(query.provider).count
 
       select_mgr    = score_select_mgr(score_queries, query)
 

@@ -2,7 +2,7 @@
 
 require "pink_spider"
 class Album < ApplicationRecord
-  include EnclosureConcern
+  include Enclosure
   has_many :enclosure_artists, dependent: :destroy, as: :enclosure
   has_many :artists, through: :enclosure_artists
 

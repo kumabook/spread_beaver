@@ -2,7 +2,7 @@
 
 require "pink_spider"
 class Playlist < ApplicationRecord
-  include EnclosureConcern
+  include Enclosure
 
   def self.find_or_create_by_content(content)
     model = find_or_create_by(id: content["id"]) do |m|

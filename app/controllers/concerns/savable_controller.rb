@@ -6,10 +6,6 @@ module SavableController
     base.extend(ClassMethods)
   end
 
-  def model_class
-    controller_name.classify.constantize
-  end
-
   def save
     mark(:save_class)
   end
