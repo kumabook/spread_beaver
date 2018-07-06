@@ -100,7 +100,6 @@ class TwitterBot < ApplicationJob
     to    = from + duration
     query = Mix::Query.new(from..to, :hot)
     tracks = Track.hot_items(stream: topic, query: query, per_page: count)
-    Track.set_contents(tracks)
     tracks
   end
 
@@ -115,7 +114,6 @@ class TwitterBot < ApplicationJob
     query = Mix::Query.new(week_ago..today, :engaging, entries_per_feed: entries_per_feed)
     tracks   = topic.mix_enclosures(Track, page: 1, per_page: 100, query: query)
     previous = topic.mix_enclosures(Track, page: 1, per_page: 100, query: query.previous(1.day))
-    Track.set_contents(tracks)
     Track.set_previous_ranks(tracks, previous)
     tracks.map.with_index { |val, index|
       rank          = index + 1

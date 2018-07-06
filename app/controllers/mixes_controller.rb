@@ -13,7 +13,6 @@ class MixesController < ApplicationController
   def index; end
 
   def show
-    Entry.set_contents_of_enclosures(@items)
     Entry.set_count_of_enclosures(@items)
     if current_user.present?
       Entry.set_marks(current_user, @items)

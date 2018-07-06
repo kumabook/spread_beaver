@@ -16,7 +16,6 @@ class Mixes::EnclosuresController < ApplicationController
     return if @items.nil? || @enclosure_class.nil?
 
     @enclosure_class.set_marks(current_user, @items) if current_user.present?
-    @enclosure_class.set_contents(@items)
   end
 
   def set_items

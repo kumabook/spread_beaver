@@ -43,7 +43,6 @@ class V3::EnclosuresController < V3::ApiController
     end
     continuation = self.class.calculate_continuation(@enclosures, @page, @per_page)
     @enclosure_class.set_marks(current_user, @enclosures) if current_user.present?
-    @enclosure_class.set_contents(@enclosures)
     set_surrogate_key_header @enclosure_class.table_key, @enclosures.map(&:record_key)
     h = {
       continuation: continuation,
@@ -68,7 +67,6 @@ class V3::EnclosuresController < V3::ApiController
 
   def set_enclosure
     @enclosure = @enclosure_class.with_detail.find(params[:id])
-    @enclosure_class.set_contents([@enclosure])
     enclosures = [@enclosure] + @enclosure.pick_enclosures + @enclosure.pick_containers
     @enclosure_class.set_partial_entries(enclosures)
     if current_resource_owner.present?
@@ -83,7 +81,6 @@ class V3::EnclosuresController < V3::ApiController
     }
     enclosures = @enclosures.flat_map { |e| [] + e.pick_enclosures + e.pick_containers }
     @enclosure_class.set_partial_entries(enclosures)
-    @enclosure_class.set_contents(@enclosures)
     if current_resource_owner.present?
       @enclosure_class.set_marks(current_resource_owner, @enclosures)
     end
