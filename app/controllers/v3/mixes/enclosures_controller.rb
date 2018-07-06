@@ -25,7 +25,6 @@ class V3::Mixes::EnclosuresController < V3::ApiController
     if current_resource_owner.present?
       @enclosure_class.set_marks(current_resource_owner, @items)
     end
-    @enclosure_class.set_contents(@items)
     @enclosure_class.set_partial_entries(@items)
     h = {
       direction: "ltr",

@@ -12,7 +12,6 @@ class V3::MixesController < V3::ApiController
 
   def show
     continuation = self.class.calculate_continuation(@items, @page, @per_page)
-    Entry.set_contents_of_enclosures(@items)
     if current_resource_owner.present?
       Entry.set_marks(current_resource_owner, @items)
       Entry.set_marks_of_enclosures(current_resource_owner, @items)

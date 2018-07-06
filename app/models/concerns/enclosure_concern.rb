@@ -10,7 +10,6 @@ module EnclosureConcern
 
   included do
     attr_accessor :engagement
-    attr_accessor :content
     attr_accessor :partial_entries
     attr_accessor :scores
     attr_accessor :rank
@@ -116,30 +115,8 @@ module EnclosureConcern
       find_or_create_by_content(c)
     end
 
-    def fetch_contents(ids)
-      PinkSpider.new.public_send("fetch_#{name.downcase.pluralize}".to_sym, ids)
-    end
-
     def search(query, page, per_page)
-      req_page = page.nil? ? 0 : page.to_i - 1
-      res = PinkSpider.new.public_send("search_#{name.downcase.pluralize}".to_sym,
-                                       query,
-                                       req_page,
-                                       per_page)
-      contents = res["items"]
-      enclosures = where(id: contents.map { |content| content["id"] }).each do |e|
-        e.content = contents.select { |c| c["id"] == e.id }.first
-      end
-      PaginatedArray.new(enclosures, res["total"], res["page"] + 1, res["per_page"])
-    end
-
-    def set_contents(enclosures)
-      return enclosures if enclosures.blank?
-      contents = fetch_contents(enclosures.pluck(:id))
-      enclosures.each do |e|
-        e.content = contents.select { |c| c["id"] == e.id }.first
-      end
-      enclosures
+      where("title ILIKE ?", "%#{query}%").page(page).per(per_page)
     end
 
     def set_partial_entries(enclosures)
@@ -202,24 +179,16 @@ module EnclosureConcern
   end
 
   def has_thumbnail?
-    content.present? && content["thumbnail_url"].present?
-  end
-
-  def thumbnail_url
-    content["thumbnail_url"]
-  end
-
-  def fetch_content
-    @content = PinkSpider.new.public_send("fetch_#{self.class.name.downcase}".to_sym, id)
-    @content
+    thumbnail_url.present?
   end
 
   def update_content(params)
     PinkSpider.new.public_send("update_#{self.class.name.downcase}".to_sym, id, params)
-  end
+    update!(params)
+   end
 
   def legacy?
-    is_a?(Track) && @content && LEGACY_PROVIDERS.include?(@content["provider"])
+    is_a?(Track) &LEGACY_PROVIDERS.include?(provider)
   end
 
   def web_url
@@ -237,8 +206,6 @@ module EnclosureConcern
       v = public_send(method)
       hash[method.to_s] = v if !v.nil?
     end
-
-    hash.merge! @content if !@content.nil?
 
     if !@partial_entries.nil?
       hash["entries"] = @partial_entries.map(&:as_partial_json)

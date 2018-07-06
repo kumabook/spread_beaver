@@ -10,7 +10,6 @@ class Track < ApplicationRecord
     model = find_or_create_by(id: content["id"]) do |m|
       m.update_by_content(content)
     end
-    model.content = content
     model
   end
 
@@ -34,13 +33,12 @@ class Track < ApplicationRecord
   end
 
   def permalink_url
-    fetch_content if @content.nil?
-    case @content["provider"]
+    case provider
     when "Spotify"
-      s = @content["url"].split(":")
+      s = url.split(":")
       "http://open.spotify.com/#{s[1]}/#{s[2]}"
     else
-      @content["url"]
+      url
     end
   end
 
@@ -56,13 +54,7 @@ class Track < ApplicationRecord
 
   def as_detail_json
     hash = super
-    if playlists.present?
-      hash["playlists"] = playlists.map do |pl|
-        pl.content = @content["playlists"].find { |h| h["id"] == pl.id }
-        pl.as_content_json
-      end
-      hash["playlists"].compact!
-    end
+    hash["playlists"] = playlists.map(&:as_content_json) if playlists.present?
     hash
   end
 end

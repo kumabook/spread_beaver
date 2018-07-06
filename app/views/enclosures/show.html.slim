@@ -17,39 +17,13 @@ p
   br
   = @enclosure.updated_at
 
-- content = @enclosure.content
-- content.keys.each do |key|
-  - next if ["id", "created_at", "updated_at"].include?(key)
+p
+- @enclosure.attributes.keys.each do |key|
   p
     strong
       = key
-    - if ["tracks", "playlists", "albums"].include?(key)
-      '
-      = "#{content[key].count} items"
-      br
-  - if key == "tracks"
-    - content[key].each do |playlist_track|
-      p
-        - v = playlist_track['track']
-        = link_to "#{v['title']} | #{v['owner_name']}", track_path['track_id']
-        '
-        = Time.zone.iso8601(playlist_track["created_at"])
-  - elsif key == "playlists"
-    - content[key].each do |v|
-      p
-        = link_to "#{v['title']} | #{v['owner_name']}", playlist_path(v['id'])
-  - elsif key == "albums"
-    - content[key].each do |v|
-      p
-        = link_to "#{v['title']} | #{v['owner_name']}", album_path(v['id'])
-  - elsif key == "artists"
-    - content[key].each do |artist|
-      p
-        = artist['name']
-  - else
     br
-      = content[key]
-
+      = @enclosure[key]
 p
   strong topics
 

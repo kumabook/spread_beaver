@@ -13,7 +13,6 @@ class V3::StreamsController < V3::ApiController
     # so we cannot check if the entry has visual or not.
     # Visual table should be created and check with where clause
     @items = @items.select(&:has_visual?) if @need_visual
-    Entry.set_contents_of_enclosures(@items)
     if current_resource_owner.present?
       Entry.set_marks(current_resource_owner, @items)
       Entry.set_marks_of_enclosures(current_resource_owner, @items)

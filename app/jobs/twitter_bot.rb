@@ -145,7 +145,7 @@ class TwitterBot < ApplicationJob
   end
 
   def build_track_tweet(track, prefix)
-    body  = "#{prefix} #{track.title} / #{track.content['owner_name']}"
+    body  = "#{prefix} #{track.title} / #{track.owner_name}"
     TwitterBot.truncate_tweet(body, suffix: track.web_url)
   end
 
@@ -186,7 +186,7 @@ class TwitterBot < ApplicationJob
 
   def build_climb_up_track(track)
     body  = t("climb_up_track_tweet", {
-                artist:         track.content["owner_name"],
+                artist:         track.owner_name,
                 track:          track.title,
                 rank:           track.rank,
                 playlist_count: track.pick_count,

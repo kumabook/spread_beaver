@@ -51,7 +51,7 @@ class SpotifyMixPlaylistUpdater < ApplicationJob
   end
 
   def self.add_tracks_to_spotify_playlist(playlist, tracks)
-    tracks.map { |t| t.content["identifier"] }.in_groups_of(50, false) do |ids|
+    tracks.map(&:identifier).in_groups_of(50, false) do |ids|
       spotify_tracks = RSpotify::Track.find(ids)
       playlist.add_tracks!(spotify_tracks)
     end

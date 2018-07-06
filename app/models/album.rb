@@ -10,7 +10,6 @@ class Album < ApplicationRecord
     model = find_or_create_by(id: content["id"]) do |m|
       m.update_by_content(content)
     end
-    model.content = content
     model
   end
 
@@ -31,19 +30,13 @@ class Album < ApplicationRecord
     self.updated_at    = content["updated_at"]
   end
 
-  def title
-    fetch_content if @content.nil?
-    "#{@content['title']} / #{@content['owner_name']}"
-  end
-
   def permalink_url
-    fetch_content if @content.nil?
-    case @content["provider"]
+    case provider
     when "Spotify"
-      s = @content["url"].split(":")
+      s = url.split(":")
       "http://open.spotify.com/album/#{s[2]}"
     else
-      @content["url"]
+      url
     end
   end
 end

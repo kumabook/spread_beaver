@@ -19,7 +19,7 @@ describe EnclosuresController, type: :controller do
   end
 
   describe "#search" do
-    before { get :search, params: { type: "Track", query: "query" } }
+    before { get :search, params: { type: "Track", query: track.title } }
     it { expect(assigns(:enclosures)).to eq([track])  }
     it { expect(response).to render_template("index") }
   end

@@ -56,8 +56,7 @@ table.table.table-striped
       - saves_path      = saves_path(@type, enclosure)
       - save_path       = save_path(@type, enclosure)
       - plays_path      = plays_path(@type, enclosure)
-      - content         = enclosure.content || {}
-      - provider_id     = enclosure.content.nil? ? "Unknown" : "#{content["provider"]}/#{content["identifier"]}"
+      - provider_id     = "#{enclosure.provider}/#{enclosure.identifier}"
       - if @issue.present?
         - enclosure_issue = @enclosure_issues.select {|ei| ei.enclosure_id == enclosure.id }.first
       - if @entry.present?
@@ -69,10 +68,10 @@ table.table.table-striped
           td = enclosure_issue.engagement
         - if @entry.present?
           td = entry_enclosure.engagement || 0
-        td = link_to (content["title"] || content["name"]) || enclosure.id, item_path
+        td = link_to (enclosure.title || enclosure.name) || enclosure.id, item_path
         td = link_to provider_id, enclosure.permalink_url
         - if @type == 'Playlist'
-          td = content["velocity"] > 0
+          td = enclosure.velocity > 0
         td = "#{enclosure.likes_count || 0} likes"
         td = "#{enclosure.saved_count || 0} saves"
         td = "#{enclosure.play_count  || 0} plays"

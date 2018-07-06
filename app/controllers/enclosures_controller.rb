@@ -9,7 +9,6 @@ class EnclosuresController < ApplicationController
   include PlayableController
   before_action :set_type
   before_action :set_enclosure      , only: %i[show destroy crawl activate deactivate]
-  before_action :set_content        , only: %i[show edit]
   before_action :set_entry_and_issue, only: [:index]
   before_action :set_query          , only: [:search]
 
@@ -31,7 +30,6 @@ class EnclosuresController < ApplicationController
     end
 
     enclosure_class.set_marks(current_user, @enclosures) if current_user.present?
-    enclosure_class.set_contents(@enclosures)
   end
 
   def search
@@ -45,7 +43,6 @@ class EnclosuresController < ApplicationController
     per_page    = Kaminari.config.default_per_page
     @enclosures = Playlist.fetch_actives(page: params[:page].to_i, per_page: per_page)
     enclosure_class.set_marks(current_user, @enclosures) if current_user.present?
-    enclosure_class.set_contents(@enclosures)
     render "index"
   end
 
@@ -83,10 +80,6 @@ class EnclosuresController < ApplicationController
   end
 
   def crawl
-    content = @enclosure.fetch_content
-    @enclosure.update(created_at: content["published_at"],
-                      title:      content["title"],
-                      provider:   content["provider"])
     @enclosure.fetch_tracks()
     redirect_back(fallback_location: root_path)
   end
@@ -131,10 +124,6 @@ class EnclosuresController < ApplicationController
     @enclosure = enclosure_class
                  .eager_load(entries: { feed: %i[feed_topics topics] })
                  .find(params[:id])
-  end
-
-  def set_content
-    @content = @enclosure.fetch_content
   end
 
   def set_entry_and_issue

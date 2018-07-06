@@ -222,29 +222,18 @@ class Entry < ApplicationRecord
     end
   end
 
-  def self.set_contents_of_enclosures(entries)
-    track_items    = entries.flat_map(&:tracks)
-    album_items    = entries.flat_map(&:albums)
-    playlist_items = entries.flat_map(&:playlists)
-    {
-      tracks:    Track.set_contents(track_items),
-      albums:    Album.set_contents(album_items),
-      playlists: Playlist.set_contents(playlist_items),
-    }
-  end
-
   def self.enclosures_of_entries(entries)
     entries.flat_map { |e| [e.tracks, e.albums, e.playlists].flatten }
   end
 
   def self.set_partial_entries_of_enclosures(entries)
     enclosures = enclosures_of_entries(entries)
-    Enclosure.set_partial_entries(enclosures)
+    Track.set_partial_entries(enclosures)
   end
 
   def self.set_marks_of_enclosures(user, entries)
     enclosures = enclosures_of_entries(entries)
-    Enclosure.set_marks(user, enclosures)
+    Track.set_marks(user, enclosures)
   end
 
   def url

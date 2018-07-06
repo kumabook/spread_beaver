@@ -8,7 +8,6 @@ class Playlist < ApplicationRecord
     model = find_or_create_by(id: content["id"]) do |m|
       m.update_by_content(content)
     end
-    model.content = content
     model
   end
 
@@ -30,19 +29,13 @@ class Playlist < ApplicationRecord
     self.updated_at    = content["updated_at"]
   end
 
-  def title
-    fetch_content if @content.nil?
-    "#{@content['title']} / #{@content['owner_name']}"
-  end
-
   def permalink_url
-    fetch_content if @content.nil?
-    case @content["provider"]
+    case provider
     when "Spotify"
-      s = @content["url"].split(":")
+      s = url.split(":")
       "http://open.spotify.com/user/#{s[2]}/playlist/#{s[4]}"
     else
-      @content["url"]
+      url
     end
   end
 
@@ -58,21 +51,12 @@ class Playlist < ApplicationRecord
 
   def as_detail_json
     hash = super
-    if tracks.present?
-      hash["tracks"] = tracks.map do |track|
-        playlist_track = @content["tracks"].find { |h| h["track_id"] == track.id }
-        next playlist_track if playlist_track.nil?
-        track.content = playlist_track["track"]
-        playlist_track["track"] = track.as_content_json
-        playlist_track
-      end
-      hash["tracks"].compact!
-    end
+    hash["tracks"] = tracks.map(&:as_content_json) if playlists.present?
     hash
   end
 
   def active?
-    @content["velocity"] > 0
+    velocity > 0
   end
 
   def fetch_tracks

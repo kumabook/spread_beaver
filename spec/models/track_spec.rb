@@ -49,7 +49,6 @@ describe Track do
     let! (:user)     { FactoryBot.create(:default) }
     before do
       mock_up_pink_spider
-      track.fetch_content
       Track.set_marks(user, [track])
     end
     it "should includes playlist marks" do
