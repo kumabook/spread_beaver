@@ -21,6 +21,8 @@ FactoryBot.define do
   factory :track, class: Track do
     sequence(:title) { |n| "track #{n}" }
     provider "Spotify"
+    url "spotify:track:xxxx"
+
     sequence(:created_at) { |n|
       if n % TRACK_PER_ENTRY == 0
         1.day.ago
@@ -33,6 +35,7 @@ FactoryBot.define do
   factory :album, class: Album do
     sequence(:title) { |n| "album #{n}" }
     provider "Spotify"
+    url "spotify:album:xxxx"
     sequence(:created_at) { |n|
       if n % ALBUM_PER_ENTRY == 0
         1.day.ago
@@ -45,6 +48,8 @@ FactoryBot.define do
   factory :playlist, class: Playlist do
     sequence(:title) { |n| "playlist #{n}" }
     provider "Spotify"
+    url "spotify:user:xxxx:playlist:xxxx"
+    velocity 0
     sequence(:created_at) { |n|
       if n % PLAYLIST_PER_ENTRY == 0
         1.day.ago
