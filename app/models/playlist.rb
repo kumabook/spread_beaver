@@ -19,7 +19,7 @@ class Playlist < ApplicationRecord
     self.url           = content["url"]
     self.title         = content["title"]
     self.description   = content["description"]
-    self.velocity      = content["velocity"]
+    self.velocity      = content["velocity"] || 0
     self.thumbnail_url = content["thumbnail_url"]
     self.artwork_url   = content["artwork_url"]
     self.published_at  = content["published_at"]
