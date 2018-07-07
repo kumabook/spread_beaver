@@ -10,7 +10,7 @@ module Pagination
     CONTINUATION_SALT       = "continuation_salt"
     def pagination(str)
       return DEFAULT_PAGINATION if str.nil?
-      dec = OpenSSL::Cipher::Cipher.new("aes256")
+      dec = OpenSSL::Cipher.new("aes256")
       dec.decrypt
       dec.pkcs5_keyivgen(CONTINUATION_SALT)
       JSON.parse (dec.update(Array.new([str]).pack("H*")) + dec.final)
@@ -25,7 +25,7 @@ module Pagination
               newer_than: newer_than,
               older_than: older_than
       }.to_json
-      enc = OpenSSL::Cipher::Cipher.new("aes256")
+      enc = OpenSSL::Cipher.new("aes256")
       enc.encrypt
       enc.pkcs5_keyivgen(CONTINUATION_SALT)
       (enc.update(str) + enc.final).unpack1("H*").to_s
