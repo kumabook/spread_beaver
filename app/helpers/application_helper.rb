@@ -50,39 +50,39 @@ module ApplicationHelper
   end
 
   def enc_path(type, item)
-    public_send "#{type.downcase}_path".to_sym, item
+    public_send "#{type.underscore}_path".to_sym, item
   end
 
   def index_enc_path(type)
-    public_send "#{type.downcase.pluralize}_path".to_sym
+    public_send "#{type.underscore.pluralize}_path".to_sym
   end
 
   def likes_path(type, item)
-    public_send "#{type.downcase}_likes_path".to_sym, item
+    public_send "#{type.underscore}_likes_path".to_sym, item
   end
 
   def like_path(type, item)
-    public_send "#{type.downcase}_like_path".to_sym, item
+    public_send "#{type.underscore}_like_path".to_sym, item
   end
 
   def saves_path(type, item)
-    public_send "#{type.downcase}_saves_path".to_sym, item
+    public_send "#{type.underscore}_saves_path".to_sym, item
   end
 
   def save_path(type, item)
-    public_send "#{type.downcase}_save_path".to_sym, item
+    public_send "#{type.underscore}_save_path".to_sym, item
   end
 
   def plays_path(type, item)
-    public_send "#{type.downcase}_plays_path".to_sym, item
+    public_send "#{type.underscore}_plays_path".to_sym, item
   end
 
   def new_enc_path(type)
-    public_send "new_#{type.downcase}_path".to_sym
+    public_send "new_#{type.underscore}_path".to_sym
   end
 
   def new_entry_enc_path(type, item)
-    public_send "new_entry_#{type.downcase}_path".to_sym, item
+    public_send "new_entry_#{type.underscore}_path".to_sym, item
   end
 
   def entry_enc_path(type, entry)
@@ -90,6 +90,6 @@ module ApplicationHelper
   end
 
   def search_enc_path(type)
-    public_send "search_#{type.pluralize.downcase}_path".to_sym
+    public_send "search_#{type.pluralize.underscore}_path".to_sym
   end
 end
