@@ -7,6 +7,7 @@ class Track < ApplicationRecord
   has_many :artists, through: :enclosure_artists
   has_many :album_tracks
   has_many :albums, through: :album_tracks
+  belongs_to :identity, class_name: "TrackIdentity", optional: true
 
   def self.find_or_create_by_content(content)
     model = find_or_create_by(id: content["id"]) do |m|
@@ -32,6 +33,49 @@ class Track < ApplicationRecord
 
     self.created_at    = content["created_at"]
     self.updated_at    = content["updated_at"]
+  end
+
+  def self.find_or_create_by_apple_music_song(song)
+    find_or_create_by(provider: "AppleMusic", identifier: song.id) do |m|
+      m.owner_id      = song.artists.first.id
+      m.owner_name    = song.artist_name
+      m.url           = song.url
+      m.title         = song.name
+      m.description   = nil
+      m.thumbnail_url = song.thumbnail_url
+      m.artwork_url   = song.artwork_url
+      m.audio_url     = song.previews.first&.dig("url")
+      m.duration      = song.duration_in_millis / 1000
+      m.published_at  = Date.parse(song.release_date)
+      m.state         = "alive"
+      m
+    end
+  end
+
+  def self.find_or_create_by_spotify_track(track)
+    find_or_create_by(provider: "Spotify", identifier: track.id) do |m|
+      m.owner_id      = track.artists.first.id
+      m.owner_name    = track.artists.first.name
+      m.url           = track.uri
+      m.title         = track.name
+      m.description   = nil
+      m.thumbnail_url = track.album&.images&.first&.dig("url")
+      m.artwork_url   = track.album&.images&.first&.dig("url")
+      m.audio_url     = track.preview_url
+      m.duration      = track.duration_ms / 1000
+      m.published_at  = Time.zone.now
+      m.state         = "alive"
+      m
+    end
+  end
+
+  def create_identity
+    case provider
+    when "Spotify"
+      TrackIdentity.build_by_spotify_track(RSpotify::Track.find(identifier))
+    when "AppleMusic"
+      TrackIdentity.build_by_apple_music_song(AppleMusic::Song.find("jp", identifier))
+    end
   end
 
   def permalink_url

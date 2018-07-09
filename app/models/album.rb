@@ -7,6 +7,7 @@ class Album < ApplicationRecord
   has_many :album_tracks
   has_many :artists, through: :enclosure_artists
   has_many :tracks, -> { order("album_tracks.id") }, through: :album_tracks
+  belongs_to :identity, class_name: "AlbumIdentity", optional: true
 
   def self.find_or_create_by_content(content)
     model = find_or_create_by(id: content["id"]) do |m|
@@ -30,6 +31,36 @@ class Album < ApplicationRecord
 
     self.created_at    = content["created_at"]
     self.updated_at    = content["updated_at"]
+  end
+
+  def self.find_or_create_by_apple_music_album(album)
+    find_or_create_by(provider: "AppleMusic", identifier: album.id) do |m|
+      m.owner_id      = album.artists.first.id
+      m.owner_name    = album.artist_name
+      m.url           = album.url
+      m.title         = album.name
+      m.description   = album.editorial_notes&.dig("short")
+      m.thumbnail_url = album.thumbnail_url
+      m.artwork_url   = album.artwork_url
+      m.published_at  = Date.parse(album.release_date)
+      m.state         = "alive"
+      m
+    end
+  end
+
+  def self.find_or_create_by_spotify_album(album)
+    find_or_create_by(provider: "Spotify", identifier: album.id) do |m|
+      m.owner_id      = album.artists[0].id
+      m.owner_name    = album.artists[0].name
+      m.url           = album.uri
+      m.title         = album.name
+      m.description   = nil
+      m.thumbnail_url = album.images.first&.dig("url")
+      m.artwork_url   = album.images.first&.dig("url")
+      m.published_at  = parse_release_date(album.release_date)
+      m.state         = "alive"
+      m
+    end
   end
 
   def permalink_url
