@@ -92,4 +92,16 @@ module ApplicationHelper
   def search_enc_path(type)
     public_send "search_#{type.pluralize.underscore}_path".to_sym
   end
+
+  def crawl_enc_path(type, item)
+    public_send "crawl_#{type.underscore}_path".to_sym, item
+  end
+
+  def enc_create_identity_path(type, item)
+    public_send "create_identity_#{type.underscore}_path".to_sym, item
+  end
+
+  def enc_identity_path(type, item)
+    public_send "#{type.underscore}_identity_path".to_sym, item
+  end
 end
