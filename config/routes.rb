@@ -87,6 +87,23 @@ Rails.application.routes.draw do
     end
     get "actives"   , on: :collection
   end
+
+  resources :track_identities   , controller: :identities, type: "TrackIdentity" do
+    member do
+      get "crawl"
+    end
+  end
+  resources :album_identities   , controller: :identities, type: "AlbumIdentity" do
+    member do
+      get "crawl"
+    end
+  end
+  resources :artist_identities  , controller: :identities, type: "ArtistIdentity" do
+    member do
+      get "crawl"
+    end
+  end
+
   resources :keywords do
     resources :entries, only: [:index]
   end
