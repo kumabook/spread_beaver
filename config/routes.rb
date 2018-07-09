@@ -56,6 +56,7 @@ Rails.application.routes.draw do
     delete "unsave", to: :unsave, as: :save
     post   "play"  , to: :play  , as: :plays
     get    "search", on: :collection
+    post   "create_identity", on: :member
   end
   resources :albums, controller: :enclosures, type: "Album", except: %i[edit update] do
     post   "like"  , to: :like  , as: :likes
@@ -64,6 +65,7 @@ Rails.application.routes.draw do
     delete "unsave", to: :unsave, as: :save
     post   "play"  , to: :play  , as: :plays
     get    "search", on: :collection
+    post   "create_identity", on: :member
   end
   resources :artists, controller: :enclosures, type: "Artist", except: %i[edit update] do
     post   "like"  , to: :like  , as: :likes
@@ -72,6 +74,7 @@ Rails.application.routes.draw do
     delete "unsave", to: :unsave, as: :save
     post   "play"  , to: :play  , as: :plays
     get    "search", on: :collection
+    post   "create_identity", on: :member
   end
   resources :playlists, controller: :enclosures, type: "Playlist", except: %i[edit update] do
     post   "like"  , to: :like  , as: :likes
