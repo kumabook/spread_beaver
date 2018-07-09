@@ -8,7 +8,7 @@ class EnclosuresController < ApplicationController
   include SavableController
   include PlayableController
   before_action :set_type
-  before_action :set_enclosure      , only: %i[show destroy crawl activate deactivate]
+  before_action :set_enclosure      , only: %i[show destroy crawl activate deactivate create_identity]
   before_action :set_entry_and_issue, only: [:index]
   before_action :set_query          , only: [:search]
 
@@ -95,6 +95,12 @@ class EnclosuresController < ApplicationController
 
   def deactivate
     update_velocity(0)
+  end
+
+  def create_identity
+    identity = @enclosure.create_identity
+    path = public_send "#{identity.class.name.underscore}_path".to_sym, identity
+    redirect_to path
   end
 
   private
