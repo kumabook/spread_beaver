@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181120042833) do
+ActiveRecord::Schema.define(version: 20180710112458) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -223,14 +223,6 @@ ActiveRecord::Schema.define(version: 20181120042833) do
     t.index ["entry_id", "issue_id"], name: "index_entry_issues_on_entry_id_and_issue_id", unique: true
   end
 
-  create_table "entry_keywords", id: :serial, force: :cascade do |t|
-    t.string "entry_id", null: false
-    t.string "keyword_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["entry_id", "keyword_id"], name: "index_entry_keywords_on_entry_id_and_keyword_id", unique: true
-  end
-
   create_table "entry_tags", id: :serial, force: :cascade do |t|
     t.string "tag_id"
     t.string "entry_id"
@@ -286,6 +278,15 @@ ActiveRecord::Schema.define(version: 20181120042833) do
     t.datetime "updated_at", null: false
     t.index ["id"], name: "index_journals_on_id", unique: true
     t.index ["label"], name: "index_journals_on_label", unique: true
+  end
+
+  create_table "keywordables", id: :serial, force: :cascade do |t|
+    t.string "keywordable_id", null: false
+    t.string "keyword_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "keywordable_type", default: "Entry", null: false
+    t.index ["keywordable_id", "keyword_id"], name: "index_keywordables_on_keywordable_id_and_keyword_id", unique: true
   end
 
   create_table "keywords", id: false, force: :cascade do |t|
