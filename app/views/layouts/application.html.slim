@@ -21,9 +21,12 @@ html
             li = link_to "Tags"         , tags_path
             li = link_to "Entries"      , entries_path
             li = link_to "Tracks"       , tracks_path
+            li = link_to "TrackIdentities", track_identities_path
             li = link_to "Albums"       , albums_path
+            li = link_to "AlbumIdentities", album_identities_path
             li = link_to "Playlists"    , playlists_path
             li = link_to "Artists"      , artists_path
+            li = link_to "ArtistIdentities", artist_identities_path
             - if current_user.admin?
               li = link_to "Application", oauth_applications_path
               li = link_to "Mixes"      , mixes_path
