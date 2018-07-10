@@ -1,0 +1,46 @@
+.page-header
+  h1
+    = @type
+
+p
+  strong id
+  br
+  = @identity.id
+
+p
+  strong name
+  br
+    = @identity.name
+p
+  - if @type == "ArtistIdentity"
+    strong origin_name
+    br
+      = @identity.origin_name
+  - else
+    strong artist_name
+    br
+      = @identity.artist_name
+p
+  strong items
+  br
+    - @identity.items.each do |item|
+      = link_to provider_icon(item.provider), enc_path(item.class.name, item)
+p
+  - if @identity.respond_to? :artist_identities
+    strong artist_identities
+    br
+      - @identity.artist_identities.each do |artist_identity|
+        = link_to artist_identity.name, enc_path(artist_identity.class.name, artist_identity)
+  - if @identity.respond_to? :track_identities
+    strong track_identities
+    br
+      - @identity.track_identities.each do |track_identity|
+        = link_to track_identity.name, enc_path(track_identity.class.name, track_identity)
+  - if @identity.respond_to? :album_identities
+    strong album_identities
+    br
+      - @identity.album_identities.each do |album_identity|
+        = link_to album_identity.name, enc_path(album_identity.class.name, album_identity)
+
+
+= link_to 'Crawl items', crawl_enc_path(@type, @identity), class: 'btn btn-info'

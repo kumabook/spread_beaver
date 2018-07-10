@@ -19,6 +19,11 @@ p
 
 = link_to 'View',  @enclosure.permalink_url, class: 'btn btn-info'
 '
+- if @enclosure.identity_id.nil?
+  = link_to 'Create identity', enc_create_identity_path(@type, @enclosure), class: 'btn btn-info', method: :post
+- else
+  = link_to 'Identity', enc_identity_path(@type, @enclosure.identity_id), class: 'btn btn-info'
+'
 - if @type == 'Playlist'
   = link_to 'Crawl', crawl_playlist_path(@enclosure), class: 'btn btn-info'
   '

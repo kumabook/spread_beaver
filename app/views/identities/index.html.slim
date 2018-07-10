@@ -1,0 +1,30 @@
+.page-header
+  h1
+    = @type.pluralize
+
+= paginate @identities
+
+table.table.table-striped
+  thead
+    tr
+      th
+      th name
+      - if @type == "ArtistIdentity"
+        th origin_name
+      - else
+        th artist_name
+      th items
+      th.col-md-1 actions
+  tbody
+    - @identities.each do |identity|
+      - item_path       = enc_path(@type, identity)
+      tr
+        td.resource-menu data-id=identity.id data-resource-id="#{@type.downcase}/#{identity.id}"
+        td = link_to (identity.name) || identity.id, item_path
+        - if @type == "ArtistIdentity"
+          td = identity.origin_name
+        - else
+          td = identity.artist_name
+        td
+          - identity.items.each do |item|
+            = link_to provider_icon(item.provider), enc_path(item.class.name, item)
