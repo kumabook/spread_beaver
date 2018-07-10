@@ -6,8 +6,10 @@ class TrackIdentity < ApplicationRecord
   has_many :items, class_name: "Track", foreign_key: :identity_id
   has_many :album_track_identities
   has_many :track_artist_identities
-  has_many :album_identities, through: :album_track_identities
+  has_many :album_identities , through: :album_track_identities
   has_many :artist_identities, through: :track_artist_identities
+  has_many :keywordables     , dependent: :destroy, as: :keywordable
+  has_many :keywords         , through: :keywordables
 
   def self.find_or_create_by_track(track)
     case track.provider

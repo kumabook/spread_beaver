@@ -9,6 +9,8 @@ class ArtistIdentity < ApplicationRecord
   has_many :track_identities, through: :track_artist_identities
   has_many :album_identities, through: :album_artist_identities
   has_many :artist_aliases
+  has_many :keywordables    , dependent: :destroy, as: :keywordable
+  has_many :keywords        , through: :keywordables
 
   def self.find_by_name_and_origin(name, origin_name)
     artists = joins(:artist_aliases)

@@ -4,8 +4,12 @@ class Keyword < ApplicationRecord
   include Escapable
   include Stream
   include Mix
-  has_many :entry_keywords, dependent: :destroy
-  has_many :entries       , through: :entry_keywords
+  has_many :keywordables, dependent: :destroy
+  has_many :entries          , through: :keywordables, source: :keywordable, source_type: "Entry"
+  has_many :track_identities , through: :keywordables, source: :keywordable, source_type: "TrackIdentity"
+  has_many :albums_identities, through: :keywordables, source: :keywordable, source_type: "AlbumIdentity"
+  has_many :artist_identities, through: :keywordables, source: :keywordable, source_type: "ArtistIdentity"
+  has_many :playlists        , through: :keywordables, source: :keywordable, source_type: "Playlist"
 
   self.primary_key = :id
 

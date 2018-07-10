@@ -6,8 +6,10 @@ class AlbumIdentity < ApplicationRecord
   has_many :items, class_name: "Album", foreign_key: :identity_id
   has_many :album_track_identities
   has_many :album_artist_identities
-  has_many :track_identities, through: :album_track_identities
+  has_many :track_identities , through: :album_track_identities
   has_many :artist_identities, through: :album_artist_identities
+  has_many :keywordables     , dependent: :destroy, as: :keywordable
+  has_many :keywords         , through: :keywordables
 
   def self.find_or_create_by_album(album)
     case album.provider

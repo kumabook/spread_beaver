@@ -4,6 +4,9 @@ require "pink_spider"
 class Playlist < ApplicationRecord
   include Enclosure
 
+  has_many :keywordables, dependent: :destroy, as: :keywordable
+  has_many :keywords    , through: :keywordables
+
   def self.find_or_create_by_content(content)
     model = find_or_create_by(id: content["id"]) do |m|
       m.update_by_content(content)

@@ -19,9 +19,9 @@ class Entry < ApplicationRecord
 
   has_many :entry_enclosures, order_by_engagement, dependent: :destroy
   has_many :entry_tags      , dependent: :destroy
-  has_many :entry_keywords  , dependent: :destroy
+  has_many :keywordables    , dependent: :destroy, as: :keywordable
   has_many :entry_issues    , dependent: :destroy
-  has_many :keywords        , through: :entry_keywords
+  has_many :keywords        , through: :keywordables
   has_many :tags            , through: :entry_tags
   has_many :issues          , through: :entry_issues
   has_many :tracks          , through: :entry_enclosures, source: :enclosure, source_type: Track.name
@@ -131,11 +131,13 @@ class Entry < ApplicationRecord
       e.recrawled   = entry["recrawled"].present? ? DateTime.parse(entry["recrawled"]) : nil
       e.updated     = entry["updated"].present?   ? DateTime.parse(entry["updated"]) : nil
       e.feed        = feed
-      if entry["keywords"].present?
-        e.keywords  = entry["keywords"].uniq.map { |k| Keyword.find_or_create_by label: k }
-      end
     end
-    en.save
+    if entry["keywords"].present?
+      en.keywords = entry["keywords"].uniq.map do |k|
+        Keyword.find_or_create_by(label: k)
+      end
+      en.save
+    end
     en
   end
 
