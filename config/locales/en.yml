@@ -23,4 +23,4 @@ en:
       No.%{rank3} : %{name3} / %{artist_name3}
       No.%{rank4} : %{name4} / %{artist_name4}
     chart_url:
-    climb_up_track_tweet: "%{name} of %{artist} climb up to Top %{rank}!\n%{playlist_count} playlists featured it"
+    climb_up_track_tweet: "%{track} of %{artist} climb up to Top %{rank}!\n%{playlist_count} playlists featured it"
