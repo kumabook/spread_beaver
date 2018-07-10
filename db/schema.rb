@@ -68,6 +68,13 @@ ActiveRecord::Schema.define(version: 20181120042833) do
     t.index ["title"], name: "index_albums_on_title"
   end
 
+  create_table "artist_aliases", force: :cascade do |t|
+    t.uuid "artist_identity_id", null: false
+    t.string "name", null: false
+    t.index ["artist_identity_id", "name"], name: "index_artist_aliases_on_artist_identity_id_and_name", unique: true
+    t.index ["name"], name: "index_artist_aliases_on_name"
+  end
+
   create_table "artist_identities", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.string "name", null: false
     t.string "origin_name", null: false
