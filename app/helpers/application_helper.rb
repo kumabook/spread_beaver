@@ -104,4 +104,23 @@ module ApplicationHelper
   def enc_identity_path(type, item)
     public_send "#{type.underscore}_identity_path".to_sym, item
   end
+
+  def provider_icon(provider)
+    case provider
+    when "Spotify"
+      fa_icon "spotify"
+    when "AppleMusic"
+      fa_icon "itunes-note"
+    when "YouTube"
+      fa_icon "youtube"
+    when "SoundCloud"
+      fa_icon "sound-cloud"
+    else
+      fa_icon "question"
+    end
+  end
+
+  def fa_icon(name)
+    content_tag(:i, nil, class: "fab fa-#{name} fa-lg")
+  end
 end

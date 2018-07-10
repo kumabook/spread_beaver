@@ -49,7 +49,8 @@
     '
     = text_field_tag 'value', '', id: 'option_value'
     '
-    button#option_add.btn.btn-default.octicon.octicon-plus
+    button#option_add.btn.btn-default
+      i.fas.fa-plus
   div.row#custom_options
   br
   .form-group
@@ -131,7 +132,9 @@ javascript:
           key +
         '</span>' +
         '<span class="resource-option-value control-label">' + value + '</span>' + ' ' +
-        '<button class="resource-option-button btn btn-default octicon octicon-dash" />'
+        '<button class="resource-option-button btn btn-default">' +
+          '<i class="fas fa-minus"/>' +
+        '</button>'
       );
     $("#custom_options").append($pair);
   }
@@ -146,7 +149,7 @@ javascript:
   });
   $('#custom_options').on('click', '.resource-option-button', function(e) {
     e.preventDefault();
-    var $pair = $(e.target).parent();
+    var $pair = $(e.target).closest('.resource-option-button').parent();
     var key = $pair.attr('data-key');
     delete values[key];
     $pair.remove();
@@ -154,7 +157,7 @@ javascript:
   });
 
   try {
-    var v = JSON.parse(options.value)
+    var v = options.value ? JSON.parse(options.value) : {};
     Object.keys(v).forEach(function(key) {
       if (key === 'period') {
         period.value  = v[key];

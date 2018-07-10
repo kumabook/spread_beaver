@@ -3,7 +3,7 @@ $(document).on('turbolinks:load', function() {
   $dropdown.append(
     '<button class="btn btn-default dropdown-toggle resource-menu"' +
      'type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' +
-      '<span class="octicon octicon-three-bars"></span>' +
+      '<i class="fas fa-bars"></i>' +
     '</button>'
   );
   var $dropdownContent = $('<div class="dropdown-menu resource-dropdown-menu" />');
@@ -13,7 +13,7 @@ $(document).on('turbolinks:load', function() {
       '<div class="input-group">' +
         '<input class="form-control id-input" type="text">' +
           '<span class="input-group-btn">' +
-            '<button class="btn btn-default octicon octicon-clippy copy-id" type="submit" />' +
+            '<button class="btn btn-default fas fa-copy copy-resource-id" type="submit" />' +
           '</span>' +
         '</input>' +
       '</div>'
@@ -25,7 +25,7 @@ $(document).on('turbolinks:load', function() {
         '<div class="input-group">' +
           '<input class="form-control resource-id-input" type="text">' +
             '<span class="input-group-btn">' +
-              '<button class="btn btn-default octicon octicon-clippy copy-resource-id" type="submit" />' +
+              '<button class="btn btn-default fas fa-copy copy-resource-id" type="submit" />' +
             '</span>' +
           '</input>' +
         '</div>' +

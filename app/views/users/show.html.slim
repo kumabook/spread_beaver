@@ -25,7 +25,7 @@ p
   strong Social accounts
   br
   - if @spotify_authentication.present?
-    = link_to content_tag(:i, nil, class: 'fab fa-spotify fa-lg'), @spotify_authentication.url
+    = link_to provider_icon("Spotify"), @spotify_authentication.url
 
 = link_to t('.edit', :default => t("helpers.links.edit")), edit_user_path(@user), :class => 'btn btn-primary'
 
