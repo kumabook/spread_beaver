@@ -8,6 +8,18 @@ class ArtistIdentity < ApplicationRecord
   has_many :album_artist_identities
   has_many :track_identities, through: :track_artist_identities
   has_many :album_identities, through: :album_artist_identities
+  has_many :artist_aliases
+
+  def self.find_by_name_and_origin(name, origin_name)
+    artists = joins(:artist_aliases)
+                .where(artist_aliases: { name: name })
+                .where(name: name)
+    return artists.first if artists.count == 1
+    artists.each do |artist|
+      return artist if artist.origin_name == origin_name
+    end
+    nil
+  end
 
   def self.find_or_create_by_artist(artist)
     case artist.provider
@@ -20,12 +32,14 @@ class ArtistIdentity < ApplicationRecord
     end
   end
 
-  def self.find_or_create_by_spotify_artist(a)
-    find_or_create_by(name: a.name, origin_name: "")
+  def self.find_or_create_by_spotify_artist(artist)
+    find_by_name_and_origin(artist.name, "") ||
+      find_or_create_by(name: artist.name, origin_name: "")
   end
 
-  def self.find_or_create_by_apple_music_artist(a)
-    find_or_create_by(name: a.name, origin_name: "")
+  def self.find_or_create_by_apple_music_artist(artist)
+    find_by_name_and_origin(artist.name, "") ||
+      find_or_create_by(name: artist.name, origin_name: "")
   end
 
   def self.build_by_spotify_artist(artist)
