@@ -27,6 +27,25 @@ ActiveRecord::Schema.define(version: 20181120042833) do
     t.index ["updated_at"], name: "index_album_tracks_on_updated_at"
   end
 
+  create_table "album_artist_identities", force: :cascade do |t|
+    t.uuid "album_identity_id", null: false
+    t.uuid "artist_identity_id", null: false
+    t.index ["album_identity_id", "artist_identity_id"], name: "index_album_artist_identities", unique: true
+  end
+
+  create_table "album_identities", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string "name", null: false
+    t.string "artist_name", null: false
+    t.index ["name", "artist_name"], name: "index_album_identities_on_name_and_artist_name", unique: true
+    t.index ["name"], name: "index_album_identities_on_name"
+  end
+
+  create_table "album_track_identities", force: :cascade do |t|
+    t.uuid "album_identity_id", null: false
+    t.uuid "track_identity_id", null: false
+    t.index ["album_identity_id", "track_identity_id"], name: "index_album_track_identities", unique: true
+  end
+
   create_table "albums", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.integer "provider", default: 0, null: false
     t.string "identifier", default: "", null: false
@@ -47,6 +66,12 @@ ActiveRecord::Schema.define(version: 20181120042833) do
     t.datetime "updated_at", null: false
     t.index ["provider"], name: "index_albums_on_provider"
     t.index ["title"], name: "index_albums_on_title"
+  end
+
+  create_table "artist_identities", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string "name", null: false
+    t.string "origin_name", null: false
+    t.index ["name"], name: "index_artist_identities_on_name"
   end
 
   create_table "artists", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -448,6 +473,19 @@ ActiveRecord::Schema.define(version: 20181120042833) do
     t.index ["id"], name: "index_topics_on_id", unique: true
     t.index ["label"], name: "index_topics_on_label", unique: true
     t.index ["locale"], name: "index_topics_on_locale"
+  end
+
+  create_table "track_artist_identities", force: :cascade do |t|
+    t.uuid "track_identity_id", null: false
+    t.uuid "artist_identity_id", null: false
+    t.index ["track_identity_id", "artist_identity_id"], name: "index_track_artist_identities", unique: true
+  end
+
+  create_table "track_identities", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.string "name", null: false
+    t.string "artist_name", null: false
+    t.index ["name", "artist_name"], name: "index_track_identities_on_name_and_artist_name", unique: true
+    t.index ["name"], name: "index_track_identities_on_name"
   end
 
   create_table "tracks", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
