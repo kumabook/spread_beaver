@@ -3,21 +3,6 @@
     = @type
 
 p
-  strong id
-  br
-  = @enclosure.id
-
-p
-  strong created_at
-  br
-  = @enclosure.created_at
-
-p
-  strong updated_at
-  br
-  = @enclosure.updated_at
-
-p
 - @enclosure.attributes.keys.each do |key|
   p
     strong
