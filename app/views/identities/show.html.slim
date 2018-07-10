@@ -25,6 +25,12 @@ p
   br
     - @identity.items.each do |item|
       = link_to provider_icon(item.provider), enc_path(item.class.name, item)
+- if @identity.respond_to? :artist_aliases
+  p
+    strong aliases
+    br
+    - @identity.artist_aliases.each do |a|
+      = a.name
 p
   - if @identity.respond_to? :artist_identities
     strong artist_identities
