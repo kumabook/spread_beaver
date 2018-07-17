@@ -11,6 +11,8 @@ class ArtistIdentity < ApplicationRecord
   has_many :artist_aliases
   has_many :keywordables    , dependent: :destroy, as: :keywordable
   has_many :keywords        , through: :keywordables
+  has_many :genre_items     , dependent: :destroy, as: :genre_item
+  has_many :genres          , through: :genre_items
 
   def self.find_by_name_and_origin(name, origin_name)
     artists = joins(:artist_aliases)
@@ -67,9 +69,8 @@ class ArtistIdentity < ApplicationRecord
   def update_associations_by_spotify_artist(artist)
     item = Artist.find_or_create_by_spotify_artist(artist)
     artist.genres.each do |genre|
-      p genre
-#      genre_tag = Tag::find_or_create_by(genre, "genre")
-#      add_tag(genre_tag)
+      genre = Genre.find_or_create_by_name(genre)
+      GenreItem.find_or_create_by(genre_id: genre.id, genre_item_id: id, genre_item_type: "ArtistIdentity")
     end
     artist_identity = ArtistIdentity::find_by(id: item.identity_id)
     if artist_identity.present? && id != artist_identity.id
@@ -85,9 +86,8 @@ class ArtistIdentity < ApplicationRecord
   def update_associations_by_apple_music_artist(artist)
     item = Artist::find_or_create_by_apple_music_artist(artist)
     artist.genre_names.each do |genre|
-      p genre
-#      genre_tag = Tag.find_or_create_by(genre.name, "genre")
-#      add_tag(genre_tag)
+      genre = Genre.find_or_create_by_name(genre)
+      GenreItem.find_or_create_by(genre_id: genre.id, genre_item_id: id, genre_item_type: "ArtistIdentity")
     end
     item.identity = self
     item.save!

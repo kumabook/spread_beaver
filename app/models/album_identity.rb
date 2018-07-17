@@ -10,6 +10,8 @@ class AlbumIdentity < ApplicationRecord
   has_many :artist_identities, through: :album_artist_identities
   has_many :keywordables     , dependent: :destroy, as: :keywordable
   has_many :keywords         , through: :keywordables
+  has_many :genre_items      , dependent: :destroy, as: :genre_item
+  has_many :genres           , through: :genre_items
 
   def self.find_or_create_by_album(album)
     case album.provider
@@ -60,12 +62,12 @@ class AlbumIdentity < ApplicationRecord
       AlbumArtistIdentity.find_or_create_by(album_identity_id:  id,
                                             artist_identity_id: artist_identity.id)
     end
-=begin
+
     album.genres.each do |genre|
-      genre_tag = Tag.find_or_create_by(genre, "genre")
-      add_tag(genre_tag)
+      genre = Genre.find_or_create_by_name(genre)
+      GenreItem.find_or_create_by(genre_id: genre.id, genre_item_id: id, genre_item_type: "AlbumIdentity")
     end
-=end
+
     item = Album.find_or_create_by_spotify_album(album)
     item.identity = self
     item.save!
@@ -87,12 +89,12 @@ class AlbumIdentity < ApplicationRecord
         )
       end
     end
-=begin
-    album.genres.each do |genre|
-      genre_tag = Tag::find_or_create_by(genre.name, "genre")
-      add_tag(genre_tag)
+
+    album.genre_names.each do |genre|
+      genre = Genre.find_or_create_by_name(genre)
+      GenreItem.find_or_create_by(genre_id: genre.id, genre_item_id: id, genre_item_type: "AlbumIdentity")
     end
-=end
+
     item.identity = self
     item.save!
     self
