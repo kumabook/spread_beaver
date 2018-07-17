@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180710112458) do
+ActiveRecord::Schema.define(version: 20180710155055) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -257,6 +257,19 @@ ActiveRecord::Schema.define(version: 20180710112458) do
     t.datetime "crawled"
     t.datetime "lastUpdated"
     t.index ["id"], name: "index_feeds_on_id", unique: true
+  end
+
+  create_table "genre_items", force: :cascade do |t|
+    t.integer "genre_id", null: false
+    t.uuid "genre_item_id", null: false
+    t.string "genre_item_type", null: false
+    t.index ["genre_id", "genre_item_id"], name: "index_genre_items_on_genre_id_and_genre_item_id"
+  end
+
+  create_table "genres", force: :cascade do |t|
+    t.string "label", null: false
+    t.string "japanese_label"
+    t.index ["label"], name: "index_genres_on_label"
   end
 
   create_table "issues", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
