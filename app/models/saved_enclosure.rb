@@ -9,5 +9,10 @@ class SavedEnclosure < ApplicationRecord
 
   belongs_to :track   , foreign_key: "enclosure_id", required: false
   belongs_to :album   , foreign_key: "enclosure_id", required: false
+  belongs_to :artist  , foreign_key: "enclosure_id", required: false
   belongs_to :playlist, foreign_key: "enclosure_id", required: false
+
+  belongs_to :track_identity , foreign_key: "enclosure_id", required: false
+  belongs_to :album_identity , foreign_key: "enclosure_id", required: false
+  belongs_to :artist_identity, foreign_key: "enclosure_id", required: false
 end

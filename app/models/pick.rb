@@ -2,7 +2,10 @@
 
 class Pick < ApplicationRecord
   include EnclosureMark
-  belongs_to :track   , foreign_key: "enclosure_id", counter_cache: :pick_count, touch: true
+  belongs_to :track         , foreign_key: "enclosure_id", counter_cache: :pick_count, touch: true
+  belongs_to :track_identity, foreign_key: "enclosure_id", counter_cache: :pick_count, touch: true
+  after_save :create_identity_mark
+
   belongs_to :playlist, foreign_key: "container_id"
 
   scope :pick_count, -> {
@@ -30,7 +33,23 @@ class Pick < ApplicationRecord
   scope :issue, ->(issue, _) {
     joins(playlist: :issues).where(issues: { id: issue.id })
   }
-  scope :issues, ->(issues, _) {
-    joins(playlist: :issues).where(issues: { id: issues.pluck(:id) })
+  scope :issues, ->(issues, clazz) {
+    if clazz.identity?
+      joins(playlist: :issues).where(issues: { id: issues.pluck(:id) })
+        .joins(track: :identity)
+    else
+      joins(playlist: :issues).where(issues: { id: issues.pluck(:id) })
+    end
   }
+
+  def create_identity_mark
+    if ["Track", "Album", "Artist"].include?(enclosure_type)
+      clazz = enclosure_type.constantize
+      child = clazz.find(enclosure_id).includes(:identity)
+      self.class.find_or_create_by(enclosure_id:   child.identity.id,
+                                   enclosure_type: child.identity.class.name,
+                                   container_id:   container_id,
+                                   container_type: container_type)
+    end
+  end
 end
