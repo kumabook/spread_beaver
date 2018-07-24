@@ -181,10 +181,14 @@ module Enclosure
            .stream(stream, self)
            .provider(query.provider, self)
     end
+
+    def identity?
+      false
+    end
   end
 
   def has_thumbnail?
-    thumbnail_url.present?
+    respond_to?(:thumbnail_url) && thumbnail_url.present?
   end
 
   def update_content(params)
