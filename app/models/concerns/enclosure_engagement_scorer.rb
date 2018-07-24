@@ -59,7 +59,9 @@ module EnclosureEngagementScorer
         .project(arel_table[:id], *score_names, "#{score} as score")
         .order("score DESC")
         .group(arel_table[:id])
-      query.where(arel_table[:provider].in(mix_query.provider)) if !mix_query.provider.nil?
+      if !mix_query.provider.nil? && !identity?
+        query.where(arel_table[:provider].in(mix_query.provider))
+      end
       query
     end
 
@@ -104,6 +106,7 @@ module EnclosureEngagementScorer
       scores       = select_all(select_mgr, bind_values)
       items        = with_content.find(scores.map { |h| h["id"] })
       sorted_items = sort_items(items, scores, score_tables)
+
       PaginatedArray.new(sorted_items, total_count, page, per_page)
     end
 
@@ -141,7 +144,7 @@ module EnclosureEngagementScorer
         pick_stream = stream
       end
       picked = query_for_best_items(Pick, pick_stream, pick_query)
-               .distinct(:playlist_id)
+                 .distinct(:playlist_id)
       [
         { type: :count       , query: played  , clazz: PlayedEnclosure },
         { type: :count       , query: liked   , clazz: LikedEnclosure },

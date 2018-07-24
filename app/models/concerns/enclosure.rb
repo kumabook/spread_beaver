@@ -47,7 +47,7 @@ module Enclosure
     has_many :issues          , through: :enclosure_issues
 
     scope :provider, ->(provider) {
-      if provider.present? && [Track, Album, Artist, Playlist].include?(clazz)
+      if provider.present? && [Track, Album, Artist, Playlist].include?(self.class)
         where(provider: provider)
       else
         all
