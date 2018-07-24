@@ -18,14 +18,16 @@ table.table.table-striped
       th total
   tbody
     - @items.each_with_index do |item, index|
-      - item_path       = enc_path(@enclosure_class.name.downcase, item)
-      - provider_id     = "#{item.provider}/#{item.identifier}"
+      - item_path       = enc_path(@enclosure_class.name.underscore, item)
+      - if item.respond_to? :provider
+        - provider_id     = "#{item.provider}/#{item.identifier}"
       tr
         td.resource-menu data-id=item.id data-resource-id="#{@type.downcase}/#{item.id}"
         td = index + 1 + (@items.page - 1) * @items.per_page
         td = thumbnail_image_link(item)
         td = link_to item.title || item.id, item_path
-        td = link_to provider_id, sanitize_link(item.permalink_url)
+        - if item.respond_to? :permalink_url
+          td = link_to provider_id, sanitize_link(item.permalink_url)
         - item&.scores&.each_value do |score|
           td
             = "#{score_value(score[:value])} (#{score_value(score[:count])})"
