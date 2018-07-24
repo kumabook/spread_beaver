@@ -24,6 +24,7 @@ module Enclosure
     after_save :purge
     after_destroy :purge, :purge_all
     after_touch :purge
+    after_save :create_identity_mark
 
     enum provider: %i[Raw Custom YouTube SoundCloud Spotify AppleMusic]
 
@@ -228,5 +229,20 @@ module Enclosure
       href: "typica://v3/#{self.class.name.downcase.pluralize}/#{id}?#{to_query}",
       type: "application/json",
     }
+  end
+
+  def create_identity_mark
+    return if [Track, Album, Artist].include?(self.class)
+    return if identity_id.nil? || !identity_id_changed?
+    [LikedEnclosure, SavedEnclosure, PlayedEnclosure].each do |clazz|
+      mark = clazz.find_by(id: id)
+      if mark.present?
+        clazz.find_or_create_by(enclosure_id:   identity_id,
+                                enclosure_type: "#{self.class.name}Identity",
+                                user_id:        mark.user_id,
+                                created_at:     mark.created_at,
+                                updated_at:     mark.updated_at)
+      end
+    end
   end
 end

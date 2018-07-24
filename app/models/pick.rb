@@ -49,7 +49,9 @@ class Pick < ApplicationRecord
       self.class.find_or_create_by(enclosure_id:   child.identity.id,
                                    enclosure_type: child.identity.class.name,
                                    container_id:   container_id,
-                                   container_type: container_type)
+                                   container_type: container_type,
+                                   created_at:     created_at,
+                                   updated_at:     updated_at)
     end
   end
 end

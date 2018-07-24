@@ -3,6 +3,7 @@
 module EnclosureMark
   extend ActiveSupport::Concern
   included do
+    after_save :create_identity_mark
     scope :stream, ->(s, clazz) {
       if s.is_a?(Feed)
         feed(s, clazz)
@@ -71,6 +72,20 @@ module EnclosureMark
 
     def mark_has_many_options
       { dependent: :destroy, as: :enclosure }
+    end
+  end
+
+  def create_identity_mark
+    return if !["Track", "Album", "Artist"].include?(enclosure_type)
+
+    clazz = enclosure_type.constantize
+    child = clazz.find(enclosure_id).includes(:identity)
+    return if child.identity_id.nil?
+    object.class.find_or_create_by(enclosure_id:   child.identity.id,
+                                   enclosure_type: child.identity.class.name,
+                                   user_id:        user_id) do |v|
+      v.created_at = created_at
+      v.updated_at = updated_at
     end
   end
 end
