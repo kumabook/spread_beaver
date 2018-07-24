@@ -110,6 +110,12 @@ module StreamsControllable
       @enclosure_class = Album
     when "artists"
       @enclosure_class = Artist
+    when "track_identities"
+      @enclosure_class = TrackIdentity
+    when "album_identities"
+      @enclosure_class = AlbumIdentity
+    when "artist_identities"
+      @enclosure_class = ArtistIdentity
     end
   end
 
