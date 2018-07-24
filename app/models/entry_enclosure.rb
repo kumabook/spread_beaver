@@ -20,7 +20,11 @@ class EntryEnclosure < ApplicationRecord
   scope :locale, ->(locale) {
     joins(entry: :feed).where(feeds: { language: locale}) if locale.present?
   }
-  scope :provider, ->(provider, _clazz) {
-    where(enclosure_provider: provider) if provider.present?
+  scope :provider, ->(provider, clazz) {
+    if provider.present? && [Track, Album, Artist, Playlist].include?(clazz)
+      where(enclosure_provider: provider)
+    else
+      all
+    end
   }
 end

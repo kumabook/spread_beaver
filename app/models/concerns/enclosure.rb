@@ -47,7 +47,11 @@ module Enclosure
     has_many :issues          , through: :enclosure_issues
 
     scope :provider, ->(provider) {
-      where(provider: provider) if provider.present?
+      if provider.present? && [Track, Album, Artist, Playlist].include?(clazz)
+        where(provider: provider)
+      else
+        all
+      end
     }
     scope :latest, ->(since) {
       if since.nil?

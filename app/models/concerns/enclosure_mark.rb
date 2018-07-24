@@ -33,32 +33,40 @@ module EnclosureMark
       joins(:user).where({ users: { locale: locale} }) if locale.present?
     }
     scope :provider, ->(provider, clazz) {
-      joins(clazz.name.downcase.to_sym).where(clazz.table_name.to_sym => { provider: provider }) if provider.present?
+      if provider.present? && [Track, Album, Artist, Playlist].include?(clazz)
+        joins(clazz.name.underscore.to_sym).where(clazz.table_name.to_sym => { provider: provider })
+      else
+        all
+      end
     }
   end
 
   class_methods do
     def include_stream_scopes
       scope :feed, ->(feed, clazz) {
-        joins(clazz.name.downcase.to_sym => :entries).where(entries: { feed_id: feed.id })
+        joins(clazz.name.underscore.to_sym => :entries).where(entries: { feed_id: feed.id })
       }
       scope :keyword, ->(keyword, clazz) {
-        joins(clazz.name.downcase.to_sym => { entries: :keywords })
+        joins(clazz.name.underscore.to_sym => { entries: :keywords })
           .where(keywords: { id: keyword.id })
       }
       scope :tag, ->(tag, clazz) {
-        joins(clazz.name.downcase.to_sym => { entries: :tags }).where(tags: { id: tag.id })
+        joins(clazz.name.underscore.to_sym => { entries: :tags }).where(tags: { id: tag.id })
       }
       scope :topic,      ->(topic, clazz)    {
-        joins(clazz.name.downcase.to_sym => { entries: { feed: :topics }})
+        joins(clazz.name.underscore.to_sym => { entries: { feed: :topics }})
           .where(topics: { id: topic.id })
       }
       scope :category, ->(category, clazz) {
-        joins(clazz.name.downcase.to_sym => { entries: { feed: { subscriptions: :categories }}})
+        joins(clazz.name.underscore.to_sym => { entries: { feed: { subscriptions: :categories }}})
           .where(categories: { id: category.id })
       }
       scope :issue, ->(issue, clazz) {
-        joins(clazz.name.downcase.to_sym => { entries: :issues }).where(issues: { id: issue.id })
+        if clazz.identity?
+          joins(clazz.name.underscore.to_sym => { items: { entries: :issues }}).where(issues: { id: issue.id })
+        else
+          joins(clazz.name.underscore.to_sym => { entries: :issues }).where(issues: { id: issue.id })
+        end
       }
     end
 
