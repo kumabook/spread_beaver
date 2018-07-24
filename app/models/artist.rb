@@ -60,4 +60,12 @@ class Artist < ApplicationRecord
     name
   end
 
+  def create_identity
+    case provider
+    when "Spotify"
+      ArtistIdentity.build_by_spotify_artist(RSpotify::Artist.find(identifier))
+    when "AppleMusic"
+      ArtistIdentity.build_by_apple_music_artist(AppleMusic::Artist.find("jp", identifier))
+    end
+  end
 end

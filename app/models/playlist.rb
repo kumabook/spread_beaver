@@ -67,7 +67,8 @@ class Playlist < ApplicationRecord
 
     playlist_tracks["items"].map do |playlist_track|
       track_content = playlist_track["track"]
-      Track.find_or_create_by_content(track_content)
+      track = Track.find_or_create_by_content(track_content)
+      track.create_identity
       pt = Pick.find_or_create_by(enclosure_id:   playlist_track["track_id"],
                                   enclosure_type: Track.name,
                                   container_id:   playlist_track["playlist_id"],

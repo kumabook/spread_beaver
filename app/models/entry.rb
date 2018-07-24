@@ -165,6 +165,14 @@ class Entry < ApplicationRecord
     new_playlists = Playlist.create_items_of(self, playlistified_entry.playlists)
     new_albums    = Album.create_items_of(self, playlistified_entry.albums)
 
+    new_tracks.each do |track|
+      track.create_identity
+    end
+
+    new_albums.each do |album|
+      album.create_identity
+    end
+
     new_playlists.each(&:fetch_tracks)
     new_albums.each(&:fetch_tracks)
 

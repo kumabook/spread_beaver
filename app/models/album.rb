@@ -35,7 +35,7 @@ class Album < ApplicationRecord
 
   def self.find_or_create_by_apple_music_album(album)
     find_or_create_by(provider: "AppleMusic", identifier: album.id) do |m|
-      m.owner_id      = album.artists.first.id
+      m.owner_id      = album.artists.first&.id
       m.owner_name    = album.artist_name
       m.url           = album.url
       m.title         = album.name
@@ -50,8 +50,8 @@ class Album < ApplicationRecord
 
   def self.find_or_create_by_spotify_album(album)
     find_or_create_by(provider: "Spotify", identifier: album.id) do |m|
-      m.owner_id      = album.artists[0].id
-      m.owner_name    = album.artists[0].name
+      m.owner_id      = album.artists.first&.id
+      m.owner_name    = album.artists.first&.name
       m.url           = album.uri
       m.title         = album.name
       m.description   = nil
@@ -105,4 +105,12 @@ class Album < ApplicationRecord
     end
   end
 
+  def create_identity
+    case provider
+    when "Spotify"
+      AlbumIdentity.build_by_spotify_album(RSpotify::Album.find(identifier))
+    when "AppleMusic"
+      AlbumIdentity.build_by_apple_music_album(AppleMusic::Album.find("jp", identifier))
+    end
+  end
 end
