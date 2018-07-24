@@ -240,6 +240,12 @@ Rails.application.routes.draw do
       resources :tracks, only: [:index], controller: :enclosures, type: "Track"
     end
 
+    [TrackIdentity, AlbumIdentity, ArtistIdentity].each do |m|
+      resources m.table_name.to_sym, controller: :enclosures, type: m.name do
+        post ".mget", action: :list, on: :collection
+      end
+    end
+
     resources :keywords, only: %i[index destroy], constraints: res_options do
       post "", action: :update, on: :member
     end
