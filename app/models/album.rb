@@ -42,7 +42,7 @@ class Album < ApplicationRecord
       m.description   = album.editorial_notes&.dig("short")
       m.thumbnail_url = album.thumbnail_url
       m.artwork_url   = album.artwork_url
-      m.published_at  = Date.parse(album.release_date)
+      m.published_at  = parse_release_date(album.release_date)
       m.state         = "alive"
       m
     end
@@ -60,6 +60,16 @@ class Album < ApplicationRecord
       m.published_at  = parse_release_date(album.release_date)
       m.state         = "alive"
       m
+    end
+  end
+
+  def self.parse_release_date(release_date)
+    if release_date.length == 4
+      Date.parse("#{release_date}/01/01")
+    elsif release_date =~ /\d{4}-\d{2}/
+      Date.parse("#{release_date}-01")
+    else
+      Date.parse(release_date)
     end
   end
 
