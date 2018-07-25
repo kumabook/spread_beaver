@@ -240,16 +240,29 @@ module Enclosure
   end
 
   def create_identity_mark
-    return if [Track, Album, Artist].include?(self.class)
-    return if identity_id.nil? || !identity_id_changed?
-    [LikedEnclosure, SavedEnclosure, PlayedEnclosure].each do |clazz|
-      mark = clazz.find_by(id: id)
-      if mark.present?
-        clazz.find_or_create_by(enclosure_id:   identity_id,
-                                enclosure_type: "#{self.class.name}Identity",
-                                user_id:        mark.user_id,
-                                created_at:     mark.created_at,
-                                updated_at:     mark.updated_at)
+    return if ![Track, Album, Artist].include?(self.class)
+    return if identity_id.nil? || !saved_change_to_identity_id?
+    [LikedEnclosure, SavedEnclosure, PlayedEnclosure, Pick].each do |clazz|
+      clazz.where(enclosure_id: id).each do |mark|
+        mark_params = {}
+        if clazz == Pick
+          mark_params = {
+            enclosure_id:   identity_id,
+            enclosure_type: "#{self.class.name}Identity",
+            container_id:   mark.container_id,
+            container_type: mark.container_type,
+          }
+        else
+          mark_params = {
+            enclosure_id:   identity_id,
+            enclosure_type: "#{self.class.name}Identity",
+            user_id:        mark.user_id
+          }
+        end
+        clazz.find_or_create_by(mark_params) do |v|
+          v.created_at = mark.created_at
+          v.updated_at = mark.updated_at
+        end
       end
     end
   end
