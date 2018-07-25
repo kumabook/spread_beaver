@@ -11,6 +11,7 @@ class CreateTrackIdentities < ActiveRecord::Migration[5.1]
       t.integer :likes_count, default: 0, null: false
       t.integer :saved_count, default: 0, null: false
       t.integer :play_count, default: 0, null: false
+      t.integer :pick_count, default: 0, null: false
 
       t.timestamps null: false
 
