@@ -10,7 +10,10 @@ table.table.table-striped
       th
       th thumbnail
       th title
-      th provider
+      - if !@enclosure_class.identity?
+        th provider
+      - else
+        th items
       - @items.first&.scores&.each_key do |name|
         th.col-md-1
           - score = EnclosureEngagementScorer::SCORES_PER_MARK[name]
@@ -18,16 +21,19 @@ table.table.table-striped
       th total
   tbody
     - @items.each_with_index do |item, index|
-      - item_path       = enc_path(@enclosure_class.name.underscore, item)
-      - if item.respond_to? :provider
-        - provider_id     = "#{item.provider}/#{item.identifier}"
+      - item_path = enc_path(@enclosure_class.name.underscore, item)
       tr
         td.resource-menu data-id=item.id data-resource-id="#{@type.downcase}/#{item.id}"
         td = index + 1 + (@items.page - 1) * @items.per_page
         td = thumbnail_image_link(item)
         td = link_to item.title || item.id, item_path
-        - if item.respond_to? :permalink_url
+        - if !@enclosure_class.identity?
+          - provider_id  = "#{item.provider}/#{item.identifier}"
           td = link_to provider_id, sanitize_link(item.permalink_url)
+        - else
+          td
+            - item.items.each do |item|
+              = link_to provider_icon(item.provider), enc_path(item.class.name, item)
         - item&.scores&.each_value do |score|
           td
             = "#{score_value(score[:value])} (#{score_value(score[:count])})"
