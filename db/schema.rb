@@ -36,6 +36,12 @@ ActiveRecord::Schema.define(version: 20180710155055) do
   create_table "album_identities", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.string "name", null: false
     t.string "artist_name", null: false
+    t.integer "entries_count", default: 0, null: false
+    t.integer "likes_count", default: 0, null: false
+    t.integer "saved_count", default: 0, null: false
+    t.integer "play_count", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["name", "artist_name"], name: "index_album_identities_on_name_and_artist_name", unique: true
     t.index ["name"], name: "index_album_identities_on_name"
   end
@@ -78,6 +84,12 @@ ActiveRecord::Schema.define(version: 20180710155055) do
   create_table "artist_identities", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.string "name", null: false
     t.string "origin_name", null: false
+    t.integer "entries_count", default: 0, null: false
+    t.integer "likes_count", default: 0, null: false
+    t.integer "saved_count", default: 0, null: false
+    t.integer "play_count", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["name"], name: "index_artist_identities_on_name"
   end
 
@@ -505,6 +517,12 @@ ActiveRecord::Schema.define(version: 20180710155055) do
   create_table "track_identities", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.string "name", null: false
     t.string "artist_name", null: false
+    t.integer "entries_count", default: 0, null: false
+    t.integer "likes_count", default: 0, null: false
+    t.integer "saved_count", default: 0, null: false
+    t.integer "play_count", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["name", "artist_name"], name: "index_track_identities_on_name_and_artist_name", unique: true
     t.index ["name"], name: "index_track_identities_on_name"
   end
