@@ -93,6 +93,7 @@ class TrackIdentity < ApplicationRecord
 
   def search_apple_music
     songs = AppleMusic::Song.search("jp", [name, artist_name])
+    songs = AppleMusic::Song.search("jp", [name]) if songs.blank?
     return if songs.blank?
 
     AppleMusic::Song.find("jp", songs.map(&:id)).each do |song|
