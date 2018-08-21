@@ -5,7 +5,7 @@ class Spotify::TokensController < ApplicationController
   CLIENT_ID                 = ENV["SPOTIFY_CLIENT_ID"]
   CLIENT_SECRET             = ENV["SPOTIFY_CLIENT_SECRET"]
   CALLBACK_URL              = ENV["SPOTIFY_CALLBACK_URL"]
-  ENCRYPTION_SECRET         = "cFJLyifeUJUBFWdHzVbykfDmPHtLKLGzViHW9aHGmyTLD8hGXC"
+  ENCRYPTION_SECRET         = ENV["SPOTIFY_ENCRYPTION_SECRET"]
   AUTH_HEADER               = "Basic " +
                               Base64.strict_encode64("#{CLIENT_ID}:#{CLIENT_SECRET}")
   skip_before_action :require_login
