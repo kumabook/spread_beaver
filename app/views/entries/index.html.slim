@@ -57,7 +57,7 @@ table.table.table-striped
           td = entry_issue.engagement
         td = thumbnail_image_link(entry)
         td = link_to entry.title&.truncate(50), entry.url
-        td = link_to entry.feed.title, path
+        td = link_to entry.feed&.title, path
         td = entry.published
         td = entry.crawled
         td
