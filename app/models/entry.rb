@@ -304,7 +304,7 @@ class Entry < ApplicationRecord
   end
 
   def as_partial_json
-    as_json(except: %w[content summary alternate visual categories])
+    as_json(except: %w[content summary alternate categories])
   end
 
   def as_json(options = {})
