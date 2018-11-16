@@ -18,7 +18,7 @@ class Artist < ApplicationRecord
     self.provider      = content["provider"]
     self.identifier    = content["identifier"]
     self.url           = content["url"]
-    self.title         = content["title"]
+    self.name          = content["name"]
     self.thumbnail_url = content["thumbnail_url"]
     self.artwork_url   = content["artwork_url"]
     self.created_at    = content["created_at"]
