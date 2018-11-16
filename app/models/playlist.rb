@@ -51,7 +51,7 @@ class Playlist < ApplicationRecord
 
   def as_detail_json
     hash = super
-    hash["tracks"] = tracks.map(&:as_content_json) if playlists.present?
+    hash["tracks"] = tracks.map(&:as_content_json) if tracks.present?
     hash
   end
 
