@@ -36,7 +36,7 @@ class Artist < ApplicationRecord
   end
 
   def title
-    "#{name}"
+    name
   end
 
 end
