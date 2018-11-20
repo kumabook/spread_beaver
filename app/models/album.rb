@@ -6,7 +6,7 @@ class Album < ApplicationRecord
   has_many :enclosure_artists, dependent: :destroy, as: :enclosure
   has_many :album_tracks
   has_many :artists, through: :enclosure_artists
-  has_many :tracks, through: :album_tracks
+  has_many :tracks, -> { order("album_tracks.id") }, through: :album_tracks
 
   def self.find_or_create_by_content(content)
     model = find_or_create_by(id: content["id"]) do |m|
