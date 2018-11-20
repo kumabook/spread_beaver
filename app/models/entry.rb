@@ -164,6 +164,7 @@ class Entry < ApplicationRecord
     new_albums    = Album.create_items_of(self, playlistified_entry.albums)
 
     new_playlists.each(&:fetch_tracks)
+    new_albums.each(&:fetch_tracks)
 
     add_playlists_to_mix_issue(new_playlists)
 

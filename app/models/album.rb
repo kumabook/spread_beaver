@@ -54,4 +54,14 @@ class Album < ApplicationRecord
     hash
   end
 
+  def fetch_tracks
+    content = PinkSpider.new.fetch_album(id)
+    content["tracks"].map do |track_content|
+      track = Track.find_or_create_by_content(track_content)
+      AlbumTrack.find_or_create_by(album_id: content["id"],
+                                   track_id: track_content["id"])
+      track
+    end
+  end
+
 end
