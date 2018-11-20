@@ -5,6 +5,8 @@ class Track < ApplicationRecord
   include Enclosure
   has_many :enclosure_artists, dependent: :destroy, as: :enclosure
   has_many :artists, through: :enclosure_artists
+  has_many :album_tracks
+  has_many :albums, through: :album_tracks
 
   def self.find_or_create_by_content(content)
     model = find_or_create_by(id: content["id"]) do |m|

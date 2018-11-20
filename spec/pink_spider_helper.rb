@@ -99,6 +99,7 @@ class PinkSpiderHelper
       updated_at:   "2017-03-16T05:37:02.807854+00:00",
       state:        "alive",
       artists:      [],
+      tracks:       [track_hash(shallow: true)]
     }.with_indifferent_access
   end
 

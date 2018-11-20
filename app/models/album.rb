@@ -4,7 +4,9 @@ require "pink_spider"
 class Album < ApplicationRecord
   include Enclosure
   has_many :enclosure_artists, dependent: :destroy, as: :enclosure
+  has_many :album_tracks
   has_many :artists, through: :enclosure_artists
+  has_many :tracks, through: :album_tracks
 
   def self.find_or_create_by_content(content)
     model = find_or_create_by(id: content["id"]) do |m|
@@ -39,4 +41,17 @@ class Album < ApplicationRecord
       url
     end
   end
+
+  def as_content_json
+    hash = super
+    hash["tracks"] = nil
+    hash
+  end
+
+  def as_detail_json
+    hash = super
+    hash["tracks"] = tracks.map(&:as_content_json) if tracks.present?
+    hash
+  end
+
 end

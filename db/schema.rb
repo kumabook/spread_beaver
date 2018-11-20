@@ -10,27 +10,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180625082002) do
+ActiveRecord::Schema.define(version: 20181120042833) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+  enable_extension "pg_stat_statements"
   enable_extension "uuid-ossp"
 
-  create_table "album_artist_identities", force: :cascade do |t|
-    t.uuid "album_identity_id", null: false
-    t.uuid "artist_identity_id", null: false
-    t.index ["album_identity_id", "artist_identity_id"], name: "index_album_artist_identities", unique: true
-  end
-
-  create_table "album_identities", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
-    t.string "name", null: false
-    t.index ["name"], name: "index_album_identities_on_name"
-  end
-
-  create_table "album_track_identities", force: :cascade do |t|
-    t.uuid "album_identity_id", null: false
-    t.uuid "track_identity_id", null: false
-    t.index ["album_identity_id", "track_identity_id"], name: "index_album_track_identities", unique: true
+  create_table "album_tracks", force: :cascade do |t|
+    t.uuid "album_id", null: false
+    t.uuid "track_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["album_id", "track_id"], name: "index_album_tracks_on_album_id_and_track_id", unique: true
+    t.index ["created_at"], name: "index_album_tracks_on_created_at"
+    t.index ["updated_at"], name: "index_album_tracks_on_updated_at"
   end
 
   create_table "albums", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -51,15 +45,8 @@ ActiveRecord::Schema.define(version: 20180625082002) do
     t.integer "play_count", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.uuid "identity_id"
-    t.index ["identity_id"], name: "index_albums_on_identity_id"
     t.index ["provider"], name: "index_albums_on_provider"
     t.index ["title"], name: "index_albums_on_title"
-  end
-
-  create_table "artist_identities", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
-    t.string "name", null: false
-    t.index ["name"], name: "index_artist_identities_on_name"
   end
 
   create_table "artists", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -75,8 +62,6 @@ ActiveRecord::Schema.define(version: 20180625082002) do
     t.integer "play_count", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.uuid "identity_id"
-    t.index ["identity_id"], name: "index_artists_on_identity_id"
     t.index ["name"], name: "index_artists_on_name"
     t.index ["provider"], name: "index_artists_on_provider"
   end
@@ -465,17 +450,6 @@ ActiveRecord::Schema.define(version: 20180625082002) do
     t.index ["locale"], name: "index_topics_on_locale"
   end
 
-  create_table "track_artist_identities", force: :cascade do |t|
-    t.uuid "track_identity_id", null: false
-    t.uuid "artist_identity_id", null: false
-    t.index ["track_identity_id", "artist_identity_id"], name: "index_track_artist_identities", unique: true
-  end
-
-  create_table "track_identities", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
-    t.string "name", null: false
-    t.index ["name"], name: "index_track_identities_on_name"
-  end
-
   create_table "tracks", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.integer "provider", default: 0, null: false
     t.string "identifier", default: "", null: false
@@ -497,8 +471,6 @@ ActiveRecord::Schema.define(version: 20180625082002) do
     t.integer "play_count", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.uuid "identity_id"
-    t.index ["identity_id"], name: "index_tracks_on_identity_id"
     t.index ["provider"], name: "index_tracks_on_provider"
     t.index ["title"], name: "index_tracks_on_title"
   end
