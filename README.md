@@ -106,8 +106,8 @@ See [Feedly Cloud API document](https://developer.feedly.com/v3/)
   - `cp .env.dist .env`
   - `cp .env.pink_spider.dist .env.pink_spider`
   - `docker-compose up`
-  - `docker-compose run --rm web rails db:create`
-  - `docker-compose run --rm web rails db:migrate`
+  - `docker-compose run --rm web bundle exec rails db:create`
+  - `docker-compose run --rm web bundle exec rails db:migrate`
   - `docker-compose run --rm pink_spider bundle exec rake db:create`
   - `docker-compose run --rm pink_spider bundle exec rake db:migrate`
 - Restore database from backup
