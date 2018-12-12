@@ -2,6 +2,8 @@ FROM ruby:2.5.1
 RUN apt-get update && \
     apt-get install -qq -y build-essential libpq-dev postgresql-client --fix-missing --no-install-recommends
 
+RUN apt-get install -y libidn11-dev
+
 RUN curl -SL https://deb.nodesource.com/setup_10.x | bash
 RUN apt-get install -y nodejs
 
