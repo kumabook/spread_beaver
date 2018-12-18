@@ -94,9 +94,9 @@ module Enclosure
       models = items.map do |i|
         model = find_or_create_by_content(i)
         EntryEnclosure.find_or_create_by(entry_id:           entry.id,
-                                         enclosure_id:       model.id,
-                                         enclosure_type:     name,
-                                         enclosure_provider: model.provider) do
+                                         enclosure_id:       model.id) do |e|
+          e.enclosure_type = name
+          e.enclosure_provider = model.provider
           logger.info("Add new #{name} #{i['id']} to entry #{entry.id} #{i['provider']}")
         end
         i["artists"]&.each do |h|
