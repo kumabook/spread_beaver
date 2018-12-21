@@ -1,4 +1,5 @@
 FROM ruby:2.5.1
+ENV LANG C.UTF-8
 RUN apt-get update && \
     apt-get install -qq -y build-essential libpq-dev postgresql-client --fix-missing --no-install-recommends
 
