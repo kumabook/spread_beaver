@@ -119,7 +119,7 @@ class AlbumIdentity < ApplicationRecord
     artist_identities.each do |artist|
       q += " artist:#{artist.name}"
     end
-    sp_albums = RSpotify::Album.search(q, limit: 10)
+    sp_albums = RSpotify::Album.search(q, limit: 10, market: "jp")
     sp_albums.each do |sp_album|
       if sp_albums.count == 1 || (sp_album.name == name)
         album = Album.find_or_create_by_spotify_album(sp_album)

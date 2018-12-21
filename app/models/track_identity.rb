@@ -110,7 +110,7 @@ class TrackIdentity < ApplicationRecord
     artist_identities.each do |artist|
       q += " artist:#{artist.name}"
     end
-    tracks = RSpotify::Track.search(q, limit: 10)
+    tracks = RSpotify::Track.search(q, limit: 10, market: "jp")
 
     tracks.each do |track|
       if tracks.count == 1 || (track.name == name)

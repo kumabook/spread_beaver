@@ -116,7 +116,7 @@ class ArtistIdentity < ApplicationRecord
   end
 
   def search_spotify
-    artists = RSpotify::Artist.search("artist:#{name}", limit: 10)
+    artists = RSpotify::Artist.search("artist:#{name}", limit: 10, market: "jp")
     artists.each do |artist|
       if artists.count == 1 || artist.name == name
         artist = Artist.find_or_create_by_spotify_artist(artist)
