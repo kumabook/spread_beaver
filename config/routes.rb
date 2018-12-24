@@ -49,61 +49,32 @@ Rails.application.routes.draw do
   resources :categories do
     resources :subscriptions, only: [:index]
   end
-  resources :tracks, controller: :enclosures, type: "Track", except: %i[edit update] do
-    post   "like"  , to: :like  , as: :likes
-    delete "unlike", to: :unlike, as: :like
-    post   "save"  , to: :save  , as: :saves
-    delete "unsave", to: :unsave, as: :save
-    post   "play"  , to: :play  , as: :plays
-    get    "search", on: :collection
-    post   "create_identity", on: :member
-  end
-  resources :albums, controller: :enclosures, type: "Album", except: %i[edit update] do
-    post   "like"  , to: :like  , as: :likes
-    delete "unlike", to: :unlike, as: :like
-    post   "save"  , to: :save  , as: :saves
-    delete "unsave", to: :unsave, as: :save
-    post   "play"  , to: :play  , as: :plays
-    get    "search", on: :collection
-    post   "create_identity", on: :member
-  end
-  resources :artists, controller: :enclosures, type: "Artist", except: %i[edit update] do
-    post   "like"  , to: :like  , as: :likes
-    delete "unlike", to: :unlike, as: :like
-    post   "save"  , to: :save  , as: :saves
-    delete "unsave", to: :unsave, as: :save
-    post   "play"  , to: :play  , as: :plays
-    get    "search", on: :collection
-    post   "create_identity", on: :member
-  end
-  resources :playlists, controller: :enclosures, type: "Playlist", except: %i[edit update] do
-    post   "like"  , to: :like  , as: :likes
-    delete "unlike", to: :unlike, as: :like
-    post   "save"  , to: :save  , as: :saves
-    delete "unsave", to: :unsave, as: :save
-    post   "play"  , to: :play  , as: :plays
-    get    "search", on: :collection
-    member do
-      get "crawl"
-      get "activate"
-      get "deactivate"
+  [:tracks, :albums, :artists, :playlists].each do |res|
+    resources res, controller: :enclosures, type: res.to_s.classify, except: %i[edit update] do
+      post   "like"  , to: :like  , as: :likes
+      delete "unlike", to: :unlike, as: :like
+      post   "save"  , to: :save  , as: :saves
+      delete "unsave", to: :unsave, as: :save
+      post   "play"  , to: :play  , as: :plays
+      get    "search", on: :collection
+      post   "create_identity", on: :member if res != :playlists
+      if res != :playlists
+        member do
+          get "crawl"
+          get "activate"
+          get "deactivate"
+        end
+        get "actives"   , on: :collection
+      end
     end
-    get "actives"   , on: :collection
   end
 
-  resources :track_identities   , controller: :identities, type: "TrackIdentity" do
-    member do
-      get "crawl"
-    end
-  end
-  resources :album_identities   , controller: :identities, type: "AlbumIdentity" do
-    member do
-      get "crawl"
-    end
-  end
-  resources :artist_identities  , controller: :identities, type: "ArtistIdentity" do
-    member do
-      get "crawl"
+  [:track_identities, :album_identities, :artist_identities].each do |res|
+    resources res, controller: :identities, type: res.to_s.classify do
+      get "search", on: :collection
+      member do
+        get "crawl"
+      end
     end
   end
 
