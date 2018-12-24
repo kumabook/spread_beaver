@@ -10,7 +10,7 @@ class IdentitiesController < ApplicationController
 
   def search
     per_page    = Kaminari.config.default_per_page
-    @identities = enclosure_class.includes(:items).search(@query, params[:page], per_page)
+    @identities = identity_class.includes(:items).search(params[:query], params[:page], per_page)
     render "index"
   end
 

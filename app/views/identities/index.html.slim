@@ -2,6 +2,15 @@
   h1
     = @type.pluralize
 
+div.row
+  div.col-lg-6
+    form action="#{search_enc_path(@type)}" method="get"
+      .input-group
+        input.form-control name="query" type="text" value="#{@query}"
+          span.input-group-btn
+            button.btn.btn-primary type="submit"
+              = "Search"
+
 = paginate @identities
 
 table.table.table-striped
