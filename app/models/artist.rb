@@ -15,6 +15,10 @@ class Artist < ApplicationRecord
     model
   end
 
+  def self.search(query, page, per_page)
+    where("name ILIKE ?", "%#{query}%").page(page).per(per_page)
+  end
+
   def update_by_content(content)
     self.provider      = content["provider"]
     self.identifier    = content["identifier"]
