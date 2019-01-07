@@ -111,7 +111,8 @@ class TwitterBot < ApplicationJob
     today            = Time.zone.now.beginning_of_day
     week_ago         = today - 7.days
     entries_per_feed = Setting.latest_entries_per_feed
-    query = Mix::Query.new(week_ago..today, :engaging, entries_per_feed: entries_per_feed)
+    provider         = ["Spotify", "AppleMusic"]
+    query = Mix::Query.new(week_ago..today, :engaging, entries_per_feed: entries_per_feed, provider: provider)
     tracks   = topic.mix_enclosures(Track, page: 1, per_page: 100, query: query)
     previous = topic.mix_enclosures(Track, page: 1, per_page: 100, query: query.previous(1.day))
     Track.set_previous_ranks(tracks, previous)
