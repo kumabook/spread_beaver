@@ -75,8 +75,6 @@ class Feed < ApplicationRecord
     else
       Feed.find_or_create_by_url_on_pink_spider(url)
     end
-  rescue StandardError
-    nil
   end
 
   def self.find_or_create_by_ids_with_feedlr(feed_ids)

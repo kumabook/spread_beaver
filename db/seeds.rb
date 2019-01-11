@@ -25,16 +25,18 @@ puts "Create default journal hightlight"
 
 news_topic = Topic.first_or_create(label: "news")
 
-feedUrls = [
-  "feed/http://pitchfork.com/rss/news",
-  "feed/http://pitchfork.com/rss/reviews/best/albums",
-  "feed/http://pitchfork.com/rss/reviews/best/tracks",
-  "feed/http://spincoaster.com/feed"
+feed_urls = [
+  "http://pitchfork.com/rss/news",
+  "http://pitchfork.com/rss/reviews/best/albums",
+  "http://pitchfork.com/rss/reviews/best/tracks",
+  "http://spincoaster.com/feed"
 ]
 
-feedUrls.each do |feedUrl|
-  Feed.find_or_create_by_url(feedUrl) do |f|
-    puts "Create feed(id: #{f.id})"
-    f.topics = [news_topic]
-  end
+feeds = feed_urls.map do |url|
+  puts "Creating #{url}"
+  f = Feed.find_or_create_by_url(url)
+  puts "Created #{f.id}"
+  f
 end
+
+news_topic.feeds = feeds
