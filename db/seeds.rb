@@ -33,7 +33,7 @@ feedUrls = [
 ]
 
 feedUrls.each do |feedUrl|
-  Feed.find_or_create_by_url(feedUrl).each do |f|
+  Feed.find_or_create_by_url(feedUrl) do |f|
     puts "Create feed(id: #{f.id})"
     f.topics = [news_topic]
   end
