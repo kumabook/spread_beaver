@@ -28,6 +28,10 @@ class Entry < ApplicationRecord
   has_many :albums          , through: :entry_enclosures, source: :enclosure, source_type: Album.name
   has_many :playlists       , through: :entry_enclosures, source: :enclosure, source_type: Playlist.name
 
+  has_many :track_identities , through: :entry_enclosures, source: :enclosure, source_type: TrackIdentity.name
+  has_many :album_identities , through: :entry_enclosures, source: :enclosure, source_type: AlbumIdentity.name
+  has_many :artist_identities, through: :entry_enclosures, source: :enclosure, source_type: ArtistIdentity.name
+
   self.primary_key = :id
 
   before_save :normalize_visual
@@ -37,7 +41,7 @@ class Entry < ApplicationRecord
   after_touch :purge
 
   scope :with_content,  -> {
-    preload(:tracks, :albums, :playlists)
+    preload(:tracks, :albums, :playlists, :track_identities, :album_identities)
   }
   scope :with_detail, -> {
     with_content().eager_load(:keywords)
