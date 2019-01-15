@@ -9,6 +9,14 @@ class Album < ApplicationRecord
   has_many :tracks, -> { order("album_tracks.id") }, through: :album_tracks
   belongs_to :identity, class_name: "AlbumIdentity", optional: true
 
+  scope :with_content, -> {
+    eager_load(:entries)
+  }
+
+  scope :with_detail, -> {
+    eager_load(:entries, :pick_containers, :pick_enclosures)
+  }
+
   def self.find_or_create_by_content(content)
     model = find_or_create_by(id: content["id"]) do |m|
       m.update_by_content(content)

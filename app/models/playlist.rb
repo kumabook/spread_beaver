@@ -7,6 +7,10 @@ class Playlist < ApplicationRecord
   has_many :keywordables, dependent: :destroy, as: :keywordable
   has_many :keywords    , through: :keywordables
 
+  scope :with_detail, -> {
+    eager_load(:entries, :pick_containers, :pick_enclosures)
+  }
+
   def self.find_or_create_by_content(content)
     model = find_or_create_by(id: content["id"]) do |m|
       m.update_by_content(content)

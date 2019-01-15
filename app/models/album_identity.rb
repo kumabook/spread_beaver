@@ -13,6 +13,13 @@ class AlbumIdentity < ApplicationRecord
   has_many :genre_items      , dependent: :destroy, as: :genre_item
   has_many :genres           , through: :genre_items
 
+  scope :with_detail, -> {
+    eager_load(:entries)
+      .eager_load(:items)
+      .eager_load(:album_identities)
+      .eager_load(:artist_identities)
+  }
+
   def self.find_or_create_by_album(album)
     case album.provider
     when "Spotify"

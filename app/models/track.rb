@@ -9,6 +9,16 @@ class Track < ApplicationRecord
   has_many :albums, through: :album_tracks
   belongs_to :identity, class_name: "TrackIdentity", optional: true
 
+  scope :with_content, -> {
+    eager_load(:entries, :enclosure_artists, :artists)
+  }
+
+  scope :with_detail, -> {
+    eager_load(:entries)
+      .eager_load(:pick_containers)
+      .eager_load(:pick_enclosures)
+  }
+
   def self.find_or_create_by_content(content)
     model = find_or_create_by(id: content["id"]) do |m|
       m.update_by_content(content)

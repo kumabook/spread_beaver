@@ -61,13 +61,6 @@ module Enclosure
       end
     }
 
-    scope :with_content, -> { eager_load(:entries) }
-    scope :with_detail, -> {
-      eager_load(:entries)
-        .eager_load(:pick_containers)
-        .eager_load(:pick_enclosures)
-    }
-
     scope :issue , ->(issue) {
       joins(:enclosure_issues)
         .where(enclosure_issues: { issue: issue })

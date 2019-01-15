@@ -14,6 +14,13 @@ class ArtistIdentity < ApplicationRecord
   has_many :genre_items     , dependent: :destroy, as: :genre_item
   has_many :genres          , through: :genre_items
 
+  scope :with_detail, -> {
+    eager_load(:entries)
+      .eager_load(:items)
+      .eager_load(:album_identities)
+      .eager_load(:track_identities)
+  }
+
   def self.find_by_name_and_origin(name, origin_name)
     artists = joins(:artist_aliases)
                 .where(artist_aliases: { name: name })

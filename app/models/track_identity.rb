@@ -11,6 +11,10 @@ class TrackIdentity < ApplicationRecord
   has_many :keywordables     , dependent: :destroy, as: :keywordable
   has_many :keywords         , through: :keywordables
 
+  scope :with_detail, -> {
+    eager_load(:entries, :items, :album_identities, :artist_identities)
+  }
+
   def self.find_or_create_by_track(track)
     case track.provider
     when "Spotify"

@@ -8,6 +8,10 @@ class Artist < ApplicationRecord
   has_many :albums, through: :enclosure_artists, source: :enclosure, source_type: Album.name
   belongs_to :identity, class_name: "ArtistIdentity", optional: true
 
+  scope :with_detail, -> {
+    eager_load(:entries, :pick_containers, :pick_enclosures)
+  }
+
   def find_or_create_by_content(content)
     model = find_or_create_by(id: content["id"]) do |m|
       m.update_by_content(content)
