@@ -10,6 +10,13 @@ p
     br
       = @enclosure[key]
 p
+  strong artists
+
+- @enclosure.artists.each do |artist|
+  = link_to artist.title, artist_path(artist)
+  br
+'
+p
   strong topics
 
 - @enclosure.entries.flat_map { |e| e.feed.topics }.uniq.each do |topic|

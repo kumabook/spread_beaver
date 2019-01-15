@@ -105,6 +105,7 @@ class Track < ApplicationRecord
   def as_content_json
     hash = super
     hash["playlists"] = nil
+    hash["artists"] = artists.map(&:as_content_json)
     hash
   end
 
