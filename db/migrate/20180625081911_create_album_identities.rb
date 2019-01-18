@@ -5,6 +5,7 @@ class CreateAlbumIdentities < ActiveRecord::Migration[5.1]
     create_table :album_identities, id: :uuid, default: "uuid_generate_v4()" do |t|
       t.string :name, null: false
       t.string :artist_name, null: false
+      t.string :slug, null: false
 
       t.integer :entries_count, default: 0, null: false
 
@@ -16,6 +17,7 @@ class CreateAlbumIdentities < ActiveRecord::Migration[5.1]
 
       t.index [:name]
       t.index [:name, :artist_name], unique: true
+      t.index [:slug], unique: true
     end
     create_table :album_track_identities do |t|
       t.uuid :album_identity_id, null: false
