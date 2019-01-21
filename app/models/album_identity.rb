@@ -127,6 +127,8 @@ class AlbumIdentity < ApplicationRecord
         album.save!
       end
     end
+  rescue => e
+    logger.warn("Failed to apple music search album #{name}")
   end
 
   def search_spotify

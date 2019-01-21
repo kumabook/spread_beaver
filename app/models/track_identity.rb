@@ -111,6 +111,8 @@ class TrackIdentity < ApplicationRecord
         item.save!
       end
     end
+  rescue => e
+    logger.warn("Failed to apple music search song #{name}")
   end
 
   def search_spotify
