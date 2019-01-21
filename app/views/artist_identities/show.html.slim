@@ -1,0 +1,41 @@
+.page-header
+  h1
+    = ArtistIdentity
+
+- %i[id slug name origin_name bio bio_en wikipedia website facebook instagram twitter].each do |key|
+  p
+    strong
+      = key
+    br
+      = @identity[key]
+
+p
+  strong items
+  br
+    - @identity.items.each do |item|
+      = link_to provider_icon(item.provider), enc_path(item.class.name, item)
+p
+  strong aliases
+  br
+  - @identity.artist_aliases.each do |a|
+    = a.name
+- if @identity.respond_to? :genres
+  p
+    strong genres
+    br
+    - @identity.genres.each do |g|
+      = "#{g.label} #{g.japanese_label || ''}"
+      br
+p
+  strong track_identities
+  br
+    - @identity.track_identities.each do |track_identity|
+      = link_to track_identity.name, enc_path(track_identity.class.name, track_identity)
+  strong album_identities
+  br
+    - @identity.album_identities.each do |album_identity|
+      = link_to album_identity.name, enc_path(album_identity.class.name, album_identity)
+
+= link_to 'Edit', edit_artist_identity_path(@identity), class: 'btn btn-info'
+'
+= link_to 'Crawl items', crawl_enc_path("ArtistIdentity", @identity), class: 'btn btn-info'

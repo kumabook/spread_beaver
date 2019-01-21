@@ -1,10 +1,10 @@
 .page-header
   h1
-    = @type.pluralize
+    Artist identities
 
 div.row
   div.col-lg-6
-    form action="#{search_enc_path(@type)}" method="get"
+    form action="#{search_enc_path('ArtistIdentity')}" method="get"
       .input-group
         input.form-control name="query" type="text" value="#{@query}"
           span.input-group-btn
@@ -18,16 +18,16 @@ table.table.table-striped
     tr
       th
       th name
-      th artist_name
+      th origin_name
       th items
       th.col-md-1 actions
   tbody
     - @identities.each do |identity|
-      - item_path       = enc_path(@type, identity)
+      - item_path       = enc_path("ArtistIdentity", identity)
       tr
-        td.resource-menu data-id=identity.id data-resource-id="#{@type.downcase}/#{identity.id}"
+        td.resource-menu data-id=identity.id data-resource-id="artist-identity/#{identity.id}"
         td = link_to (identity.name) || identity.id, item_path
-        td = identity.artist_name
+        td = identity.origin_name
         td
           - identity.items.each do |item|
             = link_to provider_icon(item.provider), enc_path(item.class.name, item)

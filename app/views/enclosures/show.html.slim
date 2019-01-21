@@ -12,9 +12,10 @@ p
 p
   strong artists
 
-- @enclosure.artists.each do |artist|
-  = link_to artist.title, artist_path(artist)
-  br
+- if @enclosure.respond_to?(:artists)
+  - @enclosure.artists&.each do |artist|
+    = link_to artist.title, artist_path(artist)
+    br
 '
 p
   strong topics

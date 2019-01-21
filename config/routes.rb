@@ -58,7 +58,7 @@ Rails.application.routes.draw do
       post   "play"  , to: :play  , as: :plays
       get    "search", on: :collection
       post   "create_identity", on: :member if res != :playlists
-      if res != :playlists
+      if res == :playlists
         member do
           get "crawl"
           get "activate"
@@ -69,13 +69,18 @@ Rails.application.routes.draw do
     end
   end
 
-  [:track_identities, :album_identities, :artist_identities].each do |res|
+  [:track_identities, :album_identities].each do |res|
     resources res, controller: :identities, type: res.to_s.classify do
       get "search", on: :collection
       member do
         get "crawl"
       end
     end
+  end
+
+  resources :artist_identities do
+    get "search", on: :collection
+    get "crawl", on: :member
   end
 
   resources :keywords do
