@@ -92,23 +92,24 @@ module Enclosure
       PinkSpider.new.public_send("fetch_#{name.downcase}".to_sym, id)
     end
 
+    def import_from_pink_spider(id)
+      content = fetch_content(id)
+      model = find_or_create_by_content(content)
+      content["artists"]&.each do |h|
+        a = Artist.find_or_create_by(id: h["id"]) do |obj|
+          obj.name = h["name"]
+          obj.provider = h["provider"]
+        end
+        EnclosureArtist.find_or_create_by(enclosure_id:   model.id,
+                                          enclosure_type: Track.name,
+                                          artist_id:      a.id)
+      end
+      model
+    end
+
     def create_items_of(entry, items)
       models = items.map do |i|
-        content = fetch_content(i["id"])
-        model = find_or_create_by_content(content)
-        EntryEnclosure.find_or_create_by(entry_id:           entry.id,
-                                         enclosure_id:       model.id) do |e|
-          e.enclosure_type = name
-          e.enclosure_provider = model.provider
-          logger.info("Add new #{name} #{content['id']} to entry #{entry.id} #{content['provider']}")
-        end
-        content["artists"]&.each do |h|
-          a = Artist.find_or_create_by(id: h["id"], name: h["name"], provider: h["provider"])
-          EnclosureArtist.find_or_create_by(enclosure_id:   model.id,
-                                            enclosure_type: Track.name,
-                                            artist_id:      a.id)
-        end
-        model
+        create_with_pink_spider(i["id"])
       end
       models
     end

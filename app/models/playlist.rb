@@ -70,9 +70,8 @@ class Playlist < ApplicationRecord
     playlist_tracks = PinkSpider.new.fetch_tracks_of_playlist(id, updated_at)
 
     playlist_tracks["items"].map do |playlist_track|
-      track_content = playlist_track["track"]
-      track = Track.find_or_create_by_content(track_content)
-      track.create_identity
+      track = Track.import_from_pink_spider(playlist_track["track"]["id"])
+      track.create_identity if track.identity_id.nil?
       pt = Pick.find_or_create_by(enclosure_id:   playlist_track["track_id"],
                                   enclosure_type: Track.name,
                                   container_id:   playlist_track["playlist_id"],
