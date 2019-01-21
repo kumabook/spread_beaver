@@ -46,15 +46,15 @@ class ArtistIdentity < ApplicationRecord
   def self.find_or_create_by_spotify_artist(artist)
     find_by_name_and_origin(artist.name, "") ||
       find_or_create_by(name: artist.name, origin_name: "") do |identity|
-      identity.slug = new_slug(artist.name)
-    end
+        identity.slug = new_slug(artist.name)
+      end
   end
 
   def self.find_or_create_by_apple_music_artist(artist)
     find_by_name_and_origin(artist.name, "") ||
       find_or_create_by(name: artist.name, origin_name: "") do |identity|
-      identity.slug = new_slug(artist.name)
-    end
+        identity.slug = new_slug(artist.name)
+      end
   end
 
   def self.build_by_spotify_artist(artist)

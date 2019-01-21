@@ -86,7 +86,6 @@ class V3::EnclosuresController < V3::ApiController
     end
   end
 
-
   def set_enclosures
     @enclosures = @enclosure_class.with_detail.where(id: params["_json"])
     @enclosures = params["_json"].flat_map { |id|

@@ -12,7 +12,7 @@ class Track < ApplicationRecord
   scope :with_content, -> {
     eager_load(:entries,
                :enclosure_artists,
-               artists: :identity,
+               artists: :identity
               )
   }
 

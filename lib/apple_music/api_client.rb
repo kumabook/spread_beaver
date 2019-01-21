@@ -18,9 +18,7 @@ module AppleMusic
                                   params: params,
                                   Authorization: "Bearer #{@developer_token}"
                                 })
-      if response.code != 200
-        raise AppleMusicError.new(response.code)
-      end
+      raise AppleMusicError.new(response.code) if response.code != 200
       JSON.parse(response.body)
     end
 

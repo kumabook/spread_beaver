@@ -153,7 +153,7 @@ class Entry < ApplicationRecord
   end
 
   def add_enclosure(enc)
-    EntryEnclosure.find_or_create_by(entry_id:     self.id,
+    EntryEnclosure.find_or_create_by(entry_id:     id,
                                      enclosure_id: enc.id) do |e|
       e.enclosure_type = enc.class.name
       e.enclosure_provider = enc.provider
@@ -174,16 +174,16 @@ class Entry < ApplicationRecord
       }.to_json
     end
 
-    new_tracks = playlistified_entry.tracks.map {|h| Track.import_from_pink_spider(h["id"]) }
-    new_playlists = playlistified_entry.playlists.map {|h| Playlist.import_from_pink_spider(h["id"]) }
-    new_albums = playlistified_entry.albums.map {|h| Album.import_from_pink_spider(h["id"]) }
+    new_tracks = playlistified_entry.tracks.map { |h| Track.import_from_pink_spider(h["id"]) }
+    new_playlists = playlistified_entry.playlists.map { |h| Playlist.import_from_pink_spider(h["id"]) }
+    new_albums = playlistified_entry.albums.map { |h| Album.import_from_pink_spider(h["id"]) }
 
-    new_tracks.each {|e| add_enclosure(e) }
-    new_playlists.each {|e| add_enclosure(e) }
-    new_albums.each {|e| add_enclosure(e) }
+    new_tracks.each { |e| add_enclosure(e) }
+    new_playlists.each { |e| add_enclosure(e) }
+    new_albums.each { |e| add_enclosure(e) }
 
-    new_tracks.each { |track| track.create_identity }
-    new_albums.each { |album| album.create_identity }
+    new_tracks.each(&:create_identity)
+    new_albums.each(&:create_identity)
 
     new_playlists.each(&:fetch_tracks)
     new_albums.each(&:fetch_tracks)
