@@ -90,6 +90,7 @@ ActiveRecord::Schema.define(version: 20181120042833) do
     t.string "origin_name", null: false
     t.string "slug", null: false
     t.text "bio"
+    t.text "bio_en"
     t.string "wikipedia"
     t.string "website"
     t.string "facebook"
