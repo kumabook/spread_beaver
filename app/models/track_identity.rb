@@ -27,11 +27,15 @@ class TrackIdentity < ApplicationRecord
   end
 
   def self.find_or_create_by_spotify_track(t)
-    find_or_create_by(name: t.name, artist_name: t.artists.map(&:name).join(", "))
+    find_or_create_by(name: t.name, artist_name: t.artists.map(&:name).join(", ")) do |identity|
+      identity.slug = new_slug(t.name)
+    end
   end
 
   def self.find_or_create_by_apple_music_song(s)
-    find_or_create_by(name: s.name, artist_name: s.artist_name)
+    find_or_create_by(name: s.name, artist_name: s.artist_name) do |identity|
+      identity.slug = new_slug(s.name)
+    end
   end
 
   def self.build_by_spotify_track(track)

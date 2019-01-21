@@ -4,6 +4,7 @@ class V3::EnclosuresController < V3::ApiController
   include Pagination
   before_action :set_enclosure_class
   before_action :set_enclosure            , only: [:show]
+  before_action :set_enclosure_by_slug    , only: [:show_by_slug]
   before_action :set_enclosures           , only: [:list]
   before_action :set_entry                , only: [:index]
   before_action :set_playlist             , only: [:index]
@@ -18,6 +19,10 @@ class V3::EnclosuresController < V3::ApiController
     else
       render_not_found
     end
+  end
+
+  def show_by_slug
+    show
   end
 
   def list
@@ -67,12 +72,20 @@ class V3::EnclosuresController < V3::ApiController
 
   def set_enclosure
     @enclosure = @enclosure_class.with_detail.find(params[:id])
+  end
+
+  def set_enclosure_by_slug
+    @enclosure = @enclosure_class.with_detail.find_by(slug: params[:slug])
+  end
+
+  def set_enclosure_items
     enclosures = [@enclosure] + @enclosure.pick_enclosures + @enclosure.pick_containers
     @enclosure_class.set_partial_entries(enclosures)
     if current_resource_owner.present?
       @enclosure_class.set_marks(current_resource_owner, [@enclosure])
     end
   end
+
 
   def set_enclosures
     @enclosures = @enclosure_class.with_detail.where(id: params["_json"])

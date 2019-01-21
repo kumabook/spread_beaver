@@ -26,6 +26,7 @@ ActiveRecord::Schema.define(version: 20181120042833) do
   create_table "album_identities", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.string "name", null: false
     t.string "artist_name", null: false
+    t.string "slug", null: false
     t.integer "entries_count", default: 0, null: false
     t.integer "likes_count", default: 0, null: false
     t.integer "saved_count", default: 0, null: false
@@ -34,6 +35,7 @@ ActiveRecord::Schema.define(version: 20181120042833) do
     t.datetime "updated_at", null: false
     t.index ["name", "artist_name"], name: "index_album_identities_on_name_and_artist_name", unique: true
     t.index ["name"], name: "index_album_identities_on_name"
+    t.index ["slug"], name: "index_album_identities_on_slug", unique: true
   end
 
   create_table "album_track_identities", force: :cascade do |t|
@@ -86,6 +88,13 @@ ActiveRecord::Schema.define(version: 20181120042833) do
   create_table "artist_identities", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.string "name", null: false
     t.string "origin_name", null: false
+    t.string "slug", null: false
+    t.text "bio"
+    t.string "wikipedia"
+    t.string "website"
+    t.string "facebook"
+    t.string "instagram"
+    t.string "twitter"
     t.integer "entries_count", default: 0, null: false
     t.integer "likes_count", default: 0, null: false
     t.integer "saved_count", default: 0, null: false
@@ -93,6 +102,7 @@ ActiveRecord::Schema.define(version: 20181120042833) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["name"], name: "index_artist_identities_on_name"
+    t.index ["slug"], name: "index_artist_identities_on_slug", unique: true
   end
 
   create_table "artists", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
@@ -521,6 +531,7 @@ ActiveRecord::Schema.define(version: 20181120042833) do
   create_table "track_identities", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.string "name", null: false
     t.string "artist_name", null: false
+    t.string "slug", null: false
     t.integer "entries_count", default: 0, null: false
     t.integer "likes_count", default: 0, null: false
     t.integer "saved_count", default: 0, null: false
@@ -530,6 +541,7 @@ ActiveRecord::Schema.define(version: 20181120042833) do
     t.datetime "updated_at", null: false
     t.index ["name", "artist_name"], name: "index_track_identities_on_name_and_artist_name", unique: true
     t.index ["name"], name: "index_track_identities_on_name"
+    t.index ["slug"], name: "index_track_identities_on_slug", unique: true
   end
 
   create_table "tracks", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|

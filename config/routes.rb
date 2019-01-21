@@ -217,6 +217,8 @@ Rails.application.routes.draw do
       end
     end
 
+    get "/artist/:slug" => "enclosures#show_by_slug", type: "ArtistIdentity"
+
     resources :keywords, only: %i[index destroy], constraints: res_options do
       post "", action: :update, on: :member
     end

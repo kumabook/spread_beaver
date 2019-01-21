@@ -8,6 +8,7 @@ class CreateArtistIdentities < ActiveRecord::Migration[5.1]
       t.string :slug, null: false
 
       t.text :bio
+      t.text :bio_en
       t.string :wikipedia
       t.string :website
       t.string :facebook

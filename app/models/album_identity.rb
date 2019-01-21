@@ -32,11 +32,15 @@ class AlbumIdentity < ApplicationRecord
   end
 
   def self.find_or_create_by_spotify_album(a)
-    find_or_create_by(name: a.name, artist_name: a.artists.map(&:name).join(", "))
+    find_or_create_by(name: a.name, artist_name: a.artists.map(&:name).join(", ")) do |identity|
+      identity.slug = new_slug(a.name)
+    end
   end
 
   def self.find_or_create_by_apple_music_album(album)
-    find_or_create_by(name: album.name, artist_name: album.artist_name)
+    find_or_create_by(name: album.name, artist_name: album.artist_name) do |identity|
+      identity.slug = new_slug(album.name)
+    end
   end
 
   def self.build_by_spotify_album(album)
@@ -44,7 +48,9 @@ class AlbumIdentity < ApplicationRecord
     item = Album.find_or_create_by_spotify_album(album)
     return item.identity if item.identity.present?
     artist_names = album.artists.map(&:name).join(", ")
-    identity = AlbumIdentity.find_or_create_by(name: album.name, artist_name: artist_names)
+    identity = AlbumIdentity.find_or_create_by(name: album.name, artist_name: artist_names) do |identity|
+      identity.slug = new_slug(album.name)
+    end
     identity.update_associations_by_spotify_album(album)
     identity.search_apple_music
     identity
@@ -54,7 +60,9 @@ class AlbumIdentity < ApplicationRecord
     return nil if album.nil?
     item = Album.find_or_create_by_apple_music_album(album)
     return item.identity if item.identity.present?
-    identity = AlbumIdentity.find_or_create_by(name: album.name, artist_name: album.artist_name)
+    identity = AlbumIdentity.find_or_create_by(name: album.name, artist_name: album.artist_name) do |identity|
+      identity.slug = new_slug(album.name)
+    end
     identity.update_associations_by_apple_music_album(album)
     identity.search_spotify
     identity
