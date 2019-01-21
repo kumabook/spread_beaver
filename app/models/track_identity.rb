@@ -135,4 +135,10 @@ class TrackIdentity < ApplicationRecord
     search_apple_music
     search_spotify
   end
+
+  def as_content_json
+    hash = super
+    hash["items"] = items.map(&:as_json)
+    hash
+  end
 end

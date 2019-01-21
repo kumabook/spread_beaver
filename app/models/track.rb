@@ -10,7 +10,10 @@ class Track < ApplicationRecord
   belongs_to :identity, class_name: "TrackIdentity", optional: true
 
   scope :with_content, -> {
-    eager_load(:entries, :enclosure_artists, :artists)
+    eager_load(:entries,
+               :enclosure_artists,
+               artists: :identity,
+              )
   }
 
   scope :with_detail, -> {
@@ -104,6 +107,7 @@ class Track < ApplicationRecord
 
   def as_content_json
     hash = super
+    hash["identity"] = identity.as_json
     hash["playlists"] = nil
     hash["artists"] = artists.map(&:as_content_json)
     hash

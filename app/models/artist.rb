@@ -76,4 +76,10 @@ class Artist < ApplicationRecord
       ArtistIdentity.build_by_apple_music_artist(AppleMusic::Artist.find("jp", identifier))
     end
   end
+
+  def as_content_json
+    hash = super
+    hash["identity"] = identity.as_json
+    hash
+  end
 end

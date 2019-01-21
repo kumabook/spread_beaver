@@ -17,8 +17,8 @@ class ArtistIdentity < ApplicationRecord
   scope :with_detail, -> {
     eager_load(:entries)
       .eager_load(:items)
-      .eager_load(:album_identities)
-      .eager_load(:track_identities)
+      .eager_load(album_identities: :items)
+      .eager_load(track_identities: :items)
   }
 
   def self.find_by_name_and_origin(name, origin_name)
@@ -142,5 +142,13 @@ class ArtistIdentity < ApplicationRecord
   def search_items
     search_apple_music
     search_spotify
+  end
+
+  def as_content_json
+    hash = super
+    hash["items"] = items.map(&:as_json)
+    hash["track_identities"] = track_identities.map(&:as_content_json)
+    hash["album_identities"] = album_identities.map(&:as_content_json)
+    hash
   end
 end
