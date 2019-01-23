@@ -82,7 +82,7 @@ class Artist < ApplicationRecord
   end
 
   def as_content_json
-    hash = super
+    hash = as_basic_content_json
     hash["identity"] = identity.as_json
     hash
   end
