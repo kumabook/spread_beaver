@@ -137,7 +137,7 @@ class Feed < ApplicationRecord
 
   def self.find_or_create_by_url_on_pink_spider(url)
     feed = PinkSpider.new.create_feed(url)
-    Feed.first_or_create_by_pink_spider(feed)
+    Feed.first_or_create_by_pink_spider(feed) if feed.present?
   end
 
   def label

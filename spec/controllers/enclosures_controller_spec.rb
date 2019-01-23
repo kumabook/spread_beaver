@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "rails_helper"
+require "rspotify_helper"
 
 describe EnclosuresController, type: :controller do
   let  (:uuid)    { SecureRandom.uuid }
@@ -69,6 +70,12 @@ describe EnclosuresController, type: :controller do
   describe "#crawl" do
     it {
       expect_any_instance_of(PinkSpider).to receive(:fetch_tracks_of_playlist)
+      allow(RSpotify::Track).to receive(:find) do |id|
+        RSpotify::Track.new(RSpotifyHelper.track_hash(id))
+      end
+      allow(RSpotify::Album).to receive(:find) do |id|
+        RSpotify::Album.new(RSpotifyHelper.album_hash(id))
+      end
       get :crawl, params: { id: playlist.id, type: Playlist.name }
     }
   end

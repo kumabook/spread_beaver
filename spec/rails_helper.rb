@@ -23,6 +23,7 @@ RSpec.configure do |config|
   config.include ApiMacros, type: :request
 
   config.include PinkSpiderMacros
+  config.include RSpotifyMacros
   config.before :each, type: :request do
     mock_up_pink_spider
   end

@@ -137,8 +137,14 @@ class TrackIdentity < ApplicationRecord
   end
 
   def as_content_json
-    hash = super
+    hash = as_basic_content_json
     hash["items"] = items.map(&:as_json)
+    hash
+  end
+
+  def as_detail_json
+    hash = as_content_json
+    hash["entries"] = entries.map(&:as_partial_json) if hash["entries"].nil?
     hash
   end
 end

@@ -2,8 +2,8 @@
 
 class Pick < ApplicationRecord
   include EnclosureMark
-  belongs_to :track         , foreign_key: "enclosure_id", counter_cache: :pick_count, touch: true
-  belongs_to :track_identity, foreign_key: "enclosure_id", counter_cache: :pick_count, touch: true
+  belongs_to :track         , foreign_key: "enclosure_id", counter_cache: :pick_count, touch: true, optional: true
+  belongs_to :track_identity, foreign_key: "enclosure_id", counter_cache: :pick_count, touch: true, optional: true
   after_save :create_identity_mark
 
   belongs_to :playlist, foreign_key: "container_id"
@@ -45,13 +45,16 @@ class Pick < ApplicationRecord
   def create_identity_mark
     if ["Track", "Album", "Artist"].include?(enclosure_type)
       clazz = enclosure_type.constantize
-      child = clazz.find(enclosure_id).includes(:identity)
-      self.class.find_or_create_by(enclosure_id:   child.identity.id,
-                                   enclosure_type: child.identity.class.name,
-                                   container_id:   container_id,
-                                   container_type: container_type,
-                                   created_at:     created_at,
-                                   updated_at:     updated_at)
+      child = clazz.includes(:identity).find(enclosure_id)
+      return if child.identity_id.nil?
+      self.class.find_or_create_by(enclosure_id: child.identity.id,
+                                   container_id: container_id) do |obj|
+        obj.enclosure_type = child.identity.class.name
+        obj.container_id =   container_id
+        obj.container_type = container_type
+        obj.created_at = created_at
+        obj.updated_at = updated_at
+      end
     end
   end
 end

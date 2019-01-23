@@ -105,7 +105,10 @@ describe Entry do
   describe "#crawl" do
     let (:feed) { FactoryBot.create(:feed) }
     let (:entry) { feed.entries[0] }
-    before { mock_up_pink_spider }
+    before do
+      mock_up_pink_spider
+      mock_up_rspotify
+    end
     it {
       expect(entry.crawl()[:tracks].count).to be > 0
       expect(entry.crawl()[:playlists].count).to be > 0

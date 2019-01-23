@@ -106,7 +106,7 @@ class Track < ApplicationRecord
   end
 
   def as_content_json
-    hash = super
+    hash = as_basic_content_json
     hash["identity"] = identity.as_json
     hash["playlists"] = nil
     hash["artists"] = artists.map(&:as_content_json)
@@ -114,7 +114,8 @@ class Track < ApplicationRecord
   end
 
   def as_detail_json
-    hash = super
+    hash = as_content_json
+    hash["entries"] = entries.map(&:as_partial_json) if hash["entries"].nil?
     hash["playlists"] = playlists.map(&:as_content_json) if playlists.present?
     hash
   end

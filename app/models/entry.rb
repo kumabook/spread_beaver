@@ -55,7 +55,7 @@ class Entry < ApplicationRecord
   }
   scope :subscriptions, ->(ss) { where(feed: ss.map(&:feed_id)).order(published: :desc).with_content }
   scope :feed,          ->(feed) { where(feed: feed).order(published: :desc).with_content }
-  scope :keyword,       ->(k) { joins(:entry_keywords).where(entry_keywords: { keyword_id: k.id}).order(published: :desc).with_content }
+  scope :keyword,       ->(k) { joins(:keywordables).where(keywordables: { keyword_id: k.id}).order(published: :desc).with_content }
   scope :tag,           ->(t) { joins(:tags).where(tags: { id: t.id}).order(published: :desc).with_content }
   scope :topic,         ->(topic) { joins(feed: :topics).where(topics: { id: topic.id }) }
   scope :category,      ->(category) { joins(feed: { subscriptions: :categories }).where(categories: { id: category.id }) }

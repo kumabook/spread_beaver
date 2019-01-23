@@ -25,6 +25,8 @@ describe Enclosure do
   }
   describe "::create_items_of" do
     before do
+      mock_up_pink_spider
+      mock_up_rspotify
       Track.create_items_of(entry, playlistified_entry.tracks)
       Album.create_items_of(entry, playlistified_entry.albums)
       Playlist.create_items_of(entry, playlistified_entry.playlists)

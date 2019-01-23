@@ -23,13 +23,13 @@ module PinkSpiderMacros
 
     allow_any_instance_of(PinkSpider).to receive(:fetch_track) do |_this, id|
       track["id"] = id
-      track["provider"] = Track.find(id).provider
+      track["provider"] = Track.find_by(id: id)&.provider || 'Spotify'
       track
     end
     allow_any_instance_of(PinkSpider).to receive(:fetch_tracks) do |_this, ids|
       ids.map { |id|
         track["id"] = id
-        track["provider"] = Track.find(id).provider
+        track["provider"] = Track.find_by(id: id)&.provider || 'Spotify'
         track.clone
       }
     end
@@ -43,13 +43,13 @@ module PinkSpiderMacros
 
     allow_any_instance_of(PinkSpider).to receive(:fetch_album) do |_this, id|
       album["id"] = id
-      album["provider"] = Album.find(id).provider
+      album["provider"] = Album.find_by(id: id)&.provider || 'Spotify'
       album.clone
     end
     allow_any_instance_of(PinkSpider).to receive(:fetch_albums) do |_this, ids|
       ids.map { |id|
         album["id"] = id
-        album["provider"] = Album.find(id).provider
+        album["provider"] = Album.find_by(id: id)&.provider || 'Spotify'
         album.clone
       }
     end
@@ -62,13 +62,13 @@ module PinkSpiderMacros
 
     allow_any_instance_of(PinkSpider).to receive(:fetch_playlist) do |_this, id|
       playlist["id"] = id
-      playlist["provider"] = Playlist.find(id).provider
+      playlist["provider"] = Playlist.find_by(id: id)&.provider || 'Spotify'
       playlist
     end
     allow_any_instance_of(PinkSpider).to receive(:fetch_playlists) do |_this, ids|
       ids.map { |id|
         playlist["id"] = id
-        playlist["provider"] = Playlist.find(id).provider
+        playlist["provider"] = Playlist.find_by(id: id)&.provider || 'Spotify'
         playlist.clone
       }
     end

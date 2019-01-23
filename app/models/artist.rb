@@ -8,6 +8,10 @@ class Artist < ApplicationRecord
   has_many :albums, through: :enclosure_artists, source: :enclosure, source_type: Album.name
   belongs_to :identity, class_name: "ArtistIdentity", optional: true
 
+  scope :with_content, -> {
+    eager_load(:entries)
+  }
+
   scope :with_detail, -> {
     eager_load(:entries, :pick_containers, :pick_enclosures)
   }
@@ -81,5 +85,10 @@ class Artist < ApplicationRecord
     hash = super
     hash["identity"] = identity.as_json
     hash
+  end
+
+  def as_detail_json
+    hash = as_content_json
+    hash["entries"] = entries.map(&:as_partial_json) if hash["entries"].nil?
   end
 end

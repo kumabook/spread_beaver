@@ -203,7 +203,7 @@ module Enclosure
     "https://typica.mu/#{self.class.name.downcase}/#{id}"
   end
 
-  def as_content_json
+  def as_basic_content_json
     hash = as_json
     hash["previous_rank"] = previous_rank
     hash["likesCount"]   = likes_count
@@ -218,12 +218,6 @@ module Enclosure
     if !@partial_entries.nil?
       hash["entries"] = @partial_entries.map(&:as_partial_json)
     end
-    hash
-  end
-
-  def as_detail_json
-    hash = as_content_json
-    hash["entries"] = entries.map(&:as_partial_json) if hash["entries"].nil?
     hash
   end
 

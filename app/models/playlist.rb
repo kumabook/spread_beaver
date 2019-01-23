@@ -7,6 +7,10 @@ class Playlist < ApplicationRecord
   has_many :keywordables, dependent: :destroy, as: :keywordable
   has_many :keywords    , through: :keywordables
 
+  scope :with_content, -> {
+    eager_load(:entries)
+  }
+
   scope :with_detail, -> {
     eager_load(:entries, :pick_containers, :pick_enclosures)
   }
@@ -51,13 +55,14 @@ class Playlist < ApplicationRecord
   end
 
   def as_content_json
-    hash = super
+    hash = as_basic_content_json
     hash["tracks"] = nil
     hash
   end
 
   def as_detail_json
-    hash = super
+    hash = as_content_json
+    hash["entries"] = entries.map(&:as_partial_json) if hash["entries"].nil?
     hash["tracks"] = tracks.map(&:as_content_json) if tracks.present?
     hash
   end

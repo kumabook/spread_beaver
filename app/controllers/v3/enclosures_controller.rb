@@ -72,10 +72,12 @@ class V3::EnclosuresController < V3::ApiController
 
   def set_enclosure
     @enclosure = @enclosure_class.with_detail.find(params[:id])
+    set_enclosure_items
   end
 
   def set_enclosure_by_slug
     @enclosure = @enclosure_class.with_detail.find_by(slug: params[:slug])
+    set_enclosure_items
   end
 
   def set_enclosure_items

@@ -18,6 +18,6 @@ describe Keyword do
       count = entries.count
       entries[0].destroy!
     end
-    it { expect(keyword.entry_keywords.count).to eq(count - 1) }
+    it { expect(keyword.keywordables.count).to eq(count - 1) }
   end
 end
