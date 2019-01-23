@@ -111,7 +111,7 @@ class TrackIdentity < ApplicationRecord
         item.save!
       end
     end
-  rescue => e
+  rescue StandardError => e
     logger.warn("Failed to apple music search song #{name}")
   end
 

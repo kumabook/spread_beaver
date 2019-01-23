@@ -127,7 +127,7 @@ class AlbumIdentity < ApplicationRecord
         album.save!
       end
     end
-  rescue => e
+  rescue StandardError => e
     logger.warn("Failed to apple music search album #{name}")
   end
 

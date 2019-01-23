@@ -124,7 +124,7 @@ class ArtistIdentity < ApplicationRecord
         artist.save!
       end
     end
-  rescue => e
+  rescue StandardError => e
     logger.warn("Failed to apple music search artist #{name}")
   end
 
