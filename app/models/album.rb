@@ -3,14 +3,17 @@
 require "pink_spider"
 class Album < ApplicationRecord
   include Enclosure
+
+  ARTIST_ORDER = "enclosure_artists.created_at DESC"
+
   has_many :enclosure_artists, dependent: :destroy, as: :enclosure
   has_many :album_tracks
-  has_many :artists, through: :enclosure_artists
+  has_many :artists, -> { order(ARTIST_ORDER) }, through: :enclosure_artists
   has_many :tracks, -> { order("album_tracks.id") }, through: :album_tracks
   belongs_to :identity, class_name: "AlbumIdentity", optional: true
 
   scope :with_content, -> {
-    eager_load(:entries)
+    eager_load(:entries, artists: :identity).order(ARTIST_ORDER)
   }
 
   scope :with_detail, -> {
