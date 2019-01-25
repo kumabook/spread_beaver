@@ -125,7 +125,7 @@ class ArtistIdentity < ApplicationRecord
       end
     end
   rescue StandardError => e
-    logger.warn("Failed to apple music search artist #{name}")
+    logger.warn("Failed to apple music search artist #{name}: #{e.message}")
   end
 
   def search_spotify
