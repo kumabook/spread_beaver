@@ -60,8 +60,8 @@ class AlbumIdentity < ApplicationRecord
     return nil if album.nil?
     item = Album.find_or_create_by_apple_music_album(album)
     return item.identity if item.identity.present?
-    identity = AlbumIdentity.find_or_create_by(name: album.name, artist_name: album.artist_name) do |identity|
-      identity.slug = new_slug(album.name)
+    identity = AlbumIdentity.find_or_create_by(name: album.name, artist_name: album.artist_name) do |i|
+      i.slug = new_slug(album.name)
     end
     identity.update_associations_by_apple_music_album(album)
     identity.search_spotify
