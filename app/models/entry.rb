@@ -182,8 +182,8 @@ class Entry < ApplicationRecord
     new_playlists.each { |e| add_enclosure(e) }
     new_albums.each { |e| add_enclosure(e) }
 
-    new_tracks.each(&:create_identity)
-    new_albums.each(&:create_identity)
+    new_tracks.each { |t| t.create_identity if t.identity_id.nil? }
+    new_albums.each { |a| a.create_identity if a.identity_id.nil? }
 
     new_playlists.each(&:fetch_tracks)
     new_albums.each(&:fetch_tracks)
