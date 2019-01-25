@@ -101,7 +101,7 @@ module Enclosure
           obj.provider = h["provider"]
         end
         EnclosureArtist.find_or_create_by(enclosure_id:   model.id,
-                                          enclosure_type: Track.name,
+                                          enclosure_type: name,
                                           artist_id:      a.id)
       end
       model
