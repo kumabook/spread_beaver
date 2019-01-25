@@ -53,7 +53,7 @@ class IdentitiesController < ApplicationController
 
   def set_identity
     @identity = identity_class
-                  .eager_load(:items)
-                  .find(params[:id])
+                .eager_load(:items)
+                .find(params[:id])
   end
 end

@@ -2,7 +2,7 @@
 
 task crawl_track_identities: :environment do
   Rails.logger.info("crawl_track_identities")
-  Track.where(identity_id: nil, provider: ["Spotify", "AppleMusic"]).order(created_at: :desc).find_each do |track|
+  Track.where(identity_id: nil, provider: %w[Spotify AppleMusic]).order(created_at: :desc).find_each do |track|
     puts "Crawling #{track.title}"
     identity = track.create_identity
     if identity.present?

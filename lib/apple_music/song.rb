@@ -4,31 +4,31 @@ module AppleMusic
   class Song
     THUMBNAIL_SIZE = "300"
     ARTWORK_SIZE   = "640"
-    @@attributes = [
-      :artist_name,
-      :artwork,
-      :composer_name,
-      :content_rating,
-      :disc_number,
-      :duration_in_millis,
-      :editorial_notes,
-      :genre_names,
-      :isrc,
-      :movement_count,
-      :movement_name,
-      :movement_number,
-      :name,
-      :play_params,
-      :previews,
-      :release_date,
-      :track_number,
-      :url,
-      :work_name,
+    @@attributes = %i[
+      artist_name
+      artwork
+      composer_name
+      content_rating
+      disc_number
+      duration_in_millis
+      editorial_notes
+      genre_names
+      isrc
+      movement_count
+      movement_name
+      movement_number
+      name
+      play_params
+      previews
+      release_date
+      track_number
+      url
+      work_name
     ]
-    @@relationships = [
-      :albums,
-      :artists,
-      :genres,
+    @@relationships = %i[
+      albums
+      artists
+      genres
     ]
     attr_accessor :id, :type, :href
     attr_accessor *@@attributes

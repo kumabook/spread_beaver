@@ -90,7 +90,7 @@ class TrackIdentity < ApplicationRecord
     artist_ids = song.artists.map(&:id)
     artists = AppleMusic::Artist.find("jp", artist_ids)
     artists.each do |artist|
-      artist_identity = ArtistIdentity::build_by_apple_music_artist(artist)
+      artist_identity = ArtistIdentity.build_by_apple_music_artist(artist)
       TrackArtistIdentity.find_or_create_by(track_identity_id:  id,
                                             artist_identity_id: artist_identity.id)
     end
@@ -116,7 +116,7 @@ class TrackIdentity < ApplicationRecord
   end
 
   def search_spotify
-    q = "#{name}"
+    q = name.to_s
     artist_identities.each do |artist|
       q += " artist:#{artist.name}"
     end

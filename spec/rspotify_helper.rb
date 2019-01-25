@@ -7,7 +7,7 @@ require "active_support/core_ext"
 class RSpotifyHelper
   def self.track_hash(id, shallow: false)
     {
-      available_markets: ["JP", "US"],
+      available_markets: %w[JP US],
       disc_number: 1,
       duration_ms: 100,
       explicit: false,
@@ -33,7 +33,7 @@ class RSpotifyHelper
   def self.album_hash(id, shallow: false)
     {
         album_type: "album",
-        available_markets: ["JP", "US"],
+        available_markets: %w[JP US],
         copyrights: nil,
         external_ids: nil,
         genres: [],

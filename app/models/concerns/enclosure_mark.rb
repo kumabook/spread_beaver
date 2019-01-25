@@ -85,7 +85,7 @@ module EnclosureMark
 
   def create_identity_mark
     clazz = self.class
-    return if !["Track", "Album", "Artist"].include?(clazz.name)
+    return if !%w[Track Album Artist].include?(clazz.name)
 
     child = clazz.find(enclosure_id).includes(:identity)
     return if child.identity_id.nil?

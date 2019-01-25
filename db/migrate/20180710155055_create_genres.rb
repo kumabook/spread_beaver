@@ -13,6 +13,6 @@ class CreateGenres < ActiveRecord::Migration[5.1]
       t.uuid :genre_item_id, null: false
       t.string :genre_item_type, null: false
     end
-    add_index :genre_items, [:genre_id, :genre_item_id]
+    add_index :genre_items, %i[genre_id genre_item_id]
   end
 end

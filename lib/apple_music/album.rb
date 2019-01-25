@@ -4,26 +4,26 @@ module AppleMusic
   class Album
     THUMBNAIL_SIZE = "300"
     ARTWORK_SIZE   = "640"
-    @@attributes = [
-      :artist_name,
-      :artwork,
-      :content_rating,
-      :copyright,
-      :editorial_notes,
-      :genre_names,
-      :is_complete,
-      :is_single,
-      :name,
-      :record_label,
-      :release_date,
-      :play_params,
-      :track_count,
-      :url,
+    @@attributes = %i[
+      artist_name
+      artwork
+      content_rating
+      copyright
+      editorial_notes
+      genre_names
+      is_complete
+      is_single
+      name
+      record_label
+      release_date
+      play_params
+      track_count
+      url
     ]
-    @@relationships = [
-      :tracks,
-      :artists,
-      :genres,
+    @@relationships = %i[
+      tracks
+      artists
+      genres
     ]
     attr_accessor :id, :type, :href
     attr_accessor *@@attributes

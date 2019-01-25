@@ -23,8 +23,8 @@ class ArtistIdentity < ApplicationRecord
 
   def self.find_by_name_and_origin(name, origin_name)
     artists = joins(:artist_aliases)
-                .where(artist_aliases: { name: name })
-                .where(name: name)
+              .where(artist_aliases: { name: name })
+              .where(name: name)
     return artists.first if artists.count == 1
     artists.each do |artist|
       return artist if artist.origin_name == origin_name
@@ -83,7 +83,7 @@ class ArtistIdentity < ApplicationRecord
       genre = Genre.find_or_create_by_name(genre)
       GenreItem.find_or_create_by(genre_id: genre.id, genre_item_id: id, genre_item_type: "ArtistIdentity")
     end
-    artist_identity = ArtistIdentity::find_by(id: item.identity_id)
+    artist_identity = ArtistIdentity.find_by(id: item.identity_id)
     if artist_identity.present? && id != artist_identity.id
       identity.merge_to(self)
       identity.destroy
@@ -95,7 +95,7 @@ class ArtistIdentity < ApplicationRecord
   end
 
   def update_associations_by_apple_music_artist(artist)
-    item = Artist::find_or_create_by_apple_music_artist(artist)
+    item = Artist.find_or_create_by_apple_music_artist(artist)
     artist.genre_names.each do |genre|
       genre = Genre.find_or_create_by_name(genre)
       GenreItem.find_or_create_by(genre_id: genre.id, genre_item_id: id, genre_item_type: "ArtistIdentity")

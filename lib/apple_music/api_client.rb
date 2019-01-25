@@ -18,7 +18,7 @@ module AppleMusic
                                   params: params,
                                   Authorization: "Bearer #{@developer_token}"
                                 })
-      raise AppleMusicError.new(response.code) if response.code != 200
+      raise AppleMusicError, response.code if response.code != 200
       JSON.parse(response.body)
     end
 
@@ -80,12 +80,11 @@ module AppleMusic
                              offset: offset,
                              types:  types.join(",")
                            })
-      ["albums",
-       "songs",
-       "music_videos",
-       "playlists",
-       "artists",
-      ].each_with_object({}) do |type, r|
+      %w[albums
+         songs
+         music_videos
+         playlists
+         artists].each_with_object({}) do |type, r|
         hash = result["results"][type]
         next if hash.nil?
         items = hash["data"].map do |h|

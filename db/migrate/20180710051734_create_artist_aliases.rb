@@ -7,6 +7,6 @@ class CreateArtistAliases < ActiveRecord::Migration[5.1]
       t.string :name, null: false
     end
     add_index :artist_aliases, [:name]
-    add_index :artist_aliases, [:artist_identity_id, :name], unique: true
+    add_index :artist_aliases, %i[artist_identity_id name], unique: true
   end
 end

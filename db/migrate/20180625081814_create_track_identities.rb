@@ -17,7 +17,7 @@ class CreateTrackIdentities < ActiveRecord::Migration[5.1]
       t.timestamps null: false
 
       t.index [:name]
-      t.index [:name, :artist_name], unique: true
+      t.index %i[name artist_name], unique: true
       t.index [:slug], unique: true
     end
     add_column :tracks, :identity_id, :uuid

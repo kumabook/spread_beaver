@@ -70,7 +70,7 @@ class AlbumIdentity < ApplicationRecord
 
   def update_associations_by_spotify_album(album)
     artist_identities = album.artists.map do |artist|
-      ArtistIdentity::build_by_spotify_artist(artist)
+      ArtistIdentity.build_by_spotify_artist(artist)
     end
 
     artist_identities.each do |artist_identity|
@@ -132,7 +132,7 @@ class AlbumIdentity < ApplicationRecord
   end
 
   def search_spotify
-    q = "#{name}"
+    q = name.to_s
     artist_identities.each do |artist|
       q += " artist:#{artist.name}"
     end

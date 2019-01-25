@@ -49,7 +49,7 @@ Rails.application.routes.draw do
   resources :categories do
     resources :subscriptions, only: [:index]
   end
-  [:tracks, :albums, :artists, :playlists].each do |res|
+  %i[tracks albums artists playlists].each do |res|
     resources res, controller: :enclosures, type: res.to_s.classify, except: %i[edit update] do
       post   "like"  , to: :like  , as: :likes
       delete "unlike", to: :unlike, as: :like
@@ -69,7 +69,7 @@ Rails.application.routes.draw do
     end
   end
 
-  [:track_identities, :album_identities].each do |res|
+  %i[track_identities album_identities].each do |res|
     resources res, controller: :identities, type: res.to_s.classify do
       get "search", on: :collection
       member do

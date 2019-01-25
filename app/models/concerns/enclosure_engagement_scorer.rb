@@ -144,7 +144,7 @@ module EnclosureEngagementScorer
         pick_stream = stream
       end
       picked = query_for_best_items(Pick, pick_stream, pick_query)
-                 .distinct(:playlist_id)
+               .distinct(:playlist_id)
       [
         { type: :count       , query: played  , clazz: PlayedEnclosure },
         { type: :count       , query: liked   , clazz: LikedEnclosure },

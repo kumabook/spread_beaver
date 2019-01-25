@@ -36,14 +36,14 @@ class Pick < ApplicationRecord
   scope :issues, ->(issues, clazz) {
     if clazz.identity?
       joins(playlist: :issues).where(issues: { id: issues.pluck(:id) })
-        .joins(track: :identity)
+                              .joins(track: :identity)
     else
       joins(playlist: :issues).where(issues: { id: issues.pluck(:id) })
     end
   }
 
   def create_identity_mark
-    if ["Track", "Album", "Artist"].include?(enclosure_type)
+    if %w[Track Album Artist].include?(enclosure_type)
       clazz = enclosure_type.constantize
       child = clazz.includes(:identity).find(enclosure_id)
       return if child.identity_id.nil?

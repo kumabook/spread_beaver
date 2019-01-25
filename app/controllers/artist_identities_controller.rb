@@ -50,8 +50,8 @@ class ArtistIdentitiesController < ApplicationController
 
   def set_identity
     @identity = ArtistIdentity
-                  .eager_load(:items)
-                  .find(params[:id])
+                .eager_load(:items)
+                .find(params[:id])
   end
 
   def artist_identity_params

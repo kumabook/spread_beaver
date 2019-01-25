@@ -28,12 +28,12 @@ class CreateArtistIdentities < ActiveRecord::Migration[5.1]
     create_table :track_artist_identities do |t|
       t.uuid :track_identity_id, null: false
       t.uuid :artist_identity_id, null: false
-      t.index [:track_identity_id, :artist_identity_id], unique: true, name: "index_track_artist_identities"
+      t.index %i[track_identity_id artist_identity_id], unique: true, name: "index_track_artist_identities"
     end
     create_table :album_artist_identities do |t|
       t.uuid :album_identity_id, null: false
       t.uuid :artist_identity_id, null: false
-      t.index [:album_identity_id, :artist_identity_id], unique: true, name: "index_album_artist_identities"
+      t.index %i[album_identity_id artist_identity_id], unique: true, name: "index_album_artist_identities"
     end
     add_column :artists, :identity_id, :uuid
     add_index :artists, :identity_id

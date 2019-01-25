@@ -77,7 +77,7 @@ class Album < ApplicationRecord
   def self.parse_release_date(release_date)
     if release_date.length == 4
       Date.parse("#{release_date}/01/01")
-    elsif release_date =~ /\d{4}-\d{2}/
+    elsif /\d{4}-\d{2}/.match?(release_date)
       Date.parse("#{release_date}-01")
     else
       Date.parse(release_date)

@@ -4,29 +4,29 @@ module AppleMusic
   class MusicVideo
     THUMBNAIL_SIZE = "300"
     ARTWORK_SIZE   = "640"
-    @@attributes = [
-      :album_name,
-      :artist_name,
-      :artwork,
-      :content_rating,
-      :duration_in_millis,
-      :editorial_notes,
-      :genre_names,
-      :isrc,
-      :name,
-      :play_params,
-      :previews,
-      :release_date,
-      :track_number,
-      :url,
-      :video_sub_type,
-      :has_HDR,
-      :has_4k,
+    @@attributes = %i[
+      album_name
+      artist_name
+      artwork
+      content_rating
+      duration_in_millis
+      editorial_notes
+      genre_names
+      isrc
+      name
+      play_params
+      previews
+      release_date
+      track_number
+      url
+      video_sub_type
+      has_HDR
+      has_4k
     ]
-    @@relationships = [
-      :albums,
-      :artists,
-      :genres,
+    @@relationships = %i[
+      albums
+      artists
+      genres
     ]
     attr_accessor :id, :type, :href
     attr_accessor *@@attributes
