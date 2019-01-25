@@ -4,7 +4,7 @@ module AppleMusic
   class MusicVideo
     THUMBNAIL_SIZE = "300"
     ARTWORK_SIZE   = "640"
-    @@attributes = %i[
+    @attributes = %i[
       album_name
       artist_name
       artwork
@@ -23,14 +23,17 @@ module AppleMusic
       has_HDR
       has_4k
     ]
-    @@relationships = %i[
+    @relationships = %i[
       albums
       artists
       genres
     ]
     attr_accessor :id, :type, :href
-    attr_accessor *@@attributes
-    attr_accessor *@@relationships
+
+    class << self
+      attr_accessor :attributes
+      attr_accessor :relationships
+    end
 
     def initialize(id, type, href, attributes = {}, relationships = {})
       @id   = id

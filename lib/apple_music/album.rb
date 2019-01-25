@@ -4,7 +4,7 @@ module AppleMusic
   class Album
     THUMBNAIL_SIZE = "300"
     ARTWORK_SIZE   = "640"
-    @@attributes = %i[
+    @attributes = %i[
       artist_name
       artwork
       content_rating
@@ -20,14 +20,17 @@ module AppleMusic
       track_count
       url
     ]
-    @@relationships = %i[
+    @relationships = %i[
       tracks
       artists
       genres
     ]
     attr_accessor :id, :type, :href
-    attr_accessor *@@attributes
-    attr_accessor *@@relationships
+
+    class << self
+      attr_accessor :attributes
+      attr_accessor :relationships
+    end
 
     def initialize(id, type, href, attributes = {}, relationships = {})
       @id   = id
