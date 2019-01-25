@@ -24,7 +24,7 @@ class AlbumIdentity < ApplicationRecord
     case album.provider
     when "Spotify"
       a = RSpotify::Album.find(album.identifier)
-      find_or_create_by_spotify_album(t)
+      find_or_create_by_spotify_album(a)
     when "AppleMusic"
       s = AppleMusic::Album.find("jp", album.identifier)
       find_or_create_by_apple_music_album(s)
@@ -32,8 +32,8 @@ class AlbumIdentity < ApplicationRecord
   end
 
   def self.find_or_create_by_spotify_album(a)
-    find_or_create_by(name: a.name, artist_name: a.artists.map(&:name).join(", ")) do |identity|
-      identity.slug = new_slug(a.name)
+    find_or_create_by(name: a.name, artist_name: a.artists.map(&:name).join(", ")) do |i|
+      i.slug = new_slug(a.name)
     end
   end
 
@@ -48,8 +48,8 @@ class AlbumIdentity < ApplicationRecord
     item = Album.find_or_create_by_spotify_album(album)
     return item.identity if item.identity.present?
     artist_names = album.artists.map(&:name).join(", ")
-    identity = AlbumIdentity.find_or_create_by(name: album.name, artist_name: artist_names) do |identity|
-      identity.slug = new_slug(album.name)
+    identity = AlbumIdentity.find_or_create_by(name: album.name, artist_name: artist_names) do |i|
+      i.slug = new_slug(album.name)
     end
     identity.update_associations_by_spotify_album(album)
     identity.search_apple_music

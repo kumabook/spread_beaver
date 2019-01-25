@@ -36,7 +36,7 @@ class ArtistIdentity < ApplicationRecord
     case artist.provider
     when "Spotify"
       a = RSpotify::Artist.find(artist.identifier)
-      find_or_create_by_spotify_album(t)
+      find_or_create_by_spotify_album(a)
     when "AppleMusic"
       s = AppleMusic::Artist.find("jp", album.identifier)
       find_or_create_by_apple_music_album(s)
@@ -45,15 +45,15 @@ class ArtistIdentity < ApplicationRecord
 
   def self.find_or_create_by_spotify_artist(artist)
     find_by_name_and_origin(artist.name, "") ||
-      find_or_create_by(name: artist.name, origin_name: "") do |identity|
-        identity.slug = new_slug(artist.name)
+      find_or_create_by(name: artist.name, origin_name: "") do |i|
+        i.slug = new_slug(artist.name)
       end
   end
 
   def self.find_or_create_by_apple_music_artist(artist)
     find_by_name_and_origin(artist.name, "") ||
-      find_or_create_by(name: artist.name, origin_name: "") do |identity|
-        identity.slug = new_slug(artist.name)
+      find_or_create_by(name: artist.name, origin_name: "") do |i|
+        i.slug = new_slug(artist.name)
       end
   end
 
