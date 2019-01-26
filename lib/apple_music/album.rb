@@ -26,6 +26,8 @@ module AppleMusic
       genres
     ]
     attr_accessor :id, :type, :href
+    attr_accessor(*@attributes)
+    attr_accessor(*@relationships)
 
     class << self
       attr_accessor :attributes
@@ -36,10 +38,10 @@ module AppleMusic
       @id   = id
       @type = type
       @href = href
-      @@attributes.each do |attr|
+      self.class.attributes.each do |attr|
         send("#{attr}=".to_sym, attributes[attr.to_s.camelize(:lower)])
       end
-      @@relationships.each do |rel|
+      self.class.relationships.each do |rel|
         relationship = relationships[rel.to_s.camelize(:lower)]
         next if relationship.nil?
         partial_resources = relationship["data"].map do |h|
